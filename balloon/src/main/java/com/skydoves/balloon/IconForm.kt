@@ -30,7 +30,7 @@ fun iconForm(context: Context, block: IconForm.Builder.() -> Unit): IconForm =
 
 /**
  * IconForm is an attribute class which has TextView attributes
- * for customizing popup texts easily.
+ * for customizing popup icons easily.
  */
 class IconForm(builder: Builder) {
 
