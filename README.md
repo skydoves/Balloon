@@ -17,6 +17,7 @@
 
 ## Including in your project 
 ### Gradle 
+[![Balloon](https://jitpack.io/v/skydoves/Balloon.svg)](https://jitpack.io/#skydoves/Balloon)
 Add below codes to your **root** `build.gradle` file (not your module build.gradle file).
 ```gradle
 allprojects {
@@ -216,7 +217,7 @@ We can fully customize the ballloon layout using below method.
 ### Preference
 If you want to show-up the balloon popup only once or a specific number of times, here is how to implement it simply.<br>
 ```java
-.setPreferenceName("MyNeeds") // sets preference name of the Needs.
+.setPreferenceName("MyBalloon") // sets preference name of the Balloon.
 .setShowTime(3) // show-up three of times the popup. the default value is 1.
 ```
 
