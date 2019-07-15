@@ -15,7 +15,8 @@
 <img src="https://user-images.githubusercontent.com/24237865/61194943-f9d70380-a6ff-11e9-807f-ba1ca8126f8a.gif" width="32%"/>
 </p>
 
-## Including in your project 
+## Including in your project
+[![Download](https://api.bintray.com/packages/devmagician/maven/balloon/images/download.svg)](https://bintray.com/devmagician/maven/balloon/_latestVersion)
 [![Balloon](https://jitpack.io/v/skydoves/Balloon.svg)](https://jitpack.io/#skydoves/Balloon)
 ### Gradle 
 Add below codes to your **root** `build.gradle` file (not your module build.gradle file).
