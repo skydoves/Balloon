@@ -216,6 +216,35 @@ We can fully customize the ballloon layout using below method.
 .setLayout(R.layout.my_ballon_layout)
 ```
 
+This is an example of implementing custom balloon popup.
+
+<img src="https://user-images.githubusercontent.com/24237865/61226019-aba41d80-a75c-11e9-9362-52e4742244b5.gif" align="right" width="32%"/>
+
+Firstly create an xml layout file like `layout_custom_profile` on your taste.
+```kotlin
+val balloon = Balloon.Builder(baseContext)
+      .setLayout(R.layout.layout_custom_profile)
+      .setArrowSize(10)
+      .setArrowOrientation(ArrowOrientation.TOP)
+      .setArrowPosition(0.5f)
+      .setWidthRatio(0.55f)
+      .setHeight(250)
+      .setCornerRadius(4f)
+      .setBackgroundColor(ContextCompat.getColor(baseContext, R.color.background900))
+      .setBalloonAnimation(BalloonAnimation.CIRCULAR)
+      .setLifecycleOwner(lifecycleOwner)
+      .build()
+```
+And next we can get the inflated custom layout using `getContentView` method.
+```java
+val button: Button = 
+  balloon.getContentView().findViewById(R.id.button_edit)
+button.setOnClickListener {
+  Toast.makeText(baseContext, "Edit", Toast.LENGTH_SHORT).show()
+  balloon.dismiss()
+}
+```
+
 ### Preference
 If you want to show-up the balloon popup only once or a specific number of times, here is how to implement it simply.<br>
 ```java
