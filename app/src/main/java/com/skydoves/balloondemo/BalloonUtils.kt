@@ -20,6 +20,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.OnBalloonClickListener
@@ -61,6 +62,24 @@ object BalloonUtils {
       .setIconDrawable(ContextCompat.getDrawable(baseContext, R.drawable.ic_profile))
       .setBackgroundColor(ContextCompat.getColor(baseContext, R.color.colorPrimary))
       .setOnBalloonClickListener(onBalloonClickListener)
+      .setBalloonAnimation(BalloonAnimation.FADE)
+      .setLifecycleOwner(lifecycleOwner)
+      .build()
+  }
+
+  fun getCustomListBalloon(
+    baseContext: Context,
+    lifecycleOwner: LifecycleOwner
+  ): Balloon {
+    return Balloon.Builder(baseContext)
+      .setLayout(R.layout.layout_custom_list)
+      .setArrowSize(10)
+      .setArrowOrientation(ArrowOrientation.TOP)
+      .setArrowPosition(0.85f)
+      .setWidth(170)
+      .setHeight(200)
+      .setCornerRadius(4f)
+      .setBackgroundColor(ContextCompat.getColor(baseContext, R.color.background800))
       .setBalloonAnimation(BalloonAnimation.FADE)
       .setLifecycleOwner(lifecycleOwner)
       .build()

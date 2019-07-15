@@ -22,7 +22,7 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.skydoves.balloondemo.R
 
-object SampleUtils {
+object ItemUtils {
 
   fun getSamples(context: Context): List<SampleItem> {
     val samples = ArrayList<SampleItem>()
@@ -43,6 +43,15 @@ object SampleUtils {
         "Picasso",
         "Everything you can imagine is real."))
     }
+    return samples
+  }
+
+  fun getCustomSamples(context: Context): List<CustomItem> {
+    val samples = ArrayList<CustomItem>()
+    samples.add(CustomItem(drawable(context, R.drawable.sample0), "Timeline"))
+    samples.add(CustomItem(drawable(context, R.drawable.sample1), "Home"))
+    samples.add(CustomItem(drawable(context, R.drawable.sample2), "Profile"))
+    samples.add(CustomItem(drawable(context, R.drawable.sample3), "Settings"))
     return samples
   }
 

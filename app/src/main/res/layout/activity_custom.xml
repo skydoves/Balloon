@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/background">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+      android:id="@+id/appBarLayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <include layout="@layout/toolbar_custom" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+      android:id="@+id/circleImageView"
+      android:layout_width="85dp"
+      android:layout_height="85dp"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginTop="30dp"
+      android:scaleType="centerCrop"
+      android:src="@drawable/lovebird" />
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginTop="12dp"
+      android:text="skydoves"
+      android:textColor="@color/white_93"
+      android:textSize="16sp"
+      android:textStyle="bold"
+      tools:ignore="HardcodedText" />
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginTop="5dp"
+      android:text="Love coffee, music, magic tricks and writing poems."
+      android:textColor="@color/white_56"
+      android:textSize="14sp"
+      android:textStyle="bold"
+      tools:ignore="HardcodedText" />
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:orientation="horizontal"
+      android:weightSum="3">
+
+      <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal"
+          android:text="32"
+          android:textColor="@color/white_93"
+          android:textSize="16sp"
+          android:textStyle="bold" />
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal"
+          android:text="contents"
+          android:textColor="@color/white_56"
+          android:textSize="12sp"
+          android:textStyle="bold" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal"
+          android:text="334"
+          android:textColor="@color/white_93"
+          android:textSize="16sp"
+          android:textStyle="bold" />
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal"
+          android:text="followers"
+          android:textColor="@color/white_56"
+          android:textSize="12sp"
+          android:textStyle="bold" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal"
+          android:text="21"
+          android:textColor="@color/white_93"
+          android:textSize="16sp"
+          android:textStyle="bold" />
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal"
+          android:text="following"
+          android:textColor="@color/white_56"
+          android:textSize="12sp"
+          android:textStyle="bold" />
+      </LinearLayout>
+    </LinearLayout>
+
+    <Button
+      android:id="@+id/button"
+      android:layout_width="match_parent"
+      android:layout_height="36dp"
+      android:layout_marginLeft="8dp"
+      android:layout_marginTop="16dp"
+      android:layout_marginRight="8dp"
+      android:background="@drawable/round_button"
+      android:text="Edit Profile"
+      android:textAllCaps="false"
+      android:textColor="@color/skyBlue"
+      tools:ignore="HardcodedText" />
+
+    <com.google.android.material.tabs.TabLayout
+      android:id="@+id/tabLayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:layout_marginLeft="8dp"
+      android:layout_marginTop="14dp"
+      android:layout_marginEnd="8dp"
+      android:layout_marginRight="8dp"
+      app:tabIndicatorColor="@color/skyBlue"
+      app:tabSelectedTextColor="@color/white_70"
+      app:tabTextAppearance="@style/TextAppearance.AppCompat.Small"
+      app:tabTextColor="@color/white_70" />
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/recyclerView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_margin="8dp"
+      tools:listitem="@layout/item_sample" />
+  </LinearLayout>
+
+  <com.google.android.material.bottomnavigation.BottomNavigationView
+    android:id="@+id/bottomNavigationView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="@color/colorPrimary"
+    app:itemBackground="@color/colorPrimary"
+    app:itemIconTint="@color/white"
+    app:itemTextColor="@color/white"
+    app:layout_behavior="tech.thdev.app.view.BottomNavigationBehavior"
+    app:menu="@menu/menus" />
+</RelativeLayout>

@@ -20,7 +20,7 @@ dependencies {
     implementation "com.google.android.material:material:$versions.googleMaterial"
     implementation "com.github.skydoves:baserecyclerviewadapter:$versions.baseAdapter"
     implementation "de.hdodenhof:circleimageview:$versions.circleimageview"
-    implementation project(':balloon')
+    implementation project(":balloon")
 }
 
 apply from: '../spotless.gradle'

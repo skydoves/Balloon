@@ -21,24 +21,27 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.skydoves.balloon.OnBalloonClickListener
-import com.skydoves.balloon.showAlignTop
+import com.skydoves.balloondemo.recycler.CustomAdapter
+import com.skydoves.balloondemo.recycler.CustomItem
+import com.skydoves.balloondemo.recycler.CustomViewHolder
+import com.skydoves.balloondemo.recycler.ItemUtils
 import com.skydoves.balloondemo.recycler.SampleAdapter
 import com.skydoves.balloondemo.recycler.SampleItem
-import com.skydoves.balloondemo.recycler.ItemUtils
 import com.skydoves.balloondemo.recycler.SampleViewHolder
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_custom.*
+import kotlinx.android.synthetic.main.toolbar_custom.*
 
-class MainActivity : AppCompatActivity(), SampleViewHolder.Delegate, OnBalloonClickListener {
+class CustomActivity : AppCompatActivity(),
+  SampleViewHolder.Delegate,
+  CustomViewHolder.Delegate {
 
   private val adapter by lazy { SampleAdapter(this) }
-
-  private val profileBalloon by lazy { BalloonUtils.getProfileBalloon(this, this) }
-  private val navigationBalloon by lazy { BalloonUtils.getNavigationBalloon(this, this, this) }
+  private val customAdapter by lazy { CustomAdapter(this) }
+  private val customListBalloon by lazy { BalloonUtils.getCustomListBalloon(this, this) }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
+    setContentView(R.layout.activity_custom)
 
     tabLayout.addTab(tabLayout.newTab().setText("Timeline"))
     tabLayout.addTab(tabLayout.newTab().setText("Contents"))
@@ -47,28 +50,23 @@ class MainActivity : AppCompatActivity(), SampleViewHolder.Delegate, OnBalloonCl
     recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
     adapter.addItems(ItemUtils.getSamples(this))
 
-    button.showAlignTop(profileBalloon)
-    button.setOnClickListener {
-      if (profileBalloon.isShowing) {
-        profileBalloon.dismiss()
-      } else {
-        profileBalloon.showAlignTop(it)
-      }
-    }
+    val listRecycler: RecyclerView = customListBalloon.getContentView().findViewById(R.id.list_recyclerView)
+    listRecycler.adapter = customAdapter
+    listRecycler.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+    customAdapter.addCustomItem(ItemUtils.getCustomSamples(this))
 
-    bottomNavigationView.setOnNavigationItemSelectedListener {
-      if (navigationBalloon.isShowing) {
-        navigationBalloon.dismiss()
+    toolbar_list.setOnClickListener {
+      if (customListBalloon.isShowing) {
+        customListBalloon.dismiss()
       } else {
-        navigationBalloon.showAlignTop(bottomNavigationView)
+        customListBalloon.showAlignBottom(it)
       }
-      true
     }
   }
 
-  override fun onBalloonClick() {
-    navigationBalloon.dismiss()
-    Toast.makeText(baseContext, "dismissed", Toast.LENGTH_SHORT).show()
+  override fun onCustomItemClick(customItem: CustomItem) {
+    customListBalloon.dismiss()
+    Toast.makeText(baseContext, customItem.title, Toast.LENGTH_SHORT).show()
   }
 
   override fun onItemClick(sampleItem: SampleItem) = Unit
