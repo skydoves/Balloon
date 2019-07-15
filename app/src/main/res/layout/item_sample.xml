@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="?attr/selectableItemBackground"
+  android:orientation="horizontal"
+  android:paddingLeft="5dp"
+  android:paddingRight="5dp"
+  android:paddingBottom="5dp">
+
+  <de.hdodenhof.circleimageview.CircleImageView
+    android:id="@+id/sample0_avatar"
+    android:layout_width="55dp"
+    android:layout_height="55dp"
+    android:layout_gravity="center_vertical"
+    tools:src="@tools:sample/avatars" />
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:layout_marginStart="15dp"
+    android:layout_marginLeft="15dp"
+    android:orientation="vertical">
+
+    <TextView
+      android:id="@+id/sample0_name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textColor="@color/white_87"
+      android:textSize="15sp"
+      android:textStyle="bold"
+      tools:text="@tools:sample/full_names" />
+
+    <TextView
+      android:id="@+id/sample0_content"
+      android:layout_width="wrap_content"
+      android:layout_height="45dp"
+      android:maxLines="2"
+      android:textColor="@color/white_56"
+      tools:text="@tools:sample/lorem/random" />
+  </LinearLayout>
+</LinearLayout>

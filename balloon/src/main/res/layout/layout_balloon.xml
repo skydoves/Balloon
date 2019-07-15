@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/balloon"
+  android:layout_width="match_parent"
+  android:layout_height="60dp"
+  android:background="@android:color/transparent">
+
+  <ImageView
+    android:id="@+id/balloon_arrow"
+    android:layout_width="15dp"
+    android:layout_height="10dp"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:rotation="180"
+    android:scaleType="fitXY"
+    android:src="@drawable/arrow"
+    android:tint="@android:color/black" />
+
+  <RelativeLayout
+    android:id="@+id/balloon_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true"
+    android:padding="10dp">
+
+    <LinearLayout
+      android:id="@+id/balloon_background"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_centerInParent="true"
+      android:background="@drawable/rectangle_layout"
+      android:orientation="horizontal" />
+
+    <LinearLayout
+      android:id="@+id/balloon_detail"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:orientation="horizontal">
+
+      <ImageView
+        android:id="@+id/balloon_icon"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:scaleType="fitXY"
+        android:visibility="gone"
+        tools:src="@drawable/arrow" />
+
+      <TextView
+        android:id="@+id/balloon_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        tools:text="@tools:sample/lorem" />
+    </LinearLayout>
+  </RelativeLayout>
+</RelativeLayout>

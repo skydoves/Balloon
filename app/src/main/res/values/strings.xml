@@ -1,0 +1,7 @@
+<resources>
+  <string name="app_name">BalloonDemo</string>
+  <string name="timeline">Timeline</string>
+  <string name="home">home</string>
+  <string name="profile">profile</string>
+  <string name="settings">settings</string>
+</resources>

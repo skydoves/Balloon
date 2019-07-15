@@ -1,0 +1,13 @@
+apply plugin: 'com.novoda.bintray-release'
+apply from: '../dependencies.gradle'
+
+publish {
+    userOrg = 'devmagician'
+    groupId = 'com.github.skydoves'
+    artifactId = 'balloon'
+    publishVersion = versions.versionName
+    desc = 'This is Balloon by skydoves'
+    website = 'https://github.com/skydoves/Balloon'
+    issueTracker = "${website}/issues"
+    repository = "${website}.git"
+}

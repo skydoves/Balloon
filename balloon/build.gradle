@@ -1,0 +1,35 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+apply plugin: 'org.jetbrains.dokka-android'
+apply from: '../dependencies.gradle'
+apply from: '../publish.gradle'
+
+android {
+    compileSdkVersion versions.compileSdk
+    defaultConfig {
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.compileSdk
+        versionCode versions.versionCode
+        versionName versions.versionName
+    }
+}
+
+dependencies {
+    implementation "androidx.appcompat:appcompat:$versions.androidxAppcompat"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+}
+
+dokka {
+    moduleName = 'balloon'
+    outputFormat = 'html'
+    //noinspection GroovyAccessibility
+    outputDirectory = "$buildDir/javadoc"
+}
+
+tasks.withType(Javadoc) {
+    excludes = ['**/*.kt']
+    options.addBooleanOption('Xdoclint:none', true)
+}
+
+apply from: '../spotless.gradle'
