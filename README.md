@@ -16,8 +16,8 @@
 </p>
 
 ## Including in your project 
-### Gradle 
 [![Balloon](https://jitpack.io/v/skydoves/Balloon.svg)](https://jitpack.io/#skydoves/Balloon)
+### Gradle 
 Add below codes to your **root** `build.gradle` file (not your module build.gradle file).
 ```gradle
 allprojects {
