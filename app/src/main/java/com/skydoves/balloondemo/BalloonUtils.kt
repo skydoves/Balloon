@@ -84,4 +84,40 @@ object BalloonUtils {
       .setLifecycleOwner(lifecycleOwner)
       .build()
   }
+
+  fun getCustomProfileBalloon(
+    baseContext: Context,
+    lifecycleOwner: LifecycleOwner
+  ): Balloon {
+    return Balloon.Builder(baseContext)
+      .setLayout(R.layout.layout_custom_profile)
+      .setArrowSize(10)
+      .setArrowOrientation(ArrowOrientation.TOP)
+      .setArrowPosition(0.5f)
+      .setWidthRatio(0.55f)
+      .setHeight(250)
+      .setCornerRadius(4f)
+      .setBackgroundColor(ContextCompat.getColor(baseContext, R.color.background900))
+      .setBalloonAnimation(BalloonAnimation.CIRCULAR)
+      .setLifecycleOwner(lifecycleOwner)
+      .build()
+  }
+
+  fun getCustomTagBalloon(
+    baseContext: Context,
+    lifecycleOwner: LifecycleOwner
+  ): Balloon {
+    return Balloon.Builder(baseContext)
+      .setLayout(R.layout.layout_custom_tag)
+      .setArrowSize(10)
+      .setArrowOrientation(ArrowOrientation.BOTTOM)
+      .setArrowPosition(0.5f)
+      .setWidth(90)
+      .setHeight(60)
+      .setCornerRadius(4f)
+      .setBackgroundColor(ContextCompat.getColor(baseContext, R.color.white))
+      .setBalloonAnimation(BalloonAnimation.ELASTIC)
+      .setLifecycleOwner(lifecycleOwner)
+      .build()
+  }
 }

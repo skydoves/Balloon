@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical"
+  android:padding="12dp">
+
+  <de.hdodenhof.circleimageview.CircleImageView
+    android:id="@+id/circleImageView"
+    android:layout_width="55dp"
+    android:layout_height="55dp"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="10dp"
+    android:scaleType="centerCrop"
+    android:src="@drawable/lovebird" />
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="5dp"
+    android:text="skydoves"
+    android:textColor="@color/skyBlue"
+    android:textSize="16sp"
+    android:textStyle="bold"
+    tools:ignore="HardcodedText" />
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="5dp"
+    android:text="Love coffee, music, magic tricks and writing poems."
+    android:textColor="@color/white_87"
+    android:textSize="14sp"
+    android:textStyle="bold"
+    tools:ignore="HardcodedText" />
+
+  <Button
+    android:id="@+id/button_edit"
+    android:layout_width="match_parent"
+    android:layout_height="36dp"
+    android:layout_marginTop="16dp"
+    android:background="@drawable/round_button"
+    android:text="Edit"
+    android:textAllCaps="false"
+    android:textColor="@color/skyBlue"
+    tools:ignore="HardcodedText" />
+
+</LinearLayout>

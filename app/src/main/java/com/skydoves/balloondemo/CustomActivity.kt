@@ -17,6 +17,7 @@
 package com.skydoves.balloondemo
 
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,6 +39,8 @@ class CustomActivity : AppCompatActivity(),
   private val adapter by lazy { SampleAdapter(this) }
   private val customAdapter by lazy { CustomAdapter(this) }
   private val customListBalloon by lazy { BalloonUtils.getCustomListBalloon(this, this) }
+  private val customProfileBalloon by lazy { BalloonUtils.getCustomProfileBalloon(this, this) }
+  private val customTagBalloon by lazy { BalloonUtils.getCustomTagBalloon(this, this) }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -61,6 +64,29 @@ class CustomActivity : AppCompatActivity(),
       } else {
         customListBalloon.showAlignBottom(it)
       }
+    }
+
+    circleImageView.setOnClickListener {
+      if (customProfileBalloon.isShowing) {
+        customProfileBalloon.dismiss()
+      } else {
+        customProfileBalloon.showAlignBottom(it)
+      }
+    }
+
+    val buttonEdit: Button = customProfileBalloon.getContentView().findViewById(R.id.button_edit)
+    buttonEdit.setOnClickListener {
+      customProfileBalloon.dismiss()
+      Toast.makeText(baseContext, "Edit", Toast.LENGTH_SHORT).show()
+    }
+
+    bottomNavigationView.setOnNavigationItemSelectedListener {
+      if (customTagBalloon.isShowing) {
+        customTagBalloon.dismiss()
+      } else {
+        customTagBalloon.showAlignTop(bottomNavigationView, 130, 0)
+      }
+      true
     }
   }
 
