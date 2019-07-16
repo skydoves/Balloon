@@ -106,12 +106,18 @@ myButtom.showAlignTop(balloon)
 ```
 
 ### Arrow Composition
-We can customize the arrow on the balloon popup.
+We can customize the arrow on the balloon popup. <br>
+Below previews are implemented using `setArrowOrientation` and `setArrowPosition` methods. <br>
+`setArrowPosition` measures the balloon popup size and sets the arrow's position using the ratio value.
+
+Orientation : BOTTOM, Position: 0.62, showAlignTop  | Orientation : TOP, Position: 0.5, showAlignBottom | Orientation : LEFT, Position: 0.5, showAlignRight  | Orientation : RIGHT, Position: 0.5, showAlignLeft
+------------ | ------------- | ------------- | -------------
+![bottom](https://user-images.githubusercontent.com/24237865/61320410-55120e80-a844-11e9-9af6-cae49b8897e7.gif) | ![top](https://user-images.githubusercontent.com/24237865/61320412-55120e80-a844-11e9-9ca9-81375707886e.gif) | ![left](https://user-images.githubusercontent.com/24237865/61320415-55aaa500-a844-11e9-874f-ca44be02aace.gif) | ![right](https://user-images.githubusercontent.com/24237865/61320416-55aaa500-a844-11e9-9aa1-53e409ca63fb.gif)
 
 ```java
 .setArrowVisible(true) // sets the visibility of the arrow.
 .setArrowSize(10) // sets the arrow size.
-.setArrowPosition(0.8f) // sets the arrow position using ratio (0 ~ 1.0)
+.setArrowPosition(0.8f) // sets the arrow position using the popup size's ratio (0 ~ 1.0)
 .setArrowOrientation(ArrowOrientation.TOP) // sets the arrow orientation. top, bottom, left, right
 .setArrowDrawable(ContextCompat.getDrawable(baseContext, R.drawable.arrow)) // sets the arrow drawable.
 ```
