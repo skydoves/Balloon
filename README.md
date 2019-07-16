@@ -86,7 +86,7 @@ val balloon = createBalloon(baseContext) {
 ### Show and dismiss
 This is how to show balloon popup and dismiss.
 
-```java
+```kotlin
 balloon.show(anchor: View) // shows the balloon on the center of an anchor view.
 balloon.show(anchor: View, xOff: Int, yOff: Int) // shows the balloon on an anchor view with x-off and y-off.
 balloon.showAlignTop(anchor: View) // shows the balloon on an anchor view as the top alignment.
@@ -107,12 +107,6 @@ myButtom.showAlignTop(balloon)
 
 ### Arrow Composition
 We can customize the arrow on the balloon popup. <br>
-Below previews are implemented using `setArrowOrientation` and `setArrowPosition` methods. <br>
-`setArrowPosition` measures the balloon popup size and sets the arrow's position using the ratio value.
-
-Orientation : BOTTOM, Position: 0.62, showAlignTop  | Orientation : TOP, Position: 0.5, showAlignBottom | Orientation : LEFT, Position: 0.5, showAlignRight  | Orientation : RIGHT, Position: 0.5, showAlignLeft
------------- | ------------- | ------------- | -------------
-![bottom](https://user-images.githubusercontent.com/24237865/61320410-55120e80-a844-11e9-9af6-cae49b8897e7.gif) | ![top](https://user-images.githubusercontent.com/24237865/61320412-55120e80-a844-11e9-9ca9-81375707886e.gif) | ![left](https://user-images.githubusercontent.com/24237865/61320415-55aaa500-a844-11e9-874f-ca44be02aace.gif) | ![right](https://user-images.githubusercontent.com/24237865/61320416-55aaa500-a844-11e9-9aa1-53e409ca63fb.gif)
 
 ```java
 .setArrowVisible(true) // sets the visibility of the arrow.
@@ -121,6 +115,13 @@ Orientation : BOTTOM, Position: 0.62, showAlignTop  | Orientation : TOP, Positio
 .setArrowOrientation(ArrowOrientation.TOP) // sets the arrow orientation. top, bottom, left, right
 .setArrowDrawable(ContextCompat.getDrawable(baseContext, R.drawable.arrow)) // sets the arrow drawable.
 ```
+
+Below previews are implemented using `setArrowOrientation` and `setArrowPosition` methods. <br>
+`setArrowPosition` measures the balloon popup size and sets the arrow's position using the ratio value.
+
+Orientation: BOTTOM, Position: 0.62, showAlignTop  | Orientation: TOP, Position : 0.5, showAlignBottom | Orientation: LEFT, Position: 0.5, showAlignRight  | Orientation: RIGHT, Position: 0.5, showAlignLeft
+------------ | ------------- | ------------- | -------------
+![bottom](https://user-images.githubusercontent.com/24237865/61320410-55120e80-a844-11e9-9af6-cae49b8897e7.gif) | ![top](https://user-images.githubusercontent.com/24237865/61320412-55120e80-a844-11e9-9ca9-81375707886e.gif) | ![left](https://user-images.githubusercontent.com/24237865/61320415-55aaa500-a844-11e9-874f-ca44be02aace.gif) | ![right](https://user-images.githubusercontent.com/24237865/61320416-55aaa500-a844-11e9-9aa1-53e409ca63fb.gif)
 
 ### Text Composition
 We can customize the text on the balloon popup.
