@@ -119,13 +119,9 @@ We can customize the arrow on the balloon popup. <br>
 Below previews are implemented using `setArrowOrientation` and `setArrowPosition` methods. <br>
 `setArrowPosition` measures the balloon popup size and sets the arrow's position using the ratio value.
 
-Orientation: BOTTOM, Position: 0.62, showAlignTop | Orientation: TOP, Position : 0.5, showAlignBottom
-| :---------------: | :---------------: |
-| <img src="https://user-images.githubusercontent.com/24237865/61320410-55120e80-a844-11e9-9af6-cae49b8897e7.gif" align="center" width="80%"/> | <img src="https://user-images.githubusercontent.com/24237865/61320412-55120e80-a844-11e9-9ca9-81375707886e.gif" align="center" width="80%"/> |
-
-Orientation: LEFT, Position: 0.5, showAlignRight  | Orientation: RIGHT, Position: 0.5, showAlignLeft
-| :---------------: | :---------------: |
-| <img src="https://user-images.githubusercontent.com/24237865/61320415-55aaa500-a844-11e9-874f-ca44be02aace.gif" align="center" width="80%"/> | <img src="https://user-images.githubusercontent.com/24237865/61320416-55aaa500-a844-11e9-9aa1-53e409ca63fb.gif" align="center" width="80%"/> |
+Orientation: BOTTOM<br> Position: 0.62<br> showAlignTop | Orientation: TOP<br> Position : 0.5<br> showAlignBottom | Orientation: LEFT<br> Position: 0.5<br> showAlignRight  | Orientation: RIGHT<br> Position: 0.5<br> showAlignLeft |
+| :---------------: | :---------------: | :---------------: | :---------------: |
+| <img src="https://user-images.githubusercontent.com/24237865/61320410-55120e80-a844-11e9-9af6-cae49b8897e7.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/61320412-55120e80-a844-11e9-9ca9-81375707886e.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/61320415-55aaa500-a844-11e9-874f-ca44be02aace.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/61320416-55aaa500-a844-11e9-9aa1-53e409ca63fb.gif" align="center" width="100%"/> |
 
 ### Text Composition
 We can customize the text on the balloon popup.
