@@ -218,7 +218,7 @@ We can simplify it using kotlin.
 ```
 
 ### Customized layout
-We can fully customize the ballloon layout using below method.
+We can fully customize the balloon layout using below method.
 ```java
 .setLayout(R.layout.my_ballon_layout)
 ```
