@@ -19,6 +19,7 @@ package com.skydoves.balloon
 import android.os.Build
 import android.view.View
 import android.view.ViewAnimationUtils
+import kotlin.math.max
 
 /** makes visible or invisible a View align the value parameter. */
 internal fun View.visible(value: Boolean) {
@@ -51,7 +52,7 @@ internal fun View.circularRevealed() {
             (view.left + view.right) / 2,
             (view.top + view.bottom) / 2,
             0f,
-            Math.max(view.width, view.height).toFloat())
+            max(view.width, view.height).toFloat())
           animator.duration = 500
           animator.start()
         }
