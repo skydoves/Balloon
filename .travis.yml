@@ -1,5 +1,5 @@
 language: android
-
+dist: trusty
 android:
   components:
     - tools
@@ -11,7 +11,7 @@ android:
     - extra-google-m2repository
 
 jdk:
-  - oraclejdk11
+  - oraclejdk8
 
 branches:
   except:
