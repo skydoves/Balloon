@@ -193,8 +193,8 @@ val form = iconForm(context) {
 }
 ```
 
-### OnBalloonClickListener, OnBalloonDismissListener
-We can listen to the balloon popup is clicked or dismissed using listeners.
+### OnBalloonClickListener, OnBalloonDismissListener, OnBalloonOutsideTouchListener
+We can listen to the balloon popup is clicked, dismissed or touched outside using listeners.
 
 ```java
 balloon.setOnBalloonClickListener(new OnBalloonClickListener() {
@@ -210,12 +210,20 @@ balloon.setOnBalloonDismissListener(new OnBalloonDismissListener() {
     // doSomething;
   }
 });
+
+balloon.setOnBalloonOutsideTouchListener(new OnBalloonOutsideTouchListener() {
+  @Override
+  public void onBalloonOutsideTouch() {
+    // doSomething;
+  }
+});
 ```
 
 We can simplify it using kotlin.
 ```kotlin
 .setOnBalloonClickListener { Toast.makeText(baseContext, "clicked", Toast.LENGTH_SHORT).show() }
 .setOnBalloonDismissListener { Toast.makeText(baseContext, "dismissed", Toast.LENGTH_SHORT).show() }
+.setOnBalloonOutsideTouchListener { Toast.makeText(baseContext, "touched outside", Toast.LENGTH_SHORT).show() }
 ```
 
 ### Customized layout
@@ -307,6 +315,8 @@ Just use `setLifecycleOwner` method. Then `dismiss` method will be called automa
 .setBalloonAnimation(value: BalloonAnimation)
 .setOnBalloonClickListener(value: OnBalloonClickListener)
 .setOnBalloonDismissListener(value: OnBalloonDismissListener)
+.setOnBalloonOutsideTouchListener(value: OnBalloonOutsideTouchListener)
+.setDismissWhenTouchOutside(value: Boolean)
 ```
 
 ## Find this library useful? :heart:
