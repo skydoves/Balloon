@@ -99,6 +99,8 @@ object BalloonUtils {
       .setCornerRadius(4f)
       .setBackgroundColor(ContextCompat.getColor(baseContext, R.color.background900))
       .setBalloonAnimation(BalloonAnimation.CIRCULAR)
+      .setDismissWhenTouchOutside(true)
+      .setOnBalloonOutsideTouchListener { Toast.makeText(baseContext, "Touched outside", Toast.LENGTH_SHORT).show() }
       .setLifecycleOwner(lifecycleOwner)
       .build()
   }

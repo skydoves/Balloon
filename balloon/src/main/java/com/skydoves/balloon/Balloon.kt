@@ -23,9 +23,11 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.PopupWindow
@@ -59,6 +61,7 @@ class Balloon(
     private set
   var onBalloonClickListener: OnBalloonClickListener? = null
   var onBalloonDismissListener: OnBalloonDismissListener? = null
+  var onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener? = null
   private val balloonPreferenceManager = BalloonPreferenceManager(context).getInstance()
 
   init {
@@ -139,8 +142,24 @@ class Balloon(
   private fun initializeBalloonListeners() {
     this.onBalloonClickListener = builder.onBalloonClickListener
     this.onBalloonDismissListener = builder.onBalloonDismissListener
+    this.onBalloonOutsideTouchListener = builder.onBalloonOutsideTouchListener
     this.bodyView.setOnClickListener { this.onBalloonClickListener?.onBalloonClick() }
     this.bodyWindow.setOnDismissListener { this.onBalloonDismissListener?.onBalloonDismiss() }
+    this.bodyWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    this.bodyWindow.isOutsideTouchable = true
+    this.bodyWindow.setTouchInterceptor(object : View.OnTouchListener {
+      @SuppressLint("ClickableViewAccessibility")
+      override fun onTouch(view: View, event: MotionEvent): Boolean {
+        if (builder.dismissWhenTouchOutside) {
+          dismiss()
+        }
+        if (event.action == MotionEvent.ACTION_OUTSIDE) {
+          onBalloonOutsideTouchListener?.onBalloonOutsideTouch()
+          return true
+        }
+        return false
+      }
+    })
   }
 
   private fun initializeBalloonContent() {
@@ -378,6 +397,10 @@ class Balloon(
     @JvmField
     var onBalloonDismissListener: OnBalloonDismissListener? = null
     @JvmField
+    var onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener? = null
+    @JvmField
+    var dismissWhenTouchOutside: Boolean = false
+    @JvmField
     var lifecycleOwner: LifecycleOwner? = null
     @JvmField
     var balloonAnimation: BalloonAnimation = BalloonAnimation.FADE
@@ -413,6 +436,7 @@ class Balloon(
     fun setBalloonAnimation(value: BalloonAnimation): Builder = apply { this.balloonAnimation = value }
     fun setOnBalloonClickListener(value: OnBalloonClickListener): Builder = apply { this.onBalloonClickListener = value }
     fun setOnBalloonDismissListener(value: OnBalloonDismissListener): Builder = apply { this.onBalloonDismissListener = value }
+    fun setOnBalloonOutsideTouchListener(value: OnBalloonOutsideTouchListener): Builder = apply { this.onBalloonOutsideTouchListener = value }
     fun setOnBalloonClickListener(unit: () -> Unit): Builder = apply {
       this.onBalloonClickListener = object : OnBalloonClickListener {
         override fun onBalloonClick() {
@@ -429,6 +453,15 @@ class Balloon(
       }
     }
 
+    fun setOnBalloonOutsideTouchListener(unit: () -> Unit): Builder = apply {
+      this.onBalloonOutsideTouchListener = object : OnBalloonOutsideTouchListener {
+        override fun onBalloonOutsideTouch() {
+          unit()
+        }
+      }
+    }
+
+    fun setDismissWhenTouchOutside(value: Boolean): Builder = apply { this.dismissWhenTouchOutside = value }
     fun setPreferenceName(value: String): Builder = apply { this.preferenceName = value }
     fun setShowTime(value: Int): Builder = apply { this.showTimes = value }
 
