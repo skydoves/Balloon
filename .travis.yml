@@ -1,5 +1,5 @@
 language: android
-dist: trusty
+
 android:
   components:
     - tools
@@ -11,12 +11,12 @@ android:
     - extra-google-m2repository
 
 jdk:
-  - oraclejdk8
+  - openjdk8
 
 branches:
   except:
     - gh-pages
-    
+
 licenses:
   - '.+'
 

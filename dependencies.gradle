@@ -14,6 +14,7 @@ ext.versions = [
     googleMaterial     : '1.1.0-alpha08',
     recyclerView       : '1.0.0',
 
+    // for demo
     baseAdapter        : '0.1.3',
     circleimageview    : '3.0.0'
 ]

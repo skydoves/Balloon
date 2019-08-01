@@ -168,6 +168,5 @@
     app:itemBackground="@color/colorPrimary"
     app:itemIconTint="@color/white"
     app:itemTextColor="@color/white"
-    app:layout_behavior="tech.thdev.app.view.BottomNavigationBehavior"
     app:menu="@menu/menus" />
 </RelativeLayout>
