@@ -103,22 +103,10 @@ inline fun ComponentActivity.balloon(
   return lazy { balloonProducer() }
 }
 
-/** returns a [Lazy] delegate to access the [ComponentActivity]'s Balloon. */
-@MainThread
-fun ComponentActivity.balloon(balloon: Balloon): Lazy<Balloon> {
-  return lazy { balloon }
-}
-
 /** returns a [Lazy] delegate to access the [Fragment]'s Balloon. */
 @MainThread
 inline fun Fragment.balloon(
   crossinline balloonProducer: (() -> Balloon)
 ): Lazy<Balloon> {
   return lazy { balloonProducer() }
-}
-
-/** returns a [Lazy] delegate to access the [Fragment]'s Balloon. */
-@MainThread
-fun Fragment.balloon(balloon: Balloon): Lazy<Balloon> {
-  return lazy { balloon }
 }
