@@ -22,19 +22,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.skydoves.balloon.OnBalloonClickListener
+import com.skydoves.balloon.balloon
 import com.skydoves.balloon.showAlignTop
+import com.skydoves.balloondemo.recycler.ItemUtils
 import com.skydoves.balloondemo.recycler.SampleAdapter
 import com.skydoves.balloondemo.recycler.SampleItem
-import com.skydoves.balloondemo.recycler.ItemUtils
 import com.skydoves.balloondemo.recycler.SampleViewHolder
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), SampleViewHolder.Delegate, OnBalloonClickListener {
 
   private val adapter by lazy { SampleAdapter(this) }
-
-  private val profileBalloon by lazy { BalloonUtils.getProfileBalloon(this, this) }
-  private val navigationBalloon by lazy { BalloonUtils.getNavigationBalloon(this, this, this) }
+  private val profileBalloon by balloon(BalloonUtils.getProfileBalloon(this, this))
+  private val navigationBalloon by balloon(BalloonUtils.getNavigationBalloon(this, this, this))
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)

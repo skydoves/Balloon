@@ -44,6 +44,7 @@ import kotlinx.android.synthetic.main.layout_balloon.view.*
 annotation class BalloonDsl
 
 /** creates an instance of [Balloon] by [Balloon.Builder] using kotlin dsl. */
+@BalloonDsl
 fun createBalloon(context: Context, block: Balloon.Builder.() -> Unit): Balloon =
   Balloon.Builder(context).apply(block).build()
 
@@ -465,8 +466,6 @@ class Balloon(
     fun setPreferenceName(value: String): Builder = apply { this.preferenceName = value }
     fun setShowTime(value: Int): Builder = apply { this.showTimes = value }
 
-    fun build(): Balloon {
-      return Balloon(context, this@Builder)
-    }
+    fun build(): Balloon = Balloon(context, this@Builder)
   }
 }
