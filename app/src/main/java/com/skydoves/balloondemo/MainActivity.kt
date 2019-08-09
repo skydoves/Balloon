@@ -31,7 +31,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), SampleViewHolder.Delegate, OnBalloonClickListener {
 
-  private val adapter by lazy { SampleAdapter(this) }
+  private val adapter by lazy { SampleAdapter(this, this) }
   private val profileBalloon by lazy { BalloonUtils.getProfileBalloon(this, this) }
   private val navigationBalloon by lazy { BalloonUtils.getNavigationBalloon(this, this, this) }
 

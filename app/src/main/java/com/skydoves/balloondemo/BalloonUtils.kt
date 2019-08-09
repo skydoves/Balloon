@@ -44,6 +44,25 @@ object BalloonUtils {
       .build()
   }
 
+  fun getProfileBalloonForViewHolder(baseContext: Context, lifecycleOwner: LifecycleOwner): Balloon {
+    return Balloon.Builder(baseContext)
+      .setText("You can edit your profile now!")
+      .setArrowSize(10)
+      .setWidthRatio(0.75f)
+      .setHeight(63)
+      .setTextSize(15f)
+      .setCornerRadius(8f)
+      .setArrowOrientation(ArrowOrientation.TOP)
+      .setTextColor(ContextCompat.getColor(baseContext, R.color.white_87))
+      .setIconDrawable(ContextCompat.getDrawable(baseContext, R.drawable.ic_edit))
+      .setBackgroundColor(ContextCompat.getColor(baseContext, R.color.skyBlue))
+      .setOnBalloonDismissListener { Toast.makeText(baseContext, "dismissed", Toast.LENGTH_SHORT).show() }
+      .setDismissWhenTouchOutside(true)
+      .setBalloonAnimation(BalloonAnimation.ELASTIC)
+      .setLifecycleOwner(lifecycleOwner)
+      .build()
+  }
+
   fun getNavigationBalloon(
     baseContext: Context,
     onBalloonClickListener: OnBalloonClickListener,

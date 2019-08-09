@@ -36,8 +36,10 @@ import androidx.annotation.FloatRange
 import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.OnLifecycleEvent
 import kotlinx.android.synthetic.main.layout_balloon.view.*
 
 @DslMarker
@@ -339,6 +341,12 @@ class Balloon(
   /** gets a content view of the balloon popup window. */
   fun getContentView(): View {
     return bodyView.balloon_detail
+  }
+
+  /** dismiss automatically when lifecycle owner is destroyed. */
+  @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+  fun onDestroy() {
+    dismiss()
   }
 
   /** Builder class for creating [Balloon]. */

@@ -36,7 +36,7 @@ class CustomActivity : AppCompatActivity(),
   SampleViewHolder.Delegate,
   CustomViewHolder.Delegate {
 
-  private val adapter by lazy { SampleAdapter(this) }
+  private val adapter by lazy { SampleAdapter(this, this) }
   private val customAdapter by lazy { CustomAdapter(this) }
   private val customListBalloon by lazy { BalloonUtils.getCustomListBalloon(this, this) }
   private val customProfileBalloon by lazy { BalloonUtils.getCustomProfileBalloon(this, this) }
