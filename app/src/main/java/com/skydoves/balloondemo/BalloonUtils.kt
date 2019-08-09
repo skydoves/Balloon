@@ -46,7 +46,7 @@ object BalloonUtils {
 
   fun getProfileBalloonForViewHolder(baseContext: Context, lifecycleOwner: LifecycleOwner): Balloon {
     return Balloon.Builder(baseContext)
-      .setText("You can edit your profile now!")
+      .setText("This is your new content.")
       .setArrowSize(10)
       .setWidthRatio(0.75f)
       .setHeight(63)
@@ -55,7 +55,7 @@ object BalloonUtils {
       .setArrowOrientation(ArrowOrientation.TOP)
       .setTextColor(ContextCompat.getColor(baseContext, R.color.white_87))
       .setIconDrawable(ContextCompat.getDrawable(baseContext, R.drawable.ic_edit))
-      .setBackgroundColor(ContextCompat.getColor(baseContext, R.color.skyBlue))
+      .setBackgroundColor(ContextCompat.getColor(baseContext, R.color.yellow))
       .setOnBalloonDismissListener { Toast.makeText(baseContext, "dismissed", Toast.LENGTH_SHORT).show() }
       .setDismissWhenTouchOutside(true)
       .setBalloonAnimation(BalloonAnimation.ELASTIC)
