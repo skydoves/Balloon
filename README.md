@@ -32,7 +32,7 @@ allprojects {
 And add a dependency code to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:balloon:1.0.2"
+    implementation "com.github.skydoves:balloon:1.0.3"
 }
 ```
 
@@ -284,6 +284,53 @@ So we can solve the memory leak issue so easily.<br>
 Just use `setLifecycleOwner` method. Then `dismiss` method will be called automatically before activity or fragment would be destroyed.
 ```java
 .setLifecycleOwner(lifecycleOwner)
+```
+
+### Lazy initialization
+We can initialize the ballloon property lazily using `balloon` keyword and `Balloon.Factory` abstract class.<br>
+The `balloon` extension keyword can be used on `Activity` and `Fragment`.
+
+__Before__<br>
+`CustomActivity.kt`
+```kotlin
+class CustomActivity : AppCompatActivity() {
+  private val profileBalloon by lazy { BalloonUtils.getProfileBalloon(context = this, lifecycleOwner = this) }
+
+  // ...
+}
+```
+
+__After__<br>
+`CustomActivity.kt`
+```kotlin
+class CustomActivity : AppCompatActivity() {
+  private val profileBalloon by balloon(ProfileBalloonFactory::class)
+
+  // ...
+}
+```
+
+We should create a class which extends `Balloon.Factory`.<br>
+An implementation class of the factory must have a default(non-argument) constructor. <br><br>
+`ProfileBalloonFactory.kt`
+```kotlin
+class ProfileBalloonFactory : Balloon.Factory() {
+
+  override fun create(context: Context, lifecycle: LifecycleOwner): Balloon {
+    return createBalloon(context) {
+      setLayout(R.layout.layout_custom_profile)
+      setArrowSize(10)
+      setArrowOrientation(ArrowOrientation.TOP)
+      setArrowPosition(0.5f)
+      setWidthRatio(0.55f)
+      setHeight(250)
+      setCornerRadius(4f)
+      setBackgroundColor(ContextCompat.getColor(context, R.color.background900))
+      setBalloonAnimation(BalloonAnimation.CIRCULAR)
+      setLifecycleOwner(lifecycle)
+    }
+  }
+}
 ```
 
 ## Balloon builder methods
