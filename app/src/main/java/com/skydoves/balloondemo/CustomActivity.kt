@@ -22,6 +22,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.skydoves.balloon.balloon
+import com.skydoves.balloondemo.factory.CustomListBalloonFactory
+import com.skydoves.balloondemo.factory.ProfileBalloonFactory
+import com.skydoves.balloondemo.factory.TagBalloonFactory
 import com.skydoves.balloondemo.recycler.CustomAdapter
 import com.skydoves.balloondemo.recycler.CustomItem
 import com.skydoves.balloondemo.recycler.CustomViewHolder
@@ -38,9 +42,9 @@ class CustomActivity : AppCompatActivity(),
 
   private val adapter by lazy { SampleAdapter(this, this) }
   private val customAdapter by lazy { CustomAdapter(this) }
-  private val customListBalloon by lazy { BalloonUtils.getCustomListBalloon(this, this) }
-  private val customProfileBalloon by lazy { BalloonUtils.getCustomProfileBalloon(this, this) }
-  private val customTagBalloon by lazy { BalloonUtils.getCustomTagBalloon(this, this) }
+  private val customListBalloon by balloon(CustomListBalloonFactory::class)
+  private val customProfileBalloon by balloon(ProfileBalloonFactory::class)
+  private val customTagBalloon by balloon(TagBalloonFactory::class)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
