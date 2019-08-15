@@ -22,22 +22,23 @@ import androidx.lifecycle.LifecycleOwner
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.createBalloon
 import com.skydoves.balloondemo.R
 
 class ProfileBalloonFactory : Balloon.Factory() {
 
-  override fun create(context: Context, lifecycleOwner: LifecycleOwner): Balloon {
-    return Balloon.Builder(context)
-      .setLayout(R.layout.layout_custom_profile)
-      .setArrowSize(10)
-      .setArrowOrientation(ArrowOrientation.TOP)
-      .setArrowPosition(0.5f)
-      .setWidthRatio(0.55f)
-      .setHeight(250)
-      .setCornerRadius(4f)
-      .setBackgroundColor(ContextCompat.getColor(context, R.color.background900))
-      .setBalloonAnimation(BalloonAnimation.CIRCULAR)
-      .setLifecycleOwner(lifecycleOwner)
-      .build()
+  override fun create(context: Context, lifecycle: LifecycleOwner): Balloon {
+    return createBalloon(context) {
+      setLayout(R.layout.layout_custom_profile)
+      setArrowSize(10)
+      setArrowOrientation(ArrowOrientation.TOP)
+      setArrowPosition(0.5f)
+      setWidthRatio(0.55f)
+      setHeight(250)
+      setCornerRadius(4f)
+      setBackgroundColor(ContextCompat.getColor(context, R.color.background900))
+      setBalloonAnimation(BalloonAnimation.CIRCULAR)
+      setLifecycleOwner(lifecycle)
+    }
   }
 }

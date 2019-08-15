@@ -485,6 +485,6 @@ class Balloon(
   abstract class Factory {
 
     /** returns an instance of [Balloon]. */
-    abstract fun create(context: Context, lifecycleOwner: LifecycleOwner): Balloon
+    abstract fun create(context: Context, lifecycle: LifecycleOwner): Balloon
   }
 }
