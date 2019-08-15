@@ -20,9 +20,7 @@ package com.skydoves.balloon
 
 import android.view.View
 import android.view.ViewTreeObserver
-import androidx.activity.ComponentActivity
 import androidx.annotation.MainThread
-import androidx.fragment.app.Fragment
 
 /** shows the balloon on the center of an anchor view. */
 fun View.showBalloon(balloon: Balloon) {
@@ -93,20 +91,4 @@ internal inline fun View.balloon(crossinline block: () -> Unit) {
         viewTreeObserver.removeOnGlobalLayoutListener(this)
       }
     })
-}
-
-/** returns a [Lazy] delegate to access the [ComponentActivity]'s Balloon. */
-@MainThread
-inline fun ComponentActivity.balloon(
-  crossinline balloonProducer: (() -> Balloon)
-): Lazy<Balloon> {
-  return lazy { balloonProducer() }
-}
-
-/** returns a [Lazy] delegate to access the [Fragment]'s Balloon. */
-@MainThread
-inline fun Fragment.balloon(
-  crossinline balloonProducer: (() -> Balloon)
-): Lazy<Balloon> {
-  return lazy { balloonProducer() }
 }
