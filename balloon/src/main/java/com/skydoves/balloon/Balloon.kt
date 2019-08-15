@@ -476,4 +476,15 @@ class Balloon(
 
     fun build(): Balloon = Balloon(context, this@Builder)
   }
+
+  /**
+   * An abstract factory class for creating [Balloon] instance.
+   *
+   * A factory implementation class must have a non-argument constructor.
+   */
+  abstract class Factory {
+
+    /** returns an instance of [Balloon]. */
+    abstract fun create(context: Context, lifecycleOwner: LifecycleOwner): Balloon
+  }
 }
