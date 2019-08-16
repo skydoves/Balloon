@@ -34,6 +34,7 @@ import android.widget.PopupWindow
 import android.widget.RelativeLayout
 import androidx.annotation.FloatRange
 import androidx.annotation.LayoutRes
+import androidx.annotation.MainThread
 import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.Lifecycle
@@ -217,23 +218,26 @@ class Balloon(
     }
   }
 
-  private inline fun show(crossinline block: () -> Unit) {
+  @MainThread
+  private inline fun show(anchor: View, crossinline block: () -> Unit) {
     if (!isShowing) {
+      isShowing = true
       builder.preferenceName?.let {
         if (balloonPreferenceManager.shouldShowUP(it, builder.showTimes)) {
           balloonPreferenceManager.putIncrementedTimes(it)
         } else return
       }
 
-      applyBalloonAnimation()
-      isShowing = true
-      block()
+      anchor.post {
+        applyBalloonAnimation()
+        block()
+      }
     }
   }
 
   /** shows the balloon on the center of an anchor view. */
   fun show(anchor: View) {
-    show {
+    show(anchor) {
       bodyWindow.showAsDropDown(anchor, -(anchor.measuredWidth / 2),
         -builder.height - (anchor.measuredHeight / 2))
     }
@@ -241,22 +245,22 @@ class Balloon(
 
   /** shows the balloon on an anchor view with x-off and y-off. */
   fun show(anchor: View, xOff: Int, yOff: Int) {
-    show { bodyWindow.showAsDropDown(anchor, xOff, yOff) }
+    show(anchor) { bodyWindow.showAsDropDown(anchor, xOff, yOff) }
   }
 
   /** shows the balloon on an anchor view as drop down. */
   fun showAsDropDown(anchor: View) {
-    show { bodyWindow.showAsDropDown(anchor) }
+    show(anchor) { bodyWindow.showAsDropDown(anchor) }
   }
 
   /** shows the balloon on an anchor view as drop down with x-off and y-off. */
   fun showAsDropDown(anchor: View, xOff: Int, yOff: Int) {
-    show { bodyWindow.showAsDropDown(anchor, xOff, yOff) }
+    show(anchor) { bodyWindow.showAsDropDown(anchor, xOff, yOff) }
   }
 
   /** shows the balloon on an anchor view as the top alignment. */
   fun showAlignTop(anchor: View) {
-    show {
+    show(anchor) {
       bodyWindow.showAsDropDown(anchor,
         (anchor.measuredWidth / 2) - (getMeasureWidth() / 2),
         -builder.height - anchor.measuredHeight)
@@ -265,7 +269,7 @@ class Balloon(
 
   /** shows the balloon on an anchor view as the top alignment with x-off and y-off. */
   fun showAlignTop(anchor: View, xOff: Int, yOff: Int) {
-    show {
+    show(anchor) {
       bodyWindow.showAsDropDown(anchor,
         (anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff,
         -builder.height - anchor.measuredHeight + yOff)
@@ -274,7 +278,7 @@ class Balloon(
 
   /** shows the balloon on an anchor view as the bottom alignment. */
   fun showAlignBottom(anchor: View) {
-    show {
+    show(anchor) {
       bodyWindow.showAsDropDown(anchor,
         (anchor.measuredWidth / 2) - (getMeasureWidth() / 2),
         0)
@@ -283,7 +287,7 @@ class Balloon(
 
   /** shows the balloon on an anchor view as the bottom alignment with x-off and y-off. */
   fun showAlignBottom(anchor: View, xOff: Int, yOff: Int) {
-    show {
+    show(anchor) {
       bodyWindow.showAsDropDown(anchor,
         (anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff,
         yOff)
@@ -292,7 +296,7 @@ class Balloon(
 
   /** shows the balloon on an anchor view as the right alignment. */
   fun showAlignRight(anchor: View) {
-    show {
+    show(anchor) {
       bodyWindow.showAsDropDown(anchor, anchor.measuredWidth,
         -(builder.height / 2) - (anchor.measuredHeight / 2))
     }
@@ -300,7 +304,7 @@ class Balloon(
 
   /** shows the balloon on an anchor view as the right alignment with x-off and y-off. */
   fun showAlignRight(anchor: View, xOff: Int, yOff: Int) {
-    show {
+    show(anchor) {
       bodyWindow.showAsDropDown(anchor, anchor.measuredWidth + xOff,
         -(builder.height / 2) - (anchor.measuredHeight / 2) + yOff)
     }
@@ -308,7 +312,7 @@ class Balloon(
 
   /** shows the balloon on an anchor view as the left alignment. */
   fun showAlignLeft(anchor: View) {
-    show {
+    show(anchor) {
       bodyWindow.showAsDropDown(anchor, -(getMeasureWidth()),
         -(builder.height / 2) - (anchor.measuredHeight / 2))
     }
@@ -316,7 +320,7 @@ class Balloon(
 
   /** shows the balloon on an anchor view as the left alignment with x-off and y-off. */
   fun showAlignLeft(anchor: View, xOff: Int, yOff: Int) {
-    show {
+    show(anchor) {
       bodyWindow.showAsDropDown(anchor, -(getMeasureWidth()) + xOff,
         -(builder.height / 2) - (anchor.measuredHeight / 2) + yOff)
     }
