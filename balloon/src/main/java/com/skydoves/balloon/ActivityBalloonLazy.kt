@@ -18,16 +18,15 @@ package com.skydoves.balloon
 
 import android.content.Context
 import androidx.activity.ComponentActivity
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import kotlin.reflect.KClass
 
 /**
- * An implementation of [Lazy] used by [ComponentActivity] and [Fragment]
+ * An implementation of [Lazy] used by [ComponentActivity]
  *
  * tied to the given [lifecycleOwner], [clazz].
  */
-class BalloonLazy<out T : Balloon.Factory>(
+class ActivityBalloonLazy<out T : Balloon.Factory>(
   private val context: Context,
   private val lifecycleOwner: LifecycleOwner,
   private val clazz: KClass<T>

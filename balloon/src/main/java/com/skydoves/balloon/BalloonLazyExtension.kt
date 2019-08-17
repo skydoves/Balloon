@@ -26,14 +26,13 @@ import kotlin.reflect.KClass
 inline fun <reified T : Balloon.Factory> ComponentActivity.balloon(
   factory: KClass<T>
 ): Lazy<Balloon> {
-  return BalloonLazy(this, this, factory)
+  return ActivityBalloonLazy(this, this, factory)
 }
 
 /** returns a [Lazy] delegate to access the [Fragment]'s Balloon property. */
 @MainThread
 inline fun <reified T : Balloon.Factory> Fragment.balloon(
   factory: KClass<T>
-): Lazy<Balloon> {
-  val mContext = context ?: throw Exception("fragment's context must not be null.")
-  return BalloonLazy(mContext, this, factory)
+): Lazy<Balloon?> {
+  return FragmentBalloonLazy(this, this, factory)
 }
