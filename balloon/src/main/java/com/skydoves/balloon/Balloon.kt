@@ -35,7 +35,6 @@ import android.widget.RelativeLayout
 import androidx.annotation.FloatRange
 import androidx.annotation.LayoutRes
 import androidx.annotation.MainThread
-import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -132,7 +131,7 @@ class Balloon(
     with(bodyView.balloon_background) {
       alpha = builder.alpha
       if (builder.backgroundDrawable == null) {
-        val drawable = ContextCompat.getDrawable(context, R.drawable.rectangle_layout) as GradientDrawable
+        val drawable = GradientDrawable()
         drawable.setColor(builder.backgroundColor)
         drawable.cornerRadius = builder.cornerRadius
         background = drawable
