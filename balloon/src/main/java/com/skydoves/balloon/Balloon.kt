@@ -138,7 +138,6 @@ class Balloon(
       } else {
         background = builder.backgroundDrawable
       }
-      alpha = builder.alpha
     }
   }
 
