@@ -145,7 +145,10 @@ class Balloon(
     this.onBalloonClickListener = builder.onBalloonClickListener
     this.onBalloonDismissListener = builder.onBalloonDismissListener
     this.onBalloonOutsideTouchListener = builder.onBalloonOutsideTouchListener
-    this.bodyView.setOnClickListener { this.onBalloonClickListener?.onBalloonClick() }
+    this.bodyView.setOnClickListener {
+      this.onBalloonClickListener?.onBalloonClick()
+      if (builder.dismissWhenClicked) dismiss()
+    }
     this.bodyWindow.setOnDismissListener { this.onBalloonDismissListener?.onBalloonDismiss() }
     this.bodyWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     this.bodyWindow.isOutsideTouchable = true
@@ -219,7 +222,7 @@ class Balloon(
   @MainThread
   private inline fun show(anchor: View, crossinline block: () -> Unit) {
     if (!isShowing) {
-      isShowing = true
+      this.isShowing = true
       builder.preferenceName?.let {
         if (balloonPreferenceManager.shouldShowUP(it, builder.showTimes)) {
           balloonPreferenceManager.putIncrementedTimes(it)
@@ -230,6 +233,8 @@ class Balloon(
         applyBalloonAnimation()
         block()
       }
+    } else if (builder.dismissWhenShowAgain) {
+      dismiss()
     }
   }
 
@@ -412,6 +417,10 @@ class Balloon(
     @JvmField
     var dismissWhenTouchOutside: Boolean = false
     @JvmField
+    var dismissWhenShowAgain: Boolean = false
+    @JvmField
+    var dismissWhenClicked: Boolean = false
+    @JvmField
     var lifecycleOwner: LifecycleOwner? = null
     @JvmField
     var balloonAnimation: BalloonAnimation = BalloonAnimation.FADE
@@ -473,6 +482,8 @@ class Balloon(
     }
 
     fun setDismissWhenTouchOutside(value: Boolean): Builder = apply { this.dismissWhenTouchOutside = value }
+    fun setDismissWhenShowAgain(value: Boolean): Builder = apply { this.dismissWhenShowAgain = value }
+    fun setDismissWhenClicked(value: Boolean): Builder = apply { this.dismissWhenClicked = value }
     fun setPreferenceName(value: String): Builder = apply { this.preferenceName = value }
     fun setShowTime(value: Int): Builder = apply { this.showTimes = value }
 

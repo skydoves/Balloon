@@ -17,16 +17,13 @@
 package com.skydoves.balloondemo.recycler
 
 import android.view.View
-import androidx.lifecycle.LifecycleOwner
 import com.skydoves.balloondemo.R
 import com.skydoves.baserecyclerviewadapter.BaseAdapter
-import com.skydoves.baserecyclerviewadapter.BaseViewHolder
 import com.skydoves.baserecyclerviewadapter.SectionRow
 
 @Suppress("PrivatePropertyName")
 class SampleAdapter(
-  private val delegate: SampleViewHolder.Delegate,
-  private val lifecycleOwner: LifecycleOwner
+  private val delegate: SampleViewHolder.Delegate
 ) : BaseAdapter() {
 
   private val section_item = 0
@@ -40,11 +37,7 @@ class SampleAdapter(
     notifyDataSetChanged()
   }
 
-  override fun layout(sectionRow: SectionRow): Int {
-    return R.layout.item_sample
-  }
+  override fun layout(sectionRow: SectionRow) = R.layout.item_sample
 
-  override fun viewHolder(layout: Int, view: View): BaseViewHolder {
-    return SampleViewHolder(view, delegate, lifecycleOwner)
-  }
+  override fun viewHolder(layout: Int, view: View) = SampleViewHolder(view, delegate)
 }

@@ -38,6 +38,7 @@ class CustomListBalloonFactory : Balloon.Factory() {
       .setCornerRadius(4f)
       .setBackgroundColor(ContextCompat.getColor(context, R.color.background800))
       .setBalloonAnimation(BalloonAnimation.FADE)
+      .setDismissWhenShowAgain(true)
       .setLifecycleOwner(lifecycle)
       .build()
   }

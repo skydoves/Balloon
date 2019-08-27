@@ -17,12 +17,15 @@
 package com.skydoves.balloondemo
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.skydoves.balloon.OnBalloonClickListener
+import com.skydoves.balloon.balloon
 import com.skydoves.balloon.showAlignTop
+import com.skydoves.balloondemo.factory.ViewHolderBalloonFactory
 import com.skydoves.balloondemo.recycler.ItemUtils
 import com.skydoves.balloondemo.recycler.SampleAdapter
 import com.skydoves.balloondemo.recycler.SampleItem
@@ -31,9 +34,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), SampleViewHolder.Delegate, OnBalloonClickListener {
 
-  private val adapter by lazy { SampleAdapter(this, this) }
+  private val adapter by lazy { SampleAdapter(this) }
   private val profileBalloon by lazy { BalloonUtils.getProfileBalloon(this, this) }
   private val navigationBalloon by lazy { BalloonUtils.getNavigationBalloon(this, this, this) }
+  private val viewHolderBalloon by balloon(ViewHolderBalloonFactory::class)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -70,5 +74,7 @@ class MainActivity : AppCompatActivity(), SampleViewHolder.Delegate, OnBalloonCl
     Toast.makeText(baseContext, "dismissed", Toast.LENGTH_SHORT).show()
   }
 
-  override fun onItemClick(sampleItem: SampleItem) = Unit
+  override fun onItemClick(sampleItem: SampleItem, view: View) {
+    this.viewHolderBalloon.showAlignBottom(view)
+  }
 }

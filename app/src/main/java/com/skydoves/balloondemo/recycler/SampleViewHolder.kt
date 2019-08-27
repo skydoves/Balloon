@@ -17,23 +17,19 @@
 package com.skydoves.balloondemo.recycler
 
 import android.view.View
-import androidx.lifecycle.LifecycleOwner
-import com.skydoves.balloondemo.BalloonUtils
 import com.skydoves.baserecyclerviewadapter.BaseViewHolder
 import kotlinx.android.synthetic.main.item_sample.view.*
 
 @Suppress("CanBeParameter")
 class SampleViewHolder(
   private val view: View,
-  private val delegate: Delegate,
-  private val lifecycleOwner: LifecycleOwner
+  private val delegate: Delegate
 ) : BaseViewHolder(view) {
 
   interface Delegate {
-    fun onItemClick(sampleItem: SampleItem)
+    fun onItemClick(sampleItem: SampleItem, view: View)
   }
 
-  private val balloon by lazy { BalloonUtils.getProfileBalloonForViewHolder(context(), lifecycleOwner) }
   private lateinit var sampleItem: SampleItem
 
   override fun bindData(data: Any) {
@@ -51,10 +47,8 @@ class SampleViewHolder(
     }
   }
 
-  override fun onClick(v: View?) {
-    delegate.onItemClick(this.sampleItem)
-    balloon.showAlignBottom(v!!)
-  }
+  override fun onClick(v: View?) =
+    this.delegate.onItemClick(this.sampleItem, itemView)
 
   override fun onLongClick(v: View?) = false
 }

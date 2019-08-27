@@ -17,6 +17,7 @@
 package com.skydoves.balloondemo
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +27,7 @@ import com.skydoves.balloon.balloon
 import com.skydoves.balloondemo.factory.CustomListBalloonFactory
 import com.skydoves.balloondemo.factory.ProfileBalloonFactory
 import com.skydoves.balloondemo.factory.TagBalloonFactory
+import com.skydoves.balloondemo.factory.ViewHolderBalloonFactory
 import com.skydoves.balloondemo.recycler.CustomAdapter
 import com.skydoves.balloondemo.recycler.CustomItem
 import com.skydoves.balloondemo.recycler.CustomViewHolder
@@ -40,10 +42,11 @@ class CustomActivity : AppCompatActivity(),
   SampleViewHolder.Delegate,
   CustomViewHolder.Delegate {
 
-  private val adapter by lazy { SampleAdapter(this, this) }
+  private val adapter by lazy { SampleAdapter(this) }
   private val customAdapter by lazy { CustomAdapter(this) }
   private val customListBalloon by balloon(CustomListBalloonFactory::class)
   private val customProfileBalloon by balloon(ProfileBalloonFactory::class)
+  private val viewHolderBalloon by balloon(ViewHolderBalloonFactory::class)
   private val customTagBalloon by balloon(TagBalloonFactory::class)
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,49 +58,39 @@ class CustomActivity : AppCompatActivity(),
 
     recyclerView.adapter = adapter
     recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-    adapter.addItems(ItemUtils.getSamples(this))
+    this.adapter.addItems(ItemUtils.getSamples(this))
 
     val listRecycler: RecyclerView = customListBalloon.getContentView().findViewById(R.id.list_recyclerView)
     listRecycler.adapter = customAdapter
     listRecycler.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-    customAdapter.addCustomItem(ItemUtils.getCustomSamples(this))
+    this.customAdapter.addCustomItem(ItemUtils.getCustomSamples(this))
 
     toolbar_list.setOnClickListener {
-      if (customListBalloon.isShowing) {
-        customListBalloon.dismiss()
-      } else {
-        customListBalloon.showAlignBottom(it)
-      }
+      this.customListBalloon.showAlignBottom(it)
     }
 
     circleImageView.setOnClickListener {
-      if (customProfileBalloon.isShowing) {
-        customProfileBalloon.dismiss()
-      } else {
-        customProfileBalloon.showAlignBottom(it)
-      }
+      this.customProfileBalloon.showAlignBottom(it)
     }
 
     val buttonEdit: Button = customProfileBalloon.getContentView().findViewById(R.id.button_edit)
     buttonEdit.setOnClickListener {
-      customProfileBalloon.dismiss()
+      this.customProfileBalloon.dismiss()
       Toast.makeText(baseContext, "Edit", Toast.LENGTH_SHORT).show()
     }
 
     bottomNavigationView.setOnNavigationItemSelectedListener {
-      if (customTagBalloon.isShowing) {
-        customTagBalloon.dismiss()
-      } else {
-        customTagBalloon.showAlignTop(bottomNavigationView, 130, 0)
-      }
+      this.customTagBalloon.showAlignTop(bottomNavigationView, 130, 0)
       true
     }
   }
 
   override fun onCustomItemClick(customItem: CustomItem) {
-    customListBalloon.dismiss()
+    this.customListBalloon.dismiss()
     Toast.makeText(baseContext, customItem.title, Toast.LENGTH_SHORT).show()
   }
 
-  override fun onItemClick(sampleItem: SampleItem) = Unit
+  override fun onItemClick(sampleItem: SampleItem, view: View) {
+    this.viewHolderBalloon.showAlignBottom(view)
+  }
 }

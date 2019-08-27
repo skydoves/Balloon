@@ -17,6 +17,7 @@
 package com.skydoves.balloondemo.factory
 
 import android.content.Context
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.skydoves.balloon.ArrowOrientation
@@ -25,21 +26,26 @@ import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.createBalloon
 import com.skydoves.balloondemo.R
 
-class ProfileBalloonFactory : Balloon.Factory() {
+class ViewHolderBalloonFactory : Balloon.Factory() {
 
   override fun create(context: Context, lifecycle: LifecycleOwner): Balloon {
     return createBalloon(context) {
-      setLayout(R.layout.layout_custom_profile)
+      setText("This is your new content.")
       setArrowSize(10)
+      setWidthRatio(0.75f)
+      setHeight(63)
+      setTextSize(15f)
+      setCornerRadius(8f)
       setArrowOrientation(ArrowOrientation.TOP)
-      setArrowPosition(0.5f)
-      setWidthRatio(0.55f)
-      setHeight(250)
-      setCornerRadius(4f)
-      setBackgroundColor(ContextCompat.getColor(context, R.color.background900))
-      setBalloonAnimation(BalloonAnimation.CIRCULAR)
+      setTextColor(ContextCompat.getColor(context, R.color.white_87))
+      setIconDrawable(ContextCompat.getDrawable(context, R.drawable.ic_edit))
+      setBackgroundColor(ContextCompat.getColor(context, R.color.yellow))
+      setOnBalloonDismissListener { Toast.makeText(context, "dismissed", Toast.LENGTH_SHORT).show() }
+      setDismissWhenClicked(true)
       setDismissWhenShowAgain(true)
+      setBalloonAnimation(BalloonAnimation.ELASTIC)
       setLifecycleOwner(lifecycle)
+      build()
     }
   }
 }
