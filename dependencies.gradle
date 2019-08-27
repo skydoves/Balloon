@@ -5,16 +5,16 @@ ext.versions = [
     versionName        : '1.0.4',
 
     gradleBuildTool    : '3.4.2',
-    spotlessGradle     : '3.23.1',
+    spotlessGradle     : '3.24.2',
     dokkaGradle        : '0.9.17',
     bintrayRelease     : '0.9.1',
 
     kotlin             : '1.3.41',
     androidxAppcompat  : '1.1.0-rc01',
-    googleMaterial     : '1.1.0-alpha09',
-    recyclerView       : '1.0.0',
 
     // for demo
+    googleMaterial     : '1.1.0-alpha09',
+    recyclerView       : '1.0.0',
     baseAdapter        : '0.1.3',
     circleimageview    : '3.0.0'
 ]

@@ -34,6 +34,7 @@ class CustomListBalloonFactory : Balloon.Factory() {
       .setArrowPosition(0.85f)
       .setWidth(170)
       .setHeight(200)
+      .setTextSize(12f)
       .setCornerRadius(4f)
       .setBackgroundColor(ContextCompat.getColor(context, R.color.background800))
       .setBalloonAnimation(BalloonAnimation.FADE)

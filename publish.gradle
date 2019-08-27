@@ -6,7 +6,7 @@ publish {
     groupId = 'com.github.skydoves'
     artifactId = 'balloon'
     publishVersion = versions.versionName
-    desc = 'This is Balloon by skydoves'
+    desc = 'A lightweight popup like tooltips, fully customizable with arrow and animations.'
     website = 'https://github.com/skydoves/Balloon'
     issueTracker = "${website}/issues"
     repository = "${website}.git"
