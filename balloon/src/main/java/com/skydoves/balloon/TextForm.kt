@@ -26,7 +26,7 @@ import androidx.core.content.ContextCompat
 annotation class TextFormDsl
 
 /** creates an instance of [TextForm] from [TextForm.Builder] using kotlin dsl. */
-fun textForm(context: Context, block: TextForm.Builder.() -> Unit): TextForm =
+inline fun textForm(context: Context, block: TextForm.Builder.() -> Unit): TextForm =
   TextForm.Builder(context).apply(block).build()
 
 /**
@@ -56,8 +56,6 @@ class TextForm(builder: Builder) {
     fun setTextSize(value: Float): Builder = apply { this.textSize = value }
     fun setTextColor(value: Int): Builder = apply { this.textColor = value }
     fun setTextTypeFace(value: Int): Builder = apply { this.textTypeface = value }
-    fun build(): TextForm {
-      return TextForm(this)
-    }
+    fun build() = TextForm(this)
   }
 }

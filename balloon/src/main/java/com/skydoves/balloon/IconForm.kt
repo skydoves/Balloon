@@ -25,7 +25,7 @@ import android.graphics.drawable.Drawable
 annotation class IconFormDsl
 
 /** creates an instance of [IconForm] from [IconForm.Builder] using kotlin dsl. */
-fun iconForm(context: Context, block: IconForm.Builder.() -> Unit): IconForm =
+inline fun iconForm(context: Context, block: IconForm.Builder.() -> Unit): IconForm =
   IconForm.Builder(context).apply(block).build()
 
 /**
@@ -55,9 +55,6 @@ class IconForm(builder: Builder) {
     fun setIconSize(value: Int): Builder = apply { this.iconSize = value }
     fun setIconSpace(value: Int): Builder = apply { this.iconSpace = value }
     fun setIconColor(value: Int): Builder = apply { this.iconColor = value }
-
-    fun build(): IconForm {
-      return IconForm(this)
-    }
+    fun build() = IconForm(this)
   }
 }

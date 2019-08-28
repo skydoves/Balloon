@@ -47,7 +47,7 @@ annotation class BalloonDsl
 
 /** creates an instance of [Balloon] by [Balloon.Builder] using kotlin dsl. */
 @BalloonDsl
-fun createBalloon(context: Context, block: Balloon.Builder.() -> Unit): Balloon =
+inline fun createBalloon(context: Context, block: Balloon.Builder.() -> Unit): Balloon =
   Balloon.Builder(context).apply(block).build()
 
 /** Balloon implements showing and dismissing text popup with arrow and animations. */
@@ -429,34 +429,94 @@ class Balloon(
     @JvmField
     var showTimes: Int = 1
 
+    /** sets the width size. */
     fun setWidth(value: Int): Builder = apply { this.width = context.dp2Px(value) }
+
+    /** sets the width size by the display screen size ratio. */
     fun setWidthRatio(@FloatRange(from = 0.0, to = 1.0) value: Float): Builder = apply { this.widthRatio = value }
+
+    /** sets the height size. */
     fun setHeight(value: Int): Builder = apply { this.height = context.dp2Px(value) }
+
+    /** sets the side space between popup and display. */
     fun setSpace(value: Int): Builder = apply { this.space = context.dp2Px(value) }
+
+    /** sets the visibility of the arrow. */
     fun setArrowVisible(value: Boolean): Builder = apply { this.arrowVisible = value }
+
+    /** sets the size of the arrow. */
     fun setArrowSize(value: Int): Builder = apply { this.arrowSize = context.dp2Px(value) }
+
+    /** sets the arrow position by popup size ration. The popup size depends on [arrowOrientation]. */
     fun setArrowPosition(@FloatRange(from = 0.0, to = 1.0) value: Float): Builder = apply { this.arrowPosition = value }
+
+    /** sets the arrow orientation using [ArrowOrientation]. */
     fun setArrowOrientation(value: ArrowOrientation): Builder = apply { this.arrowOrientation = value }
+
+    /** sets a custom drawable of the arrow. */
     fun setArrowDrawable(value: Drawable?): Builder = apply { this.arrowDrawable = value }
+
+    /** sets the background color of the arrow and popup. */
     fun setBackgroundColor(value: Int): Builder = apply { this.backgroundColor = value }
+
+    /** sets the background drawable of the popup. */
     fun setBackgroundDrawable(value: Drawable?) = apply { this.backgroundDrawable = value }
+
+    /** sets the corner radius of the popup. */
     fun setCornerRadius(value: Float) = apply { this.cornerRadius = context.dp2Px(value) }
+
+    /** sets the main text content of the popup. */
     fun setText(value: String): Builder = apply { this.text = value }
+
+    /** sets the color of the main text content. */
     fun setTextColor(value: Int): Builder = apply { this.textColor = value }
+
+    /** sets the size of the main text content. */
     fun setTextSize(value: Float): Builder = apply { this.textSize = value }
+
+    /** sets the typeface of the main text content. */
     fun setTextTypeface(value: Int): Builder = apply { this.textTypeface = value }
+
+    /** applies [TextForm] attributes to the main text content. */
     fun setTextForm(value: TextForm): Builder = apply { this.textForm = value }
+
+    /** sets the icon drawable of the popup. */
     fun setIconDrawable(value: Drawable?) = apply { this.iconDrawable = value }
+
+    /** sets the size of the icon drawable. */
     fun setIconSize(value: Int) = apply { this.iconSize = context.dp2Px(value) }
+
+    /** sets the space between the icon and the main text content. */
     fun setIconSpace(value: Int) = apply { this.iconSpace = context.dp2Px(value) }
+
+    /** applies [IconForm] attributes to the icon. */
     fun setIconForm(value: IconForm) = apply { this.iconForm = value }
+
+    /** sets the alpha value to the popup. */
     fun setAlpha(@FloatRange(from = 0.0, to = 1.0) value: Float): Builder = apply { this.alpha = value }
+
+    /** sets the custom layout resource to the popup content. */
     fun setLayout(@LayoutRes layout: Int): Builder = apply { this.layout = layout }
+
+    /**
+     * sets the [LifecycleOwner] for dismissing automatically when the [LifecycleOwner] is destroyed.
+     * It will prevents memory leak : [Avoid Memory Leak](https://github.com/skydoves/balloon#avoid-memory-leak)
+     */
     fun setLifecycleOwner(value: LifecycleOwner): Builder = apply { this.lifecycleOwner = value }
+
+    /** sets the balloon showing animation using [BalloonAnimation]. */
     fun setBalloonAnimation(value: BalloonAnimation): Builder = apply { this.balloonAnimation = value }
+
+    /** sets a [OnBalloonClickListener] to the popup. */
     fun setOnBalloonClickListener(value: OnBalloonClickListener): Builder = apply { this.onBalloonClickListener = value }
+
+    /** sets a [OnBalloonDismissListener] to the popup. */
     fun setOnBalloonDismissListener(value: OnBalloonDismissListener): Builder = apply { this.onBalloonDismissListener = value }
+
+    /** sets a [OnBalloonOutsideTouchListener] to the popup. */
     fun setOnBalloonOutsideTouchListener(value: OnBalloonOutsideTouchListener): Builder = apply { this.onBalloonOutsideTouchListener = value }
+
+    /** sets a [OnBalloonClickListener] to the popup using lambda. */
     fun setOnBalloonClickListener(unit: () -> Unit): Builder = apply {
       this.onBalloonClickListener = object : OnBalloonClickListener {
         override fun onBalloonClick() {
@@ -465,6 +525,7 @@ class Balloon(
       }
     }
 
+    /** sets a [OnBalloonDismissListener] to the popup using lambda. */
     fun setOnBalloonDismissListener(unit: () -> Unit): Builder = apply {
       this.onBalloonDismissListener = object : OnBalloonDismissListener {
         override fun onBalloonDismiss() {
@@ -473,6 +534,7 @@ class Balloon(
       }
     }
 
+    /** sets a [OnBalloonOutsideTouchListener] to the popup using lambda. */
     fun setOnBalloonOutsideTouchListener(unit: () -> Unit): Builder = apply {
       this.onBalloonOutsideTouchListener = object : OnBalloonOutsideTouchListener {
         override fun onBalloonOutsideTouch() {
@@ -481,10 +543,19 @@ class Balloon(
       }
     }
 
+    /** dismisses when touch outside. */
     fun setDismissWhenTouchOutside(value: Boolean): Builder = apply { this.dismissWhenTouchOutside = value }
+
+    /** dismisses when invoked show function again. */
     fun setDismissWhenShowAgain(value: Boolean): Builder = apply { this.dismissWhenShowAgain = value }
+
+    /** dismisses when the popup clicked. */
     fun setDismissWhenClicked(value: Boolean): Builder = apply { this.dismissWhenClicked = value }
+
+    /** sets the preference name for persisting showing times([showTimes]).  */
     fun setPreferenceName(value: String): Builder = apply { this.preferenceName = value }
+
+    /** sets the show times. */
     fun setShowTime(value: Int): Builder = apply { this.showTimes = value }
 
     fun build(): Balloon = Balloon(context, this@Builder)
