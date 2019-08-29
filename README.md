@@ -32,7 +32,7 @@ allprojects {
 And add a dependency code to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:balloon:1.0.4"
+    implementation "com.github.skydoves:balloon:1.0.5"
 }
 ```
 
@@ -67,20 +67,19 @@ This is how to create `Balloon` instance using kotlin dsl.
 
 ```kotlin
 val balloon = createBalloon(baseContext) {
-  arrowSize = 10
-  widthRatio = 1.0f
-  height = 65
-  arrowPosition = 0.7f
-  cornerRadius = 4f
-  alpha = 0.9f
-  textSize = 15f
-  text = "You can access your profile from on now."   
-  textColor = ContextCompat.getColor(baseContext, R.color.white_93)
-  iconDrawable = ContextCompat.getDrawable(baseContext, R.drawable.ic_profile)
-  backgroundColor = ContextCompat.getColor(baseContext, R.color.colorPrimary)
-  onBalloonClickListener = balloonClickListener
-  balloonAnimation = BalloonAnimation.FADE
-  lifecycleOwner = lifecycle
+  setArrowSize(10)
+  setWidthRatio(1.0f)
+  setHeight(65)
+  setArrowPosition(0.7f)
+  setCornerRadius(4f)
+  setAlpha(0.9f)
+  setText("You can access your profile from on now.")
+  setTextColorResource(R.color.white_93)
+  setIconDrawable(ContextCompat.getDrawable(baseContext, R.drawable.ic_profile))
+  setBackgroundColorResource(R.color.colorPrimary)
+  setOnBalloonClickListener(onBalloonClickListener)
+  setBalloonAnimation(BalloonAnimation.FADE)
+  setLifecycleOwner(lifecycleOwner)
 }
 ```
 
@@ -345,10 +344,12 @@ class ProfileBalloonFactory : Balloon.Factory() {
 .setArrowOrientation(value: ArrowOrientation)
 .setArrowDrawable(value: Drawable?)
 .setBackgroundColor(value: Int)
+.setBackgroundColorResource(value: Int)
 .setBackgroundDrawable(value: Drawable?)
 .setCornerRadius(value: Float)
 .setText(value: String)
 .setTextColor(value: Int)
+.setTextColorResoure(value: Int)
 .setTextSize(value: Float)
 .setTextTypeface(value: Int)
 .setTextForm(value: TextForm)
