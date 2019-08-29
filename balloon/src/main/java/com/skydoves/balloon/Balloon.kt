@@ -35,6 +35,7 @@ import android.widget.RelativeLayout
 import androidx.annotation.FloatRange
 import androidx.annotation.LayoutRes
 import androidx.annotation.MainThread
+import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -459,6 +460,9 @@ class Balloon(
     /** sets the background color of the arrow and popup. */
     fun setBackgroundColor(value: Int): Builder = apply { this.backgroundColor = value }
 
+    /** sets the background color of the arrow and popup by the resource color. */
+    fun setBackgroundColorResource(value: Int): Builder = apply { this.backgroundColor = ContextCompat.getColor(context, value) }
+
     /** sets the background drawable of the popup. */
     fun setBackgroundDrawable(value: Drawable?) = apply { this.backgroundDrawable = value }
 
@@ -470,6 +474,9 @@ class Balloon(
 
     /** sets the color of the main text content. */
     fun setTextColor(value: Int): Builder = apply { this.textColor = value }
+
+    /** sets the color of the main text content by the resource color. */
+    fun setTextColorResource(value: Int): Builder = apply { this.textColor = ContextCompat.getColor(context, value) }
 
     /** sets the size of the main text content. */
     fun setTextSize(value: Float): Builder = apply { this.textSize = value }

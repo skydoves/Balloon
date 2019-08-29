@@ -17,7 +17,6 @@
 package com.skydoves.balloondemo.factory
 
 import android.content.Context
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
@@ -36,7 +35,7 @@ class TagBalloonFactory : Balloon.Factory() {
       setWidth(90)
       setHeight(60)
       setCornerRadius(4f)
-      setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+      setBackgroundColorResource(R.color.white)
       setBalloonAnimation(BalloonAnimation.ELASTIC)
       setDismissWhenShowAgain(true)
       setLifecycleOwner(lifecycle)

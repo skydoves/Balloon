@@ -24,11 +24,18 @@ import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.createBalloon
+import com.skydoves.balloon.textForm
 import com.skydoves.balloondemo.R
 
 class ViewHolderBalloonFactory : Balloon.Factory() {
 
   override fun create(context: Context, lifecycle: LifecycleOwner): Balloon {
+    val textForm = textForm(context) {
+      setText("This is your new content!!!")
+      setTextSize(15f)
+      setTextColor(ContextCompat.getColor(context, R.color.white_87))
+    }
+
     return createBalloon(context) {
       setText("This is your new content.")
       setArrowSize(10)
@@ -36,10 +43,11 @@ class ViewHolderBalloonFactory : Balloon.Factory() {
       setHeight(63)
       setTextSize(15f)
       setCornerRadius(8f)
+      setTextForm(textForm)
       setArrowOrientation(ArrowOrientation.TOP)
-      setTextColor(ContextCompat.getColor(context, R.color.white_87))
+      setTextColorResource(R.color.white_87)
       setIconDrawable(ContextCompat.getDrawable(context, R.drawable.ic_edit))
-      setBackgroundColor(ContextCompat.getColor(context, R.color.yellow))
+      setBackgroundColorResource(R.color.yellow)
       setOnBalloonDismissListener { Toast.makeText(context, "dismissed", Toast.LENGTH_SHORT).show() }
       setDismissWhenClicked(true)
       setDismissWhenShowAgain(true)
