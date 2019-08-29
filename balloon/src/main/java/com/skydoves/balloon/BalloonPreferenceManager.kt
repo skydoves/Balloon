@@ -19,8 +19,9 @@ package com.skydoves.balloon
 import android.content.Context
 import android.content.SharedPreferences
 
+/** BalloonPreferenceManager helps to persist showing times. */
 @Suppress("PrivatePropertyName", "MemberVisibilityCanBePrivate")
-class BalloonPreferenceManager(context: Context) {
+internal class BalloonPreferenceManager(context: Context) {
 
   private val SHOWED_UP = "SHOWED_UP"
 

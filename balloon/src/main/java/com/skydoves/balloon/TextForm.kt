@@ -52,10 +52,18 @@ class TextForm(builder: Builder) {
     @JvmField
     var textTypeface = Typeface.NORMAL
 
+    /** sets the content text of the form. */
     fun setText(value: String): Builder = apply { this.text = value }
+
+    /** sets the size of the text. */
     fun setTextSize(value: Float): Builder = apply { this.textSize = value }
+
+    /** sets the color of the text. */
     fun setTextColor(value: Int): Builder = apply { this.textColor = value }
+
+    /** sets the [Typeface] of the text. */
     fun setTextTypeFace(value: Int): Builder = apply { this.textTypeface = value }
+
     fun build() = TextForm(this)
   }
 }

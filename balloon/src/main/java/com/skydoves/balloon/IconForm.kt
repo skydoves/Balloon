@@ -51,10 +51,18 @@ class IconForm(builder: Builder) {
     @JvmField
     var iconColor: Int = -3
 
+    /** sets the [Drawable] of the icon. */
     fun setDrawable(value: Drawable?): Builder = apply { this.drawable = value }
+
+    /** sets the size of the icon. */
     fun setIconSize(value: Int): Builder = apply { this.iconSize = value }
+
+    /** sets the space between the icon and the main text content. */
     fun setIconSpace(value: Int): Builder = apply { this.iconSpace = value }
+
+    /** sets the color of the icon. */
     fun setIconColor(value: Int): Builder = apply { this.iconColor = value }
+
     fun build() = IconForm(this)
   }
 }
