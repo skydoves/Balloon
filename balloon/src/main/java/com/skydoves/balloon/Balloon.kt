@@ -147,7 +147,7 @@ class Balloon(
     this.onBalloonDismissListener = builder.onBalloonDismissListener
     this.onBalloonOutsideTouchListener = builder.onBalloonOutsideTouchListener
     this.bodyView.setOnClickListener {
-      this.onBalloonClickListener?.onBalloonClick()
+      this.onBalloonClickListener?.onBalloonClick(it)
       if (builder.dismissWhenClicked) dismiss()
     }
     this.bodyWindow.setOnDismissListener { this.onBalloonDismissListener?.onBalloonDismiss() }
@@ -160,7 +160,7 @@ class Balloon(
           dismiss()
         }
         if (event.action == MotionEvent.ACTION_OUTSIDE) {
-          onBalloonOutsideTouchListener?.onBalloonOutsideTouch()
+          onBalloonOutsideTouchListener?.onBalloonOutsideTouch(view, event)
           return true
         }
         return false
@@ -526,7 +526,7 @@ class Balloon(
     /** sets a [OnBalloonClickListener] to the popup using lambda. */
     fun setOnBalloonClickListener(unit: () -> Unit): Builder = apply {
       this.onBalloonClickListener = object : OnBalloonClickListener {
-        override fun onBalloonClick() {
+        override fun onBalloonClick(view: View) {
           unit()
         }
       }
@@ -544,7 +544,10 @@ class Balloon(
     /** sets a [OnBalloonOutsideTouchListener] to the popup using lambda. */
     fun setOnBalloonOutsideTouchListener(unit: () -> Unit): Builder = apply {
       this.onBalloonOutsideTouchListener = object : OnBalloonOutsideTouchListener {
-        override fun onBalloonOutsideTouch() {
+        override fun onBalloonOutsideTouch(
+          view: View,
+          event: MotionEvent
+        ) {
           unit()
         }
       }

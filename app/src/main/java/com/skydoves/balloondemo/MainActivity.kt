@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity(), SampleViewHolder.Delegate, OnBalloonCl
     }
   }
 
-  override fun onBalloonClick() {
+  override fun onBalloonClick(view: View) {
     navigationBalloon.dismiss()
     Toast.makeText(baseContext, "dismissed", Toast.LENGTH_SHORT).show()
   }
