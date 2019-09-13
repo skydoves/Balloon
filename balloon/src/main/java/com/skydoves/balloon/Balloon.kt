@@ -524,10 +524,10 @@ class Balloon(
     fun setOnBalloonOutsideTouchListener(value: OnBalloonOutsideTouchListener): Builder = apply { this.onBalloonOutsideTouchListener = value }
 
     /** sets a [OnBalloonClickListener] to the popup using lambda. */
-    fun setOnBalloonClickListener(unit: () -> Unit): Builder = apply {
+    fun setOnBalloonClickListener(unit: (View) -> Unit): Builder = apply {
       this.onBalloonClickListener = object : OnBalloonClickListener {
         override fun onBalloonClick(view: View) {
-          unit()
+          unit(view)
         }
       }
     }
@@ -542,13 +542,13 @@ class Balloon(
     }
 
     /** sets a [OnBalloonOutsideTouchListener] to the popup using lambda. */
-    fun setOnBalloonOutsideTouchListener(unit: () -> Unit): Builder = apply {
+    fun setOnBalloonOutsideTouchListener(unit: (View, MotionEvent) -> Unit): Builder = apply {
       this.onBalloonOutsideTouchListener = object : OnBalloonOutsideTouchListener {
         override fun onBalloonOutsideTouch(
           view: View,
           event: MotionEvent
         ) {
-          unit()
+          unit(view, event)
         }
       }
     }
