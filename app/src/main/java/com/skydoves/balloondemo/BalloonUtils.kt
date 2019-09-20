@@ -20,7 +20,6 @@ import android.content.Context
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
-import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.OnBalloonClickListener
@@ -39,25 +38,6 @@ object BalloonUtils {
       .setIconDrawable(ContextCompat.getDrawable(baseContext, R.drawable.ic_edit))
       .setBackgroundColor(ContextCompat.getColor(baseContext, R.color.skyBlue))
       .setOnBalloonDismissListener { Toast.makeText(baseContext, "dismissed", Toast.LENGTH_SHORT).show() }
-      .setBalloonAnimation(BalloonAnimation.ELASTIC)
-      .setLifecycleOwner(lifecycleOwner)
-      .build()
-  }
-
-  fun getProfileBalloonForViewHolder(baseContext: Context, lifecycleOwner: LifecycleOwner): Balloon {
-    return Balloon.Builder(baseContext)
-      .setText("This is your new content.")
-      .setArrowSize(10)
-      .setWidthRatio(0.75f)
-      .setHeight(63)
-      .setTextSize(15f)
-      .setCornerRadius(8f)
-      .setArrowOrientation(ArrowOrientation.TOP)
-      .setTextColor(ContextCompat.getColor(baseContext, R.color.white_87))
-      .setIconDrawable(ContextCompat.getDrawable(baseContext, R.drawable.ic_edit))
-      .setBackgroundColor(ContextCompat.getColor(baseContext, R.color.yellow))
-      .setOnBalloonDismissListener { Toast.makeText(baseContext, "dismissed", Toast.LENGTH_SHORT).show() }
-      .setDismissWhenTouchOutside(true)
       .setBalloonAnimation(BalloonAnimation.ELASTIC)
       .setLifecycleOwner(lifecycleOwner)
       .build()

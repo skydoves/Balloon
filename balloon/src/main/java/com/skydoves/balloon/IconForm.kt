@@ -19,7 +19,9 @@
 package com.skydoves.balloon
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.drawable.Drawable
+import androidx.annotation.ColorInt
 
 @DslMarker
 annotation class IconFormDsl
@@ -49,7 +51,8 @@ class IconForm(builder: Builder) {
     @JvmField
     var iconSpace: Int = context.dp2Px(8)
     @JvmField
-    var iconColor: Int = -3
+    @ColorInt
+    var iconColor: Int = Color.WHITE
 
     /** sets the [Drawable] of the icon. */
     fun setDrawable(value: Drawable?): Builder = apply { this.drawable = value }
@@ -61,7 +64,7 @@ class IconForm(builder: Builder) {
     fun setIconSpace(value: Int): Builder = apply { this.iconSpace = value }
 
     /** sets the color of the icon. */
-    fun setIconColor(value: Int): Builder = apply { this.iconColor = value }
+    fun setIconColor(@ColorInt value: Int): Builder = apply { this.iconColor = value }
 
     fun build() = IconForm(this)
   }

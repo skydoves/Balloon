@@ -29,9 +29,9 @@ import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
+import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
 import androidx.annotation.LayoutRes
 import androidx.annotation.MainThread
@@ -180,25 +180,29 @@ class Balloon(
   }
 
   private fun initializeIcon() {
-    if (builder.iconDrawable != null) {
-      with(bodyView.balloon_icon) {
-        visible(true)
-        setImageDrawable(builder.iconDrawable)
-        val params = LinearLayout.LayoutParams(builder.iconSize, builder.iconSize)
-        params.setMargins(0, 0, builder.iconSpace, 0)
-        layoutParams = params
-        builder.iconForm?.let { applyIconForm(it) }
-      }
+    with(bodyView.balloon_icon) {
+      builder.iconForm?.let {
+        applyIconForm(it)
+      } ?: applyIconForm(iconForm(context) {
+        setDrawable(builder.iconDrawable)
+        setIconSize(builder.iconSize)
+        setIconColor(builder.iconColor)
+        setIconSpace(builder.iconSpace)
+      })
     }
   }
 
   private fun initializeText() {
     with(bodyView.balloon_text) {
-      text = builder.text
-      textSize = builder.textSize
-      setTextColor(builder.textColor)
-      setTypeface(typeface, builder.textTypeface)
-      builder.textForm?.let { applyTextForm(it) }
+      builder.textForm?.let {
+        applyTextForm(it)
+      } ?: applyTextForm(textForm(context) {
+        setText(builder.text)
+        setTextSize(builder.textSize)
+        setTextColor(builder.textColor)
+        setTextTypeface(builder.textTypeface)
+        setTextTypeface(builder.textTypefaceObject)
+      })
     }
   }
 
@@ -381,6 +385,7 @@ class Balloon(
     @JvmField
     var arrowDrawable: Drawable? = null
     @JvmField
+    @ColorInt
     var backgroundColor: Int = Color.BLACK
     @JvmField
     var backgroundDrawable: Drawable? = null
@@ -389,11 +394,14 @@ class Balloon(
     @JvmField
     var text: String = ""
     @JvmField
+    @ColorInt
     var textColor: Int = Color.WHITE
     @JvmField
     var textSize: Float = 12f
     @JvmField
     var textTypeface: Int = Typeface.NORMAL
+    @JvmField
+    var textTypefaceObject: Typeface? = null
     @JvmField
     var textForm: TextForm? = null
     @JvmField
@@ -402,6 +410,9 @@ class Balloon(
     var iconSize: Int = context.dp2Px(28)
     @JvmField
     var iconSpace: Int = context.dp2Px(8)
+    @JvmField
+    @ColorInt
+    var iconColor: Int = Color.WHITE
     @JvmField
     var iconForm: IconForm? = null
     @FloatRange(from = 0.0, to = 1.0)
@@ -458,7 +469,7 @@ class Balloon(
     fun setArrowDrawable(value: Drawable?): Builder = apply { this.arrowDrawable = value }
 
     /** sets the background color of the arrow and popup. */
-    fun setBackgroundColor(value: Int): Builder = apply { this.backgroundColor = value }
+    fun setBackgroundColor(@ColorInt value: Int): Builder = apply { this.backgroundColor = value }
 
     /** sets the background color of the arrow and popup by the resource color. */
     fun setBackgroundColorResource(value: Int): Builder = apply { this.backgroundColor = ContextCompat.getColor(context, value) }
@@ -473,7 +484,7 @@ class Balloon(
     fun setText(value: String): Builder = apply { this.text = value }
 
     /** sets the color of the main text content. */
-    fun setTextColor(value: Int): Builder = apply { this.textColor = value }
+    fun setTextColor(@ColorInt value: Int): Builder = apply { this.textColor = value }
 
     /** sets the color of the main text content by the resource color. */
     fun setTextColorResource(value: Int): Builder = apply { this.textColor = ContextCompat.getColor(context, value) }
@@ -484,6 +495,9 @@ class Balloon(
     /** sets the typeface of the main text content. */
     fun setTextTypeface(value: Int): Builder = apply { this.textTypeface = value }
 
+    /** sets the typeface of the main text content. */
+    fun setTextTypeface(value: Typeface): Builder = apply { this.textTypefaceObject = value }
+
     /** applies [TextForm] attributes to the main text content. */
     fun setTextForm(value: TextForm): Builder = apply { this.textForm = value }
 
@@ -492,6 +506,9 @@ class Balloon(
 
     /** sets the size of the icon drawable. */
     fun setIconSize(value: Int) = apply { this.iconSize = context.dp2Px(value) }
+
+    /** sets the color of the icon drawable. */
+    fun setIconColor(@ColorInt value: Int) = apply { this.iconColor = value }
 
     /** sets the space between the icon and the main text content. */
     fun setIconSpace(value: Int) = apply { this.iconSpace = context.dp2Px(value) }

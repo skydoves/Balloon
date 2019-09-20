@@ -156,7 +156,8 @@
       android:id="@+id/recyclerView"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_margin="8dp" />
+      android:layout_margin="8dp"
+      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
   </LinearLayout>
 
   <com.google.android.material.bottomnavigation.BottomNavigationView

@@ -20,6 +20,7 @@ package com.skydoves.balloon
 
 import android.content.Context
 import android.graphics.Typeface
+import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 
 @DslMarker
@@ -39,6 +40,7 @@ class TextForm(builder: Builder) {
   val textSize = builder.textSize
   val textColor = builder.textColor
   val textStyle = builder.textTypeface
+  val textTypeface = builder.textTypefaceObject
 
   /** Builder class for [TextForm]. */
   @TextFormDsl
@@ -48,9 +50,12 @@ class TextForm(builder: Builder) {
     @JvmField
     var textSize: Float = 12f
     @JvmField
+    @ColorInt
     var textColor = ContextCompat.getColor(context, R.color.white)
     @JvmField
     var textTypeface = Typeface.NORMAL
+    @JvmField
+    var textTypefaceObject: Typeface? = null
 
     /** sets the content text of the form. */
     fun setText(value: String): Builder = apply { this.text = value }
@@ -59,10 +64,13 @@ class TextForm(builder: Builder) {
     fun setTextSize(value: Float): Builder = apply { this.textSize = value }
 
     /** sets the color of the text. */
-    fun setTextColor(value: Int): Builder = apply { this.textColor = value }
+    fun setTextColor(@ColorInt value: Int): Builder = apply { this.textColor = value }
 
     /** sets the [Typeface] of the text. */
-    fun setTextTypeFace(value: Int): Builder = apply { this.textTypeface = value }
+    fun setTextTypeface(value: Int): Builder = apply { this.textTypeface = value }
+
+    /** sets the [Typeface] of the text. */
+    fun setTextTypeface(value: Typeface?): Builder = apply { this.textTypefaceObject = value }
 
     fun build() = TextForm(this)
   }

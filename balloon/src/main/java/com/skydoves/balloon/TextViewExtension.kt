@@ -24,5 +24,5 @@ internal fun TextView.applyTextForm(textForm: TextForm) {
   text = textForm.text
   textSize = textForm.textSize
   setTextColor(textForm.textColor)
-  setTypeface(typeface, textForm.textStyle)
+  textForm.textTypeface?.let { typeface = it } ?: setTypeface(typeface, textForm.textStyle)
 }
