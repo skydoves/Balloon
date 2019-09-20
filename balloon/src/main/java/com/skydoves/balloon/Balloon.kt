@@ -35,7 +35,6 @@ import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
 import androidx.annotation.LayoutRes
 import androidx.annotation.MainThread
-import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -468,14 +467,20 @@ class Balloon(
     /** sets a custom drawable of the arrow. */
     fun setArrowDrawable(value: Drawable?): Builder = apply { this.arrowDrawable = value }
 
+    /** sets a custom drawable of the arrow using the resource. */
+    fun setArrowDrawableResource(value: Int): Builder = apply { this.arrowDrawable = context.contextDrawable(value) }
+
     /** sets the background color of the arrow and popup. */
     fun setBackgroundColor(@ColorInt value: Int): Builder = apply { this.backgroundColor = value }
 
-    /** sets the background color of the arrow and popup by the resource color. */
-    fun setBackgroundColorResource(value: Int): Builder = apply { this.backgroundColor = ContextCompat.getColor(context, value) }
+    /** sets the background color of the arrow and popup using the resource color. */
+    fun setBackgroundColorResource(value: Int): Builder = apply { this.backgroundColor = context.contextColor(value) }
 
     /** sets the background drawable of the popup. */
     fun setBackgroundDrawable(value: Drawable?) = apply { this.backgroundDrawable = value }
+
+    /** sets the background drawable of the popup by the resource. */
+    fun setBackgroundDrawableResource(value: Int) = apply { this.backgroundDrawable = context.contextDrawable(value) }
 
     /** sets the corner radius of the popup. */
     fun setCornerRadius(value: Float) = apply { this.cornerRadius = context.dp2Px(value) }
@@ -486,8 +491,8 @@ class Balloon(
     /** sets the color of the main text content. */
     fun setTextColor(@ColorInt value: Int): Builder = apply { this.textColor = value }
 
-    /** sets the color of the main text content by the resource color. */
-    fun setTextColorResource(value: Int): Builder = apply { this.textColor = ContextCompat.getColor(context, value) }
+    /** sets the color of the main text content using the resource color. */
+    fun setTextColorResource(value: Int): Builder = apply { this.textColor = context.contextColor(value) }
 
     /** sets the size of the main text content. */
     fun setTextSize(value: Float): Builder = apply { this.textSize = value }
@@ -504,11 +509,17 @@ class Balloon(
     /** sets the icon drawable of the popup. */
     fun setIconDrawable(value: Drawable?) = apply { this.iconDrawable = value }
 
+    /** sets the icon drawable of the popup using the resource. */
+    fun setIconDrawableResource(value: Int) = apply { this.iconDrawable = context.contextDrawable(value) }
+
     /** sets the size of the icon drawable. */
     fun setIconSize(value: Int) = apply { this.iconSize = context.dp2Px(value) }
 
     /** sets the color of the icon drawable. */
     fun setIconColor(@ColorInt value: Int) = apply { this.iconColor = value }
+
+    /** sets the color of the icon drawable using the resource color. */
+    fun setIconColorResource(@ColorInt value: Int) = apply { this.iconColor = context.contextColor(value) }
 
     /** sets the space between the icon and the main text content. */
     fun setIconSpace(value: Int) = apply { this.iconSpace = context.dp2Px(value) }

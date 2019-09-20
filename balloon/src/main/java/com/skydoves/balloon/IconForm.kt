@@ -43,7 +43,7 @@ class IconForm(builder: Builder) {
 
   /** Builder class for [IconForm]. */
   @IconFormDsl
-  class Builder(context: Context) {
+  class Builder(val context: Context) {
     @JvmField
     var drawable: Drawable? = null
     @JvmField
@@ -57,6 +57,9 @@ class IconForm(builder: Builder) {
     /** sets the [Drawable] of the icon. */
     fun setDrawable(value: Drawable?): Builder = apply { this.drawable = value }
 
+    /** sets the [Drawable] of the icon using resource. */
+    fun setDrawableResource(value: Int): Builder = apply { this.drawable = context.contextDrawable(value) }
+
     /** sets the size of the icon. */
     fun setIconSize(value: Int): Builder = apply { this.iconSize = value }
 
@@ -65,6 +68,9 @@ class IconForm(builder: Builder) {
 
     /** sets the color of the icon. */
     fun setIconColor(@ColorInt value: Int): Builder = apply { this.iconColor = value }
+
+    /** sets the color of the icon using resource */
+    fun setIconColorResource(@ColorInt value: Int): Builder = apply { this.iconColor = context.contextColor(value) }
 
     fun build() = IconForm(this)
   }

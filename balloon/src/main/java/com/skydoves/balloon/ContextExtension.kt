@@ -18,7 +18,9 @@ package com.skydoves.balloon
 
 import android.content.Context
 import android.graphics.Point
+import android.graphics.drawable.Drawable
 import android.view.WindowManager
+import androidx.core.content.ContextCompat
 
 /** gets display size as a point. */
 internal fun Context.displaySize(): Point {
@@ -39,4 +41,14 @@ internal fun Context.dp2Px(dp: Int): Int {
 internal fun Context.dp2Px(dp: Float): Float {
   val scale = resources.displayMetrics.density
   return (dp * scale)
+}
+
+/** gets a color from the resource. */
+internal fun Context.contextColor(resource: Int): Int {
+  return ContextCompat.getColor(this, resource)
+}
+
+/** gets a drawable from the resource. */
+internal fun Context.contextDrawable(resource: Int): Drawable? {
+  return ContextCompat.getDrawable(this, resource)
 }

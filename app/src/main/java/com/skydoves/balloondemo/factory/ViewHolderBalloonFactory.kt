@@ -46,7 +46,7 @@ class ViewHolderBalloonFactory : Balloon.Factory() {
       setTextForm(textForm)
       setArrowOrientation(ArrowOrientation.TOP)
       setTextColorResource(R.color.white_87)
-      setIconDrawable(ContextCompat.getDrawable(context, R.drawable.ic_edit))
+      setIconDrawableResource(R.drawable.ic_edit)
       setBackgroundColorResource(R.color.yellow)
       setOnBalloonDismissListener { Toast.makeText(context, "dismissed", Toast.LENGTH_SHORT).show() }
       setDismissWhenClicked(true)

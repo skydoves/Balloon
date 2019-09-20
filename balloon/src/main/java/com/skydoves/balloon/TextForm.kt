@@ -21,7 +21,6 @@ package com.skydoves.balloon
 import android.content.Context
 import android.graphics.Typeface
 import androidx.annotation.ColorInt
-import androidx.core.content.ContextCompat
 
 @DslMarker
 annotation class TextFormDsl
@@ -44,14 +43,14 @@ class TextForm(builder: Builder) {
 
   /** Builder class for [TextForm]. */
   @TextFormDsl
-  class Builder(context: Context) {
+  class Builder(val context: Context) {
     @JvmField
     var text: String = ""
     @JvmField
     var textSize: Float = 12f
     @JvmField
     @ColorInt
-    var textColor = ContextCompat.getColor(context, R.color.white)
+    var textColor = context.contextColor(R.color.white)
     @JvmField
     var textTypeface = Typeface.NORMAL
     @JvmField
@@ -65,6 +64,9 @@ class TextForm(builder: Builder) {
 
     /** sets the color of the text. */
     fun setTextColor(@ColorInt value: Int): Builder = apply { this.textColor = value }
+
+    /** sets the color of the text using resource. */
+    fun setTextColorResource(value: Int): Builder = apply { this.textColor = context.contextColor(value) }
 
     /** sets the [Typeface] of the text. */
     fun setTextTypeface(value: Int): Builder = apply { this.textTypeface = value }

@@ -18,7 +18,6 @@ package com.skydoves.balloondemo
 
 import android.content.Context
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
@@ -34,9 +33,9 @@ object BalloonUtils {
       .setHeight(63)
       .setTextSize(15f)
       .setCornerRadius(8f)
-      .setTextColor(ContextCompat.getColor(baseContext, R.color.white_87))
-      .setIconDrawable(ContextCompat.getDrawable(baseContext, R.drawable.ic_edit))
-      .setBackgroundColor(ContextCompat.getColor(baseContext, R.color.skyBlue))
+      .setTextColorResource(R.color.white_87)
+      .setIconDrawableResource(R.drawable.ic_edit)
+      .setBackgroundColorResource(R.color.skyBlue)
       .setOnBalloonDismissListener { Toast.makeText(baseContext, "dismissed", Toast.LENGTH_SHORT).show() }
       .setBalloonAnimation(BalloonAnimation.ELASTIC)
       .setLifecycleOwner(lifecycleOwner)
@@ -57,9 +56,9 @@ object BalloonUtils {
       .setArrowPosition(0.62f)
       .setCornerRadius(4f)
       .setAlpha(0.9f)
-      .setTextColor(ContextCompat.getColor(baseContext, R.color.white_93))
-      .setIconDrawable(ContextCompat.getDrawable(baseContext, R.drawable.ic_profile))
-      .setBackgroundColor(ContextCompat.getColor(baseContext, R.color.colorPrimary))
+      .setTextColorResource(R.color.white_93)
+      .setIconDrawableResource(R.drawable.ic_profile)
+      .setBackgroundColorResource(R.color.colorPrimary)
       .setOnBalloonClickListener(onBalloonClickListener)
       .setBalloonAnimation(BalloonAnimation.FADE)
       .setLifecycleOwner(lifecycleOwner)
