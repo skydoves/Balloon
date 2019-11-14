@@ -171,14 +171,14 @@ We can customize the icon on the balloon popup.
 IconForm is an attribute class that has some attributes about ImageView for customizing popup icon.
  
 ```java
-IconForm.Builder(context)
-  .setDrawable(ContextCompat.getDrawable(baseContext, R.drawable.arrow))
-  .setIconColor(ContextCompat.getColor(baseContext, R.color.skyblue))
-  .setIconSize(20)
-  .setIconSpace(12)
-  .build()
+IconForm iconForm = IconForm.Builder(context)
+    .setDrawable(ContextCompat.getDrawable(baseContext, R.drawable.arrow))
+    .setIconColor(ContextCompat.getColor(baseContext, R.color.skyblue))
+    .setIconSize(20)
+    .setIconSpace(12)
+    .build();
   
-builder.setIconForm(textForm);
+builder.setIconForm(iconForm);
 ```
 
 This is how to create `IconForm` using kotlin dsl.
