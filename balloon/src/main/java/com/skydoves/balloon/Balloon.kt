@@ -31,6 +31,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
+import androidx.annotation.AnimRes
 import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
 import androidx.annotation.LayoutRes
@@ -40,7 +41,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
-import kotlinx.android.synthetic.main.layout_balloon.view.*
+import kotlinx.android.synthetic.main.layout_balloon.view.balloon_arrow
+import kotlinx.android.synthetic.main.layout_balloon.view.balloon_background
+import kotlinx.android.synthetic.main.layout_balloon.view.balloon_content
+import kotlinx.android.synthetic.main.layout_balloon.view.balloon_detail
+import kotlinx.android.synthetic.main.layout_balloon.view.balloon_icon
+import kotlinx.android.synthetic.main.layout_balloon.view.balloon_text
 
 @DslMarker
 annotation class BalloonDsl
@@ -212,14 +218,18 @@ class Balloon(
   }
 
   private fun applyBalloonAnimation() {
-    when (builder.balloonAnimation) {
-      BalloonAnimation.ELASTIC -> bodyWindow.animationStyle = R.style.Elastic
-      BalloonAnimation.CIRCULAR -> {
-        bodyWindow.contentView.circularRevealed()
-        bodyWindow.animationStyle = R.style.NormalDispose
+    if (builder.balloonAnimationStyle == -1) {
+      when (builder.balloonAnimation) {
+        BalloonAnimation.ELASTIC -> bodyWindow.animationStyle = R.style.Elastic
+        BalloonAnimation.CIRCULAR -> {
+          bodyWindow.contentView.circularRevealed()
+          bodyWindow.animationStyle = R.style.NormalDispose
+        }
+        BalloonAnimation.FADE -> bodyWindow.animationStyle = R.style.Fade
+        else -> bodyWindow.animationStyle = R.style.Normal
       }
-      BalloonAnimation.FADE -> bodyWindow.animationStyle = R.style.Fade
-      else -> bodyWindow.animationStyle = R.style.Normal
+    } else {
+      bodyWindow.animationStyle = builder.balloonAnimationStyle
     }
   }
 
@@ -433,6 +443,9 @@ class Balloon(
     var dismissWhenClicked: Boolean = false
     @JvmField
     var lifecycleOwner: LifecycleOwner? = null
+    @AnimRes
+    @JvmField
+    var balloonAnimationStyle: Int = -1
     @JvmField
     var balloonAnimation: BalloonAnimation = BalloonAnimation.FADE
     @JvmField
@@ -444,7 +457,9 @@ class Balloon(
     fun setWidth(value: Int): Builder = apply { this.width = context.dp2Px(value) }
 
     /** sets the width size by the display screen size ratio. */
-    fun setWidthRatio(@FloatRange(from = 0.0, to = 1.0) value: Float): Builder = apply { this.widthRatio = value }
+    fun setWidthRatio(
+      @FloatRange(from = 0.0, to = 1.0) value: Float
+    ): Builder = apply { this.widthRatio = value }
 
     /** sets the height size. */
     fun setHeight(value: Int): Builder = apply { this.height = context.dp2Px(value) }
@@ -459,28 +474,38 @@ class Balloon(
     fun setArrowSize(value: Int): Builder = apply { this.arrowSize = context.dp2Px(value) }
 
     /** sets the arrow position by popup size ration. The popup size depends on [arrowOrientation]. */
-    fun setArrowPosition(@FloatRange(from = 0.0, to = 1.0) value: Float): Builder = apply { this.arrowPosition = value }
+    fun setArrowPosition(
+      @FloatRange(from = 0.0, to = 1.0) value: Float
+    ): Builder = apply { this.arrowPosition = value }
 
     /** sets the arrow orientation using [ArrowOrientation]. */
-    fun setArrowOrientation(value: ArrowOrientation): Builder = apply { this.arrowOrientation = value }
+    fun setArrowOrientation(value: ArrowOrientation): Builder = apply {
+      this.arrowOrientation = value
+    }
 
     /** sets a custom drawable of the arrow. */
     fun setArrowDrawable(value: Drawable?): Builder = apply { this.arrowDrawable = value }
 
     /** sets a custom drawable of the arrow using the resource. */
-    fun setArrowDrawableResource(value: Int): Builder = apply { this.arrowDrawable = context.contextDrawable(value) }
+    fun setArrowDrawableResource(value: Int): Builder = apply {
+      this.arrowDrawable = context.contextDrawable(value)
+    }
 
     /** sets the background color of the arrow and popup. */
     fun setBackgroundColor(@ColorInt value: Int): Builder = apply { this.backgroundColor = value }
 
     /** sets the background color of the arrow and popup using the resource color. */
-    fun setBackgroundColorResource(value: Int): Builder = apply { this.backgroundColor = context.contextColor(value) }
+    fun setBackgroundColorResource(value: Int): Builder = apply {
+      this.backgroundColor = context.contextColor(value)
+    }
 
     /** sets the background drawable of the popup. */
     fun setBackgroundDrawable(value: Drawable?) = apply { this.backgroundDrawable = value }
 
     /** sets the background drawable of the popup by the resource. */
-    fun setBackgroundDrawableResource(value: Int) = apply { this.backgroundDrawable = context.contextDrawable(value) }
+    fun setBackgroundDrawableResource(value: Int) = apply {
+      this.backgroundDrawable = context.contextDrawable(value)
+    }
 
     /** sets the corner radius of the popup. */
     fun setCornerRadius(value: Float) = apply { this.cornerRadius = context.dp2Px(value) }
@@ -492,7 +517,9 @@ class Balloon(
     fun setTextColor(@ColorInt value: Int): Builder = apply { this.textColor = value }
 
     /** sets the color of the main text content using the resource color. */
-    fun setTextColorResource(value: Int): Builder = apply { this.textColor = context.contextColor(value) }
+    fun setTextColorResource(value: Int): Builder = apply {
+      this.textColor = context.contextColor(value)
+    }
 
     /** sets the size of the main text content. */
     fun setTextSize(value: Float): Builder = apply { this.textSize = value }
@@ -510,7 +537,9 @@ class Balloon(
     fun setIconDrawable(value: Drawable?) = apply { this.iconDrawable = value }
 
     /** sets the icon drawable of the popup using the resource. */
-    fun setIconDrawableResource(value: Int) = apply { this.iconDrawable = context.contextDrawable(value) }
+    fun setIconDrawableResource(value: Int) = apply {
+      this.iconDrawable = context.contextDrawable(value)
+    }
 
     /** sets the size of the icon drawable. */
     fun setIconSize(value: Int) = apply { this.iconSize = context.dp2Px(value) }
@@ -519,7 +548,9 @@ class Balloon(
     fun setIconColor(@ColorInt value: Int) = apply { this.iconColor = value }
 
     /** sets the color of the icon drawable using the resource color. */
-    fun setIconColorResource(@ColorInt value: Int) = apply { this.iconColor = context.contextColor(value) }
+    fun setIconColorResource(@ColorInt value: Int) = apply {
+      this.iconColor = context.contextColor(value)
+    }
 
     /** sets the space between the icon and the main text content. */
     fun setIconSpace(value: Int) = apply { this.iconSpace = context.dp2Px(value) }
@@ -528,7 +559,9 @@ class Balloon(
     fun setIconForm(value: IconForm) = apply { this.iconForm = value }
 
     /** sets the alpha value to the popup. */
-    fun setAlpha(@FloatRange(from = 0.0, to = 1.0) value: Float): Builder = apply { this.alpha = value }
+    fun setAlpha(@FloatRange(from = 0.0, to = 1.0) value: Float): Builder = apply {
+      this.alpha = value
+    }
 
     /** sets the custom layout resource to the popup content. */
     fun setLayout(@LayoutRes layout: Int): Builder = apply { this.layout = layout }
@@ -540,16 +573,29 @@ class Balloon(
     fun setLifecycleOwner(value: LifecycleOwner): Builder = apply { this.lifecycleOwner = value }
 
     /** sets the balloon showing animation using [BalloonAnimation]. */
-    fun setBalloonAnimation(value: BalloonAnimation): Builder = apply { this.balloonAnimation = value }
+    fun setBalloonAnimation(value: BalloonAnimation): Builder = apply {
+      this.balloonAnimation = value
+    }
+
+    /** sets the balloon showing animation using custom xml animation style. */
+    fun setBalloonAnimationStyle(@AnimRes value: Int): Builder = apply {
+      this.balloonAnimationStyle = value
+    }
 
     /** sets a [OnBalloonClickListener] to the popup. */
-    fun setOnBalloonClickListener(value: OnBalloonClickListener): Builder = apply { this.onBalloonClickListener = value }
+    fun setOnBalloonClickListener(value: OnBalloonClickListener): Builder = apply {
+      this.onBalloonClickListener = value
+    }
 
     /** sets a [OnBalloonDismissListener] to the popup. */
-    fun setOnBalloonDismissListener(value: OnBalloonDismissListener): Builder = apply { this.onBalloonDismissListener = value }
+    fun setOnBalloonDismissListener(value: OnBalloonDismissListener): Builder = apply {
+      this.onBalloonDismissListener = value
+    }
 
     /** sets a [OnBalloonOutsideTouchListener] to the popup. */
-    fun setOnBalloonOutsideTouchListener(value: OnBalloonOutsideTouchListener): Builder = apply { this.onBalloonOutsideTouchListener = value }
+    fun setOnBalloonOutsideTouchListener(value: OnBalloonOutsideTouchListener): Builder = apply {
+      this.onBalloonOutsideTouchListener = value
+    }
 
     /** sets a [OnBalloonClickListener] to the popup using lambda. */
     fun setOnBalloonClickListener(unit: (View) -> Unit): Builder = apply {
@@ -582,10 +628,14 @@ class Balloon(
     }
 
     /** dismisses when touch outside. */
-    fun setDismissWhenTouchOutside(value: Boolean): Builder = apply { this.dismissWhenTouchOutside = value }
+    fun setDismissWhenTouchOutside(value: Boolean): Builder = apply {
+      this.dismissWhenTouchOutside = value
+    }
 
     /** dismisses when invoked show function again. */
-    fun setDismissWhenShowAgain(value: Boolean): Builder = apply { this.dismissWhenShowAgain = value }
+    fun setDismissWhenShowAgain(value: Boolean): Builder = apply {
+      this.dismissWhenShowAgain = value
+    }
 
     /** dismisses when the popup clicked. */
     fun setDismissWhenClicked(value: Boolean): Builder = apply { this.dismissWhenClicked = value }
