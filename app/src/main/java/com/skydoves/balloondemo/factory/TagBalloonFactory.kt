@@ -37,6 +37,7 @@ class TagBalloonFactory : Balloon.Factory() {
       setCornerRadius(4f)
       setBackgroundColorResource(R.color.white)
       setBalloonAnimation(BalloonAnimation.ELASTIC)
+      setDismissWhenClicked(true)
       setDismissWhenShowAgain(true)
       setLifecycleOwner(lifecycle)
     }

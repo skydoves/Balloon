@@ -252,6 +252,15 @@ class Balloon(
     }
   }
 
+  @MainThread
+  private inline fun relay(
+    balloon: Balloon,
+    crossinline block: (balloon: Balloon) -> Unit
+  ): Balloon {
+    this.setOnBalloonDismissListener { block(balloon) }
+    return balloon
+  }
+
   /** shows the balloon on the center of an anchor view. */
   fun show(anchor: View) {
     show(anchor) {
@@ -260,9 +269,25 @@ class Balloon(
     }
   }
 
+  /**
+   * shows the balloon on the center of an anchor view
+   * and shows the next balloon sequentially.
+   * This function returns the next balloon.
+   */
+  fun relayShow(balloon: Balloon, anchor: View) = relay(balloon) { it.show(anchor) }
+
   /** shows the balloon on an anchor view with x-off and y-off. */
   fun show(anchor: View, xOff: Int, yOff: Int) {
     show(anchor) { bodyWindow.showAsDropDown(anchor, xOff, yOff) }
+  }
+
+  /**
+   * shows the balloon on an anchor view with x-off and y-off
+   * and shows the next balloon sequentially.
+   * This function returns the next balloon.
+   */
+  fun relayShow(balloon: Balloon, anchor: View, xOff: Int, yOff: Int) = relay(balloon) {
+    it.show(anchor, xOff, yOff)
   }
 
   /** shows the balloon on an anchor view as drop down. */
@@ -270,9 +295,27 @@ class Balloon(
     show(anchor) { bodyWindow.showAsDropDown(anchor) }
   }
 
+  /**
+   * shows the balloon on an anchor view as drop down
+   * and shows the next balloon sequentially.
+   * This function returns the next balloon.
+   */
+  fun relayShowAsDropDown(balloon: Balloon, anchor: View) = relay(balloon) {
+    it.showAsDropDown(anchor)
+  }
+
   /** shows the balloon on an anchor view as drop down with x-off and y-off. */
   fun showAsDropDown(anchor: View, xOff: Int, yOff: Int) {
     show(anchor) { bodyWindow.showAsDropDown(anchor, xOff, yOff) }
+  }
+
+  /**
+   * shows the balloon on an anchor view as drop down with x-off and y-off
+   * and shows the next balloon sequentially.
+   * This function returns the next balloon.
+   */
+  fun relayShowAsDropDown(balloon: Balloon, anchor: View, xOff: Int, yOff: Int) = relay(balloon) {
+    it.showAsDropDown(anchor, xOff, yOff)
   }
 
   /** shows the balloon on an anchor view as the top alignment. */
@@ -284,6 +327,15 @@ class Balloon(
     }
   }
 
+  /**
+   * shows the balloon on an anchor view as the top alignment
+   * and shows the next balloon sequentially.
+   * This function returns the next balloon.
+   */
+  fun relayShowAlignTop(balloon: Balloon, anchor: View) = relay(balloon) {
+    it.showAlignTop(anchor)
+  }
+
   /** shows the balloon on an anchor view as the top alignment with x-off and y-off. */
   fun showAlignTop(anchor: View, xOff: Int, yOff: Int) {
     show(anchor) {
@@ -291,6 +343,15 @@ class Balloon(
         (anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff,
         -builder.height - anchor.measuredHeight + yOff)
     }
+  }
+
+  /**
+   * shows the balloon on an anchor view as the top alignment with x-off and y-off
+   * and shows the next balloon sequentially.
+   * This function returns the next balloon.
+   */
+  fun relayShowAlignTop(balloon: Balloon, anchor: View, xOff: Int, yOff: Int) = relay(balloon) {
+    it.showAlignTop(anchor, xOff, yOff)
   }
 
   /** shows the balloon on an anchor view as the bottom alignment. */
@@ -302,6 +363,15 @@ class Balloon(
     }
   }
 
+  /**
+   * shows the balloon on an anchor view as the bottom alignment
+   * and shows the next balloon sequentially.
+   * This function returns the next balloon.
+   */
+  fun relayShowAlignBottom(balloon: Balloon, anchor: View) = relay(balloon) {
+    it.showAlignBottom(anchor)
+  }
+
   /** shows the balloon on an anchor view as the bottom alignment with x-off and y-off. */
   fun showAlignBottom(anchor: View, xOff: Int, yOff: Int) {
     show(anchor) {
@@ -309,6 +379,15 @@ class Balloon(
         (anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff,
         yOff)
     }
+  }
+
+  /**
+   * shows the balloon on an anchor view as the bottom alignment with x-off and y-off
+   * and shows the next balloon sequentially.
+   * This function returns the next balloon.
+   */
+  fun relayShowAlignBottom(balloon: Balloon, anchor: View, xOff: Int, yOff: Int) = relay(balloon) {
+    it.showAlignBottom(anchor, xOff, yOff)
   }
 
   /** shows the balloon on an anchor view as the right alignment. */
@@ -319,12 +398,30 @@ class Balloon(
     }
   }
 
+  /**
+   * shows the balloon on an anchor view as the right alignment
+   * and shows the next balloon sequentially.
+   * This function returns the next balloon.
+   */
+  fun relayShowAlignRight(balloon: Balloon, anchor: View) = relay(balloon) {
+    it.showAlignRight(anchor)
+  }
+
   /** shows the balloon on an anchor view as the right alignment with x-off and y-off. */
   fun showAlignRight(anchor: View, xOff: Int, yOff: Int) {
     show(anchor) {
       bodyWindow.showAsDropDown(anchor, anchor.measuredWidth + xOff,
         -(builder.height / 2) - (anchor.measuredHeight / 2) + yOff)
     }
+  }
+
+  /**
+   * shows the balloon on an anchor view as the right alignment with x-off and y-off
+   * and shows the next balloon sequentially.
+   * This function returns the next balloon.
+   */
+  fun relayShowAlignRight(balloon: Balloon, anchor: View, xOff: Int, yOff: Int) = relay(balloon) {
+    it.showAlignRight(anchor, xOff, yOff)
   }
 
   /** shows the balloon on an anchor view as the left alignment. */
@@ -335,6 +432,15 @@ class Balloon(
     }
   }
 
+  /**
+   * shows the balloon on an anchor view as the left alignment
+   * and shows the next balloon sequentially.
+   * This function returns the next balloon.
+   */
+  fun relayShowAlignLeft(balloon: Balloon, anchor: View) = relay(balloon) {
+    it.showAlignLeft(anchor)
+  }
+
   /** shows the balloon on an anchor view as the left alignment with x-off and y-off. */
   fun showAlignLeft(anchor: View, xOff: Int, yOff: Int) {
     show(anchor) {
@@ -343,11 +449,50 @@ class Balloon(
     }
   }
 
+  /**
+   * shows the balloon on an anchor view as the left alignment with x-off and y-off
+   * and shows the next balloon sequentially.
+   * This function returns the next balloon.
+   */
+  fun relayShowAlignLeft(balloon: Balloon, anchor: View, xOff: Int, yOff: Int) = relay(balloon) {
+    it.showAlignLeft(anchor, xOff, yOff)
+  }
+
   /** dismiss the popup menu. */
   fun dismiss() {
-    if (isShowing) {
-      bodyWindow.dismiss()
-      isShowing = false
+    if (this.isShowing) {
+      this.bodyWindow.dismiss()
+      this.isShowing = false
+    }
+  }
+
+  /** sets a [OnBalloonClickListener] to the popup using lambda. */
+  fun setOnBalloonClickListener(unit: (View) -> Unit) {
+    this.onBalloonClickListener = object : OnBalloonClickListener {
+      override fun onBalloonClick(view: View) {
+        unit(view)
+      }
+    }
+  }
+
+  /** sets a [OnBalloonDismissListener] to the popup using lambda. */
+  fun setOnBalloonDismissListener(unit: () -> Unit) {
+    this.onBalloonDismissListener = object : OnBalloonDismissListener {
+      override fun onBalloonDismiss() {
+        unit()
+      }
+    }
+  }
+
+  /** sets a [OnBalloonOutsideTouchListener] to the popup using lambda. */
+  fun setOnBalloonOutsideTouchListener(unit: (View, MotionEvent) -> Unit) {
+    this.onBalloonOutsideTouchListener = object : OnBalloonOutsideTouchListener {
+      override fun onBalloonOutsideTouch(
+        view: View,
+        event: MotionEvent
+      ) {
+        unit(view, event)
+      }
     }
   }
 
