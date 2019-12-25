@@ -32,7 +32,7 @@ allprojects {
 And add a dependency code to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:balloon:1.0.6"
+    implementation "com.github.skydoves:balloon:1.0.7"
 }
 ```
 
@@ -103,6 +103,20 @@ Or you can show balloon popup using kotlin extension.
 
 ```java
 myButtom.showAlignTop(balloon)
+```
+
+### Show sequentially
+We can show balloon popup sequentially using `relayShow` method. <br>
+The `relayShow` method makes that `setOnDismissListener` of the first balloon is reset to show the <br>
+next balloon and returns an instance of the next balloon.
+
+```kotlin
+customListBalloon
+  .relayShowAlignBottom(customProfileBalloon, circleImageView) // relay to customListBalloon
+  .relayShowAlignTop(customTagBalloon, bottomNavigationView, 130, 0) // relay to customProfileBalloon
+
+// show sequentially customListBalloon-customProfileBalloon-customTagBalloon
+customListBalloon.showAlignBottom(toolbar_list)
 ```
 
 ### Arrow Composition
