@@ -31,7 +31,11 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
-import androidx.annotation.*
+import androidx.annotation.ColorInt
+import androidx.annotation.FloatRange
+import androidx.annotation.LayoutRes
+import androidx.annotation.MainThread
+import androidx.annotation.StyleRes
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
