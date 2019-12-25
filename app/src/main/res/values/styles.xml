@@ -22,4 +22,9 @@
     <item name="android:textSize">18sp</item>
   </style>
 
+  <style name="ElasticAndFadeOut">
+    <item name="android:windowEnterAnimation">@anim/elastic_center</item>
+    <item name="android:windowExitAnimation">@anim/fade_out</item>
+  </style>
+
 </resources>

@@ -31,11 +31,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
-import androidx.annotation.AnimRes
-import androidx.annotation.ColorInt
-import androidx.annotation.FloatRange
-import androidx.annotation.LayoutRes
-import androidx.annotation.MainThread
+import androidx.annotation.*
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -588,7 +584,7 @@ class Balloon(
     var dismissWhenClicked: Boolean = false
     @JvmField
     var lifecycleOwner: LifecycleOwner? = null
-    @AnimRes
+    @StyleRes
     @JvmField
     var balloonAnimationStyle: Int = -1
     @JvmField
@@ -723,7 +719,7 @@ class Balloon(
     }
 
     /** sets the balloon showing animation using custom xml animation style. */
-    fun setBalloonAnimationStyle(@AnimRes value: Int): Builder = apply {
+    fun setBalloonAnimationStyle(@StyleRes value: Int): Builder = apply {
       this.balloonAnimationStyle = value
     }
 
