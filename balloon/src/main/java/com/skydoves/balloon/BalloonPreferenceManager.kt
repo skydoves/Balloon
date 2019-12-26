@@ -52,7 +52,7 @@ internal class BalloonPreferenceManager(context: Context) {
 
   /** puts a incremented show-up times to the preference. */
   fun putIncrementedTimes(name: String) {
-    putTimes(SHOWED_UP + name, getTimes(name) + 1)
+    putTimes(name, getTimes(name) + 1)
   }
 
   companion object {
