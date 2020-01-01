@@ -71,7 +71,7 @@ class Balloon(
   var onBalloonClickListener: OnBalloonClickListener? = null
   var onBalloonDismissListener: OnBalloonDismissListener? = null
   var onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener? = null
-  private val balloonPreferenceManager = BalloonPreferenceManager(context).getInstance()
+  private val balloonPersistence = BalloonPersistence.getInstance(context)
 
   init {
     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -235,11 +235,11 @@ class Balloon(
 
   @MainThread
   private inline fun show(anchor: View, crossinline block: () -> Unit) {
-    if (!isShowing) {
+    if (!this.isShowing) {
       this.isShowing = true
-      builder.preferenceName?.let {
-        if (balloonPreferenceManager.shouldShowUP(it, builder.showTimes)) {
-          balloonPreferenceManager.putIncrementedTimes(it)
+      this.builder.preferenceName?.let {
+        if (balloonPersistence.shouldShowUP(it, builder.showTimes)) {
+          balloonPersistence.putIncrementedTimes(it)
         } else return
       }
 

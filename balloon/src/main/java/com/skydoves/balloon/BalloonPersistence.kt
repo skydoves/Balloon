@@ -20,20 +20,7 @@ import android.content.Context
 import android.content.SharedPreferences
 
 /** BalloonPreferenceManager helps to persist showing times. */
-@Suppress("PrivatePropertyName", "MemberVisibilityCanBePrivate")
-internal class BalloonPreferenceManager(context: Context) {
-
-  private val SHOWED_UP = "SHOWED_UP"
-
-  init {
-    balloonPreferenceManager = this
-    sharedPreferenceManager = context.getSharedPreferences("com.skydoves.balloon", Context.MODE_PRIVATE)
-  }
-
-  /** get a singleton instance of the [BalloonPreferenceManager]. */
-  fun getInstance(): BalloonPreferenceManager {
-    return balloonPreferenceManager
-  }
+internal class BalloonPersistence {
 
   /** should show or not the popup. */
   fun shouldShowUP(name: String, times: Int): Boolean {
@@ -42,12 +29,12 @@ internal class BalloonPreferenceManager(context: Context) {
 
   /** gets show-up times from the preference. */
   fun getTimes(name: String): Int {
-    return sharedPreferenceManager.getInt(SHOWED_UP + name, 0)
+    return sharedPreferenceManager.getInt(getPersistName(name), 0)
   }
 
   /** puts show-up times to the preference. */
   fun putTimes(name: String, times: Int) {
-    sharedPreferenceManager.edit().putInt(SHOWED_UP + name, times).apply()
+    sharedPreferenceManager.edit().putInt(getPersistName(name), times).apply()
   }
 
   /** puts a incremented show-up times to the preference. */
@@ -55,8 +42,29 @@ internal class BalloonPreferenceManager(context: Context) {
     putTimes(name, getTimes(name) + 1)
   }
 
+  /** removes a showed times history from the preference. */
+  fun removePersistedData(name: String) =
+    sharedPreferenceManager.edit().remove(SHOWED_UP + name).apply()
+
+  /** clears all of [Balloon] showed times history on the application. */
+  fun clearAllPersistedData() = sharedPreferenceManager.edit().clear().apply()
+
   companion object {
-    lateinit var balloonPreferenceManager: BalloonPreferenceManager
-    lateinit var sharedPreferenceManager: SharedPreferences
+    @Volatile
+    private var instance: BalloonPersistence? = null
+    private lateinit var sharedPreferenceManager: SharedPreferences
+    private const val SHOWED_UP = "SHOWED_UP"
+
+    @JvmStatic
+    fun getInstance(context: Context): BalloonPersistence =
+      instance ?: synchronized(this) {
+        instance ?: BalloonPersistence().also {
+          instance = it
+          sharedPreferenceManager =
+            context.getSharedPreferences("com.skydoves.balloon", Context.MODE_PRIVATE)
+        }
+      }
+
+    fun getPersistName(name: String) = SHOWED_UP + name
   }
 }
