@@ -32,7 +32,7 @@ allprojects {
 And add a dependency code to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:balloon:1.0.7"
+    implementation "com.github.skydoves:balloon:1.0.8"
 }
 ```
 
@@ -274,7 +274,7 @@ button.setOnClickListener {
 }
 ```
 
-### Preference
+### Persistence
 If you want to show-up the balloon popup only once or a specific number of times, here is how to implement it simply.<br>
 ```java
 .setPreferenceName("MyBalloon") // sets preference name of the Balloon.
@@ -373,6 +373,8 @@ class ProfileBalloonFactory : Balloon.Factory() {
 .setIconForm(value: IconForm)
 .setAlpha(@FloatRange(from = 0.0, to = 1.0) value: Float)
 .setLayout(@LayoutRes layout: Int)
+.setPreferenceName(value: String)
+.setShowTime(value: Int)
 .setLifecycleOwner(value: LifecycleOwner)
 .setBalloonAnimation(value: BalloonAnimation)
 .setOnBalloonClickListener(value: OnBalloonClickListener)
