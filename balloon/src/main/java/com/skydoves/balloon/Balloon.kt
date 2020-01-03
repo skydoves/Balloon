@@ -26,6 +26,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -241,6 +242,11 @@ class Balloon(
         if (balloonPersistence.shouldShowUP(it, builder.showTimes)) {
           balloonPersistence.putIncrementedTimes(it)
         } else return
+      }
+
+      val dismissDelay = this.builder.autoDismissDuration
+      if (dismissDelay != -1L) {
+        dismissWithDelay(dismissDelay)
       }
 
       anchor.post {
@@ -461,9 +467,14 @@ class Balloon(
   /** dismiss the popup menu. */
   fun dismiss() {
     if (this.isShowing) {
-      this.bodyWindow.dismiss()
       this.isShowing = false
+      this.bodyWindow.dismiss()
     }
+  }
+
+  /** dismiss the popup menu with milliseconds delay. */
+  fun dismissWithDelay(delay: Long) {
+    Handler().postDelayed({ dismiss() }, delay)
   }
 
   /** sets a [OnBalloonClickListener] to the popup using lambda. */
@@ -586,6 +597,8 @@ class Balloon(
     var dismissWhenShowAgain: Boolean = false
     @JvmField
     var dismissWhenClicked: Boolean = false
+    @JvmField
+    var autoDismissDuration: Long = -1L
     @JvmField
     var lifecycleOwner: LifecycleOwner? = null
     @StyleRes
@@ -784,6 +797,9 @@ class Balloon(
 
     /** dismisses when the popup clicked. */
     fun setDismissWhenClicked(value: Boolean): Builder = apply { this.dismissWhenClicked = value }
+
+    /** dismisses automatically after showing with some durations. */
+    fun setAutoDismissDuration(value: Long): Builder = apply { this.autoDismissDuration = value }
 
     /** sets the preference name for persisting showing times([showTimes]).  */
     fun setPreferenceName(value: String): Builder = apply { this.preferenceName = value }
