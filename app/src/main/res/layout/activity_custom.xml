@@ -175,8 +175,8 @@
     android:layout_alignParentBottom="true"
     android:background="@color/colorPrimary"
     app:itemBackground="@color/colorPrimary"
-    app:itemIconTint="@color/white"
-    app:itemTextColor="@color/white"
+    app:itemIconTint="@color/white_93"
+    app:itemTextColor="@color/white_93"
     app:layout_behavior="tech.thdev.app.view.BottomNavigationBehavior"
     app:menu="@menu/menus" />
 </RelativeLayout>

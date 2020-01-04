@@ -802,7 +802,7 @@ class Balloon(
     /** dismisses when the popup clicked. */
     fun setDismissWhenClicked(value: Boolean): Builder = apply { this.dismissWhenClicked = value }
 
-    /** dismisses automatically after showing with some durations. */
+    /** dismisses automatically some milliseconds later when the popup is shown. */
     fun setAutoDismissDuration(value: Long): Builder = apply { this.autoDismissDuration = value }
 
     /** sets the preference name for persisting showing times([showTimes]).  */

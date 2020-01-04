@@ -99,11 +99,25 @@ balloon.showAlignLeft(anchor: View) // shows the balloon on an anchor view as th
 balloon.showAlignLeft(anchor: View, xOff: Int, yOff: Int) // shows left alignment with x-off and y-off.
 ```
 
-Or you can show balloon popup using kotlin extension.
+Or we can show balloon popup using kotlin extension.
 
 ```java
 myButtom.showAlignTop(balloon)
 ```
+We can dismiss popup simply using `Balloon.dismiss()` method.
+```java
+balloon.dismiss()
+balloon.dismissWithDelay(1000L) // dismisses 1000 milliseconds later when the popup is shown
+```
+We can dismiss  automatically some milliseconds later when the popup is shown using <br> 
+`setAutoDismissDuration` method on `Balloon.Builder`.
+```java
+Balloon.Builder(baseContext)
+   // dismisses automatically 1000 milliseconds later when the popup is shown.
+   .setAutoDismissDuration(1000L)
+   ...
+```
+
 
 ### Show sequentially
 We can show balloon popup sequentially using `relayShow` method. <br>
@@ -259,7 +273,7 @@ val balloon = Balloon.Builder(baseContext)
       .setWidthRatio(0.55f)
       .setHeight(250)
       .setCornerRadius(4f)
-      .setBackgroundColor(ContextCompat.getColor(baseContext, R.color.background900))
+      .setBackgroundColor(ContextCompat.getColor(this, R.color.black))
       .setBalloonAnimation(BalloonAnimation.CIRCULAR)
       .setLifecycleOwner(lifecycleOwner)
       .build()

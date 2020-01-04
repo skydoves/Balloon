@@ -19,6 +19,7 @@
 package com.skydoves.balloon
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Typeface
 import androidx.annotation.ColorInt
 
@@ -50,7 +51,7 @@ class TextForm(builder: Builder) {
     var textSize: Float = 12f
     @JvmField
     @ColorInt
-    var textColor = context.contextColor(R.color.white)
+    var textColor = Color.WHITE
     @JvmField
     var textTypeface = Typeface.NORMAL
     @JvmField
