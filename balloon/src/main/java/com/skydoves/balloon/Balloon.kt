@@ -642,11 +642,13 @@ class Balloon(
     }
 
     /** sets a custom drawable of the arrow. */
-    fun setArrowDrawable(value: Drawable?): Builder = apply { this.arrowDrawable = value }
+    fun setArrowDrawable(value: Drawable?): Builder = apply {
+      this.arrowDrawable = value?.mutate()
+    }
 
     /** sets a custom drawable of the arrow using the resource. */
     fun setArrowDrawableResource(value: Int): Builder = apply {
-      this.arrowDrawable = context.contextDrawable(value)
+      this.arrowDrawable = context.contextDrawable(value)?.mutate()
     }
 
     /** sets the background color of the arrow and popup. */
@@ -658,11 +660,13 @@ class Balloon(
     }
 
     /** sets the background drawable of the popup. */
-    fun setBackgroundDrawable(value: Drawable?) = apply { this.backgroundDrawable = value }
+    fun setBackgroundDrawable(value: Drawable?) = apply {
+      this.backgroundDrawable = value?.mutate()
+    }
 
     /** sets the background drawable of the popup by the resource. */
     fun setBackgroundDrawableResource(value: Int) = apply {
-      this.backgroundDrawable = context.contextDrawable(value)
+      this.backgroundDrawable = context.contextDrawable(value)?.mutate()
     }
 
     /** sets the corner radius of the popup. */
@@ -692,11 +696,11 @@ class Balloon(
     fun setTextForm(value: TextForm): Builder = apply { this.textForm = value }
 
     /** sets the icon drawable of the popup. */
-    fun setIconDrawable(value: Drawable?) = apply { this.iconDrawable = value }
+    fun setIconDrawable(value: Drawable?) = apply { this.iconDrawable = value?.mutate() }
 
     /** sets the icon drawable of the popup using the resource. */
     fun setIconDrawableResource(value: Int) = apply {
-      this.iconDrawable = context.contextDrawable(value)
+      this.iconDrawable = context.contextDrawable(value)?.mutate()
     }
 
     /** sets the size of the icon drawable. */
