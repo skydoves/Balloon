@@ -29,7 +29,7 @@ import com.skydoves.balloondemo.R
 
 class ViewHolderBalloonFactory : Balloon.Factory() {
 
-  override fun create(context: Context, lifecycle: LifecycleOwner): Balloon {
+  override fun create(context: Context, lifecycle: LifecycleOwner?): Balloon {
     val textForm = textForm(context) {
       setText("This is your new content!!!")
       setTextSize(15f)

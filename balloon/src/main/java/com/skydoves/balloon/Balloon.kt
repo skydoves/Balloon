@@ -33,11 +33,13 @@ import android.view.View
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
 import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import androidx.annotation.FloatRange
 import androidx.annotation.LayoutRes
 import androidx.annotation.MainThread
+import androidx.annotation.Px
 import androidx.annotation.StyleRes
-import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -129,8 +131,8 @@ class Balloon(
       }
       layoutParams = params
       alpha = builder.alpha
+      supportImageTintList = ColorStateList.valueOf(builder.backgroundColor)
       visible(builder.arrowVisible)
-      ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.backgroundColor))
     }
   }
 
@@ -156,22 +158,24 @@ class Balloon(
       this.onBalloonClickListener?.onBalloonClick(it)
       if (builder.dismissWhenClicked) dismiss()
     }
-    this.bodyWindow.setOnDismissListener { this.onBalloonDismissListener?.onBalloonDismiss() }
-    this.bodyWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    this.bodyWindow.isOutsideTouchable = true
-    this.bodyWindow.setTouchInterceptor(object : View.OnTouchListener {
-      @SuppressLint("ClickableViewAccessibility")
-      override fun onTouch(view: View, event: MotionEvent): Boolean {
-        if (builder.dismissWhenTouchOutside) {
-          dismiss()
+    with(this.bodyWindow) {
+      setOnDismissListener { onBalloonDismissListener?.onBalloonDismiss() }
+      setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+      isOutsideTouchable = true
+      setTouchInterceptor(object : View.OnTouchListener {
+        @SuppressLint("ClickableViewAccessibility")
+        override fun onTouch(view: View, event: MotionEvent): Boolean {
+          if (builder.dismissWhenTouchOutside) {
+            dismiss()
+          }
+          if (event.action == MotionEvent.ACTION_OUTSIDE) {
+            onBalloonOutsideTouchListener?.onBalloonOutsideTouch(view, event)
+            return true
+          }
+          return false
         }
-        if (event.action == MotionEvent.ACTION_OUTSIDE) {
-          onBalloonOutsideTouchListener?.onBalloonOutsideTouch(view, event)
-          return true
-        }
-        return false
-      }
-    })
+      })
+    }
   }
 
   private fun initializeBalloonContent() {
@@ -529,39 +533,35 @@ class Balloon(
   /** Builder class for creating [Balloon]. */
   @BalloonDsl
   class Builder(private val context: Context) {
-    @JvmField
+    @JvmField @Px
     var width: Int = context.displaySize().x
-    @JvmField
-    @FloatRange(from = 0.0, to = 1.0)
+    @JvmField @FloatRange(from = 0.0, to = 1.0)
     var widthRatio: Float = 0f
-    @JvmField
+    @JvmField @Px
     var height: Int = context.dp2Px(60)
-    @JvmField
+    @JvmField @Px
     var space: Int = 0
     @JvmField
     var arrowVisible: Boolean = true
-    @JvmField
+    @JvmField @Px
     var arrowSize: Int = context.dp2Px(15)
-    @JvmField
-    @FloatRange(from = 0.0, to = 1.0)
+    @JvmField @FloatRange(from = 0.0, to = 1.0)
     var arrowPosition: Float = 0.5f
     @JvmField
     var arrowOrientation: ArrowOrientation = ArrowOrientation.BOTTOM
     @JvmField
     var arrowDrawable: Drawable? = null
-    @JvmField
-    @ColorInt
+    @JvmField @ColorInt
     var backgroundColor: Int = Color.BLACK
     @JvmField
     var backgroundDrawable: Drawable? = null
-    @JvmField
+    @JvmField @Px
     var cornerRadius: Float = context.dp2Px(5).toFloat()
     @JvmField
     var text: String = ""
-    @JvmField
-    @ColorInt
+    @JvmField @ColorInt
     var textColor: Int = Color.WHITE
-    @JvmField
+    @JvmField @Px
     var textSize: Float = 12f
     @JvmField
     var textTypeface: Int = Typeface.NORMAL
@@ -571,19 +571,17 @@ class Balloon(
     var textForm: TextForm? = null
     @JvmField
     var iconDrawable: Drawable? = null
-    @JvmField
+    @JvmField @Px
     var iconSize: Int = context.dp2Px(28)
-    @JvmField
+    @JvmField @Px
     var iconSpace: Int = context.dp2Px(8)
-    @JvmField
-    @ColorInt
+    @JvmField @ColorInt
     var iconColor: Int = Color.WHITE
     @JvmField
     var iconForm: IconForm? = null
-    @FloatRange(from = 0.0, to = 1.0)
+    @JvmField @FloatRange(from = 0.0, to = 1.0)
     var alpha: Float = 1f
-    @JvmField
-    @LayoutRes
+    @JvmField @LayoutRes
     var layout: Int = -1
     @JvmField
     var onBalloonClickListener: OnBalloonClickListener? = null
@@ -601,8 +599,7 @@ class Balloon(
     var autoDismissDuration: Long = -1L
     @JvmField
     var lifecycleOwner: LifecycleOwner? = null
-    @StyleRes
-    @JvmField
+    @JvmField @StyleRes
     var balloonAnimationStyle: Int = -1
     @JvmField
     var balloonAnimation: BalloonAnimation = BalloonAnimation.FADE
@@ -612,7 +609,7 @@ class Balloon(
     var showTimes: Int = 1
 
     /** sets the width size. */
-    fun setWidth(value: Int): Builder = apply { this.width = context.dp2Px(value) }
+    fun setWidth(@Px value: Int): Builder = apply { this.width = context.dp2Px(value) }
 
     /** sets the width size by the display screen size ratio. */
     fun setWidthRatio(
@@ -620,16 +617,16 @@ class Balloon(
     ): Builder = apply { this.widthRatio = value }
 
     /** sets the height size. */
-    fun setHeight(value: Int): Builder = apply { this.height = context.dp2Px(value) }
+    fun setHeight(@Px value: Int): Builder = apply { this.height = context.dp2Px(value) }
 
     /** sets the side space between popup and display. */
-    fun setSpace(value: Int): Builder = apply { this.space = context.dp2Px(value) }
+    fun setSpace(@Px value: Int): Builder = apply { this.space = context.dp2Px(value) }
 
     /** sets the visibility of the arrow. */
     fun setArrowVisible(value: Boolean): Builder = apply { this.arrowVisible = value }
 
     /** sets the size of the arrow. */
-    fun setArrowSize(value: Int): Builder = apply { this.arrowSize = context.dp2Px(value) }
+    fun setArrowSize(@Px value: Int): Builder = apply { this.arrowSize = context.dp2Px(value) }
 
     /** sets the arrow position by popup size ration. The popup size depends on [arrowOrientation]. */
     fun setArrowPosition(
@@ -647,7 +644,7 @@ class Balloon(
     }
 
     /** sets a custom drawable of the arrow using the resource. */
-    fun setArrowDrawableResource(value: Int): Builder = apply {
+    fun setArrowDrawableResource(@DrawableRes value: Int): Builder = apply {
       this.arrowDrawable = context.contextDrawable(value)?.mutate()
     }
 
@@ -655,7 +652,7 @@ class Balloon(
     fun setBackgroundColor(@ColorInt value: Int): Builder = apply { this.backgroundColor = value }
 
     /** sets the background color of the arrow and popup using the resource color. */
-    fun setBackgroundColorResource(value: Int): Builder = apply {
+    fun setBackgroundColorResource(@ColorRes value: Int): Builder = apply {
       this.backgroundColor = context.contextColor(value)
     }
 
@@ -665,12 +662,12 @@ class Balloon(
     }
 
     /** sets the background drawable of the popup by the resource. */
-    fun setBackgroundDrawableResource(value: Int) = apply {
+    fun setBackgroundDrawableResource(@DrawableRes value: Int) = apply {
       this.backgroundDrawable = context.contextDrawable(value)?.mutate()
     }
 
     /** sets the corner radius of the popup. */
-    fun setCornerRadius(value: Float) = apply { this.cornerRadius = context.dp2Px(value) }
+    fun setCornerRadius(@Px value: Float) = apply { this.cornerRadius = context.dp2Px(value) }
 
     /** sets the main text content of the popup. */
     fun setText(value: String): Builder = apply { this.text = value }
@@ -679,7 +676,7 @@ class Balloon(
     fun setTextColor(@ColorInt value: Int): Builder = apply { this.textColor = value }
 
     /** sets the color of the main text content using the resource color. */
-    fun setTextColorResource(value: Int): Builder = apply {
+    fun setTextColorResource(@ColorRes value: Int): Builder = apply {
       this.textColor = context.contextColor(value)
     }
 
@@ -699,12 +696,12 @@ class Balloon(
     fun setIconDrawable(value: Drawable?) = apply { this.iconDrawable = value?.mutate() }
 
     /** sets the icon drawable of the popup using the resource. */
-    fun setIconDrawableResource(value: Int) = apply {
+    fun setIconDrawableResource(@DrawableRes value: Int) = apply {
       this.iconDrawable = context.contextDrawable(value)?.mutate()
     }
 
     /** sets the size of the icon drawable. */
-    fun setIconSize(value: Int) = apply { this.iconSize = context.dp2Px(value) }
+    fun setIconSize(@Px value: Int) = apply { this.iconSize = context.dp2Px(value) }
 
     /** sets the color of the icon drawable. */
     fun setIconColor(@ColorInt value: Int) = apply { this.iconColor = value }
@@ -715,7 +712,7 @@ class Balloon(
     }
 
     /** sets the space between the icon and the main text content. */
-    fun setIconSpace(value: Int) = apply { this.iconSpace = context.dp2Px(value) }
+    fun setIconSpace(@Px value: Int) = apply { this.iconSpace = context.dp2Px(value) }
 
     /** applies [IconForm] attributes to the icon. */
     fun setIconForm(value: IconForm) = apply { this.iconForm = value }
@@ -732,7 +729,7 @@ class Balloon(
      * sets the [LifecycleOwner] for dismissing automatically when the [LifecycleOwner] is destroyed.
      * It will prevents memory leak : [Avoid Memory Leak](https://github.com/skydoves/balloon#avoid-memory-leak)
      */
-    fun setLifecycleOwner(value: LifecycleOwner): Builder = apply { this.lifecycleOwner = value }
+    fun setLifecycleOwner(value: LifecycleOwner?): Builder = apply { this.lifecycleOwner = value }
 
     /** sets the balloon showing animation using [BalloonAnimation]. */
     fun setBalloonAnimation(value: BalloonAnimation): Builder = apply {
@@ -822,6 +819,6 @@ class Balloon(
   abstract class Factory {
 
     /** returns an instance of [Balloon]. */
-    abstract fun create(context: Context, lifecycle: LifecycleOwner): Balloon
+    abstract fun create(context: Context, lifecycle: LifecycleOwner?): Balloon
   }
 }

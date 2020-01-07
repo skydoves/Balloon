@@ -25,7 +25,7 @@ import com.skydoves.balloondemo.R
 
 class CustomListBalloonFactory : Balloon.Factory() {
 
-  override fun create(context: Context, lifecycle: LifecycleOwner): Balloon {
+  override fun create(context: Context, lifecycle: LifecycleOwner?): Balloon {
     return Balloon.Builder(context)
       .setLayout(R.layout.layout_custom_list)
       .setArrowSize(10)

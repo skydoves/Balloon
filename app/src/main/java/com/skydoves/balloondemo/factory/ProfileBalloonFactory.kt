@@ -26,7 +26,7 @@ import com.skydoves.balloondemo.R
 
 class ProfileBalloonFactory : Balloon.Factory() {
 
-  override fun create(context: Context, lifecycle: LifecycleOwner): Balloon {
+  override fun create(context: Context, lifecycle: LifecycleOwner?): Balloon {
     return createBalloon(context) {
       setLayout(R.layout.layout_custom_profile)
       setArrowSize(10)

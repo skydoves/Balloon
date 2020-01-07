@@ -22,6 +22,8 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import androidx.annotation.ColorInt
+import androidx.annotation.Px
+import androidx.annotation.StringRes
 
 @DslMarker
 annotation class TextFormDsl
@@ -47,10 +49,9 @@ class TextForm(builder: Builder) {
   class Builder(val context: Context) {
     @JvmField
     var text: String = ""
-    @JvmField
+    @JvmField @Px
     var textSize: Float = 12f
-    @JvmField
-    @ColorInt
+    @JvmField @ColorInt
     var textColor = Color.WHITE
     @JvmField
     var textTypeface = Typeface.NORMAL
@@ -61,13 +62,15 @@ class TextForm(builder: Builder) {
     fun setText(value: String): Builder = apply { this.text = value }
 
     /** sets the size of the text. */
-    fun setTextSize(value: Float): Builder = apply { this.textSize = value }
+    fun setTextSize(@Px value: Float): Builder = apply { this.textSize = value }
 
     /** sets the color of the text. */
     fun setTextColor(@ColorInt value: Int): Builder = apply { this.textColor = value }
 
     /** sets the color of the text using resource. */
-    fun setTextColorResource(value: Int): Builder = apply { this.textColor = context.contextColor(value) }
+    fun setTextColorResource(@StringRes value: Int): Builder = apply {
+      this.textColor = context.contextColor(value)
+    }
 
     /** sets the [Typeface] of the text. */
     fun setTextTypeface(value: Int): Builder = apply { this.textTypeface = value }
