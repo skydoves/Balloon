@@ -5,6 +5,7 @@
   <a href="https://android-arsenal.com/api?level=16"><img alt="API" src="https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat"/></a>
   <a href="https://travis-ci.org/skydoves/Balloon"><img alt="Build" src="https://travis-ci.org/skydoves/Balloon.svg?branch=master"/></a>
   <a href="https://www.reddit.com/r/androiddev/comments/ch4k5f/balloon_a_lightweight_popup_like_tooltips_fully/"><img alt="Reddit" src="https://img.shields.io/badge/Reddit-androiddev-orange"></a>
+  <a href="https://mailchi.mp/kotlinweekly/kotlin-weekly-180"><img alt="KotlinWeekly" src="https://img.shields.io/badge/KotlinWeekly-%23180-4E71E6"/></a>
   <a href="https://skydoves.github.io/libraries/balloon/javadoc/balloon/com.skydoves.balloon/index.html"><img alt="Javadoc" src="https://img.shields.io/badge/Javadoc-Balloon-yellow.svg"/></a>
 </p>
 
