@@ -681,7 +681,7 @@ class Balloon(
     }
 
     /** sets the size of the main text content. */
-    fun setTextSize(value: Float): Builder = apply { this.textSize = value }
+    fun setTextSize(@Px value: Float): Builder = apply { this.textSize = value }
 
     /** sets the typeface of the main text content. */
     fun setTextTypeface(value: Int): Builder = apply { this.textTypeface = value }
