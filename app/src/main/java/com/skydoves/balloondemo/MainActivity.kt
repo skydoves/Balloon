@@ -27,10 +27,14 @@ import com.skydoves.balloondemo.factory.ViewHolderBalloonFactory
 import com.skydoves.balloondemo.recycler.ItemUtils
 import com.skydoves.balloondemo.recycler.SampleAdapter
 import com.skydoves.balloondemo.recycler.SampleItem
-import com.skydoves.balloondemo.recycler.SampleViewHolder
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.bottomNavigationView
+import kotlinx.android.synthetic.main.activity_main.button
+import kotlinx.android.synthetic.main.activity_main.recyclerView
+import kotlinx.android.synthetic.main.activity_main.tabLayout
 
-class MainActivity : AppCompatActivity(), SampleViewHolder.Delegate, OnBalloonClickListener {
+class MainActivity : AppCompatActivity(),
+  SampleAdapter.SampleViewHolder.Delegate,
+  OnBalloonClickListener {
 
   private val adapter by lazy { SampleAdapter(this) }
   private val profileBalloon by lazy { BalloonUtils.getProfileBalloon(this, this) }

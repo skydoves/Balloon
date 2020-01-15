@@ -22,8 +22,9 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import androidx.annotation.ColorInt
-import androidx.annotation.Px
+import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
+import com.skydoves.balloon.annotations.Sp
 
 @DslMarker
 annotation class TextFormDsl
@@ -38,18 +39,18 @@ inline fun textForm(context: Context, block: TextForm.Builder.() -> Unit): TextF
  */
 class TextForm(builder: Builder) {
 
-  val text = builder.text
-  val textSize = builder.textSize
-  val textColor = builder.textColor
-  val textStyle = builder.textTypeface
-  val textTypeface = builder.textTypefaceObject
+  val text: String = builder.text
+  @Sp val textSize: Float = builder.textSize
+  @ColorInt val textColor: Int = builder.textColor
+  val textStyle: Int = builder.textTypeface
+  val textTypeface: Typeface? = builder.textTypefaceObject
 
   /** Builder class for [TextForm]. */
   @TextFormDsl
   class Builder(val context: Context) {
     @JvmField
     var text: String = ""
-    @JvmField @Px
+    @JvmField @Sp
     var textSize: Float = 12f
     @JvmField @ColorInt
     var textColor = Color.WHITE
@@ -61,14 +62,19 @@ class TextForm(builder: Builder) {
     /** sets the content text of the form. */
     fun setText(value: String): Builder = apply { this.text = value }
 
+    /** sets the content text of the form using string resource. */
+    fun setTextResource(@StringRes value: Int): Builder = apply {
+      this.text = context.getString(value)
+    }
+
     /** sets the size of the text. */
-    fun setTextSize(@Px value: Float): Builder = apply { this.textSize = value }
+    fun setTextSize(@Sp value: Float): Builder = apply { this.textSize = value }
 
     /** sets the color of the text. */
     fun setTextColor(@ColorInt value: Int): Builder = apply { this.textColor = value }
 
     /** sets the color of the text using resource. */
-    fun setTextColorResource(@StringRes value: Int): Builder = apply {
+    fun setTextColorResource(@ColorRes value: Int): Builder = apply {
       this.textColor = context.contextColor(value)
     }
 

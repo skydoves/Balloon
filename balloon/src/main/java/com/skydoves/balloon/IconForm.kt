@@ -39,9 +39,9 @@ inline fun iconForm(context: Context, block: IconForm.Builder.() -> Unit): IconF
 class IconForm(builder: Builder) {
 
   val drawable = builder.drawable
-  val iconSize = builder.iconSize
-  val iconSpace = builder.iconSpace
-  val iconColor = builder.iconColor
+  @Px val iconSize = builder.iconSize
+  @Px val iconSpace = builder.iconSpace
+  @ColorInt val iconColor = builder.iconColor
 
   /** Builder class for [IconForm]. */
   @IconFormDsl

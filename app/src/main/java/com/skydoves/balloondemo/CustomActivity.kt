@@ -30,17 +30,18 @@ import com.skydoves.balloondemo.factory.TagBalloonFactory
 import com.skydoves.balloondemo.factory.ViewHolderBalloonFactory
 import com.skydoves.balloondemo.recycler.CustomAdapter
 import com.skydoves.balloondemo.recycler.CustomItem
-import com.skydoves.balloondemo.recycler.CustomViewHolder
 import com.skydoves.balloondemo.recycler.ItemUtils
 import com.skydoves.balloondemo.recycler.SampleAdapter
 import com.skydoves.balloondemo.recycler.SampleItem
-import com.skydoves.balloondemo.recycler.SampleViewHolder
-import kotlinx.android.synthetic.main.activity_custom.*
-import kotlinx.android.synthetic.main.toolbar_custom.*
+import kotlinx.android.synthetic.main.activity_custom.bottomNavigationView
+import kotlinx.android.synthetic.main.activity_custom.circleImageView
+import kotlinx.android.synthetic.main.activity_custom.recyclerView
+import kotlinx.android.synthetic.main.activity_custom.tabLayout
+import kotlinx.android.synthetic.main.toolbar_custom.toolbar_list
 
 class CustomActivity : AppCompatActivity(),
-  SampleViewHolder.Delegate,
-  CustomViewHolder.Delegate {
+  SampleAdapter.SampleViewHolder.Delegate,
+  CustomAdapter.CustomViewHolder.Delegate {
 
   private val adapter by lazy { SampleAdapter(this) }
   private val customAdapter by lazy { CustomAdapter(this) }
@@ -60,7 +61,8 @@ class CustomActivity : AppCompatActivity(),
     recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
     this.adapter.addItems(ItemUtils.getSamples(this))
 
-    val listRecycler: RecyclerView = customListBalloon.getContentView().findViewById(R.id.list_recyclerView)
+    val listRecycler: RecyclerView =
+      customListBalloon.getContentView().findViewById(R.id.list_recyclerView)
     listRecycler.adapter = customAdapter
     listRecycler.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
     this.customAdapter.addCustomItem(ItemUtils.getCustomSamples(this))

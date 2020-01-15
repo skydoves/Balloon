@@ -38,12 +38,14 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.FloatRange
 import androidx.annotation.LayoutRes
 import androidx.annotation.MainThread
-import androidx.annotation.Px
+import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
+import com.skydoves.balloon.annotations.Dp
+import com.skydoves.balloon.annotations.Sp
 import kotlinx.android.synthetic.main.layout_balloon.view.balloon_arrow
 import kotlinx.android.synthetic.main.layout_balloon.view.balloon_background
 import kotlinx.android.synthetic.main.layout_balloon.view.balloon_content
@@ -533,17 +535,17 @@ class Balloon(
   /** Builder class for creating [Balloon]. */
   @BalloonDsl
   class Builder(private val context: Context) {
-    @JvmField @Px
+    @JvmField @Dp
     var width: Int = context.displaySize().x
     @JvmField @FloatRange(from = 0.0, to = 1.0)
     var widthRatio: Float = 0f
-    @JvmField @Px
+    @JvmField @Dp
     var height: Int = context.dp2Px(60)
-    @JvmField @Px
+    @JvmField @Dp
     var space: Int = 0
     @JvmField
     var arrowVisible: Boolean = true
-    @JvmField @Px
+    @JvmField @Dp
     var arrowSize: Int = context.dp2Px(15)
     @JvmField @FloatRange(from = 0.0, to = 1.0)
     var arrowPosition: Float = 0.5f
@@ -555,13 +557,13 @@ class Balloon(
     var backgroundColor: Int = Color.BLACK
     @JvmField
     var backgroundDrawable: Drawable? = null
-    @JvmField @Px
+    @JvmField @Dp
     var cornerRadius: Float = context.dp2Px(5).toFloat()
     @JvmField
     var text: String = ""
     @JvmField @ColorInt
     var textColor: Int = Color.WHITE
-    @JvmField @Px
+    @JvmField @Sp
     var textSize: Float = 12f
     @JvmField
     var textTypeface: Int = Typeface.NORMAL
@@ -571,9 +573,9 @@ class Balloon(
     var textForm: TextForm? = null
     @JvmField
     var iconDrawable: Drawable? = null
-    @JvmField @Px
+    @JvmField @Dp
     var iconSize: Int = context.dp2Px(28)
-    @JvmField @Px
+    @JvmField @Dp
     var iconSpace: Int = context.dp2Px(8)
     @JvmField @ColorInt
     var iconColor: Int = Color.WHITE
@@ -609,7 +611,7 @@ class Balloon(
     var showTimes: Int = 1
 
     /** sets the width size. */
-    fun setWidth(@Px value: Int): Builder = apply { this.width = context.dp2Px(value) }
+    fun setWidth(@Dp value: Int): Builder = apply { this.width = context.dp2Px(value) }
 
     /** sets the width size by the display screen size ratio. */
     fun setWidthRatio(
@@ -617,16 +619,16 @@ class Balloon(
     ): Builder = apply { this.widthRatio = value }
 
     /** sets the height size. */
-    fun setHeight(@Px value: Int): Builder = apply { this.height = context.dp2Px(value) }
+    fun setHeight(@Dp value: Int): Builder = apply { this.height = context.dp2Px(value) }
 
     /** sets the side space between popup and display. */
-    fun setSpace(@Px value: Int): Builder = apply { this.space = context.dp2Px(value) }
+    fun setSpace(@Dp value: Int): Builder = apply { this.space = context.dp2Px(value) }
 
     /** sets the visibility of the arrow. */
     fun setArrowVisible(value: Boolean): Builder = apply { this.arrowVisible = value }
 
     /** sets the size of the arrow. */
-    fun setArrowSize(@Px value: Int): Builder = apply { this.arrowSize = context.dp2Px(value) }
+    fun setArrowSize(@Dp value: Int): Builder = apply { this.arrowSize = context.dp2Px(value) }
 
     /** sets the arrow position by popup size ration. The popup size depends on [arrowOrientation]. */
     fun setArrowPosition(
@@ -657,20 +659,27 @@ class Balloon(
     }
 
     /** sets the background drawable of the popup. */
-    fun setBackgroundDrawable(value: Drawable?) = apply {
+    fun setBackgroundDrawable(value: Drawable?): Builder = apply {
       this.backgroundDrawable = value?.mutate()
     }
 
     /** sets the background drawable of the popup by the resource. */
-    fun setBackgroundDrawableResource(@DrawableRes value: Int) = apply {
+    fun setBackgroundDrawableResource(@DrawableRes value: Int): Builder = apply {
       this.backgroundDrawable = context.contextDrawable(value)?.mutate()
     }
 
     /** sets the corner radius of the popup. */
-    fun setCornerRadius(@Px value: Float) = apply { this.cornerRadius = context.dp2Px(value) }
+    fun setCornerRadius(@Dp value: Float): Builder = apply {
+      this.cornerRadius = context.dp2Px(value)
+    }
 
     /** sets the main text content of the popup. */
     fun setText(value: String): Builder = apply { this.text = value }
+
+    /** sets the main text content of the popup using resource. */
+    fun setTextResource(@StringRes value: Int): Builder = apply {
+      this.text = context.getString(value)
+    }
 
     /** sets the color of the main text content. */
     fun setTextColor(@ColorInt value: Int): Builder = apply { this.textColor = value }
@@ -681,7 +690,7 @@ class Balloon(
     }
 
     /** sets the size of the main text content. */
-    fun setTextSize(@Px value: Float): Builder = apply { this.textSize = value }
+    fun setTextSize(@Sp value: Float): Builder = apply { this.textSize = value }
 
     /** sets the typeface of the main text content. */
     fun setTextTypeface(value: Int): Builder = apply { this.textTypeface = value }
@@ -693,7 +702,7 @@ class Balloon(
     fun setTextForm(value: TextForm): Builder = apply { this.textForm = value }
 
     /** sets the icon drawable of the popup. */
-    fun setIconDrawable(value: Drawable?) = apply { this.iconDrawable = value?.mutate() }
+    fun setIconDrawable(value: Drawable?): Builder = apply { this.iconDrawable = value?.mutate() }
 
     /** sets the icon drawable of the popup using the resource. */
     fun setIconDrawableResource(@DrawableRes value: Int) = apply {
@@ -701,21 +710,21 @@ class Balloon(
     }
 
     /** sets the size of the icon drawable. */
-    fun setIconSize(@Px value: Int) = apply { this.iconSize = context.dp2Px(value) }
+    fun setIconSize(@Dp value: Int): Builder = apply { this.iconSize = context.dp2Px(value) }
 
     /** sets the color of the icon drawable. */
-    fun setIconColor(@ColorInt value: Int) = apply { this.iconColor = value }
+    fun setIconColor(@ColorInt value: Int): Builder = apply { this.iconColor = value }
 
     /** sets the color of the icon drawable using the resource color. */
-    fun setIconColorResource(@ColorInt value: Int) = apply {
+    fun setIconColorResource(@ColorInt value: Int): Builder = apply {
       this.iconColor = context.contextColor(value)
     }
 
     /** sets the space between the icon and the main text content. */
-    fun setIconSpace(@Px value: Int) = apply { this.iconSpace = context.dp2Px(value) }
+    fun setIconSpace(@Dp value: Int): Builder = apply { this.iconSpace = context.dp2Px(value) }
 
     /** applies [IconForm] attributes to the icon. */
-    fun setIconForm(value: IconForm) = apply { this.iconForm = value }
+    fun setIconForm(value: IconForm): Builder = apply { this.iconForm = value }
 
     /** sets the alpha value to the popup. */
     fun setAlpha(@FloatRange(from = 0.0, to = 1.0) value: Float): Builder = apply {

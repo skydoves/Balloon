@@ -16,28 +16,48 @@
 
 package com.skydoves.balloondemo.recycler
 
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.skydoves.balloondemo.R
-import com.skydoves.baserecyclerviewadapter.BaseAdapter
-import com.skydoves.baserecyclerviewadapter.SectionRow
+import kotlinx.android.synthetic.main.item_sample.view.sample0_avatar
+import kotlinx.android.synthetic.main.item_sample.view.sample0_content
+import kotlinx.android.synthetic.main.item_sample.view.sample0_name
 
 @Suppress("PrivatePropertyName")
 class SampleAdapter(
   private val delegate: SampleViewHolder.Delegate
-) : BaseAdapter() {
+) : RecyclerView.Adapter<SampleAdapter.SampleViewHolder>() {
 
-  private val section_item = 0
+  private val sampleItems = mutableListOf<SampleItem>()
 
-  init {
-    addSection(ArrayList<SampleItem>())
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SampleViewHolder {
+    val inflater = LayoutInflater.from(parent.context)
+    return SampleViewHolder(inflater.inflate(R.layout.item_sample, parent, false))
+  }
+
+  override fun onBindViewHolder(holder: SampleViewHolder, position: Int) {
+    val sampleItem = this.sampleItems[position]
+    holder.itemView.run {
+      sample0_avatar.setImageDrawable(sampleItem.image)
+      sample0_name.text = sampleItem.name
+      sample0_content.text = sampleItem.content
+      setOnClickListener { delegate.onItemClick(sampleItem, this) }
+    }
   }
 
   fun addItems(sampleItems: List<SampleItem>) {
-    addItemListOnSection(section_item, sampleItems)
+    this.sampleItems.addAll(sampleItems)
     notifyDataSetChanged()
   }
 
-  override fun layout(sectionRow: SectionRow) = R.layout.item_sample
+  override fun getItemCount() = this.sampleItems.size
 
-  override fun viewHolder(layout: Int, view: View) = SampleViewHolder(view, delegate)
+  class SampleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+    interface Delegate {
+      fun onItemClick(sampleItem: SampleItem, view: View)
+    }
+  }
 }

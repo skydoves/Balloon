@@ -16,25 +16,45 @@
 
 package com.skydoves.balloondemo.recycler
 
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.skydoves.balloondemo.R
-import com.skydoves.baserecyclerviewadapter.BaseAdapter
-import com.skydoves.baserecyclerviewadapter.SectionRow
+import kotlinx.android.synthetic.main.item_custom.view.item_custom_icon
+import kotlinx.android.synthetic.main.item_custom.view.item_custom_title
 
 class CustomAdapter(
   private val delegate: CustomViewHolder.Delegate
-) : BaseAdapter() {
+) : RecyclerView.Adapter<CustomAdapter.CustomViewHolder>() {
 
-  init {
-    addSection(ArrayList<CustomItem>())
+  private val customItems = mutableListOf<CustomItem>()
+
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
+    val inflater = LayoutInflater.from(parent.context)
+    return CustomViewHolder(inflater.inflate(R.layout.item_custom, parent, false))
+  }
+
+  override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
+    val customItem = this.customItems[position]
+    holder.itemView.run {
+      item_custom_icon.setImageDrawable(customItem.icon)
+      item_custom_title.text = customItem.title
+      setOnClickListener { delegate.onCustomItemClick(customItem) }
+    }
   }
 
   fun addCustomItem(customList: List<CustomItem>) {
-    addItemListOnSection(0, customList)
+    this.customItems.addAll(customList)
     notifyDataSetChanged()
   }
 
-  override fun layout(sectionRow: SectionRow) = R.layout.item_custom
+  override fun getItemCount() = this.customItems.size
 
-  override fun viewHolder(layout: Int, view: View) = CustomViewHolder(delegate, view)
+  class CustomViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+    interface Delegate {
+      fun onCustomItemClick(customItem: CustomItem)
+    }
+  }
 }

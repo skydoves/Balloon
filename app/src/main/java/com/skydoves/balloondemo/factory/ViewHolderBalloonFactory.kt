@@ -31,7 +31,7 @@ class ViewHolderBalloonFactory : Balloon.Factory() {
 
   override fun create(context: Context, lifecycle: LifecycleOwner?): Balloon {
     val textForm = textForm(context) {
-      setText("This is your new content!!!\nThis is your new content!!!\nThis is your new content!!!")
+      setText("This is your new content!!!")
       setTextSize(15f)
       setTextColor(ContextCompat.getColor(context, R.color.white_87))
     }
@@ -40,7 +40,7 @@ class ViewHolderBalloonFactory : Balloon.Factory() {
       setText("This is your new content.")
       setArrowSize(10)
       setWidthRatio(0.75f)
-      setHeight(140)
+      setHeight(64)
       setTextSize(15f)
       setCornerRadius(8f)
       setTextForm(textForm)
@@ -48,7 +48,9 @@ class ViewHolderBalloonFactory : Balloon.Factory() {
       setTextColorResource(R.color.white_87)
       setIconDrawableResource(R.drawable.ic_edit)
       setBackgroundColorResource(R.color.yellow)
-      setOnBalloonDismissListener { Toast.makeText(context, "dismissed", Toast.LENGTH_SHORT).show() }
+      setOnBalloonDismissListener {
+        Toast.makeText(context, "dismissed", Toast.LENGTH_SHORT).show()
+      }
       setDismissWhenClicked(true)
       setDismissWhenShowAgain(true)
       setBalloonAnimation(BalloonAnimation.ELASTIC)
