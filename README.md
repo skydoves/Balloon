@@ -39,11 +39,11 @@ dependencies {
 
 ## Usage
 
-### Basic Example
+### Basic Example for Java
 Here is a basic example of implementing balloon popup with icon and text using `Balloon.Builder` class.<br>
 
 ```java
-Balloon balloon = Balloon.Builder(baseContext)
+Balloon balloon = new Balloon.Builder(baseContext)
     .setArrowSize(10)
     .setArrowOrientation(ArrowOrientation.TOP)
     .setArrowVisible(true)
