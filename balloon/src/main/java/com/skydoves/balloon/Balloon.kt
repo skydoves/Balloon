@@ -233,6 +233,7 @@ class Balloon(
           bodyWindow.animationStyle = R.style.NormalDispose
         }
         BalloonAnimation.FADE -> bodyWindow.animationStyle = R.style.Fade
+        BalloonAnimation.OVERSHOOT -> bodyWindow.animationStyle = R.style.Overshoot
         else -> bodyWindow.animationStyle = R.style.Normal
       }
     } else {

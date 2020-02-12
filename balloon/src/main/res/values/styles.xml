@@ -19,4 +19,9 @@
     <item name="android:windowEnterAnimation">@anim/fade_in</item>
     <item name="android:windowExitAnimation">@anim/fade_out</item>
   </style>
+
+  <style name="Overshoot">
+    <item name="android:windowEnterAnimation">@anim/overshoot_center</item>
+    <item name="android:windowExitAnimation">@anim/dispose_center</item>
+  </style>
 </resources>
