@@ -36,7 +36,7 @@ class ProfileBalloonFactory : Balloon.Factory() {
       setHeight(250)
       setCornerRadius(4f)
       setBackgroundColorResource(R.color.white)
-      setBalloonAnimation(BalloonAnimation.OVERSHOOT)
+      setBalloonAnimation(BalloonAnimation.CIRCULAR)
       setDismissWhenShowAgain(true)
       setLifecycleOwner(lifecycle)
     }

@@ -16,12 +16,16 @@
 
 package com.skydoves.balloon
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.os.Build
 import android.view.View
 import android.view.ViewAnimationUtils
+import androidx.annotation.MainThread
 import kotlin.math.max
 
 /** makes visible or invisible a View align the value parameter. */
+@MainThread
 internal fun View.visible(value: Boolean) {
   if (value) {
     this.visibility = View.VISIBLE
@@ -30,8 +34,46 @@ internal fun View.visible(value: Boolean) {
   }
 }
 
+@MainThread
 /** shows circular revealed animation to a view. */
 internal fun View.circularRevealed() {
+  doOnLayoutChanged {
+    val view = this
+    ViewAnimationUtils.createCircularReveal(
+      view,
+      (view.left + view.right) / 2,
+      (view.top + view.bottom) / 2,
+      0f,
+      max(view.width, view.height).toFloat()).apply {
+      duration = 500
+      start()
+    }
+  }
+}
+
+@MainThread
+internal fun View.circularUnRevealed(doAfterFinish: () -> Unit) {
+  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+    val view = this
+    ViewAnimationUtils.createCircularReveal(
+      view,
+      (view.left + view.right) / 2,
+      (view.top + view.bottom) / 2,
+      max(view.width, view.height).toFloat(),
+      0f).apply {
+      duration = 500
+      start()
+    }.addListener(object : AnimatorListenerAdapter() {
+      override fun onAnimationEnd(animation: Animator?) {
+        super.onAnimationEnd(animation)
+        doAfterFinish()
+      }
+    })
+  }
+}
+
+@MainThread
+internal fun View.doOnLayoutChanged(block: () -> Unit) {
   this.addOnLayoutChangeListener(
     object : View.OnLayoutChangeListener {
       override fun onLayoutChange(
@@ -47,15 +89,7 @@ internal fun View.circularRevealed() {
       ) {
         view.removeOnLayoutChangeListener(this)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-          ViewAnimationUtils.createCircularReveal(
-            view,
-            (view.left + view.right) / 2,
-            (view.top + view.bottom) / 2,
-            0f,
-            max(view.width, view.height).toFloat()).run {
-            duration = 500
-            start()
-          }
+          block()
         }
       }
     })
