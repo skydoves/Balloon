@@ -47,7 +47,6 @@ import androidx.lifecycle.OnLifecycleEvent
 import com.skydoves.balloon.annotations.Dp
 import com.skydoves.balloon.annotations.Sp
 import kotlinx.android.synthetic.main.layout_balloon.view.balloon_arrow
-import kotlinx.android.synthetic.main.layout_balloon.view.balloon_background
 import kotlinx.android.synthetic.main.layout_balloon.view.balloon_content
 import kotlinx.android.synthetic.main.layout_balloon.view.balloon_detail
 import kotlinx.android.synthetic.main.layout_balloon.view.balloon_icon
@@ -81,10 +80,9 @@ class Balloon(
   init {
     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     this.bodyView = inflater.inflate(R.layout.layout_balloon, null)
-    val width = getMeasureWidth()
-    val params = RelativeLayout.LayoutParams(width, builder.height)
-    this.bodyView.layoutParams = params
-    this.bodyWindow = PopupWindow(bodyView, width, builder.height)
+    this.bodyView.layoutParams = RelativeLayout.LayoutParams(getMeasureWidth(), builder.height)
+    this.bodyWindow = PopupWindow(bodyView, RelativeLayout.LayoutParams.WRAP_CONTENT,
+      RelativeLayout.LayoutParams.WRAP_CONTENT)
     createByBuilder()
   }
 
@@ -125,11 +123,13 @@ class Balloon(
           rotation = 90f
         }
       }
-      when (builder.arrowOrientation) {
-        ArrowOrientation.BOTTOM, ArrowOrientation.TOP ->
-          x = bodyWindow.width * builder.arrowPosition - (builder.arrowSize / 2)
-        ArrowOrientation.LEFT, ArrowOrientation.RIGHT ->
-          y = bodyWindow.height * builder.arrowPosition - (builder.arrowSize / 2)
+      bodyView.post {
+        when (builder.arrowOrientation) {
+          ArrowOrientation.BOTTOM, ArrowOrientation.TOP ->
+            x = bodyView.width * builder.arrowPosition - (builder.arrowSize / 2)
+          ArrowOrientation.LEFT, ArrowOrientation.RIGHT ->
+            y = bodyView.height * builder.arrowPosition - (builder.arrowSize / 2)
+        }
       }
       layoutParams = params
       alpha = builder.alpha
@@ -139,7 +139,7 @@ class Balloon(
   }
 
   private fun initializeBackground() {
-    with(bodyView.balloon_background) {
+    with(bodyView.balloon_detail) {
       alpha = builder.alpha
       if (builder.backgroundDrawable == null) {
         background = GradientDrawable().apply {
