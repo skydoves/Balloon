@@ -119,7 +119,6 @@ Balloon.Builder(baseContext)
    ...
 ```
 
-
 ### Show sequentially
 We can show balloon popup sequentially using `relayShow` method. <br>
 The `relayShow` method makes that `setOnDismissListener` of the first balloon is reset to show the <br>
@@ -166,12 +165,12 @@ We can customize the text on the balloon popup.
 TextFrom is an attribute class that has some attributes about TextView for customizing popup text.
 
 ```java
-TextForm textForm = TextForm.Builder(context)
-    .setText("This is a TextForm")
-    .setTextColor(R.color.colorPrimary)
-    .setTextSize(14f)
-    .setTextTypeFace(Typeface.BOLD)
-    .build();
+TextForm textForm = new TextForm.Builder(context)
+  .setText("This is a TextForm")
+  .setTextColorResource(R.color.colorPrimary)
+  .setTextSize(14f)
+  .setTextTypeface(Typeface.BOLD)
+  .build();
 
 builder.setTextForm(textForm);
 ```
@@ -200,12 +199,12 @@ We can customize the icon on the balloon popup.
 IconForm is an attribute class that has some attributes about ImageView for customizing popup icon.
  
 ```java
-IconForm iconForm = IconForm.Builder(context)
-    .setDrawable(ContextCompat.getDrawable(baseContext, R.drawable.arrow))
-    .setIconColor(ContextCompat.getColor(baseContext, R.color.skyblue))
-    .setIconSize(20)
-    .setIconSpace(12)
-    .build();
+IconForm iconForm = new IconForm.Builder(context)
+  .setDrawable(ContextCompat.getDrawable(context, R.drawable.arrow))
+  .setIconColor(ContextCompat.getColor(context, R.color.colorPrimary))
+  .setIconSize(20)
+  .setIconSpace(12)
+  .build();
   
 builder.setIconForm(iconForm);
 ```
