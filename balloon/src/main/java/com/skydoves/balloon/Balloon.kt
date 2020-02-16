@@ -142,10 +142,10 @@ class Balloon(
     with(bodyView.balloon_background) {
       alpha = builder.alpha
       if (builder.backgroundDrawable == null) {
-        val drawable = GradientDrawable()
-        drawable.setColor(builder.backgroundColor)
-        drawable.cornerRadius = builder.cornerRadius
-        background = drawable
+        background = GradientDrawable().apply {
+          setColor(builder.backgroundColor)
+          cornerRadius = builder.cornerRadius
+        }
       } else {
         background = builder.backgroundDrawable
       }

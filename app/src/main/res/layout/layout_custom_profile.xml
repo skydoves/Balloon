@@ -21,7 +21,7 @@
     android:layout_gravity="center_horizontal"
     android:layout_marginTop="5dp"
     android:text="skydoves"
-    android:textColor="@color/skyBlue"
+    android:textColor="@color/background900"
     android:textSize="16sp"
     android:textStyle="bold"
     tools:ignore="HardcodedText" />
@@ -32,9 +32,8 @@
     android:layout_gravity="center_horizontal"
     android:layout_marginTop="5dp"
     android:text="Love coffee, music, magic tricks and writing poems."
-    android:textColor="@color/white_87"
+    android:textColor="@color/background800"
     android:textSize="14sp"
-    android:textStyle="bold"
     tools:ignore="HardcodedText" />
 
   <Button
@@ -42,10 +41,10 @@
     android:layout_width="match_parent"
     android:layout_height="36dp"
     android:layout_marginTop="16dp"
-    android:background="@drawable/round_button"
+    android:background="@drawable/round_button_skyblue"
     android:text="Edit"
     android:textAllCaps="false"
-    android:textColor="@color/skyBlue"
+    android:textColor="@color/white"
     tools:ignore="HardcodedText" />
 
 </LinearLayout>

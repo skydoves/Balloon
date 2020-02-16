@@ -47,14 +47,15 @@ internal fun View.circularRevealed() {
       ) {
         view.removeOnLayoutChangeListener(this)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-          val animator = ViewAnimationUtils.createCircularReveal(
+          ViewAnimationUtils.createCircularReveal(
             view,
             (view.left + view.right) / 2,
             (view.top + view.bottom) / 2,
             0f,
-            max(view.width, view.height).toFloat())
-          animator.duration = 500
-          animator.start()
+            max(view.width, view.height).toFloat()).run {
+            duration = 500
+            start()
+          }
         }
       }
     })
