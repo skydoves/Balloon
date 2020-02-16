@@ -43,7 +43,7 @@ dependencies {
 Here is a basic example of implementing balloon popup with icon and text using `Balloon.Builder` class.<br>
 
 ```java
-Balloon balloon = new Balloon.Builder(baseContext)
+Balloon balloon = new Balloon.Builder(context)
     .setArrowSize(10)
     .setArrowOrientation(ArrowOrientation.TOP)
     .setArrowVisible(true)
@@ -67,7 +67,7 @@ Balloon balloon = new Balloon.Builder(baseContext)
 This is how to create `Balloon` instance using kotlin dsl.
 
 ```kotlin
-val balloon = createBalloon(baseContext) {
+val balloon = createBalloon(context) {
   setArrowSize(10)
   setWidthRatio(1.0f)
   setHeight(65)
@@ -85,7 +85,9 @@ val balloon = createBalloon(baseContext) {
 ```
 
 ### Show and dismiss
-This is how to show balloon popup and dismiss.
+This is how to show balloon popup and dismiss. <br>
+We can set the balloon popup's position using `x-Offset` and `y-Offset` attributes. <br>
+And show based on top/bottom/right/left alignment if we use `showAlign__` method.
 
 ```kotlin
 balloon.show(anchor: View) // shows the balloon on the center of an anchor view.
@@ -359,6 +361,21 @@ class ProfileBalloonFactory : Balloon.Factory() {
   }
 }
 ```
+
+### BalloonAnimation
+We can implement popup animations when showing and dismissing.
+
+```kotlin
+BalloonAnimation.NONE
+BalloonAnimation.FADE
+BalloonAnimation.OVERSHOOT
+BalloonAnimation.ELASTIC
+BalloonAnimation.CIRCULAR
+```
+
+FADE | OVERSHOOT | ELASTIC | CIRCULAR |
+| :---------------: | :---------------: | :---------------: | :---------------: |
+| <img src="https://user-images.githubusercontent.com/24237865/74601168-6115c580-50de-11ea-817b-a334f33b6f96.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/74601171-6410b600-50de-11ea-9ba0-5634e11f148a.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/74601170-63781f80-50de-11ea-8db4-93f1dd1291fc.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/74601172-64a94c80-50de-11ea-90df-4fd29b8bbb03.gif" align="center" width="100%"/> |
 
 ## Balloon builder methods
 ```java
