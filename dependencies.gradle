@@ -1,8 +1,8 @@
 ext.versions = [
     minSdk             : 16,
     compileSdk         : 29,
-    versionCode        : 10,
-    versionName        : '1.0.9',
+    versionCode        : 11,
+    versionName        : '1.1.0',
 
     gradleBuildTool    : '3.5.3',
     spotlessGradle     : '3.26.1',
@@ -13,6 +13,6 @@ ext.versions = [
     androidxAppcompat  : '1.2.0-alpha01',
 
     // for demo
-    googleMaterial     : '1.2.0-alpha03',
+    googleMaterial     : '1.2.0-alpha04',
     circleimageview    : '3.0.1'
 ]
