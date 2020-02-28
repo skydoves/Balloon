@@ -21,6 +21,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloondemo.BalloonUtils
 import com.skydoves.balloondemo.R
 
 class CustomListBalloonFactory : Balloon.Factory() {
@@ -34,6 +35,7 @@ class CustomListBalloonFactory : Balloon.Factory() {
       .setWidth(170)
       .setHeight(200)
       .setTextSize(12f)
+      .setRtlLayout(BalloonUtils.isRtlLayout())
       .setCornerRadius(4f)
       .setBackgroundColorResource(R.color.background800)
       .setBalloonAnimation(BalloonAnimation.FADE)
