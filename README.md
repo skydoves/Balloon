@@ -396,6 +396,7 @@ class ProfileBalloonFactory : Balloon.Factory() {
 .setLayout(@LayoutRes layout: Int)
 .setPreferenceName(value: String)
 .setShowTime(value: Int)
+.setRtlLayout(value: Boolean)
 .setLifecycleOwner(value: LifecycleOwner)
 .setBalloonAnimation(value: BalloonAnimation)
 .setOnBalloonClickListener(value: OnBalloonClickListener)
