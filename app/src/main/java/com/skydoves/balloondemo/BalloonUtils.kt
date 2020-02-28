@@ -70,7 +70,7 @@ object BalloonUtils {
       .build()
   }
 
-   fun isRtlLayout(): Boolean {
+  fun isRtlLayout(): Boolean {
     return TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault()) == ViewCompat.LAYOUT_DIRECTION_RTL
   }
 }

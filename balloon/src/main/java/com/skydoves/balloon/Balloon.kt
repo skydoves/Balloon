@@ -129,8 +129,7 @@ class Balloon(
       }
       when (builder.arrowOrientation) {
         ArrowOrientation.BOTTOM, ArrowOrientation.TOP -> {
-          x = horizontalLayoutFactor*(bodyWindow.width * builder.arrowPosition - (builder.arrowSize / 2))
-
+          x = horizontalLayoutFactor * (bodyWindow.width * builder.arrowPosition - (builder.arrowSize / 2))
         }
         ArrowOrientation.LEFT, ArrowOrientation.RIGHT ->
           y = bodyWindow.height * builder.arrowPosition - (builder.arrowSize / 2)
@@ -244,7 +243,7 @@ class Balloon(
     }
   }
 
-  private fun prepareLayoutDirection () {
+  private fun prepareLayoutDirection() {
     horizontalLayoutFactor = if (builder.isRtl) -1
     else 1
   }
@@ -343,7 +342,7 @@ class Balloon(
   fun showAlignTop(anchor: View) {
     show(anchor) {
       bodyWindow.showAsDropDown(anchor,
-        horizontalLayoutFactor*((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
+        horizontalLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
         -builder.height - anchor.measuredHeight)
     }
   }
@@ -361,7 +360,7 @@ class Balloon(
   fun showAlignTop(anchor: View, xOff: Int, yOff: Int) {
     show(anchor) {
       bodyWindow.showAsDropDown(anchor,
-        horizontalLayoutFactor*((anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff),
+        horizontalLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff),
         -builder.height - anchor.measuredHeight + yOff)
     }
   }
@@ -379,7 +378,7 @@ class Balloon(
   fun showAlignBottom(anchor: View) {
     show(anchor) {
       bodyWindow.showAsDropDown(anchor,
-        horizontalLayoutFactor*((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
+        horizontalLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
         0)
     }
   }
@@ -397,7 +396,7 @@ class Balloon(
   fun showAlignBottom(anchor: View, xOff: Int, yOff: Int) {
     show(anchor) {
       bodyWindow.showAsDropDown(anchor,
-        horizontalLayoutFactor*((anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff),
+        horizontalLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff),
         yOff)
     }
   }
