@@ -167,10 +167,10 @@ class Balloon(
       setTouchInterceptor(object : View.OnTouchListener {
         @SuppressLint("ClickableViewAccessibility")
         override fun onTouch(view: View, event: MotionEvent): Boolean {
-          if (builder.dismissWhenTouchOutside) {
-            dismiss()
-          }
           if (event.action == MotionEvent.ACTION_OUTSIDE) {
+            if (builder.dismissWhenTouchOutside) {
+              dismiss()
+            }
             onBalloonOutsideTouchListener?.onBalloonOutsideTouch(view, event)
             return true
           }
