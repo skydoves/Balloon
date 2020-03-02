@@ -412,6 +412,7 @@ FADE | OVERSHOOT | ELASTIC | CIRCULAR |
 .setLayout(@LayoutRes layout: Int)
 .setPreferenceName(value: String)
 .setShowTime(value: Int)
+.isRtlSupport(value: Boolean)
 .setLifecycleOwner(value: LifecycleOwner)
 .setBalloonAnimation(value: BalloonAnimation)
 .setOnBalloonClickListener(value: OnBalloonClickListener)

@@ -25,6 +25,7 @@ import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.createBalloon
 import com.skydoves.balloon.textForm
+import com.skydoves.balloondemo.BalloonUtils.isRtlLayout
 import com.skydoves.balloondemo.R
 
 class ViewHolderBalloonFactory : Balloon.Factory() {
@@ -44,6 +45,7 @@ class ViewHolderBalloonFactory : Balloon.Factory() {
       setTextSize(15f)
       setCornerRadius(8f)
       setTextForm(textForm)
+      isRtlSupport(isRtlLayout())
       setArrowOrientation(ArrowOrientation.TOP)
       setTextColorResource(R.color.white_87)
       setIconDrawableResource(R.drawable.ic_edit)

@@ -69,6 +69,7 @@ class Balloon(
   private val builder: Builder
 ) : LifecycleObserver {
 
+  private var horizontalLayoutFactor: Int = 1
   private val bodyView: View
   private val bodyWindow: PopupWindow
   var isShowing = false
@@ -89,6 +90,7 @@ class Balloon(
   }
 
   private fun createByBuilder() {
+    prepareLayoutDirection()
     initializeArrow()
     initializeBackground()
     initializeBalloonListeners()
@@ -126,8 +128,9 @@ class Balloon(
         }
       }
       when (builder.arrowOrientation) {
-        ArrowOrientation.BOTTOM, ArrowOrientation.TOP ->
-          x = bodyWindow.width * builder.arrowPosition - (builder.arrowSize / 2)
+        ArrowOrientation.BOTTOM, ArrowOrientation.TOP -> {
+          x = horizontalLayoutFactor * (bodyWindow.width * builder.arrowPosition - (builder.arrowSize / 2))
+        }
         ArrowOrientation.LEFT, ArrowOrientation.RIGHT ->
           y = bodyWindow.height * builder.arrowPosition - (builder.arrowSize / 2)
       }
@@ -241,6 +244,12 @@ class Balloon(
     }
   }
 
+  private fun prepareLayoutDirection() {
+    if (builder.isRtl) {
+      horizontalLayoutFactor = -1
+    }
+  }
+
   @MainThread
   private inline fun show(anchor: View, crossinline block: () -> Unit) {
     if (!this.isShowing) {
@@ -335,7 +344,7 @@ class Balloon(
   fun showAlignTop(anchor: View) {
     show(anchor) {
       bodyWindow.showAsDropDown(anchor,
-        (anchor.measuredWidth / 2) - (getMeasureWidth() / 2),
+        horizontalLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
         -builder.height - anchor.measuredHeight)
     }
   }
@@ -353,7 +362,7 @@ class Balloon(
   fun showAlignTop(anchor: View, xOff: Int, yOff: Int) {
     show(anchor) {
       bodyWindow.showAsDropDown(anchor,
-        (anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff,
+        horizontalLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff),
         -builder.height - anchor.measuredHeight + yOff)
     }
   }
@@ -371,7 +380,7 @@ class Balloon(
   fun showAlignBottom(anchor: View) {
     show(anchor) {
       bodyWindow.showAsDropDown(anchor,
-        (anchor.measuredWidth / 2) - (getMeasureWidth() / 2),
+        horizontalLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
         0)
     }
   }
@@ -389,7 +398,7 @@ class Balloon(
   fun showAlignBottom(anchor: View, xOff: Int, yOff: Int) {
     show(anchor) {
       bodyWindow.showAsDropDown(anchor,
-        (anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff,
+        horizontalLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff),
         yOff)
     }
   }
@@ -618,6 +627,8 @@ class Balloon(
     var preferenceName: String? = null
     @JvmField
     var showTimes: Int = 1
+    @JvmField
+    var isRtl: Boolean = false
 
     /** sets the width size. */
     fun setWidth(@Dp value: Int): Builder = apply { this.width = context.dp2Px(value) }
@@ -825,6 +836,9 @@ class Balloon(
 
     /** sets the show times. */
     fun setShowTime(value: Int): Builder = apply { this.showTimes = value }
+
+    /** sets flag for enabling rtl support */
+    fun isRtlSupport(value: Boolean): Builder = apply { this.isRtl = value }
 
     fun build(): Balloon = Balloon(context, this@Builder)
   }
