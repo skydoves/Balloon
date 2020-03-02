@@ -27,6 +27,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -40,6 +41,7 @@ import androidx.annotation.LayoutRes
 import androidx.annotation.MainThread
 import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
+import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -69,7 +71,6 @@ class Balloon(
   private val builder: Builder
 ) : LifecycleObserver {
 
-  private var horizontalLayoutFactor: Int = 1
   private val bodyView: View
   private val bodyWindow: PopupWindow
   var isShowing = false
@@ -77,6 +78,7 @@ class Balloon(
   var onBalloonClickListener: OnBalloonClickListener? = null
   var onBalloonDismissListener: OnBalloonDismissListener? = null
   var onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener? = null
+  private var supportRtlLayoutFactor: Int = LTR.unaryMinus(builder.isRtlSupport)
   private val balloonPersistence = BalloonPersistence.getInstance(context)
 
   init {
@@ -87,15 +89,16 @@ class Balloon(
     this.bodyView.layoutParams = params
     this.bodyWindow = PopupWindow(bodyView, width, builder.height)
     createByBuilder()
+
+    Log.e("Test", "$supportRtlLayoutFactor")
   }
 
   private fun createByBuilder() {
-    prepareLayoutDirection()
     initializeArrow()
     initializeBackground()
     initializeBalloonListeners()
 
-    if (builder.layout == -1) {
+    if (builder.layout == NO_INT_VALUE) {
       initializeBalloonContent()
       initializeIcon()
       initializeText()
@@ -129,14 +132,15 @@ class Balloon(
       }
       when (builder.arrowOrientation) {
         ArrowOrientation.BOTTOM, ArrowOrientation.TOP -> {
-          x = horizontalLayoutFactor * (bodyWindow.width * builder.arrowPosition - (builder.arrowSize / 2))
+          x =
+            supportRtlLayoutFactor * (bodyWindow.width * builder.arrowPosition - (builder.arrowSize / 2))
         }
         ArrowOrientation.LEFT, ArrowOrientation.RIGHT ->
           y = bodyWindow.height * builder.arrowPosition - (builder.arrowSize / 2)
       }
       layoutParams = params
       alpha = builder.alpha
-      supportImageTintList = ColorStateList.valueOf(builder.backgroundColor)
+      ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.backgroundColor))
       visible(builder.arrowVisible)
     }
   }
@@ -228,7 +232,7 @@ class Balloon(
   }
 
   private fun applyBalloonAnimation() {
-    if (builder.balloonAnimationStyle == -1) {
+    if (builder.balloonAnimationStyle == NO_INT_VALUE) {
       when (builder.balloonAnimation) {
         BalloonAnimation.ELASTIC -> bodyWindow.animationStyle = R.style.Elastic
         BalloonAnimation.CIRCULAR -> {
@@ -244,12 +248,6 @@ class Balloon(
     }
   }
 
-  private fun prepareLayoutDirection() {
-    if (builder.isRtl) {
-      horizontalLayoutFactor = -1
-    }
-  }
-
   @MainThread
   private inline fun show(anchor: View, crossinline block: () -> Unit) {
     if (!this.isShowing) {
@@ -261,7 +259,7 @@ class Balloon(
       }
 
       val dismissDelay = this.builder.autoDismissDuration
-      if (dismissDelay != -1L) {
+      if (dismissDelay != NO_LONG_VALUE) {
         dismissWithDelay(dismissDelay)
       }
 
@@ -344,7 +342,7 @@ class Balloon(
   fun showAlignTop(anchor: View) {
     show(anchor) {
       bodyWindow.showAsDropDown(anchor,
-        horizontalLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
+        supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
         -builder.height - anchor.measuredHeight)
     }
   }
@@ -362,7 +360,7 @@ class Balloon(
   fun showAlignTop(anchor: View, xOff: Int, yOff: Int) {
     show(anchor) {
       bodyWindow.showAsDropDown(anchor,
-        horizontalLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff),
+        supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff),
         -builder.height - anchor.measuredHeight + yOff)
     }
   }
@@ -380,7 +378,7 @@ class Balloon(
   fun showAlignBottom(anchor: View) {
     show(anchor) {
       bodyWindow.showAsDropDown(anchor,
-        horizontalLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
+        supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
         0)
     }
   }
@@ -398,7 +396,7 @@ class Balloon(
   fun showAlignBottom(anchor: View, xOff: Int, yOff: Int) {
     show(anchor) {
       bodyWindow.showAsDropDown(anchor,
-        horizontalLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff),
+        supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff),
         yOff)
     }
   }
@@ -602,7 +600,7 @@ class Balloon(
     @JvmField @FloatRange(from = 0.0, to = 1.0)
     var alpha: Float = 1f
     @JvmField @LayoutRes
-    var layout: Int = -1
+    var layout: Int = NO_INT_VALUE
     @JvmField
     var onBalloonClickListener: OnBalloonClickListener? = null
     @JvmField
@@ -616,11 +614,11 @@ class Balloon(
     @JvmField
     var dismissWhenClicked: Boolean = false
     @JvmField
-    var autoDismissDuration: Long = -1L
+    var autoDismissDuration: Long = NO_LONG_VALUE
     @JvmField
     var lifecycleOwner: LifecycleOwner? = null
     @JvmField @StyleRes
-    var balloonAnimationStyle: Int = -1
+    var balloonAnimationStyle: Int = NO_INT_VALUE
     @JvmField
     var balloonAnimation: BalloonAnimation = BalloonAnimation.FADE
     @JvmField
@@ -628,7 +626,7 @@ class Balloon(
     @JvmField
     var showTimes: Int = 1
     @JvmField
-    var isRtl: Boolean = false
+    var isRtlSupport: Boolean = false
 
     /** sets the width size. */
     fun setWidth(@Dp value: Int): Builder = apply { this.width = context.dp2Px(value) }
@@ -838,7 +836,7 @@ class Balloon(
     fun setShowTime(value: Int): Builder = apply { this.showTimes = value }
 
     /** sets flag for enabling rtl support */
-    fun isRtlSupport(value: Boolean): Builder = apply { this.isRtl = value }
+    fun isRtlSupport(value: Boolean): Builder = apply { this.isRtlSupport = value }
 
     fun build(): Balloon = Balloon(context, this@Builder)
   }

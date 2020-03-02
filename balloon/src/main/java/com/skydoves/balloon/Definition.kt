@@ -16,18 +16,20 @@
 
 package com.skydoves.balloon
 
-import android.content.res.ColorStateList
-import android.widget.LinearLayout
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.widget.ImageViewCompat
+/** definition of the non-value of Int type. */
+const val NO_INT_VALUE: Int = -1
 
-/** applies icon form attributes to a ImageView instance. */
-internal fun AppCompatImageView.applyIconForm(iconForm: IconForm) {
-  iconForm.drawable?.let {
-    setImageDrawable(it)
-    ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(iconForm.iconColor))
-    layoutParams = LinearLayout.LayoutParams(iconForm.iconSize, iconForm.iconSize)
-      .apply { setMargins(0, 0, iconForm.iconSpace, 0) }
-    visible(true)
+/** definition of the non-value of Long type. */
+const val NO_LONG_VALUE: Long = -1L
+
+/** definition of the left-to-right value. */
+const val LTR: Int = 1
+
+/** returns the negative of this value. */
+fun Int.unaryMinus(predicate: Boolean): Int {
+  return if (predicate) {
+    unaryMinus()
+  } else {
+    this
   }
 }

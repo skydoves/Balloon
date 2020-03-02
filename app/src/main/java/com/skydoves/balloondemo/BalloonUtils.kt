@@ -40,7 +40,9 @@ object BalloonUtils {
       .setTextColorResource(R.color.white_87)
       .setIconDrawableResource(R.drawable.ic_edit)
       .setBackgroundColorResource(R.color.skyBlue)
-      .setOnBalloonDismissListener { Toast.makeText(baseContext, "dismissed", Toast.LENGTH_SHORT).show() }
+      .setOnBalloonDismissListener {
+        Toast.makeText(baseContext, "dismissed", Toast.LENGTH_SHORT).show()
+      }
       .setBalloonAnimation(BalloonAnimation.ELASTIC)
       .setLifecycleOwner(lifecycleOwner)
       .build()
@@ -71,6 +73,7 @@ object BalloonUtils {
   }
 
   fun isRtlLayout(): Boolean {
-    return TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault()) == ViewCompat.LAYOUT_DIRECTION_RTL
+    return TextUtilsCompat.getLayoutDirectionFromLocale(
+      Locale.getDefault()) == ViewCompat.LAYOUT_DIRECTION_RTL
   }
 }
