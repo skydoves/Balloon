@@ -244,8 +244,9 @@ class Balloon(
   }
 
   private fun prepareLayoutDirection() {
-    horizontalLayoutFactor = if (builder.isRtl) -1
-    else 1
+    if (builder.isRtl) {
+      horizontalLayoutFactor = -1
+    }
   }
 
   @MainThread
@@ -827,8 +828,8 @@ class Balloon(
     /** sets the show times. */
     fun setShowTime(value: Int): Builder = apply { this.showTimes = value }
 
-    /** sets flag for using rtl layout */
-    fun setRtlLayout(value: Boolean): Builder = apply { this.isRtl = value }
+    /** sets flag for enabling rtl support */
+    fun isRtlSupport(value: Boolean): Builder = apply { this.isRtl = value }
 
     fun build(): Balloon = Balloon(context, this@Builder)
   }

@@ -45,7 +45,7 @@ class ViewHolderBalloonFactory : Balloon.Factory() {
       setTextSize(15f)
       setCornerRadius(8f)
       setTextForm(textForm)
-      setRtlLayout(isRtlLayout())
+      isRtlSupport(isRtlLayout())
       setArrowOrientation(ArrowOrientation.TOP)
       setTextColorResource(R.color.white_87)
       setIconDrawableResource(R.drawable.ic_edit)

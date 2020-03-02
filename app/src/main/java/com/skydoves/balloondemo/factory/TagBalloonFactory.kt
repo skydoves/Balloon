@@ -34,7 +34,7 @@ class TagBalloonFactory : Balloon.Factory() {
       setArrowPosition(0.5f)
       setWidth(90)
       setHeight(60)
-      setRtlLayout(BalloonUtils.isRtlLayout())
+      isRtlSupport(BalloonUtils.isRtlLayout())
       setCornerRadius(4f)
       setBalloonAnimationStyle(R.style.ElasticAndFadeOut)
       setBackgroundColorResource(R.color.white_93)
