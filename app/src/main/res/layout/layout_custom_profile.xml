@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:orientation="vertical"
   android:padding="12dp">
 
-  <de.hdodenhof.circleimageview.CircleImageView
+  <com.google.android.material.imageview.ShapeableImageView
     android:id="@+id/circleImageView"
     android:layout_width="55dp"
     android:layout_height="55dp"
     android:layout_gravity="center_horizontal"
     android:layout_marginTop="10dp"
     android:scaleType="centerCrop"
-    android:src="@drawable/lovebird" />
+    android:src="@drawable/lovebird"
+    app:shapeAppearanceOverlay="@style/CircleImageStyle" />
 
   <TextView
     android:layout_width="wrap_content"

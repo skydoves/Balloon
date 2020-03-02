@@ -28,8 +28,8 @@ import java.util.Locale
 
 object BalloonUtils {
 
-  fun getProfileBalloon(baseContext: Context, lifecycleOwner: LifecycleOwner): Balloon {
-    return Balloon.Builder(baseContext)
+  fun getProfileBalloon(context: Context, lifecycleOwner: LifecycleOwner): Balloon {
+    return Balloon.Builder(context)
       .setText("You can edit your profile now!")
       .setArrowSize(10)
       .setWidthRatio(0.75f)
@@ -41,7 +41,7 @@ object BalloonUtils {
       .setIconDrawableResource(R.drawable.ic_edit)
       .setBackgroundColorResource(R.color.skyBlue)
       .setOnBalloonDismissListener {
-        Toast.makeText(baseContext, "dismissed", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context.applicationContext, "dismissed", Toast.LENGTH_SHORT).show()
       }
       .setBalloonAnimation(BalloonAnimation.ELASTIC)
       .setLifecycleOwner(lifecycleOwner)
@@ -49,11 +49,11 @@ object BalloonUtils {
   }
 
   fun getNavigationBalloon(
-    baseContext: Context,
+    context: Context,
     onBalloonClickListener: OnBalloonClickListener,
     lifecycleOwner: LifecycleOwner
   ): Balloon {
-    return Balloon.Builder(baseContext)
+    return Balloon.Builder(context)
       .setText("You can access your profile from on now.")
       .setArrowSize(10)
       .setWidthRatio(1.0f)

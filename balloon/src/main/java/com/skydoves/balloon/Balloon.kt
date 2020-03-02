@@ -27,7 +27,6 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -89,8 +88,6 @@ class Balloon(
     this.bodyView.layoutParams = params
     this.bodyWindow = PopupWindow(bodyView, width, builder.height)
     createByBuilder()
-
-    Log.e("Test", "$supportRtlLayoutFactor")
   }
 
   private fun createByBuilder() {

@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity(),
 
   override fun onBalloonClick(view: View) {
     navigationBalloon.dismiss()
-    Toast.makeText(baseContext, "dismissed", Toast.LENGTH_SHORT).show()
+    Toast.makeText(applicationContext, "dismissed", Toast.LENGTH_SHORT).show()
   }
 
   override fun onItemClick(sampleItem: SampleItem, view: View) {
