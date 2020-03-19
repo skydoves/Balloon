@@ -44,7 +44,7 @@
         android:visibility="gone"
         tools:src="@drawable/arrow" />
 
-      <TextView
+      <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/balloon_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

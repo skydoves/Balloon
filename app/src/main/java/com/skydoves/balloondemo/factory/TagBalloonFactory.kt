@@ -31,8 +31,6 @@ class TagBalloonFactory : Balloon.Factory() {
       setArrowSize(10)
       setArrowOrientation(ArrowOrientation.BOTTOM)
       setArrowPosition(0.5f)
-      setWidth(90)
-      setHeight(60)
       setCornerRadius(4f)
       setBalloonAnimationStyle(R.style.ElasticAndFadeOut)
       setBackgroundColorResource(R.color.white_93)
