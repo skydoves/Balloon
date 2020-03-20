@@ -21,7 +21,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.skydoves.balloon.balloon
 import com.skydoves.balloondemo.factory.CustomListBalloonFactory
@@ -58,13 +57,12 @@ class CustomActivity : AppCompatActivity(),
     tabLayout.addTab(tabLayout.newTab().setText("Contents"))
 
     recyclerView.adapter = adapter
-    recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-    this.adapter.addItems(ItemUtils.getSamples(this))
+    adapter.addItems(ItemUtils.getSamples(this))
 
+    // gets customListBalloon's recyclerView.
     val listRecycler: RecyclerView =
       customListBalloon.getContentView().findViewById(R.id.list_recyclerView)
     listRecycler.adapter = customAdapter
-    listRecycler.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
     this.customAdapter.addCustomItem(ItemUtils.getCustomSamples(this))
 
     toolbar_list.setOnClickListener {

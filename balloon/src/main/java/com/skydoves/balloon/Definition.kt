@@ -19,6 +19,9 @@ package com.skydoves.balloon
 /** definition of the non-value of Int type. */
 const val NO_INT_VALUE: Int = -1
 
+/** definition of the non-value of Float type. */
+const val NO_Float_VALUE: Float = 0f
+
 /** definition of the non-value of Long type. */
 const val NO_LONG_VALUE: Long = -1L
 

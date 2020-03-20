@@ -2,15 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/balloon"
-  android:layout_width="match_parent"
-  android:layout_height="60dp"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
   android:background="@android:color/transparent">
 
   <androidx.appcompat.widget.AppCompatImageView
     android:id="@+id/balloon_arrow"
     android:layout_width="15dp"
     android:layout_height="10dp"
-    android:layout_alignParentBottom="true"
+    android:layout_alignBottom="@+id/balloon_content"
     android:layout_centerHorizontal="true"
     android:rotation="180"
     android:scaleType="fitXY"
@@ -19,17 +19,10 @@
 
   <RelativeLayout
     android:id="@+id/balloon_content"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:layout_centerInParent="true"
     android:padding="10dp">
-
-    <LinearLayout
-      android:id="@+id/balloon_background"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_centerInParent="true"
-      android:orientation="horizontal" />
 
     <LinearLayout
       android:id="@+id/balloon_detail"
@@ -37,7 +30,8 @@
       android:layout_height="wrap_content"
       android:layout_centerInParent="true"
       android:gravity="center"
-      android:orientation="horizontal">
+      android:orientation="horizontal"
+      tools:background="@android:color/darker_gray">
 
       <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/balloon_icon"
@@ -50,7 +44,7 @@
         android:visibility="gone"
         tools:src="@drawable/arrow" />
 
-      <TextView
+      <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/balloon_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
