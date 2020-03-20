@@ -21,5 +21,5 @@ import android.view.View
 
 /** Interface definition for a callback to be invoked when touched on outside of the balloon popup. */
 interface OnBalloonOutsideTouchListener {
-    fun onBalloonOutsideTouch(view: View, event: MotionEvent)
+  fun onBalloonOutsideTouch(view: View, event: MotionEvent)
 }

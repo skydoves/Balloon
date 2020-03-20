@@ -18,42 +18,49 @@ package com.skydoves.balloondemo
 
 import android.content.Context
 import android.widget.Toast
+import androidx.core.text.TextUtilsCompat
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.LifecycleOwner
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.OnBalloonClickListener
+import java.util.Locale
 
 object BalloonUtils {
 
-  fun getProfileBalloon(baseContext: Context, lifecycleOwner: LifecycleOwner): Balloon {
-    return Balloon.Builder(baseContext)
+  fun getProfileBalloon(context: Context, lifecycleOwner: LifecycleOwner): Balloon {
+    return Balloon.Builder(context)
       .setText("You can edit your profile now!")
       .setArrowSize(10)
       .setWidthRatio(0.75f)
       .setHeight(63)
       .setTextSize(15f)
+      .isRtlSupport(isRtlLayout())
       .setCornerRadius(8f)
       .setTextColorResource(R.color.white_87)
       .setIconDrawableResource(R.drawable.ic_edit)
       .setBackgroundColorResource(R.color.skyBlue)
-      .setOnBalloonDismissListener { Toast.makeText(baseContext, "dismissed", Toast.LENGTH_SHORT).show() }
+      .setOnBalloonDismissListener {
+        Toast.makeText(context.applicationContext, "dismissed", Toast.LENGTH_SHORT).show()
+      }
       .setBalloonAnimation(BalloonAnimation.ELASTIC)
       .setLifecycleOwner(lifecycleOwner)
       .build()
   }
 
   fun getNavigationBalloon(
-    baseContext: Context,
+    context: Context,
     onBalloonClickListener: OnBalloonClickListener,
     lifecycleOwner: LifecycleOwner
   ): Balloon {
-    return Balloon.Builder(baseContext)
+    return Balloon.Builder(context)
       .setText("You can access your profile from on now.")
       .setArrowSize(10)
       .setWidthRatio(1.0f)
       .setHeight(65)
       .setTextSize(15f)
       .setArrowPosition(0.62f)
+      .isRtlSupport(isRtlLayout())
       .setCornerRadius(4f)
       .setAlpha(0.9f)
       .setTextColorResource(R.color.white_93)
@@ -63,5 +70,10 @@ object BalloonUtils {
       .setBalloonAnimation(BalloonAnimation.FADE)
       .setLifecycleOwner(lifecycleOwner)
       .build()
+  }
+
+  fun isRtlLayout(): Boolean {
+    return TextUtilsCompat.getLayoutDirectionFromLocale(
+      Locale.getDefault()) == ViewCompat.LAYOUT_DIRECTION_RTL
   }
 }

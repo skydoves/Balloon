@@ -27,4 +27,8 @@
     <item name="android:windowExitAnimation">@anim/fade_out</item>
   </style>
 
+  <style name="CircleImageStyle" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">50%</item>
+  </style>
 </resources>

@@ -78,7 +78,7 @@ class CustomActivity : AppCompatActivity(),
     val buttonEdit: Button = customProfileBalloon.getContentView().findViewById(R.id.button_edit)
     buttonEdit.setOnClickListener {
       this.customProfileBalloon.dismiss()
-      Toast.makeText(baseContext, "Edit", Toast.LENGTH_SHORT).show()
+      Toast.makeText(applicationContext, "Edit", Toast.LENGTH_SHORT).show()
     }
 
     bottomNavigationView.setOnNavigationItemSelectedListener {
@@ -89,7 +89,7 @@ class CustomActivity : AppCompatActivity(),
 
   override fun onCustomItemClick(customItem: CustomItem) {
     this.customListBalloon.dismiss()
-    Toast.makeText(baseContext, customItem.title, Toast.LENGTH_SHORT).show()
+    Toast.makeText(applicationContext, customItem.title, Toast.LENGTH_SHORT).show()
   }
 
   override fun onItemClick(sampleItem: SampleItem, view: View) {

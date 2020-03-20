@@ -40,6 +40,7 @@ captures/
 .idea/gradle.xml
 .idea/dictionaries
 .idea/libraries
+app/.idea/
 
 # Mac
 *.DS_Store

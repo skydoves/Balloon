@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
+  android:layout_marginBottom="8dp"
   android:background="?attr/selectableItemBackground"
   android:orientation="horizontal"
   android:paddingLeft="5dp"
   android:paddingRight="5dp"
-  android:paddingBottom="5dp"
-  android:layout_marginBottom="8dp">
+  android:paddingBottom="5dp">
 
-  <de.hdodenhof.circleimageview.CircleImageView
+  <com.google.android.material.imageview.ShapeableImageView
     android:id="@+id/item_custom_icon"
     android:layout_width="28dp"
     android:layout_height="28dp"
     android:layout_gravity="center_vertical"
     android:layout_marginEnd="8dp"
     android:layout_marginRight="8dp"
+    app:shapeAppearanceOverlay="@style/CircleImageStyle"
     tools:src="@tools:sample/avatars" />
 
   <TextView
