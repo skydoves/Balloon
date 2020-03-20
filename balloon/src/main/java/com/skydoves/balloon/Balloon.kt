@@ -30,8 +30,6 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
 import androidx.annotation.ColorInt
@@ -269,8 +267,8 @@ class Balloon(
         this.bodyView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         this.bodyWindow.width = getMeasureWidth()
         this.bodyWindow.height = getMeasureHeight()
-        this.bodyView.balloon_detail.layoutParams = ViewGroup.LayoutParams(
-          LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+        this.bodyView.balloon_detail.layoutParams = RelativeLayout.LayoutParams(
+          RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT)
 
         applyBalloonAnimation()
         block()
