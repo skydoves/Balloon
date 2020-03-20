@@ -1,16 +1,16 @@
-# Balloon
-
-<p align="center">
-  <a href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"/></a>
-  <a href="https://android-arsenal.com/api?level=16"><img alt="API" src="https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat"/></a>
-  <a href="https://travis-ci.org/skydoves/Balloon"><img alt="Build" src="https://travis-ci.org/skydoves/Balloon.svg?branch=master"/></a>
-  <a href="https://www.reddit.com/r/androiddev/comments/ch4k5f/balloon_a_lightweight_popup_like_tooltips_fully/"><img alt="Reddit" src="https://img.shields.io/badge/Reddit-androiddev-orange"></a>
-  <a href="https://mailchi.mp/kotlinweekly/kotlin-weekly-180"><img alt="KotlinWeekly" src="https://img.shields.io/badge/KotlinWeekly-%23180-4E71E6"/></a>
-  <a href="https://skydoves.github.io/libraries/balloon/javadoc/balloon/com.skydoves.balloon/index.html"><img alt="Javadoc" src="https://img.shields.io/badge/Javadoc-Balloon-yellow.svg"/></a>
-</p>
+<h1 align="center">Balloon</h1></br>
 
 <p align="center">
 :balloon: A lightweight popup like tooltips, fully customizable with arrow and animations.
+</p>
+</br>
+<p align="center">
+  <a href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"/></a>
+  <a href="https://android-arsenal.com/api?level=16"><img alt="API" src="https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat"/></a>
+  <a href="https://github.com/skydoves/Balloon/actions"><img alt="Build Status" src="https://github.com/skydoves/Balloon/workflows/Android%20CI/badge.svg"/></a> 
+  <a href="https://www.reddit.com/r/androiddev/comments/ch4k5f/balloon_a_lightweight_popup_like_tooltips_fully/"><img alt="Reddit" src="https://skydoves.github.io/badges/reddit-balloon.svg"></a>
+  <a href="https://github.com/skydoves"><img alt="Profile" src="https://skydoves.github.io/badges/skydoves.svg"/></a>
+  <a href="https://skydoves.github.io/libraries/balloon/javadoc/balloon/com.skydoves.balloon/index.html"><img alt="Javadoc" src="https://img.shields.io/badge/Javadoc-Balloon-yellow.svg"/></a>
 </p>
 
 <p align="center">
@@ -33,7 +33,7 @@ allprojects {
 And add a dependency code to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:balloon:1.1.1"
+    implementation "com.github.skydoves:balloon:1.1.2"
 }
 ```
 
@@ -82,6 +82,27 @@ val balloon = createBalloon(context) {
   setBalloonAnimation(BalloonAnimation.FADE)
   setLifecycleOwner(lifecycleOwner)
 }
+```
+### Width and height
+We can control the size of the width and height using 3 ways: Padding, Specific size, Screen Ratio.
+#### Padding
+Balloon wraps a content. So the balloon's width and height size will be decided by the content.<br>
+We can set the size of the balloon using paddings of the content.
+```kotlin
+balloon.setPadding(6) // sets 6dp padding to all directions (left-top-right-bottom)
+balloon.setPaddingLeft(8) // sets 8dp padding to content's left.
+balloon.setPaddingTop(12) // sets 12dp padding to content's top.
+```
+#### Specific size
+We can set the specific size of the balloon regardless of contents.
+```kotlin
+balloon.setWidth(220) // sets 220dp size width.
+balloon.setHeight(160) // sets 160dp size height.
+```
+#### According to screen ratio
+Also, we can set the width according to the ratio of the horizontal screen's size.
+```kotin
+balloon.setWidthRatio(0.5f) // sets width as 50% of the horizontal screen's size.
 ```
 
 ### Show and dismiss
@@ -383,6 +404,11 @@ FADE | OVERSHOOT | ELASTIC | CIRCULAR |
 .setWidthRatio(@FloatRange(from = 0.0, to = 1.0) value: Float)
 .setHeight(value: Int)
 .setSpace(value: Int)
+.setPadding(value: Int)
+.setPaddingLeft(value: Int)
+.setPaddingTop(value: Int)
+.setPaddingRight(value: Int)
+.setPaddingBottom(value: INt)
 .setArrowVisible(value: Boolean)
 .setArrowSize(value: Int)
 .setArrowPosition(@FloatRange(from = 0.0, to = 1.0) value: Float)
