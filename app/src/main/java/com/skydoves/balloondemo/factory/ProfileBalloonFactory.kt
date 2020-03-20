@@ -33,7 +33,6 @@ class ProfileBalloonFactory : Balloon.Factory() {
       setArrowSize(10)
       setArrowOrientation(ArrowOrientation.TOP)
       setArrowPosition(0.5f)
-      setWidthRatio(0.55f)
       setHeight(250)
       isRtlSupport(BalloonUtils.isRtlLayout())
       setCornerRadius(4f)

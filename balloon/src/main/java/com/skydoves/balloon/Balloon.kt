@@ -86,12 +86,12 @@ class Balloon(
     this.bodyWindow = PopupWindow(bodyView, RelativeLayout.LayoutParams.WRAP_CONTENT,
       RelativeLayout.LayoutParams.WRAP_CONTENT)
 
-    if (builder.widthRatio != 0f || builder.width != -1) {
+    if (builder.widthRatio != NO_Float_VALUE || builder.width != NO_INT_VALUE) {
       this.bodyWindow.width = getMeasureWidth()
       this.bodyView.balloon_detail.layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
     }
 
-    if (builder.height != -1) {
+    if (builder.height != NO_INT_VALUE) {
       this.bodyWindow.height = getMeasureHeight()
       this.bodyView.balloon_detail.layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
     }
@@ -154,7 +154,12 @@ class Balloon(
   private fun initializeBackground() {
     with(bodyView.balloon_detail) {
       alpha = builder.alpha
-      setPadding(builder.padding, builder.padding, builder.padding, builder.padding)
+      if (builder.padding != NO_INT_VALUE) {
+        setPadding(builder.padding, builder.padding, builder.padding, builder.padding)
+      } else {
+        setPadding(builder.paddingLeft, builder.paddingTop,
+          builder.paddingRight, builder.paddingBottom)
+      }
       if (builder.backgroundDrawable == null) {
         background = GradientDrawable().apply {
           setColor(builder.backgroundColor)
@@ -493,7 +498,7 @@ class Balloon(
 
       val dismissWindow: () -> Unit = { this.bodyWindow.dismiss() }
       if (this.builder.balloonAnimation == BalloonAnimation.CIRCULAR) {
-        this.bodyWindow.contentView.circularUnRevealed() {
+        this.bodyWindow.contentView.circularUnRevealed {
           dismissWindow()
         }
       } else {
@@ -537,21 +542,22 @@ class Balloon(
     }
   }
 
-  /** gets measured width size of the balloon. */
+  /** gets measured width size of the balloon popup. */
   fun getMeasureWidth(): Int {
-    if (builder.widthRatio != 0f) {
+    if (builder.widthRatio != NO_Float_VALUE) {
       return (context.displaySize().x * builder.widthRatio - builder.space).toInt()
-    } else if (builder.width != -1) {
-      return builder.width - builder.space
+    } else if (builder.width != NO_INT_VALUE) {
+      return builder.width
     }
-    return this.bodyView.measuredWidth - builder.space
+    return this.bodyView.measuredWidth
   }
 
+  /** gets measured height size of the balloon popup. */
   fun getMeasureHeight(): Int {
-    if (builder.height != -1) {
-      return builder.height - builder.space
+    if (builder.height != NO_INT_VALUE) {
+      return builder.height
     }
-    return this.bodyView.measuredHeight - builder.space
+    return this.bodyView.measuredHeight
   }
 
   /** gets a content view of the balloon popup window. */
@@ -569,13 +575,21 @@ class Balloon(
   @BalloonDsl
   class Builder(private val context: Context) {
     @JvmField @Dp
-    var width: Int = -1
+    var width: Int = NO_INT_VALUE
     @JvmField @FloatRange(from = 0.0, to = 1.0)
-    var widthRatio: Float = 0f
+    var widthRatio: Float = NO_Float_VALUE
     @JvmField @Dp
-    var height: Int = -1
+    var height: Int = NO_INT_VALUE
     @JvmField @Dp
-    var padding: Int = 0
+    var padding: Int = NO_INT_VALUE
+    @JvmField @Dp
+    var paddingLeft: Int = 0
+    @JvmField @Dp
+    var paddingTop: Int = 0
+    @JvmField @Dp
+    var paddingRight: Int = 0
+    @JvmField @Dp
+    var paddingBottom: Int = 0
     @JvmField @Dp
     var space: Int = 0
     @JvmField
@@ -658,7 +672,24 @@ class Balloon(
     /** sets the height size. */
     fun setHeight(@Dp value: Int): Builder = apply { this.height = context.dp2Px(value) }
 
+    /** sets the padding on all directions. */
     fun setPadding(@Dp value: Int): Builder = apply { this.padding = context.dp2Px(value) }
+
+    /** sets the left padding on all directions. */
+    fun setPaddingLeft(@Dp value: Int): Builder = apply { this.paddingLeft = context.dp2Px(value) }
+
+    /** sets the top padding on all directions. */
+    fun setPaddingTop(@Dp value: Int): Builder = apply { this.paddingTop = context.dp2Px(value) }
+
+    /** sets the right padding on all directions. */
+    fun setPaddingRight(@Dp value: Int): Builder = apply {
+      this.paddingRight = context.dp2Px(value)
+    }
+
+    /** sets the bottom padding on all directions. */
+    fun setPaddingBottom(@Dp value: Int): Builder = apply {
+      this.paddingBottom = context.dp2Px(value)
+    }
 
     /** sets the side space between popup and display. */
     fun setSpace(@Dp value: Int): Builder = apply { this.space = context.dp2Px(value) }
