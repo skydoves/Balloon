@@ -18,7 +18,6 @@ package com.skydoves.balloondemo.factory
 
 import android.content.Context
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
@@ -34,20 +33,17 @@ class ViewHolderBalloonFactory : Balloon.Factory() {
     val textForm = textForm(context) {
       setText("This is your new content!!!")
       setTextSize(15f)
-      setTextColor(ContextCompat.getColor(context, R.color.white_87))
+      setTextColorResource(R.color.white_87)
     }
 
     return createBalloon(context) {
-      setText("This is your new content.")
       setArrowSize(10)
       setWidthRatio(0.75f)
       setHeight(64)
-      setTextSize(15f)
       setCornerRadius(8f)
       setTextForm(textForm)
       isRtlSupport(isRtlLayout())
       setArrowOrientation(ArrowOrientation.TOP)
-      setTextColorResource(R.color.white_87)
       setIconDrawableResource(R.drawable.ic_edit)
       setBackgroundColorResource(R.color.yellow)
       setOnBalloonDismissListener {

@@ -30,6 +30,7 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
@@ -85,17 +86,6 @@ class Balloon(
     this.bodyView = inflater.inflate(R.layout.layout_balloon, null)
     this.bodyWindow = PopupWindow(bodyView, RelativeLayout.LayoutParams.WRAP_CONTENT,
       RelativeLayout.LayoutParams.WRAP_CONTENT)
-
-    if (builder.widthRatio != NO_Float_VALUE || builder.width != NO_INT_VALUE) {
-      this.bodyWindow.width = getMeasureWidth()
-      this.bodyView.balloon_detail.layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
-    }
-
-    if (builder.height != NO_INT_VALUE) {
-      this.bodyWindow.height = getMeasureHeight()
-      this.bodyView.balloon_detail.layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
-    }
-
     createByBuilder()
   }
 
@@ -241,7 +231,6 @@ class Balloon(
     bodyView.balloon_detail.removeAllViews()
     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     inflater.inflate(builder.layout, bodyView.balloon_detail)
-    bodyView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
   }
 
   private fun applyBalloonAnimation() {
@@ -277,6 +266,12 @@ class Balloon(
       }
 
       anchor.post {
+        this.bodyView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        this.bodyWindow.width = getMeasureWidth()
+        this.bodyWindow.height = getMeasureHeight()
+        this.bodyView.balloon_detail.layoutParams = ViewGroup.LayoutParams(
+          LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+
         applyBalloonAnimation()
         block()
       }
