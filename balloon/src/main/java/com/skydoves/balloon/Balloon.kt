@@ -164,7 +164,9 @@ class Balloon(
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   private fun initializeBalloonWindow() {
-    bodyWindow.elevation = builder.elevation
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      bodyWindow.elevation = builder.elevation
+    }
   }
 
   private fun initializeBalloonListeners() {
