@@ -184,7 +184,7 @@ class Balloon(
         override fun onTouch(view: View, event: MotionEvent): Boolean {
           if (event.action == MotionEvent.ACTION_OUTSIDE) {
             if (builder.dismissWhenTouchOutside) {
-              dismiss()
+              this@Balloon.dismiss()
             }
             onBalloonOutsideTouchListener?.onBalloonOutsideTouch(view, event)
             return true
