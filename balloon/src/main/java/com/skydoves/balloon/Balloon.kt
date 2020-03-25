@@ -19,6 +19,7 @@
 package com.skydoves.balloon
 
 import android.annotation.SuppressLint
+import android.annotation.TargetApi
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -26,6 +27,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -90,6 +92,7 @@ class Balloon(
   private fun createByBuilder() {
     initializeArrow()
     initializeBackground()
+    initializeBalloonWindow()
     initializeBalloonListeners()
 
     if (builder.layout == NO_INT_VALUE) {
@@ -157,6 +160,11 @@ class Balloon(
         background = builder.backgroundDrawable
       }
     }
+  }
+
+  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+  private fun initializeBalloonWindow() {
+    bodyWindow.elevation = builder.elevation
   }
 
   private fun initializeBalloonListeners() {
@@ -625,6 +633,8 @@ class Balloon(
     var iconForm: IconForm? = null
     @JvmField @FloatRange(from = 0.0, to = 1.0)
     var alpha: Float = 1f
+    @JvmField
+    var elevation: Float = context.dp2Px(2f)
     @JvmField @LayoutRes
     var layout: Int = NO_INT_VALUE
     @JvmField
@@ -792,6 +802,12 @@ class Balloon(
     /** sets the alpha value to the popup. */
     fun setAlpha(@FloatRange(from = 0.0, to = 1.0) value: Float): Builder = apply {
       this.alpha = value
+    }
+
+    /** sets the elevation to the popup. */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    fun setElevation(value: Float): Builder = apply {
+      this.elevation = value
     }
 
     /** sets the custom layout resource to the popup content. */
