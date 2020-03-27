@@ -94,10 +94,10 @@ class Balloon(
     initializeArrow()
     initializeBackground()
     initializeBalloonWindow()
+    initializeBalloonContent()
     initializeBalloonListeners()
 
     if (builder.layout == NO_INT_VALUE) {
-      initializeBalloonContent()
       initializeIcon()
       initializeText()
     } else {
@@ -204,9 +204,11 @@ class Balloon(
     with(bodyView.balloon_content) {
       when (builder.arrowOrientation) {
         ArrowOrientation.BOTTOM, ArrowOrientation.TOP ->
-          setPadding(builder.arrowSize, builder.arrowSize, builder.arrowSize, builder.arrowSize)
+          setPadding(builder.arrowSize - 2, builder.arrowSize - 2, builder.arrowSize - 2,
+            builder.arrowSize - 2)
         ArrowOrientation.LEFT, ArrowOrientation.RIGHT ->
-          setPadding(builder.arrowSize, paddingTop, paddingBottom, builder.arrowSize)
+          setPadding(builder.arrowSize - 2, paddingTop - 2, paddingBottom - 2,
+            builder.arrowSize - 2)
       }
     }
   }
@@ -603,7 +605,7 @@ class Balloon(
     @JvmField @ColorInt
     var arrowColor: Int = NO_INT_VALUE
     @JvmField @Dp
-    var arrowSize: Int = context.dp2Px(15)
+    var arrowSize: Int = context.dp2Px(12)
     @JvmField @FloatRange(from = 0.0, to = 1.0)
     var arrowPosition: Float = 0.5f
     @JvmField
