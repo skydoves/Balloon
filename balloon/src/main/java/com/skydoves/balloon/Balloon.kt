@@ -26,12 +26,12 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
 import androidx.annotation.ColorInt
@@ -50,6 +50,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import com.skydoves.balloon.annotations.Dp
 import com.skydoves.balloon.annotations.Sp
 import kotlinx.android.synthetic.main.layout_balloon.view.balloon_arrow
+import kotlinx.android.synthetic.main.layout_balloon.view.balloon_card
 import kotlinx.android.synthetic.main.layout_balloon.view.balloon_content
 import kotlinx.android.synthetic.main.layout_balloon.view.balloon_detail
 import kotlinx.android.synthetic.main.layout_balloon.view.balloon_icon
@@ -107,7 +108,6 @@ class Balloon(
 
   private fun initializeArrow() {
     with(bodyView.balloon_arrow) {
-      builder.arrowDrawable?.let { setImageDrawable(it) }
       val params = RelativeLayout.LayoutParams(builder.arrowSize, builder.arrowSize)
       when (builder.arrowOrientation) {
         ArrowOrientation.BOTTOM -> {
@@ -137,13 +137,17 @@ class Balloon(
       }
       layoutParams = params
       alpha = builder.alpha
-      ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.backgroundColor))
       visible(builder.arrowVisible)
+      if (builder.arrowDrawable != null) {
+        setImageDrawable(builder.arrowDrawable)
+      } else {
+        ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.backgroundColor))
+      }
     }
   }
 
   private fun initializeBackground() {
-    with(bodyView.balloon_detail) {
+    with(bodyView.balloon_card) {
       alpha = builder.alpha
       if (builder.padding != NO_INT_VALUE) {
         setPadding(builder.padding, builder.padding, builder.padding, builder.padding)
@@ -152,10 +156,8 @@ class Balloon(
           builder.paddingRight, builder.paddingBottom)
       }
       if (builder.backgroundDrawable == null) {
-        background = GradientDrawable().apply {
-          setColor(builder.backgroundColor)
-          cornerRadius = builder.cornerRadius
-        }
+        setCardBackgroundColor(builder.backgroundColor)
+        radius = builder.cornerRadius
       } else {
         background = builder.backgroundDrawable
       }
@@ -277,8 +279,8 @@ class Balloon(
         this.bodyView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         this.bodyWindow.width = getMeasureWidth()
         this.bodyWindow.height = getMeasureHeight()
-        this.bodyView.balloon_detail.layoutParams = RelativeLayout.LayoutParams(
-          RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT)
+        this.bodyView.balloon_detail.layoutParams = FrameLayout.LayoutParams(
+          FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
 
         applyBalloonAnimation()
         block()
