@@ -108,6 +108,7 @@ class Balloon(
 
   private fun initializeArrow() {
     with(bodyView.balloon_arrow) {
+      visible(builder.arrowVisible)
       val params = RelativeLayout.LayoutParams(builder.arrowSize, builder.arrowSize)
       when (builder.arrowOrientation) {
         ArrowOrientation.BOTTOM -> {
@@ -137,11 +138,16 @@ class Balloon(
       }
       layoutParams = params
       alpha = builder.alpha
-      visible(builder.arrowVisible)
-      if (builder.arrowDrawable != null) {
-        setImageDrawable(builder.arrowDrawable)
-      } else {
-        ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.backgroundColor))
+      when {
+        builder.arrowDrawable != null -> {
+          setImageDrawable(builder.arrowDrawable)
+        }
+        builder.arrowColor != NO_INT_VALUE -> {
+          ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.arrowColor))
+        }
+        else -> {
+          ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.backgroundColor))
+        }
       }
     }
   }
@@ -599,6 +605,8 @@ class Balloon(
     var space: Int = 0
     @JvmField
     var arrowVisible: Boolean = true
+    @JvmField @ColorInt
+    var arrowColor: Int = NO_INT_VALUE
     @JvmField @Dp
     var arrowSize: Int = context.dp2Px(15)
     @JvmField @FloatRange(from = 0.0, to = 1.0)
@@ -703,6 +711,14 @@ class Balloon(
 
     /** sets the visibility of the arrow. */
     fun setArrowVisible(value: Boolean): Builder = apply { this.arrowVisible = value }
+
+    /** sets a color of the arrow. */
+    fun setArrowColor(@ColorInt value: Int): Builder = apply { this.arrowColor = value }
+
+    /** sets a color of the arrow using a resource. */
+    fun setArrowColorResource(@ColorRes value: Int): Builder = apply {
+      this.arrowColor = context.contextColor(value)
+    }
 
     /** sets the size of the arrow. */
     fun setArrowSize(@Dp value: Int): Builder = apply { this.arrowSize = context.dp2Px(value) }
