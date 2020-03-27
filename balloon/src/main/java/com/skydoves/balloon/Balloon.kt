@@ -138,16 +138,11 @@ class Balloon(
       }
       layoutParams = params
       alpha = builder.alpha
-      when {
-        builder.arrowDrawable != null -> {
-          setImageDrawable(builder.arrowDrawable)
-        }
-        builder.arrowColor != NO_INT_VALUE -> {
-          ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.arrowColor))
-        }
-        else -> {
-          ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.backgroundColor))
-        }
+      builder.arrowDrawable?.let { setImageDrawable(it) }
+      if (builder.arrowColor != NO_INT_VALUE) {
+        ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.arrowColor))
+      } else {
+        ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.backgroundColor))
       }
     }
   }
