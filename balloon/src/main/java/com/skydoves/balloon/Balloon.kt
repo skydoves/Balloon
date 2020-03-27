@@ -150,12 +150,6 @@ class Balloon(
   private fun initializeBackground() {
     with(bodyView.balloon_card) {
       alpha = builder.alpha
-      if (builder.padding != NO_INT_VALUE) {
-        setPadding(builder.padding, builder.padding, builder.padding, builder.padding)
-      } else {
-        setPadding(builder.paddingLeft, builder.paddingTop,
-          builder.paddingRight, builder.paddingBottom)
-      }
       if (builder.backgroundDrawable == null) {
         setCardBackgroundColor(builder.backgroundColor)
         radius = builder.cornerRadius
@@ -209,6 +203,14 @@ class Balloon(
         ArrowOrientation.LEFT, ArrowOrientation.RIGHT ->
           setPadding(builder.arrowSize - 2, paddingTop - 2, paddingBottom - 2,
             builder.arrowSize - 2)
+      }
+    }
+    with(bodyView.balloon_detail) {
+      if (builder.padding != NO_INT_VALUE) {
+        setPadding(builder.padding, builder.padding, builder.padding, builder.padding)
+      } else {
+        setPadding(builder.paddingLeft, builder.paddingTop,
+          builder.paddingRight, builder.paddingBottom)
       }
     }
   }
