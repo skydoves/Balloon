@@ -307,7 +307,8 @@ class Balloon(
   /** shows the balloon on the center of an anchor view. */
   fun show(anchor: View) {
     show(anchor) {
-      bodyWindow.showAsDropDown(anchor, -(anchor.measuredWidth / 2),
+      bodyWindow.showAsDropDown(anchor,
+        supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
         -getMeasureHeight() - (anchor.measuredHeight / 2))
     }
   }

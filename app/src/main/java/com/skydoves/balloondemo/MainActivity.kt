@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity(),
       if (profileBalloon.isShowing) {
         profileBalloon.dismiss()
       } else {
-        profileBalloon.showAlignTop(it)
+        profileBalloon.show(it)
       }
     }
 
