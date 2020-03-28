@@ -18,6 +18,7 @@ package com.skydoves.balloon
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.annotation.TargetApi
 import android.os.Build
 import android.view.View
 import android.view.ViewAnimationUtils
@@ -34,63 +35,49 @@ internal fun View.visible(value: Boolean) {
   }
 }
 
-@MainThread
 /** shows circular revealed animation to a view. */
+@MainThread
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 internal fun View.circularRevealed() {
-  doOnLayoutChanged {
-    val view = this
-    ViewAnimationUtils.createCircularReveal(
-      view,
-      (view.left + view.right) / 2,
-      (view.top + view.bottom) / 2,
-      0f,
-      max(view.width, view.height).toFloat()).apply {
-      duration = 500
-      start()
+  visibility = View.INVISIBLE
+  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+    post {
+      if (isAttachedToWindow) {
+        visibility = View.VISIBLE
+        ViewAnimationUtils.createCircularReveal(this,
+          (left + right) / 2,
+          (top + bottom) / 2,
+          0f,
+          max(width, height).toFloat()).apply {
+          duration = 500
+          start()
+        }
+      }
     }
   }
 }
 
+/** shows circular unrevealed animation to a view. */
 @MainThread
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 internal fun View.circularUnRevealed(doAfterFinish: () -> Unit) {
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-    val view = this
-    ViewAnimationUtils.createCircularReveal(
-      view,
-      (view.left + view.right) / 2,
-      (view.top + view.bottom) / 2,
-      max(view.width, view.height).toFloat(),
-      0f).apply {
-      duration = 500
-      start()
-    }.addListener(object : AnimatorListenerAdapter() {
-      override fun onAnimationEnd(animation: Animator?) {
-        super.onAnimationEnd(animation)
-        doAfterFinish()
+    post {
+      if (isAttachedToWindow) {
+        ViewAnimationUtils.createCircularReveal(this,
+          (left + right) / 2,
+          (top + bottom) / 2,
+          max(width, height).toFloat(),
+          0f).apply {
+          duration = 500
+          start()
+        }.addListener(object : AnimatorListenerAdapter() {
+          override fun onAnimationEnd(animation: Animator?) {
+            super.onAnimationEnd(animation)
+            doAfterFinish()
+          }
+        })
       }
-    })
+    }
   }
-}
-
-@MainThread
-internal fun View.doOnLayoutChanged(block: () -> Unit) {
-  this.addOnLayoutChangeListener(
-    object : View.OnLayoutChangeListener {
-      override fun onLayoutChange(
-        view: View,
-        left: Int,
-        top: Int,
-        right: Int,
-        bottom: Int,
-        oldLeft: Int,
-        oldTop: Int,
-        oldRight: Int,
-        oldBottom: Int
-      ) {
-        view.removeOnLayoutChangeListener(this)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-          block()
-        }
-      }
-    })
 }
