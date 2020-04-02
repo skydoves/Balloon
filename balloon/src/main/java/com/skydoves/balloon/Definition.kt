@@ -17,7 +17,7 @@
 package com.skydoves.balloon
 
 /** definition of the non-value of Int type. */
-const val NO_INT_VALUE: Int = -1
+const val NO_INT_VALUE: Int = Int.MIN_VALUE
 
 /** definition of the non-value of Float type. */
 const val NO_Float_VALUE: Float = 0f
