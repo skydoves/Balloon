@@ -826,8 +826,8 @@ class Balloon(
 
     /** sets the elevation to the popup. */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    fun setElevation(value: Float): Builder = apply {
-      this.elevation = value
+    fun setElevation(@Dp value: Int): Builder = apply {
+      this.elevation = context.dp2Px(value).toFloat()
     }
 
     /** sets the custom layout resource to the popup content. */
