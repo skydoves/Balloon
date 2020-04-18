@@ -59,7 +59,6 @@
           android:layout_gravity="center_vertical"
           android:gravity="center"
           android:textColor="@android:color/white"
-          app:autoSizeTextType="uniform"
           tools:text="@tools:sample/lorem" />
 
       </LinearLayout>

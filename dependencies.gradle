@@ -4,8 +4,8 @@ ext.versions = [
     versionCode        : 15,
     versionName        : '1.1.4',
 
-    gradleBuildTool    : '3.5.3',
-    spotlessGradle     : '3.28.0',
+    gradleBuildTool    : '3.6.0',
+    spotlessGradle     : '3.28.1',
     dokkaGradle        : '0.9.17',
     bintrayRelease     : '0.9.2',
 
