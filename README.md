@@ -53,7 +53,7 @@ Balloon balloon = new Balloon.Builder(context)
     .setArrowPosition(0.62f)
     .setCornerRadius(4f)
     .setAlpha(0.9f)
-    .setText("You can access your profile from on now.")
+    .setText("You can access your profile from now on.")
     .setTextColor(ContextCompat.getColor(context, R.color.white_93))
     .setIconDrawable(ContextCompat.getDrawable(context, R.drawable.ic_profile))
     .setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
@@ -74,7 +74,7 @@ val balloon = createBalloon(context) {
   setArrowPosition(0.7f)
   setCornerRadius(4f)
   setAlpha(0.9f)
-  setText("You can access your profile from on now.")
+  setText("You can access your profile from now on.")
   setTextColorResource(R.color.white_93)
   setIconDrawable(ContextCompat.getDrawable(context, R.drawable.ic_profile))
   setBackgroundColorResource(R.color.colorPrimary)
@@ -101,7 +101,7 @@ balloon.setHeight(160) // sets 160dp size height.
 ```
 #### According to screen ratio
 Also, we can set the width according to the ratio of the horizontal screen's size.
-```kotin
+```kotlin
 balloon.setWidthRatio(0.5f) // sets width as 50% of the horizontal screen's size.
 ```
 
@@ -126,7 +126,7 @@ balloon.showAlignLeft(anchor: View, xOff: Int, yOff: Int) // shows left alignmen
 Or we can show balloon popup using kotlin extension.
 
 ```java
-myButtom.showAlignTop(balloon)
+myButton.showAlignTop(balloon)
 ```
 We can dismiss popup simply using `Balloon.dismiss()` method.
 ```java
@@ -279,7 +279,7 @@ We can simplify it using kotlin.
 ### Customized layout
 We can fully customize the balloon layout using below method.
 ```java
-.setLayout(R.layout.my_ballon_layout)
+.setLayout(R.layout.my_balloon_layout)
 ```
 
 This is an example of implementing custom balloon popup.
@@ -337,7 +337,7 @@ Just use `setLifecycleOwner` method. Then `dismiss` method will be called automa
 ```
 
 ### Lazy initialization
-We can initialize the ballloon property lazily using `balloon` keyword and `Balloon.Factory` abstract class.<br>
+We can initialize the balloon property lazily using `balloon` keyword and `Balloon.Factory` abstract class.<br>
 The `balloon` extension keyword can be used on `Activity` and `Fragment`.
 
 __Before__<br>
@@ -426,7 +426,7 @@ FADE | OVERSHOOT | ELASTIC | CIRCULAR |
 .setText(value: String)
 .setTextResource(value: Int)
 .setTextColor(value: Int)
-.setTextColorResoure(value: Int)
+.setTextColorResource(value: Int)
 .setTextSize(value: Float)
 .setTextTypeface(value: Int)
 .setTextForm(value: TextForm)

@@ -76,6 +76,7 @@ class Balloon(
   private val bodyWindow: PopupWindow
   var isShowing = false
     private set
+  private var destroyed: Boolean = false
   var onBalloonClickListener: OnBalloonClickListener? = null
   var onBalloonDismissListener: OnBalloonDismissListener? = null
   var onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener? = null
@@ -306,7 +307,11 @@ class Balloon(
     balloon: Balloon,
     crossinline block: (balloon: Balloon) -> Unit
   ): Balloon {
-    this.setOnBalloonDismissListener { block(balloon) }
+    this.setOnBalloonDismissListener {
+      if (!destroyed) {
+        block(balloon)
+      }
+    }
     return balloon
   }
 
@@ -612,6 +617,7 @@ class Balloon(
   /** dismiss automatically when lifecycle owner is destroyed. */
   @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
   fun onDestroy() {
+    destroyed = true
     dismiss()
   }
 
