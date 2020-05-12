@@ -197,14 +197,8 @@ class Balloon(
 
   private fun initializeBalloonContent() {
     with(bodyView.balloon_content) {
-      when (builder.arrowOrientation) {
-        ArrowOrientation.BOTTOM, ArrowOrientation.TOP ->
-          setPadding(builder.arrowSize - 2, builder.arrowSize - 2, builder.arrowSize - 2,
-            builder.arrowSize - 2)
-        ArrowOrientation.LEFT, ArrowOrientation.RIGHT ->
-          setPadding(builder.arrowSize - 2, paddingTop - 2, paddingBottom - 2,
-            builder.arrowSize - 2)
-      }
+      setPadding(builder.arrowSize - 2, builder.arrowSize - 2,
+        builder.arrowSize - 2, builder.arrowSize - 2)
     }
     with(bodyView.balloon_detail) {
       if (builder.padding != NO_INT_VALUE) {
