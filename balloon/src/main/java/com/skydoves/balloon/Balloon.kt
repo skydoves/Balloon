@@ -92,7 +92,6 @@ class Balloon(
   }
 
   private fun createByBuilder() {
-    initializeArrow()
     initializeBackground()
     initializeBalloonWindow()
     initializeBalloonContent()
@@ -287,6 +286,7 @@ class Balloon(
         this.bodyWindow.height = getMeasureHeight()
         this.bodyView.balloon_detail.layoutParams = FrameLayout.LayoutParams(
           FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
+        initializeArrow()
 
         applyBalloonAnimation()
         block()
