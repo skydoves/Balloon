@@ -33,7 +33,7 @@ allprojects {
 And add a dependency code to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:balloon:1.1.5"
+    implementation "com.github.skydoves:balloon:1.1.6"
 }
 ```
 
@@ -442,6 +442,7 @@ FADE | OVERSHOOT | ELASTIC | CIRCULAR |
 .setPreferenceName(value: String)
 .setShowTime(value: Int)
 .isRtlSupport(value: Boolean)
+.setFocusable(value: Boolean)
 .setLifecycleOwner(value: LifecycleOwner)
 .setBalloonAnimation(value: BalloonAnimation)
 .setOnBalloonClickListener(value: OnBalloonClickListener)
