@@ -161,8 +161,12 @@ class Balloon(
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   private fun initializeBalloonWindow() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      bodyWindow.elevation = builder.elevation
+    with(this.bodyWindow) {
+      isFocusable = builder.isFocusable
+      setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        elevation = builder.elevation
+      }
     }
   }
 
@@ -175,9 +179,11 @@ class Balloon(
       if (builder.dismissWhenClicked) dismiss()
     }
     with(this.bodyWindow) {
-      setOnDismissListener { onBalloonDismissListener?.onBalloonDismiss() }
-      setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
       isOutsideTouchable = true
+      setOnDismissListener {
+        this@Balloon.dismiss()
+        onBalloonDismissListener?.onBalloonDismiss()
+      }
       setTouchInterceptor(object : View.OnTouchListener {
         @SuppressLint("ClickableViewAccessibility")
         override fun onTouch(view: View, event: MotionEvent): Boolean {
@@ -708,6 +714,8 @@ class Balloon(
     var showTimes: Int = 1
     @JvmField
     var isRtlSupport: Boolean = false
+    @JvmField
+    var isFocusable: Boolean = true
 
     /** sets the width size. */
     fun setWidth(@Dp value: Int): Builder = apply { this.width = context.dp2Px(value) }
@@ -951,6 +959,13 @@ class Balloon(
 
     /** sets flag for enabling rtl support */
     fun isRtlSupport(value: Boolean): Builder = apply { this.isRtlSupport = value }
+
+    /**
+     * sets isFocusable option to the body window.
+     * if true when the balloon is showing, can not touch other views and
+     * onBackPressed will be fired to the balloon.
+     * */
+    fun setFocusable(value: Boolean): Builder = apply { this.isFocusable = value }
 
     fun build(): Balloon = Balloon(context, this@Builder)
   }
