@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 apply plugin: 'org.jetbrains.dokka'
 apply from: '../dependencies.gradle'
@@ -12,6 +11,9 @@ android {
         targetSdkVersion versions.compileSdk
         versionCode versions.versionCode
         versionName versions.versionName
+    }
+    viewBinding {
+        enabled = true
     }
 }
 

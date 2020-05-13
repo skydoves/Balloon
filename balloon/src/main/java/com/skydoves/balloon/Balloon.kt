@@ -28,6 +28,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -49,12 +50,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import com.skydoves.balloon.annotations.Dp
 import com.skydoves.balloon.annotations.Sp
-import kotlinx.android.synthetic.main.layout_balloon.view.balloon_arrow
-import kotlinx.android.synthetic.main.layout_balloon.view.balloon_card
-import kotlinx.android.synthetic.main.layout_balloon.view.balloon_content
-import kotlinx.android.synthetic.main.layout_balloon.view.balloon_detail
-import kotlinx.android.synthetic.main.layout_balloon.view.balloon_icon
-import kotlinx.android.synthetic.main.layout_balloon.view.balloon_text
+import com.skydoves.balloon.databinding.LayoutBalloonBinding
 
 @DslMarker
 annotation class BalloonDsl
@@ -72,7 +68,8 @@ class Balloon(
   private val builder: Builder
 ) : LifecycleObserver {
 
-  private val bodyView: View
+  private val binding: LayoutBalloonBinding =
+    LayoutBalloonBinding.inflate(LayoutInflater.from(context), null, false)
   private val bodyWindow: PopupWindow
   var isShowing = false
     private set
@@ -85,8 +82,7 @@ class Balloon(
 
   init {
     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    this.bodyView = inflater.inflate(R.layout.layout_balloon, null)
-    this.bodyWindow = PopupWindow(bodyView, RelativeLayout.LayoutParams.WRAP_CONTENT,
+    this.bodyWindow = PopupWindow(binding.root, RelativeLayout.LayoutParams.WRAP_CONTENT,
       RelativeLayout.LayoutParams.WRAP_CONTENT)
     createByBuilder()
   }
@@ -107,33 +103,33 @@ class Balloon(
   }
 
   private fun initializeArrow() {
-    with(bodyView.balloon_arrow) {
+    with(binding.balloonArrow) {
       visible(builder.arrowVisible)
       val params = RelativeLayout.LayoutParams(builder.arrowSize, builder.arrowSize)
       when (builder.arrowOrientation) {
         ArrowOrientation.BOTTOM -> {
-          params.addRule(RelativeLayout.ALIGN_BOTTOM, bodyView.balloon_content.id)
+          params.addRule(RelativeLayout.ALIGN_BOTTOM, binding.balloonContent.id)
           rotation = 180f
         }
         ArrowOrientation.TOP -> {
-          params.addRule(RelativeLayout.ALIGN_TOP, bodyView.balloon_content.id)
+          params.addRule(RelativeLayout.ALIGN_TOP, binding.balloonContent.id)
           rotation = 0f
         }
         ArrowOrientation.LEFT -> {
-          params.addRule(RelativeLayout.ALIGN_LEFT, bodyView.balloon_content.id)
+          params.addRule(RelativeLayout.ALIGN_LEFT, binding.balloonContent.id)
           rotation = -90f
         }
         ArrowOrientation.RIGHT -> {
-          params.addRule(RelativeLayout.ALIGN_RIGHT, bodyView.balloon_content.id)
+          params.addRule(RelativeLayout.ALIGN_RIGHT, binding.balloonContent.id)
           rotation = 90f
         }
       }
-      bodyView.post {
+      binding.root.post {
         when (builder.arrowOrientation) {
           ArrowOrientation.BOTTOM, ArrowOrientation.TOP ->
-            x = bodyView.width * builder.arrowPosition - (builder.arrowSize / 2)
+            x = binding.root.width * builder.arrowPosition - (builder.arrowSize / 2)
           ArrowOrientation.LEFT, ArrowOrientation.RIGHT ->
-            y = bodyView.height * builder.arrowPosition - (builder.arrowSize / 2)
+            y = binding.root.height * builder.arrowPosition - (builder.arrowSize / 2)
         }
       }
       layoutParams = params
@@ -148,7 +144,7 @@ class Balloon(
   }
 
   private fun initializeBackground() {
-    with(bodyView.balloon_card) {
+    with(binding.balloonCard) {
       alpha = builder.alpha
       if (builder.backgroundDrawable == null) {
         setCardBackgroundColor(builder.backgroundColor)
@@ -174,7 +170,7 @@ class Balloon(
     this.onBalloonClickListener = builder.onBalloonClickListener
     this.onBalloonDismissListener = builder.onBalloonDismissListener
     this.onBalloonOutsideTouchListener = builder.onBalloonOutsideTouchListener
-    this.bodyView.setOnClickListener {
+    this.binding.root.setOnClickListener {
       this.onBalloonClickListener?.onBalloonClick(it)
       if (builder.dismissWhenClicked) dismiss()
     }
@@ -201,11 +197,11 @@ class Balloon(
   }
 
   private fun initializeBalloonContent() {
-    with(bodyView.balloon_content) {
+    with(binding.balloonContent) {
       setPadding(builder.arrowSize - 2, builder.arrowSize - 2,
         builder.arrowSize - 2, builder.arrowSize - 2)
     }
-    with(bodyView.balloon_detail) {
+    with(binding.balloonDetail) {
       if (builder.padding != NO_INT_VALUE) {
         setPadding(builder.padding, builder.padding, builder.padding, builder.padding)
       } else {
@@ -216,7 +212,7 @@ class Balloon(
   }
 
   private fun initializeIcon() {
-    with(bodyView.balloon_icon) {
+    with(binding.balloonIcon) {
       builder.iconForm?.let {
         applyIconForm(it)
       } ?: applyIconForm(iconForm(context) {
@@ -229,7 +225,7 @@ class Balloon(
   }
 
   private fun initializeText() {
-    with(bodyView.balloon_text) {
+    with(binding.balloonText) {
       builder.textForm?.let {
         applyTextForm(it)
       } ?: applyTextForm(textForm(context) {
@@ -249,9 +245,9 @@ class Balloon(
   }
 
   private fun initializeCustomLayout() {
-    bodyView.balloon_detail.removeAllViews()
+    binding.balloonDetail.removeAllViews()
     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    inflater.inflate(builder.layout, bodyView.balloon_detail)
+    inflater.inflate(builder.layout, binding.balloonDetail)
   }
 
   private fun applyBalloonAnimation() {
@@ -287,10 +283,10 @@ class Balloon(
       }
 
       anchor.post {
-        this.bodyView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        this.binding.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         this.bodyWindow.width = getMeasureWidth()
         this.bodyWindow.height = getMeasureHeight()
-        this.bodyView.balloon_detail.layoutParams = FrameLayout.LayoutParams(
+        this.binding.balloonDetail.layoutParams = FrameLayout.LayoutParams(
           FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
         initializeArrow()
 
@@ -531,7 +527,7 @@ class Balloon(
 
   /** dismiss the popup menu with milliseconds delay. */
   fun dismissWithDelay(delay: Long) {
-    Handler().postDelayed({ dismiss() }, delay)
+    Handler(Looper.getMainLooper()).postDelayed({ dismiss() }, delay)
   }
 
   /** sets a [OnBalloonClickListener] to the popup using lambda. */
@@ -574,10 +570,10 @@ class Balloon(
       builder.width != NO_INT_VALUE -> {
         builder.width
       }
-      bodyView.measuredWidth > displayWidth -> {
+      binding.root.measuredWidth > displayWidth -> {
         displayWidth
       }
-      else -> this.bodyView.measuredWidth
+      else -> this.binding.root.measuredWidth
     }
   }
 
@@ -606,12 +602,12 @@ class Balloon(
     if (builder.height != NO_INT_VALUE) {
       return builder.height
     }
-    return this.bodyView.measuredHeight
+    return this.binding.root.measuredHeight
   }
 
   /** gets a content view of the balloon popup window. */
   fun getContentView(): View {
-    return bodyView.balloon_detail
+    return binding.balloonDetail
   }
 
   /** dismiss automatically when lifecycle owner is destroyed. */
