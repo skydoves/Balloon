@@ -62,7 +62,6 @@ inline fun createBalloon(context: Context, block: Balloon.Builder.() -> Unit): B
 
 /** Balloon implements showing and dismissing text popup with arrow and animations. */
 @Suppress("MemberVisibilityCanBePrivate")
-@SuppressLint("InflateParams")
 class Balloon(
   private val context: Context,
   private val builder: Builder
@@ -81,7 +80,6 @@ class Balloon(
   private val balloonPersistence = BalloonPersistence.getInstance(context)
 
   init {
-    val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     this.bodyWindow = PopupWindow(binding.root, RelativeLayout.LayoutParams.WRAP_CONTENT,
       RelativeLayout.LayoutParams.WRAP_CONTENT)
     createByBuilder()
