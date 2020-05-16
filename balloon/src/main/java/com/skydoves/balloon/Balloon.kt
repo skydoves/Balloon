@@ -267,7 +267,7 @@ class Balloon(
 
   @MainThread
   private inline fun show(anchor: View, crossinline block: () -> Unit) {
-    if (!this.isShowing) {
+    if (!this.isShowing && !this.destroyed) {
       this.isShowing = true
       this.builder.preferenceName?.let {
         if (balloonPersistence.shouldShowUP(it, builder.showTimes)) {
