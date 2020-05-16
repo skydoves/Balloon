@@ -38,6 +38,7 @@ class ProfileBalloonFactory : Balloon.Factory() {
       setElevation(6)
       setBackgroundColorResource(R.color.white)
       setBalloonAnimation(BalloonAnimation.CIRCULAR)
+      setDismissWhenTouchOutside(true)
       setDismissWhenShowAgain(true)
       setLifecycleOwner(lifecycle)
     }

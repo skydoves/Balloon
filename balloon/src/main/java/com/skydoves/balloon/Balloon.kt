@@ -254,7 +254,7 @@ class Balloon(
       when (builder.balloonAnimation) {
         BalloonAnimation.ELASTIC -> bodyWindow.animationStyle = R.style.Elastic
         BalloonAnimation.CIRCULAR -> {
-          bodyWindow.contentView.circularRevealed()
+          bodyWindow.contentView.circularRevealed(builder.circularDuration)
           bodyWindow.animationStyle = R.style.NormalDispose
         }
         BalloonAnimation.FADE -> bodyWindow.animationStyle = R.style.Fade
@@ -515,7 +515,7 @@ class Balloon(
 
       val dismissWindow: () -> Unit = { this.bodyWindow.dismiss() }
       if (this.builder.balloonAnimation == BalloonAnimation.CIRCULAR) {
-        this.bodyWindow.contentView.circularUnRevealed {
+        this.bodyWindow.contentView.circularUnRevealed(builder.circularDuration) {
           dismissWindow()
         }
       } else {
@@ -700,6 +700,8 @@ class Balloon(
     @JvmField
     var balloonAnimation: BalloonAnimation = BalloonAnimation.FADE
     @JvmField
+    var circularDuration: Long = 500L
+    @JvmField
     var preferenceName: String? = null
     @JvmField
     var showTimes: Int = 1
@@ -874,11 +876,22 @@ class Balloon(
     /** sets the balloon showing animation using [BalloonAnimation]. */
     fun setBalloonAnimation(value: BalloonAnimation): Builder = apply {
       this.balloonAnimation = value
+      if (value == BalloonAnimation.CIRCULAR) {
+        this.isFocusable = false
+      }
     }
 
     /** sets the balloon showing animation using custom xml animation style. */
     fun setBalloonAnimationStyle(@StyleRes value: Int): Builder = apply {
       this.balloonAnimationStyle = value
+    }
+
+    /**
+     * sets the duration of the circular animation.
+     * this option only works with [BalloonAnimation.CIRCULAR] value in [setBalloonAnimation].
+     */
+    fun setCircularDuration(value: Long): Builder = apply {
+      this.circularDuration = value
     }
 
     /** sets a [OnBalloonClickListener] to the popup. */

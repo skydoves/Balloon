@@ -38,7 +38,7 @@ internal fun View.visible(value: Boolean) {
 /** shows circular revealed animation to a view. */
 @MainThread
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-internal fun View.circularRevealed() {
+internal fun View.circularRevealed(circularDuration: Long) {
   visibility = View.INVISIBLE
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
     post {
@@ -49,7 +49,7 @@ internal fun View.circularRevealed() {
           (top + bottom) / 2,
           0f,
           max(width, height).toFloat()).apply {
-          duration = 500
+          duration = circularDuration
           start()
         }
       }
@@ -60,7 +60,7 @@ internal fun View.circularRevealed() {
 /** shows circular unrevealed animation to a view. */
 @MainThread
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-internal fun View.circularUnRevealed(doAfterFinish: () -> Unit) {
+internal fun View.circularUnRevealed(circularDuration: Long, doAfterFinish: () -> Unit) {
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
     post {
       if (isAttachedToWindow) {
@@ -69,7 +69,7 @@ internal fun View.circularUnRevealed(doAfterFinish: () -> Unit) {
           (top + bottom) / 2,
           max(width, height).toFloat(),
           0f).apply {
-          duration = 500
+          duration = circularDuration
           start()
         }.addListener(object : AnimatorListenerAdapter() {
           override fun onAnimationEnd(animation: Animator?) {
