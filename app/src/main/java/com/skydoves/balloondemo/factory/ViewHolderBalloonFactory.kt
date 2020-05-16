@@ -41,6 +41,7 @@ class ViewHolderBalloonFactory : Balloon.Factory() {
       setWidthRatio(0.75f)
       setHeight(64)
       setCornerRadius(8f)
+      setElevation(4)
       setTextForm(textForm)
       isRtlSupport(isRtlLayout())
       setArrowOrientation(ArrowOrientation.TOP)

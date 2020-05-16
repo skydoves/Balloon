@@ -144,6 +144,7 @@ class Balloon(
   private fun initializeBackground() {
     with(binding.balloonCard) {
       alpha = builder.alpha
+      cardElevation = builder.elevation
       if (builder.backgroundDrawable == null) {
         setCardBackgroundColor(builder.backgroundColor)
         radius = builder.cornerRadius

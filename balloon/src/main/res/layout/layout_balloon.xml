@@ -7,22 +7,13 @@
   android:layout_height="wrap_content"
   android:background="@android:color/transparent">
 
-  <androidx.appcompat.widget.AppCompatImageView
-    android:id="@+id/balloon_arrow"
-    android:layout_width="15dp"
-    android:layout_height="10dp"
-    android:layout_alignBottom="@+id/balloon_content"
-    android:layout_centerHorizontal="true"
-    android:rotation="180"
-    android:scaleType="fitXY"
-    android:src="@drawable/arrow"
-    android:tint="@android:color/black" />
-
   <RelativeLayout
     android:id="@+id/balloon_content"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:padding="10dp">
 
     <androidx.cardview.widget.CardView
@@ -66,5 +57,16 @@
     </androidx.cardview.widget.CardView>
 
   </RelativeLayout>
+
+  <androidx.appcompat.widget.AppCompatImageView
+    android:id="@+id/balloon_arrow"
+    android:layout_width="15dp"
+    android:layout_height="10dp"
+    android:layout_alignBottom="@+id/balloon_content"
+    android:layout_centerHorizontal="true"
+    android:rotation="180"
+    android:scaleType="fitXY"
+    android:src="@drawable/arrow"
+    android:tint="@android:color/black" />
 
 </RelativeLayout>

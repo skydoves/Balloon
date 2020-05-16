@@ -37,6 +37,7 @@ class CustomListBalloonFactory : Balloon.Factory() {
       .setTextSize(12f)
       .isRtlSupport(BalloonUtils.isRtlLayout())
       .setCornerRadius(4f)
+      .setElevation(6)
       .setBackgroundColorResource(R.color.background800)
       .setBalloonAnimation(BalloonAnimation.FADE)
       .setDismissWhenShowAgain(true)
