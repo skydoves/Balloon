@@ -239,7 +239,7 @@ class Balloon(
       val heightSpec =
         View.MeasureSpec.makeMeasureSpec(context.displaySize().y, View.MeasureSpec.UNSPECIFIED)
       measure(widthSpec, heightSpec)
-      layoutParams.width = getMeasureTextWidth()
+      layoutParams.width = getMeasureTextWidth(measuredWidth)
     }
   }
 
@@ -577,17 +577,21 @@ class Balloon(
   }
 
   /** gets measured width size of the balloon popup text label. */
-  private fun getMeasureTextWidth(): Int {
+  private fun getMeasureTextWidth(measuredWidth: Int): Int {
     val displayWidth = context.displaySize().x
     val spaces =
       builder.iconSize + builder.iconSpace + builder.space +
         if (builder.padding != NO_INT_VALUE) builder.padding * 2 else {
           builder.paddingLeft + builder.paddingRight
         } + context.dp2Px(24)
+
     return when {
+      measuredWidth < displayWidth - spaces -> measuredWidth
+      measuredWidth > displayWidth - spaces -> displayWidth - spaces
       builder.widthRatio != NO_Float_VALUE ->
         (displayWidth * builder.widthRatio).toInt() - spaces
-      builder.width != NO_INT_VALUE -> builder.width - spaces
+      builder.width != NO_INT_VALUE ->
+        builder.width - spaces
       else -> displayWidth - spaces
     }
   }
