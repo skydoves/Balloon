@@ -580,10 +580,13 @@ class Balloon(
   private fun getMeasureTextWidth(measuredWidth: Int): Int {
     val displayWidth = context.displaySize().x
     val spaces =
-      builder.iconSize + builder.iconSpace + builder.space +
+      builder.space +
         if (builder.padding != NO_INT_VALUE) builder.padding * 2 else {
           builder.paddingLeft + builder.paddingRight
-        } + context.dp2Px(24)
+        } + context.dp2Px(24) +
+        if (builder.iconDrawable != null) {
+          builder.iconSize + builder.iconSpace
+        } else 0
 
     return when {
       measuredWidth < displayWidth - spaces -> measuredWidth
