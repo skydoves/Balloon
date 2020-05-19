@@ -38,8 +38,7 @@ class ViewHolderBalloonFactory : Balloon.Factory() {
 
     return createBalloon(context) {
       setArrowSize(10)
-      setWidthRatio(0.75f)
-      setHeight(64)
+      setPadding(10)
       setCornerRadius(8f)
       setElevation(4)
       setTextForm(textForm)

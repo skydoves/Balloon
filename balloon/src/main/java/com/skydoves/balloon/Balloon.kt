@@ -563,15 +563,10 @@ class Balloon(
   fun getMeasureWidth(): Int {
     val displayWidth = context.displaySize().x
     return when {
-      builder.widthRatio != NO_Float_VALUE -> {
+      builder.widthRatio != NO_Float_VALUE ->
         (displayWidth * builder.widthRatio - builder.space).toInt()
-      }
-      builder.width != NO_INT_VALUE -> {
-        builder.width
-      }
-      binding.root.measuredWidth > displayWidth -> {
-        displayWidth
-      }
+      builder.width != NO_INT_VALUE && builder.width < displayWidth -> builder.width
+      binding.root.measuredWidth > displayWidth -> displayWidth
       else -> this.binding.root.measuredWidth
     }
   }
@@ -589,12 +584,12 @@ class Balloon(
         } else 0
 
     return when {
-      measuredWidth < displayWidth - spaces -> measuredWidth
-      measuredWidth > displayWidth - spaces -> displayWidth - spaces
       builder.widthRatio != NO_Float_VALUE ->
         (displayWidth * builder.widthRatio).toInt() - spaces
-      builder.width != NO_INT_VALUE ->
+      builder.width != NO_INT_VALUE && builder.width <= displayWidth ->
         builder.width - spaces
+      measuredWidth < displayWidth - spaces -> measuredWidth
+      measuredWidth > displayWidth - spaces -> displayWidth - spaces
       else -> displayWidth - spaces
     }
   }
@@ -718,7 +713,10 @@ class Balloon(
     var isFocusable: Boolean = true
 
     /** sets the width size. */
-    fun setWidth(@Dp value: Int): Builder = apply { this.width = context.dp2Px(value) }
+    fun setWidth(@Dp value: Int): Builder = apply {
+      require(value > 0) { "The width of the balloon must bigger than zero." }
+      this.width = context.dp2Px(value)
+    }
 
     /** sets the width size by the display screen size ratio. */
     fun setWidthRatio(
