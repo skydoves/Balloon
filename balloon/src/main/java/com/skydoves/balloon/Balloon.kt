@@ -29,6 +29,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -174,7 +175,7 @@ class Balloon(
       if (builder.dismissWhenClicked) dismiss()
     }
     with(this.bodyWindow) {
-      isOutsideTouchable = true
+      isOutsideTouchable = builder.dismissWhenTouchOutside
       setOnDismissListener {
         this@Balloon.dismiss()
         onBalloonDismissListener?.onBalloonDismiss()
@@ -688,7 +689,7 @@ class Balloon(
     @JvmField
     var onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener? = null
     @JvmField
-    var dismissWhenTouchOutside: Boolean = false
+    var dismissWhenTouchOutside: Boolean = true
     @JvmField
     var dismissWhenShowAgain: Boolean = false
     @JvmField
@@ -882,7 +883,7 @@ class Balloon(
     fun setBalloonAnimation(value: BalloonAnimation): Builder = apply {
       this.balloonAnimation = value
       if (value == BalloonAnimation.CIRCULAR) {
-        this.isFocusable = false
+        setFocusable(false)
       }
     }
 
@@ -947,6 +948,9 @@ class Balloon(
     /** dismisses when touch outside. */
     fun setDismissWhenTouchOutside(value: Boolean): Builder = apply {
       this.dismissWhenTouchOutside = value
+      if (!value) {
+        setFocusable(value)
+      }
     }
 
     /** dismisses when invoked show function again. */
