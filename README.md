@@ -55,6 +55,7 @@ Balloon balloon = new Balloon.Builder(context)
     .setAlpha(0.9f)
     .setText("You can access your profile from now on.")
     .setTextColor(ContextCompat.getColor(context, R.color.white_93))
+    .setTextIsHtml(true)
     .setIconDrawable(ContextCompat.getDrawable(context, R.drawable.ic_profile))
     .setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
     .setOnBalloonClickListener(onBalloonClickListener)
@@ -76,6 +77,7 @@ val balloon = createBalloon(context) {
   setAlpha(0.9f)
   setText("You can access your profile from now on.")
   setTextColorResource(R.color.white_93)
+  setTextIsHtml(true)
   setIconDrawable(ContextCompat.getDrawable(context, R.drawable.ic_profile))
   setBackgroundColorResource(R.color.colorPrimary)
   setOnBalloonClickListener(onBalloonClickListener)
@@ -183,6 +185,13 @@ We can customize the text on the balloon popup.
 .setTextTypeface(Typeface.BOLD)
 .setTextColor(ContextCompat.getColor(context, R.color.white_87))
 ```
+
+If your text has HTML in it, you can enable HTML rendering by adding this:
+```java
+.setTextIsHtml(true)
+```
+
+This will parse the text using `Html.fromHtml(text)`.
 
 ### TextForm
 TextFrom is an attribute class that has some attributes about TextView for customizing popup text.
