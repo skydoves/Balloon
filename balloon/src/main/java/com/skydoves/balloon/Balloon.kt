@@ -231,6 +231,7 @@ class Balloon(
         setText(builder.text)
         setTextSize(builder.textSize)
         setTextColor(builder.textColor)
+        setTextIsHtml(builder.textIsHtml)
         setTextTypeface(builder.textTypeface)
         setTextTypeface(builder.textTypefaceObject)
       })
@@ -657,6 +658,8 @@ class Balloon(
     var text: String = ""
     @JvmField @ColorInt
     var textColor: Int = Color.WHITE
+    @JvmField
+    var textIsHtml: Boolean = false
     @JvmField @Sp
     var textSize: Float = 12f
     @JvmField
@@ -820,6 +823,9 @@ class Balloon(
     fun setTextColorResource(@ColorRes value: Int): Builder = apply {
       this.textColor = context.contextColor(value)
     }
+
+    /** sets whether the text will be parsed as HTML (using Html.fromHtml(..)) */
+    fun setTextIsHtml(value: Boolean): Builder = apply { this.textIsHtml = value }
 
     /** sets the size of the main text content. */
     fun setTextSize(@Sp value: Float): Builder = apply { this.textSize = value }

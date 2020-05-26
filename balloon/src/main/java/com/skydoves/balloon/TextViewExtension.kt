@@ -16,12 +16,16 @@
 
 package com.skydoves.balloon
 
+import android.text.Html
 import android.widget.TextView
 
 /** applies text form attributes to a TextView instance. */
 @Suppress("unused")
 internal fun TextView.applyTextForm(textForm: TextForm) {
-  text = textForm.text
+  text = when (textForm.textIsHtml) {
+    true -> Html.fromHtml(textForm.text)
+    false -> textForm.text
+  }
   textSize = textForm.textSize
   setTextColor(textForm.textColor)
   textForm.textTypeface?.let { typeface = it } ?: setTypeface(typeface, textForm.textStyle)
