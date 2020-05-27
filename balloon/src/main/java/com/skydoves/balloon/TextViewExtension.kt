@@ -16,13 +16,27 @@
 
 package com.skydoves.balloon
 
+import android.os.Build
+import android.text.Html
+import android.text.Spanned
 import android.widget.TextView
 
 /** applies text form attributes to a TextView instance. */
 @Suppress("unused")
 internal fun TextView.applyTextForm(textForm: TextForm) {
-  text = textForm.text
+  text = when (textForm.textIsHtml) {
+    true -> fromHtml(textForm.text)
+    false -> textForm.text
+  }
   textSize = textForm.textSize
   setTextColor(textForm.textColor)
   textForm.textTypeface?.let { typeface = it } ?: setTypeface(typeface, textForm.textStyle)
+}
+
+private inline fun fromHtml(text: String): Spanned? {
+  return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+    Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY)
+  } else {
+    Html.fromHtml(text)
+  }
 }

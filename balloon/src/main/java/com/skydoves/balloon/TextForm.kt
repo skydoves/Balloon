@@ -42,6 +42,7 @@ class TextForm(builder: Builder) {
   val text: String = builder.text
   @Sp val textSize: Float = builder.textSize
   @ColorInt val textColor: Int = builder.textColor
+  val textIsHtml: Boolean = builder.textIsHtml
   val textStyle: Int = builder.textTypeface
   val textTypeface: Typeface? = builder.textTypefaceObject
 
@@ -54,6 +55,8 @@ class TextForm(builder: Builder) {
     var textSize: Float = 12f
     @JvmField @ColorInt
     var textColor = Color.WHITE
+    @JvmField
+    var textIsHtml: Boolean = false
     @JvmField
     var textTypeface = Typeface.NORMAL
     @JvmField
@@ -72,6 +75,9 @@ class TextForm(builder: Builder) {
 
     /** sets the color of the text. */
     fun setTextColor(@ColorInt value: Int): Builder = apply { this.textColor = value }
+
+    /** sets whether the text will be parsed as HTML (using Html.fromHtml(..)) */
+    fun setTextIsHtml(value: Boolean): Builder = apply { this.textIsHtml = value }
 
     /** sets the color of the text using resource. */
     fun setTextColorResource(@ColorRes value: Int): Builder = apply {
