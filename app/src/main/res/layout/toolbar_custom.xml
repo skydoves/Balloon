@@ -15,7 +15,7 @@
     android:singleLine="true"
     android:text="@string/app_name" />
 
-  <ImageView
+  <androidx.appcompat.widget.AppCompatImageView
     android:id="@+id/toolbar_list"
     android:layout_width="32dp"
     android:layout_height="32dp"
@@ -23,4 +23,5 @@
     android:layout_marginEnd="12dp"
     android:layout_marginRight="12dp"
     android:src="@drawable/ic_list_white_24dp" />
+
 </androidx.appcompat.widget.Toolbar>

@@ -18,6 +18,7 @@ package com.skydoves.balloondemo.factory
 
 import android.content.Context
 import androidx.lifecycle.LifecycleOwner
+import com.skydoves.balloon.ArrowConstraints
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
@@ -33,6 +34,7 @@ class ProfileBalloonFactory : Balloon.Factory() {
       setArrowSize(10)
       setArrowOrientation(ArrowOrientation.TOP)
       setArrowPosition(0.5f)
+      setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
       isRtlSupport(BalloonUtils.isRtlLayout())
       setCornerRadius(4f)
       setElevation(6)
