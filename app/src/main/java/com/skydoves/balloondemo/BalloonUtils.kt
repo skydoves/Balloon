@@ -21,6 +21,7 @@ import android.widget.Toast
 import androidx.core.text.TextUtilsCompat
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.LifecycleOwner
+import com.skydoves.balloon.ArrowConstraints
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.OnBalloonClickListener
@@ -32,6 +33,8 @@ object BalloonUtils {
     return Balloon.Builder(context)
       .setText("You can edit your profile now!")
       .setArrowSize(10)
+      .setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
+      .setArrowPosition(0.5f)
       .setPadding(12)
       .setTextSize(15f)
       .isRtlSupport(isRtlLayout())
@@ -55,9 +58,10 @@ object BalloonUtils {
     return Balloon.Builder(context)
       .setText("You can access your profile from on now.")
       .setArrowSize(10)
+      .setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
+      .setArrowPosition(0.5f)
       .setWidthRatio(1.0f)
       .setTextSize(15f)
-      .setArrowPosition(0.62f)
       .isRtlSupport(isRtlLayout())
       .setPadding(10)
       .setCornerRadius(4f)
