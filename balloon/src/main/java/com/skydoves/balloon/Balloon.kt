@@ -149,9 +149,9 @@ class Balloon(
     return builder.arrowSize.toFloat() * 2.5f
   }
 
-  private fun getWindowBodyScreenLocation(): IntArray {
+  private fun getWindowBodyScreenLocation(view: View): IntArray {
     val location: IntArray = intArrayOf(0, 0)
-    this.bodyWindow.contentView.getLocationOnScreen(location)
+    view.getLocationOnScreen(location)
     return location
   }
 
@@ -168,7 +168,8 @@ class Balloon(
   }
 
   private fun getArrowConstraintPositionX(anchor: View): Float {
-    val locationX: Int = getWindowBodyScreenLocation()[0]
+    val balloonX: Int = getWindowBodyScreenLocation(bodyWindow.contentView)[0]
+    val anchorX: Int = getWindowBodyScreenLocation(anchor)[0]
     val minPosition = getMinArrowPosition()
     val maxPosition = getMeasureWidth() - minPosition
     val arrowHalfSize = builder.arrowSize / 2f
@@ -176,11 +177,11 @@ class Balloon(
       ArrowConstraints.ALIGN_BALLOON -> binding.root.width * builder.arrowPosition - arrowHalfSize
       ArrowConstraints.ALIGN_ANCHOR -> {
         when {
-          anchor.x + anchor.width < locationX -> minPosition
-          locationX + getMeasureWidth() < anchor.x -> maxPosition
+          anchorX + anchor.width < balloonX -> minPosition
+          balloonX + getMeasureWidth() < anchorX -> maxPosition
           else -> {
             val position =
-              (anchor.width) * builder.arrowPosition + anchor.x - locationX - arrowHalfSize
+              (anchor.width) * builder.arrowPosition + anchorX - balloonX - arrowHalfSize
             when {
               position <= getDoubleArrowSize() -> minPosition
               position > getMeasureWidth() - getDoubleArrowSize() -> maxPosition
@@ -193,7 +194,9 @@ class Balloon(
   }
 
   private fun getArrowConstraintPositionY(anchor: View): Float {
-    val locationY: Int = getWindowBodyScreenLocation()[1] - getStatusBarHeight()
+    val balloonY: Int =
+      getWindowBodyScreenLocation(bodyWindow.contentView)[1] - getStatusBarHeight()
+    val anchorY: Int = getWindowBodyScreenLocation(anchor)[1] - getStatusBarHeight()
     val minPosition = getMinArrowPosition()
     val maxPosition = getMeasureHeight() - minPosition
     val arrowHalfSize = builder.arrowSize / 2
@@ -201,11 +204,11 @@ class Balloon(
       ArrowConstraints.ALIGN_BALLOON -> binding.root.height * builder.arrowPosition - arrowHalfSize
       ArrowConstraints.ALIGN_ANCHOR -> {
         when {
-          anchor.y + anchor.height < locationY -> minPosition
-          locationY + getMeasureHeight() < anchor.y -> maxPosition
+          anchorY + anchor.height < balloonY -> minPosition
+          balloonY + getMeasureHeight() < anchorY -> maxPosition
           else -> {
             val position =
-              (anchor.height) * builder.arrowPosition + anchor.y - locationY - arrowHalfSize
+              (anchor.height) * builder.arrowPosition + anchorY - balloonY - arrowHalfSize
             when {
               position <= getDoubleArrowSize() -> minPosition
               position > getMeasureHeight() - getDoubleArrowSize() -> maxPosition
