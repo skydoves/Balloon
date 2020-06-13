@@ -93,11 +93,13 @@ class Balloon(
     initializeBalloonContent()
     initializeBalloonListeners()
 
-    if (builder.layout == NO_INT_VALUE) {
+    if (builder.layoutRes != NO_INT_VALUE) {
+      initializeCustomLayoutWithResource()
+    } else if (builder.layout != null) {
+      initializeCustomLayoutWithView()
+    } else {
       initializeIcon()
       initializeText()
-    } else {
-      initializeCustomLayout()
     }
     builder.lifecycleOwner?.lifecycle?.addObserver(this@Balloon)
   }
@@ -323,10 +325,15 @@ class Balloon(
     }
   }
 
-  private fun initializeCustomLayout() {
+  private fun initializeCustomLayoutWithResource() {
     binding.balloonDetail.removeAllViews()
     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    inflater.inflate(builder.layout, binding.balloonDetail)
+    inflater.inflate(builder.layoutRes, binding.balloonDetail)
+  }
+
+  private fun initializeCustomLayoutWithView() {
+    binding.balloonDetail.removeAllViews()
+    binding.balloonDetail.addView(builder.layout)
   }
 
   private fun applyBalloonAnimation() {
@@ -796,8 +803,12 @@ class Balloon(
     @JvmField
     var elevation: Float = context.dp2Px(2f)
 
-    @JvmField @LayoutRes
-    var layout: Int = NO_INT_VALUE
+    @JvmField
+    var layout: View? = null
+
+    @JvmField
+    @LayoutRes
+    var layoutRes: Int = NO_INT_VALUE
 
     @JvmField
     var onBalloonClickListener: OnBalloonClickListener? = null
@@ -1020,7 +1031,10 @@ class Balloon(
     }
 
     /** sets the custom layout resource to the popup content. */
-    fun setLayout(@LayoutRes layout: Int): Builder = apply { this.layout = layout }
+    fun setLayout(@LayoutRes layoutRes: Int): Builder = apply { this.layoutRes = layoutRes }
+
+    /** sets the custom layout view to the popup content. */
+    fun setLayout(layout: View): Builder = apply { this.layout = layout }
 
     /**
      * sets the [LifecycleOwner] for dismissing automatically when the [LifecycleOwner] is destroyed.
