@@ -33,7 +33,7 @@ allprojects {
 And add a dependency code to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:balloon:1.1.7"
+    implementation "com.github.skydoves:balloon:1.1.8"
 }
 ```
 
@@ -46,11 +46,12 @@ Here is a basic example of implementing balloon popup with icon and text using `
 Balloon balloon = new Balloon.Builder(context)
     .setArrowSize(10)
     .setArrowOrientation(ArrowOrientation.TOP)
+    .setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
+    .setArrowPosition(0.5f)
     .setArrowVisible(true)
     .setWidthRatio(1.0f)
     .setHeight(65)
     .setTextSize(15f)
-    .setArrowPosition(0.62f)
     .setCornerRadius(4f)
     .setAlpha(0.9f)
     .setText("You can access your profile from now on.")
@@ -167,6 +168,18 @@ We can customize the arrow on the balloon popup. <br>
 .setArrowPosition(0.8f) // sets the arrow position using the popup size's ratio (0 ~ 1.0)
 .setArrowOrientation(ArrowOrientation.TOP) // sets the arrow orientation. top, bottom, left, right
 .setArrowDrawable(ContextCompat.getDrawable(context, R.drawable.arrow)) // sets the arrow drawable.
+```
+
+#### ArrowConstraints
+We can determines the constraints of the arrow positioning using the `ArrowConstraints`.<br>
+This constraint affects the `setArrowPosition`.
+```kotlin
+// Aligning arrow based on the anchor view. 
+// if an arrowPosition is 0.5, the arrow will be positioned center of the anchor view.
+.setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
+// Aligning arrow based on the balloon popup.
+// if an arrowPosition is 0.5, the arrow will be positioned center of the balloon popup.
+.setArrowConstraints(ArrowConstraints.ALIGN_BALLOON) // default
 ```
 
 Below previews are implemented using `setArrowOrientation` and `setArrowPosition` methods. <br>
@@ -423,6 +436,7 @@ FADE | OVERSHOOT | ELASTIC | CIRCULAR |
 .setArrowSize(value: Int)
 .setArrowPosition(@FloatRange(from = 0.0, to = 1.0) value: Float)
 .setArrowOrientation(value: ArrowOrientation)
+.setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
 .setArrowColor(value: Int)
 .setArrowColorResource(value: Int)
 .setArrowDrawable(value: Drawable?)
