@@ -20,9 +20,11 @@ package com.skydoves.balloon
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
+import android.app.Activity
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.Rect
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -102,7 +104,7 @@ class Balloon(
     builder.lifecycleOwner?.lifecycle?.addObserver(this@Balloon)
   }
 
-  private fun initializeArrow() {
+  private fun initializeArrow(anchor: View) {
     with(binding.balloonArrow) {
       visible(builder.arrowVisible)
       val params = RelativeLayout.LayoutParams(builder.arrowSize, builder.arrowSize)
@@ -124,14 +126,6 @@ class Balloon(
           rotation = 90f
         }
       }
-      binding.root.post {
-        when (builder.arrowOrientation) {
-          ArrowOrientation.BOTTOM, ArrowOrientation.TOP ->
-            x = binding.root.width * builder.arrowPosition - (builder.arrowSize / 2)
-          ArrowOrientation.LEFT, ArrowOrientation.RIGHT ->
-            y = binding.root.height * builder.arrowPosition - (builder.arrowSize / 2)
-        }
-      }
       layoutParams = params
       alpha = builder.alpha
       builder.arrowDrawable?.let { setImageDrawable(it) }
@@ -139,6 +133,91 @@ class Balloon(
         ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.arrowColor))
       } else {
         ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.backgroundColor))
+      }
+      binding.root.post {
+        when (builder.arrowOrientation) {
+          ArrowOrientation.BOTTOM, ArrowOrientation.TOP -> {
+            x = getArrowConstraintPositionX(anchor)
+          }
+          ArrowOrientation.LEFT, ArrowOrientation.RIGHT -> {
+            y = getArrowConstraintPositionY(anchor)
+          }
+        }
+      }
+    }
+  }
+
+  private fun getMinArrowPosition(): Float {
+    return builder.arrowSize.toFloat() * 2.5f
+  }
+
+  private fun getWindowBodyScreenLocation(view: View): IntArray {
+    val location: IntArray = intArrayOf(0, 0)
+    view.getLocationOnScreen(location)
+    return location
+  }
+
+  fun getStatusBarHeight(): Int {
+    val rectangle = Rect()
+    return if (context is Activity && builder.isStatusBarVisible) {
+      context.window.decorView.getWindowVisibleDisplayFrame(rectangle)
+      rectangle.top
+    } else 0
+  }
+
+  fun getDoubleArrowSize(): Int {
+    return builder.arrowSize * 2
+  }
+
+  private fun getArrowConstraintPositionX(anchor: View): Float {
+    val balloonX: Int = getWindowBodyScreenLocation(bodyWindow.contentView)[0]
+    val anchorX: Int = getWindowBodyScreenLocation(anchor)[0]
+    val minPosition = getMinArrowPosition()
+    val maxPosition = getMeasureWidth() - minPosition
+    val arrowHalfSize = builder.arrowSize / 2f
+    return when (builder.arrowConstraints) {
+      ArrowConstraints.ALIGN_BALLOON -> binding.root.width * builder.arrowPosition - arrowHalfSize
+      ArrowConstraints.ALIGN_ANCHOR -> {
+        when {
+          anchorX + anchor.width < balloonX -> minPosition
+          balloonX + getMeasureWidth() < anchorX -> maxPosition
+          else -> {
+            val position =
+              (anchor.width) * builder.arrowPosition + anchorX - balloonX - arrowHalfSize
+            when {
+              position <= getDoubleArrowSize() -> minPosition
+              position > getMeasureWidth() - getDoubleArrowSize() -> maxPosition
+              else -> position
+            }
+          }
+        }
+      }
+    }
+  }
+
+  private fun getArrowConstraintPositionY(anchor: View): Float {
+    val balloonY: Int =
+      getWindowBodyScreenLocation(bodyWindow.contentView)[1] - getStatusBarHeight()
+    val anchorY: Int = getWindowBodyScreenLocation(anchor)[1] - getStatusBarHeight()
+    val minPosition = getMinArrowPosition()
+    val maxPosition = getMeasureHeight() - minPosition
+    val arrowHalfSize = builder.arrowSize / 2
+    return when (builder.arrowConstraints) {
+      ArrowConstraints.ALIGN_BALLOON -> binding.root.height * builder.arrowPosition - arrowHalfSize
+      ArrowConstraints.ALIGN_ANCHOR -> {
+        when {
+          anchorY + anchor.height < balloonY -> minPosition
+          balloonY + getMeasureHeight() < anchorY -> maxPosition
+          else -> {
+            val position =
+              (anchor.height) * builder.arrowPosition + anchorY - balloonY - arrowHalfSize
+            when {
+              position <= getDoubleArrowSize() -> minPosition
+              position > getMeasureHeight() - getDoubleArrowSize() -> maxPosition
+              else -> position
+            }
+          }
+        }
       }
     }
   }
@@ -295,7 +374,7 @@ class Balloon(
         this.bodyWindow.height = getMeasureHeight()
         this.binding.balloonDetail.layoutParams = FrameLayout.LayoutParams(
           FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
-        initializeArrow()
+        initializeArrow(anchor)
 
         applyBalloonAnimation()
         block()
@@ -627,102 +706,157 @@ class Balloon(
   class Builder(private val context: Context) {
     @JvmField @Dp
     var width: Int = NO_INT_VALUE
+
     @JvmField @FloatRange(from = 0.0, to = 1.0)
     var widthRatio: Float = NO_Float_VALUE
+
     @JvmField @Dp
     var height: Int = NO_INT_VALUE
+
     @JvmField @Dp
     var padding: Int = NO_INT_VALUE
+
     @JvmField @Dp
     var paddingLeft: Int = 0
+
     @JvmField @Dp
     var paddingTop: Int = 0
+
     @JvmField @Dp
     var paddingRight: Int = 0
+
     @JvmField @Dp
     var paddingBottom: Int = 0
+
     @JvmField @Dp
     var space: Int = 0
+
     @JvmField
     var arrowVisible: Boolean = true
+
     @JvmField @ColorInt
     var arrowColor: Int = NO_INT_VALUE
+
     @JvmField @Dp
     var arrowSize: Int = context.dp2Px(12)
+
     @JvmField @FloatRange(from = 0.0, to = 1.0)
     var arrowPosition: Float = 0.5f
+
+    @JvmField
+    var arrowConstraints: ArrowConstraints = ArrowConstraints.ALIGN_BALLOON
+
     @JvmField
     var arrowOrientation: ArrowOrientation = ArrowOrientation.BOTTOM
+
     @JvmField
     var arrowDrawable: Drawable? = null
+
     @JvmField @ColorInt
     var backgroundColor: Int = Color.BLACK
+
     @JvmField
     var backgroundDrawable: Drawable? = null
+
     @JvmField @Dp
     var cornerRadius: Float = context.dp2Px(5).toFloat()
+
     @JvmField
     var text: String = ""
+
     @JvmField @ColorInt
     var textColor: Int = Color.WHITE
+
     @JvmField
     var textIsHtml: Boolean = false
+
     @JvmField @Sp
     var textSize: Float = 12f
+
     @JvmField
     var textTypeface: Int = Typeface.NORMAL
+
     @JvmField
     var textTypefaceObject: Typeface? = null
+
     @JvmField
     var textForm: TextForm? = null
+
     @JvmField
     var iconDrawable: Drawable? = null
+
     @JvmField @Dp
     var iconSize: Int = context.dp2Px(28)
+
     @JvmField @Dp
     var iconSpace: Int = context.dp2Px(8)
+
     @JvmField @ColorInt
     var iconColor: Int = Color.WHITE
+
     @JvmField
     var iconForm: IconForm? = null
+
     @JvmField @FloatRange(from = 0.0, to = 1.0)
     var alpha: Float = 1f
+
     @JvmField
     var elevation: Float = context.dp2Px(2f)
-    @JvmField @LayoutRes
-    var layoutRes: Int = NO_INT_VALUE
+
     @JvmField
     var layout: View? = null
+
+    @JvmField
+    @LayoutRes
+    var layoutRes: Int = NO_INT_VALUE
+
     @JvmField
     var onBalloonClickListener: OnBalloonClickListener? = null
+
     @JvmField
     var onBalloonDismissListener: OnBalloonDismissListener? = null
+
     @JvmField
     var onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener? = null
+
     @JvmField
     var dismissWhenTouchOutside: Boolean = true
+
     @JvmField
     var dismissWhenShowAgain: Boolean = false
+
     @JvmField
     var dismissWhenClicked: Boolean = false
+
     @JvmField
     var autoDismissDuration: Long = NO_LONG_VALUE
+
     @JvmField
     var lifecycleOwner: LifecycleOwner? = null
+
     @JvmField @StyleRes
     var balloonAnimationStyle: Int = NO_INT_VALUE
+
     @JvmField
     var balloonAnimation: BalloonAnimation = BalloonAnimation.FADE
+
     @JvmField
     var circularDuration: Long = 500L
+
     @JvmField
     var preferenceName: String? = null
+
     @JvmField
     var showTimes: Int = 1
+
     @JvmField
     var isRtlSupport: Boolean = false
+
     @JvmField
     var isFocusable: Boolean = true
+
+    @JvmField
+    var isStatusBarVisible: Boolean = true
 
     /** sets the width size. */
     fun setWidth(@Dp value: Int): Builder = apply {
@@ -778,6 +912,18 @@ class Balloon(
     fun setArrowPosition(
       @FloatRange(from = 0.0, to = 1.0) value: Float
     ): Builder = apply { this.arrowPosition = value }
+
+    /**
+     * sets the constraints of the arrow positioning.
+     * [ArrowConstraints.ALIGN_BALLOON]: aligning based on the balloon.
+     * [ArrowConstraints.ALIGN_ANCHOR]: aligning based on the anchor.
+     */
+    fun setArrowConstraints(value: ArrowConstraints) = apply { this.arrowConstraints = value }
+
+    /** sets is status bar is visible or not in your screen. */
+    fun setIsStatusBarVisible(value: Boolean) = apply {
+      this.isStatusBarVisible = value
+    }
 
     /** sets the arrow orientation using [ArrowOrientation]. */
     fun setArrowOrientation(value: ArrowOrientation): Builder = apply {

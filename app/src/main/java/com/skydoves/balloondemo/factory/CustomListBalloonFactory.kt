@@ -18,6 +18,7 @@ package com.skydoves.balloondemo.factory
 
 import android.content.Context
 import androidx.lifecycle.LifecycleOwner
+import com.skydoves.balloon.ArrowConstraints
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
@@ -31,7 +32,8 @@ class CustomListBalloonFactory : Balloon.Factory() {
       .setLayout(R.layout.layout_custom_list)
       .setArrowSize(10)
       .setArrowOrientation(ArrowOrientation.TOP)
-      .setArrowPosition(0.85f)
+      .setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
+      .setArrowPosition(0.5f)
       .setWidth(170)
       .setHeight(200)
       .setTextSize(12f)
