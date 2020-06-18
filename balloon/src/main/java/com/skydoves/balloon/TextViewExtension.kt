@@ -29,11 +29,12 @@ internal fun TextView.applyTextForm(textForm: TextForm) {
     false -> textForm.text
   }
   textSize = textForm.textSize
+  gravity = textForm.textGravity
   setTextColor(textForm.textColor)
   textForm.textTypeface?.let { typeface = it } ?: setTypeface(typeface, textForm.textStyle)
 }
 
-private inline fun fromHtml(text: String): Spanned? {
+private fun fromHtml(text: String): Spanned? {
   return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
     Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY)
   } else {

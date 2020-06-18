@@ -31,6 +31,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -313,6 +314,7 @@ class Balloon(
         setTextSize(builder.textSize)
         setTextColor(builder.textColor)
         setTextIsHtml(builder.textIsHtml)
+        setTextGravity(builder.textGravity)
         setTextTypeface(builder.textTypeface)
         setTextTypeface(builder.textTypefaceObject)
       })
@@ -780,6 +782,9 @@ class Balloon(
     var textTypefaceObject: Typeface? = null
 
     @JvmField
+    var textGravity: Int = Gravity.CENTER_VERTICAL
+
+    @JvmField
     var textForm: TextForm? = null
 
     @JvmField
@@ -990,6 +995,14 @@ class Balloon(
 
     /** sets the typeface of the main text content. */
     fun setTextTypeface(value: Typeface): Builder = apply { this.textTypefaceObject = value }
+
+    /**
+     * sets gravity of the text.
+     * this only works when the width or setWidthRatio set explicitly.
+     */
+    fun setTextGravity(value: Int): Builder = apply {
+      this.textGravity = value
+    }
 
     /** applies [TextForm] attributes to the main text content. */
     fun setTextForm(value: TextForm): Builder = apply { this.textForm = value }

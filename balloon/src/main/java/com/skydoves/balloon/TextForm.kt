@@ -21,6 +21,7 @@ package com.skydoves.balloon
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
+import android.view.Gravity
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
@@ -45,22 +46,31 @@ class TextForm(builder: Builder) {
   val textIsHtml: Boolean = builder.textIsHtml
   val textStyle: Int = builder.textTypeface
   val textTypeface: Typeface? = builder.textTypefaceObject
+  val textGravity: Int = builder.textGravity
 
   /** Builder class for [TextForm]. */
   @TextFormDsl
   class Builder(val context: Context) {
     @JvmField
     var text: String = ""
+
     @JvmField @Sp
     var textSize: Float = 12f
+
     @JvmField @ColorInt
     var textColor = Color.WHITE
+
     @JvmField
     var textIsHtml: Boolean = false
+
     @JvmField
     var textTypeface = Typeface.NORMAL
+
     @JvmField
     var textTypefaceObject: Typeface? = null
+
+    @JvmField
+    var textGravity: Int = Gravity.CENTER_VERTICAL
 
     /** sets the content text of the form. */
     fun setText(value: String): Builder = apply { this.text = value }
@@ -89,6 +99,11 @@ class TextForm(builder: Builder) {
 
     /** sets the [Typeface] of the text. */
     fun setTextTypeface(value: Typeface?): Builder = apply { this.textTypefaceObject = value }
+
+    /** sets gravity of the text. */
+    fun setTextGravity(value: Int): Builder = apply {
+      this.textGravity = value
+    }
 
     fun build() = TextForm(this)
   }
