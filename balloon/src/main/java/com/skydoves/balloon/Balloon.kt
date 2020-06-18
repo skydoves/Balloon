@@ -130,6 +130,8 @@ class Balloon(
       layoutParams = params
       alpha = builder.alpha
       builder.arrowDrawable?.let { setImageDrawable(it) }
+      setPadding(builder.arrowLeftPadding, builder.arrowTopPadding,
+        builder.arrowRightPadding, builder.arrowBottomPadding)
       if (builder.arrowColor != NO_INT_VALUE) {
         ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.arrowColor))
       } else {
@@ -754,6 +756,18 @@ class Balloon(
     @JvmField
     var arrowDrawable: Drawable? = null
 
+    @JvmField
+    var arrowLeftPadding: Int = 0
+
+    @JvmField
+    var arrowRightPadding: Int = 0
+
+    @JvmField
+    var arrowTopPadding: Int = 0
+
+    @JvmField
+    var arrowBottomPadding: Int = 0
+
     @JvmField @ColorInt
     var backgroundColor: Int = Color.BLACK
 
@@ -943,6 +957,26 @@ class Balloon(
     /** sets a custom drawable of the arrow using the resource. */
     fun setArrowDrawableResource(@DrawableRes value: Int): Builder = apply {
       this.arrowDrawable = context.contextDrawable(value)?.mutate()
+    }
+
+    /** sets the left padding of the arrow. */
+    fun setArrowLeftPadding(@Dp value: Int): Builder = apply {
+      this.arrowLeftPadding = context.dp2Px(value)
+    }
+
+    /** sets the right padding of the arrow. */
+    fun setArrowRightPadding(@Dp value: Int): Builder = apply {
+      this.arrowRightPadding = context.dp2Px(value)
+    }
+
+    /** sets the top padding of the arrow. */
+    fun setArrowTopPadding(@Dp value: Int): Builder = apply {
+      this.arrowTopPadding = context.dp2Px(value)
+    }
+
+    /** sets the bottom padding of the arrow. */
+    fun setArrowBottomPadding(@Dp value: Int): Builder = apply {
+      this.arrowBottomPadding = context.dp2Px(value)
     }
 
     /** sets the background color of the arrow and popup. */
