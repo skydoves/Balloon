@@ -40,6 +40,7 @@ import android.widget.PopupWindow
 import android.widget.RelativeLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
+import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.FloatRange
 import androidx.annotation.LayoutRes
@@ -883,6 +884,11 @@ class Balloon(
       this.width = context.dp2Px(value)
     }
 
+    /** sets the width size using dimension resources. */
+    fun setWidthResource(@DimenRes value: Int): Builder = apply {
+      this.width = context.dimen(value)
+    }
+
     /** sets the width size by the display screen size ratio. */
     fun setWidthRatio(
       @FloatRange(from = 0.0, to = 1.0) value: Float
@@ -891,8 +897,18 @@ class Balloon(
     /** sets the height size. */
     fun setHeight(@Dp value: Int): Builder = apply { this.height = context.dp2Px(value) }
 
+    /** sets the height size using dimension resource. */
+    fun setHeightResource(@DimenRes value: Int): Builder = apply {
+      this.height = context.dimen(value)
+    }
+
     /** sets the padding on all directions. */
     fun setPadding(@Dp value: Int): Builder = apply { this.padding = context.dp2Px(value) }
+
+    /** sets the padding on all directions using dimension resource. */
+    fun setPaddingResource(@DimenRes value: Int): Builder = apply {
+      this.padding = context.dimen(value)
+    }
 
     /** sets the left padding on all directions. */
     fun setPaddingLeft(@Dp value: Int): Builder = apply { this.paddingLeft = context.dp2Px(value) }
@@ -913,6 +929,11 @@ class Balloon(
     /** sets the side space between popup and display. */
     fun setSpace(@Dp value: Int): Builder = apply { this.space = context.dp2Px(value) }
 
+    /** sets the side space between popup and display using dimension resource. */
+    fun setSpaceResource(@DimenRes value: Int): Builder = apply {
+      this.space = context.dimen(value)
+    }
+
     /** sets the visibility of the arrow. */
     fun setArrowVisible(value: Boolean): Builder = apply { this.arrowVisible = value }
 
@@ -926,6 +947,11 @@ class Balloon(
 
     /** sets the size of the arrow. */
     fun setArrowSize(@Dp value: Int): Builder = apply { this.arrowSize = context.dp2Px(value) }
+
+    /** sets the size of the arrow using dimension resource. */
+    fun setArrowSizeResource(@DimenRes value: Int): Builder = apply {
+      this.arrowSize = context.dimen(value)
+    }
 
     /** sets the arrow position by popup size ration. The popup size depends on [arrowOrientation]. */
     fun setArrowPosition(
@@ -1002,6 +1028,11 @@ class Balloon(
       this.cornerRadius = context.dp2Px(value)
     }
 
+    /** sets the corner radius of the popup using dimension resource. */
+    fun setCornerRadiusResource(@DimenRes value: Int): Builder = apply {
+      this.cornerRadius = context.dimen(value).toFloat()
+    }
+
     /** sets the main text content of the popup. */
     fun setText(value: String): Builder = apply { this.text = value }
 
@@ -1052,6 +1083,11 @@ class Balloon(
     /** sets the size of the icon drawable. */
     fun setIconSize(@Dp value: Int): Builder = apply { this.iconSize = context.dp2Px(value) }
 
+    /** sets the size of the icon drawable using dimension resource. */
+    fun setIconSizeResource(@DimenRes value: Int): Builder = apply {
+      this.iconSize = context.dimen(value)
+    }
+
     /** sets the color of the icon drawable. */
     fun setIconColor(@ColorInt value: Int): Builder = apply { this.iconColor = value }
 
@@ -1062,6 +1098,11 @@ class Balloon(
 
     /** sets the space between the icon and the main text content. */
     fun setIconSpace(@Dp value: Int): Builder = apply { this.iconSpace = context.dp2Px(value) }
+
+    /** sets the space between the icon and the main text content using dimension resource. */
+    fun setIconSpaceResource(@DimenRes value: Int): Builder = apply {
+      this.iconSpace = context.dimen(value)
+    }
 
     /** applies [IconForm] attributes to the icon. */
     fun setIconForm(value: IconForm): Builder = apply { this.iconForm = value }
@@ -1075,6 +1116,12 @@ class Balloon(
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     fun setElevation(@Dp value: Int): Builder = apply {
       this.elevation = context.dp2Px(value).toFloat()
+    }
+
+    /** sets the elevation to the popup using dimension resource. */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    fun setElevationResource(@DimenRes value: Int): Builder = apply {
+      this.elevation = context.dimen(value).toFloat()
     }
 
     /** sets the custom layout resource to the popup content. */
