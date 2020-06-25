@@ -779,7 +779,7 @@ class Balloon(
     var cornerRadius: Float = context.dp2Px(5).toFloat()
 
     @JvmField
-    var text: String = ""
+    var text: CharSequence = ""
 
     @JvmField @ColorInt
     var textColor: Int = Color.WHITE
@@ -797,7 +797,7 @@ class Balloon(
     var textTypefaceObject: Typeface? = null
 
     @JvmField
-    var textGravity: Int = Gravity.CENTER_VERTICAL
+    var textGravity: Int = Gravity.CENTER
 
     @JvmField
     var textForm: TextForm? = null
@@ -1034,7 +1034,7 @@ class Balloon(
     }
 
     /** sets the main text content of the popup. */
-    fun setText(value: String): Builder = apply { this.text = value }
+    fun setText(value: CharSequence): Builder = apply { this.text = value }
 
     /** sets the main text content of the popup using resource. */
     fun setTextResource(@StringRes value: Int): Builder = apply {

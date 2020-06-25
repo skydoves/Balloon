@@ -25,7 +25,7 @@ import android.widget.TextView
 @Suppress("unused")
 internal fun TextView.applyTextForm(textForm: TextForm) {
   text = when (textForm.textIsHtml) {
-    true -> fromHtml(textForm.text)
+    true -> fromHtml(textForm.text.toString())
     false -> textForm.text
   }
   textSize = textForm.textSize

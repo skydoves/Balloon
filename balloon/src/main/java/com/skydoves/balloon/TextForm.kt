@@ -40,7 +40,7 @@ inline fun textForm(context: Context, block: TextForm.Builder.() -> Unit): TextF
  */
 class TextForm(builder: Builder) {
 
-  val text: String = builder.text
+  val text: CharSequence = builder.text
   @Sp val textSize: Float = builder.textSize
   @ColorInt val textColor: Int = builder.textColor
   val textIsHtml: Boolean = builder.textIsHtml
@@ -52,7 +52,7 @@ class TextForm(builder: Builder) {
   @TextFormDsl
   class Builder(val context: Context) {
     @JvmField
-    var text: String = ""
+    var text: CharSequence = ""
 
     @JvmField @Sp
     var textSize: Float = 12f
@@ -70,10 +70,10 @@ class TextForm(builder: Builder) {
     var textTypefaceObject: Typeface? = null
 
     @JvmField
-    var textGravity: Int = Gravity.CENTER_VERTICAL
+    var textGravity: Int = Gravity.CENTER
 
     /** sets the content text of the form. */
-    fun setText(value: String): Builder = apply { this.text = value }
+    fun setText(value: CharSequence): Builder = apply { this.text = value }
 
     /** sets the content text of the form using string resource. */
     fun setTextResource(@StringRes value: Int): Builder = apply {
