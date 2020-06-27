@@ -152,7 +152,8 @@ class Balloon(
   }
 
   private fun getMinArrowPosition(): Float {
-    return builder.arrowSize.toFloat() * 2.5f
+    return (builder.arrowSize.toFloat() * builder.arrowAlignAnchorPaddingRatio) +
+      builder.arrowAlignAnchorPadding
   }
 
   private fun getWindowBodyScreenLocation(view: View): IntArray {
@@ -769,6 +770,12 @@ class Balloon(
     @JvmField
     var arrowBottomPadding: Int = 0
 
+    @JvmField
+    var arrowAlignAnchorPadding: Int = 0
+
+    @JvmField
+    var arrowAlignAnchorPaddingRatio: Float = 2.5f
+
     @JvmField @ColorInt
     var backgroundColor: Int = Color.BLACK
 
@@ -1003,6 +1010,16 @@ class Balloon(
     /** sets the bottom padding of the arrow. */
     fun setArrowBottomPadding(@Dp value: Int): Builder = apply {
       this.arrowBottomPadding = context.dp2Px(value)
+    }
+
+    /** sets the padding of the arrow when aligning anchor using with [ArrowConstraints.ALIGN_ANCHOR]. */
+    fun setArrowAlignAnchorPadding(@Dp value: Int): Builder = apply {
+      this.arrowAlignAnchorPadding = context.dp2Px(value)
+    }
+
+    /** sets the padding ratio of the arrow when aligning anchor using with [ArrowConstraints.ALIGN_ANCHOR]. */
+    fun setArrowAlignAnchorPaddingRatio(value: Float): Builder = apply {
+      this.arrowAlignAnchorPaddingRatio = value
     }
 
     /** sets the background color of the arrow and popup. */
