@@ -33,7 +33,7 @@ allprojects {
 And add a dependency code to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:balloon:1.1.8"
+    implementation "com.github.skydoves:balloon:1.1.9"
 }
 ```
 
@@ -441,6 +441,8 @@ FADE | OVERSHOOT | ELASTIC | CIRCULAR |
 .setArrowColorResource(value: Int)
 .setArrowDrawable(value: Drawable?)
 .setArrowDrawableResource(value: Int)
+.setArrowAlignAnchorPadding(value: Int)
+.setArrowAlignAnchorPaddingRatio(value: Float)
 .setBackgroundColor(value: Int)
 .setBackgroundColorResource(value: Int)
 .setBackgroundDrawable(value: Drawable?)
@@ -452,6 +454,7 @@ FADE | OVERSHOOT | ELASTIC | CIRCULAR |
 .setTextColorResource(value: Int)
 .setTextSize(value: Float)
 .setTextTypeface(value: Int)
+.setTextGravity(value: Int)
 .setTextForm(value: TextForm)
 .setIconDrawable(value: Drawable?)
 .setIconDrawableResource(value: Int)
