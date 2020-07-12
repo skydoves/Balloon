@@ -108,7 +108,7 @@ class Balloon(
 
   private fun initializeArrow(anchor: View) {
     with(binding.balloonArrow) {
-      visible(builder.arrowVisible)
+      visible(false)
       val params = RelativeLayout.LayoutParams(builder.arrowSize, builder.arrowSize)
       when (builder.arrowOrientation) {
         ArrowOrientation.BOTTOM -> {
@@ -139,6 +139,7 @@ class Balloon(
         ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.backgroundColor))
       }
       binding.root.post {
+        binding.balloonArrow.visible(builder.arrowVisible)
         when (builder.arrowOrientation) {
           ArrowOrientation.BOTTOM, ArrowOrientation.TOP -> {
             x = getArrowConstraintPositionX(anchor)
