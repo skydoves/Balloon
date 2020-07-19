@@ -45,6 +45,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.FloatRange
 import androidx.annotation.LayoutRes
 import androidx.annotation.MainThread
+import androidx.annotation.Px
 import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
 import androidx.core.widget.ImageViewCompat
@@ -701,6 +702,14 @@ class Balloon(
     return binding.balloonDetail
   }
 
+  /** dismisses when the [LifecycleOwner] be on paused.  */
+  @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+  fun onPause() {
+    if (builder.dismissWhenLifecycleOnPause) {
+      dismiss()
+    }
+  }
+
   /** dismiss automatically when lifecycle owner is destroyed. */
   @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
   fun onDestroy() {
@@ -711,31 +720,31 @@ class Balloon(
   /** Builder class for creating [Balloon]. */
   @BalloonDsl
   class Builder(private val context: Context) {
-    @JvmField @Dp
+    @JvmField @Px
     var width: Int = NO_INT_VALUE
 
     @JvmField @FloatRange(from = 0.0, to = 1.0)
     var widthRatio: Float = NO_Float_VALUE
 
-    @JvmField @Dp
+    @JvmField @Px
     var height: Int = NO_INT_VALUE
 
-    @JvmField @Dp
+    @JvmField @Px
     var padding: Int = NO_INT_VALUE
 
-    @JvmField @Dp
+    @JvmField @Px
     var paddingLeft: Int = 0
 
-    @JvmField @Dp
+    @JvmField @Px
     var paddingTop: Int = 0
 
-    @JvmField @Dp
+    @JvmField @Px
     var paddingRight: Int = 0
 
-    @JvmField @Dp
+    @JvmField @Px
     var paddingBottom: Int = 0
 
-    @JvmField @Dp
+    @JvmField @Px
     var space: Int = 0
 
     @JvmField
@@ -744,7 +753,7 @@ class Balloon(
     @JvmField @ColorInt
     var arrowColor: Int = NO_INT_VALUE
 
-    @JvmField @Dp
+    @JvmField @Px
     var arrowSize: Int = context.dp2Px(12)
 
     @JvmField @FloatRange(from = 0.0, to = 1.0)
@@ -783,7 +792,7 @@ class Balloon(
     @JvmField
     var backgroundDrawable: Drawable? = null
 
-    @JvmField @Dp
+    @JvmField @Px
     var cornerRadius: Float = context.dp2Px(5).toFloat()
 
     @JvmField
@@ -813,10 +822,10 @@ class Balloon(
     @JvmField
     var iconDrawable: Drawable? = null
 
-    @JvmField @Dp
+    @JvmField @Px
     var iconSize: Int = context.dp2Px(28)
 
-    @JvmField @Dp
+    @JvmField @Px
     var iconSpace: Int = context.dp2Px(8)
 
     @JvmField @ColorInt
@@ -855,6 +864,9 @@ class Balloon(
 
     @JvmField
     var dismissWhenClicked: Boolean = false
+
+    @JvmField
+    var dismissWhenLifecycleOnPause: Boolean = false
 
     @JvmField
     var autoDismissDuration: Long = NO_LONG_VALUE
@@ -1235,6 +1247,11 @@ class Balloon(
 
     /** dismisses when the popup clicked. */
     fun setDismissWhenClicked(value: Boolean): Builder = apply { this.dismissWhenClicked = value }
+
+    /** dismisses when the [LifecycleOwner] be on paused. */
+    fun setDismissWhenLifecycleOnPause(value: Boolean): Builder = apply {
+      this.dismissWhenLifecycleOnPause = value
+    }
 
     /** dismisses automatically some milliseconds later when the popup is shown. */
     fun setAutoDismissDuration(value: Long): Builder = apply { this.autoDismissDuration = value }
