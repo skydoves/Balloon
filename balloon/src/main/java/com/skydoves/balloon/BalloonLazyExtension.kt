@@ -34,5 +34,5 @@ inline fun <reified T : Balloon.Factory> ComponentActivity.balloon(
 inline fun <reified T : Balloon.Factory> Fragment.balloon(
   factory: KClass<T>
 ): Lazy<Balloon?> {
-  return FragmentBalloonLazy(this, viewLifecycleOwner, factory)
+  return FragmentBalloonLazy(this, factory)
 }

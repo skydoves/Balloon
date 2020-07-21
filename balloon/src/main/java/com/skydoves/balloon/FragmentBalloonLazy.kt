@@ -17,17 +17,15 @@
 package com.skydoves.balloon
 
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
 import kotlin.reflect.KClass
 
 /**
  * An implementation of [Lazy] used by [Fragment]
  *
- * tied to the given [lifecycleOwner], [clazz].
+ * tied to the given fragment's lifecycle, [clazz].
  */
 class FragmentBalloonLazy<out T : Balloon.Factory>(
   private val fragment: Fragment,
-  private val lifecycleOwner: LifecycleOwner,
   private val clazz: KClass<T>
 ) : Lazy<Balloon?> {
 
@@ -38,7 +36,12 @@ class FragmentBalloonLazy<out T : Balloon.Factory>(
       var instance = cached
       if (instance == null && fragment.context != null) {
         val factory = clazz::java.get().newInstance()
-        instance = factory.create(fragment.requireContext(), lifecycleOwner)
+        val lifecycle = if (fragment.view != null) {
+          fragment.viewLifecycleOwner
+        } else {
+          fragment
+        }
+        instance = factory.create(fragment.requireContext(), lifecycle)
         cached = instance
       }
 
