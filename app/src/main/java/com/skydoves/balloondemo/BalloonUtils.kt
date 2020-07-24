@@ -21,7 +21,10 @@ import android.widget.Toast
 import androidx.core.text.TextUtilsCompat
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.LifecycleOwner
-import com.skydoves.balloon.*
+import com.skydoves.balloon.ArrowConstraints
+import com.skydoves.balloon.Balloon
+import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.OnBalloonClickListener
 import java.util.Locale
 
 object BalloonUtils {
@@ -73,6 +76,7 @@ object BalloonUtils {
 
   fun isRtlLayout(): Boolean {
     return TextUtilsCompat.getLayoutDirectionFromLocale(
-      Locale.getDefault()) == ViewCompat.LAYOUT_DIRECTION_RTL
+      Locale.getDefault()
+    ) == ViewCompat.LAYOUT_DIRECTION_RTL
   }
 }

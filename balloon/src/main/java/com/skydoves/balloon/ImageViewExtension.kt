@@ -21,30 +21,30 @@ import com.skydoves.balloon.custom.VectorTextView
 
 /** applies icon form attributes to a ImageView instance. */
 internal fun VectorTextView.applyIconForm(iconForm: IconForm) {
-    iconForm.drawable?.let {
-        drawableTextView = DrawableSimpleTextView(
-                iconSize = iconForm.iconSize,
-                compoundDrawablePadding = iconForm.iconSpace,
-                tintColorRes = iconForm.iconColor
-        ).apply {
-            when (iconForm.iconGravity) {
-                IconGravity.LEFT -> {
-                    drawableLeft = iconForm.drawable
-                    drawableLeftRes = iconForm.drawableRes
-                }
-                IconGravity.TOP -> {
-                    drawableTop = iconForm.drawable
-                    drawableTopRes = iconForm.drawableRes
-                }
-                IconGravity.BOTTOM -> {
-                    drawableBottom = iconForm.drawable
-                    drawableBottomRes = iconForm.drawableRes
-                }
-                IconGravity.RIGHT -> {
-                    drawableRight = iconForm.drawable
-                    drawableRightRes = iconForm.drawableRes
-                }
-            }
+  iconForm.drawable?.let {
+    drawableTextView = DrawableSimpleTextView(
+      iconSize = iconForm.iconSize,
+      compoundDrawablePadding = iconForm.iconSpace,
+      tintColorRes = iconForm.iconColor
+    ).apply {
+      when (iconForm.iconGravity) {
+        IconGravity.LEFT -> {
+          drawableLeft = iconForm.drawable
+          drawableLeftRes = iconForm.drawableRes
         }
+        IconGravity.TOP -> {
+          drawableTop = iconForm.drawable
+          drawableTopRes = iconForm.drawableRes
+        }
+        IconGravity.BOTTOM -> {
+          drawableBottom = iconForm.drawable
+          drawableBottomRes = iconForm.drawableRes
+        }
+        IconGravity.RIGHT -> {
+          drawableRight = iconForm.drawable
+          drawableRightRes = iconForm.drawableRes
+        }
+      }
     }
+  }
 }
