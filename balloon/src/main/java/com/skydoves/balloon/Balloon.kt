@@ -299,7 +299,7 @@ class Balloon(
   }
 
   private fun initializeIcon() {
-    with(binding.balloonIcon) {
+    with(binding.balloonDetail) {
       builder.iconForm?.let {
         applyIconForm(it)
       } ?: applyIconForm(iconForm(context) {
@@ -307,12 +307,13 @@ class Balloon(
         setIconSize(builder.iconSize)
         setIconColor(builder.iconColor)
         setIconSpace(builder.iconSpace)
+        setDrawableGravity(builder.iconGravity)
       })
     }
   }
 
   private fun initializeText() {
-    with(binding.balloonText) {
+    with(binding.balloonDetail) {
       builder.textForm?.let {
         applyTextForm(it)
       } ?: applyTextForm(textForm(context) {
@@ -334,14 +335,14 @@ class Balloon(
   }
 
   private fun initializeCustomLayoutWithResource() {
-    binding.balloonDetail.removeAllViews()
+    binding.balloonCard.removeAllViews()
     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    inflater.inflate(builder.layoutRes, binding.balloonDetail)
+    inflater.inflate(builder.layoutRes, binding.balloonCard)
   }
 
   private fun initializeCustomLayoutWithView() {
-    binding.balloonDetail.removeAllViews()
-    binding.balloonDetail.addView(builder.layout)
+    binding.balloonCard.removeAllViews()
+    binding.balloonCard.addView(builder.layout)
   }
 
   private fun applyBalloonAnimation() {
@@ -699,7 +700,7 @@ class Balloon(
 
   /** gets a content view of the balloon popup window. */
   fun getContentView(): View {
-    return binding.balloonDetail
+    return binding.balloonCard
   }
 
   /** dismisses when the [LifecycleOwner] be on paused.  */
@@ -821,6 +822,9 @@ class Balloon(
 
     @JvmField
     var iconDrawable: Drawable? = null
+
+    @JvmField
+    var iconGravity = IconGravity.LEFT
 
     @JvmField @Px
     var iconSize: Int = context.dp2Px(28)
@@ -1108,6 +1112,11 @@ class Balloon(
     /** sets the icon drawable of the popup using the resource. */
     fun setIconDrawableResource(@DrawableRes value: Int) = apply {
       this.iconDrawable = context.contextDrawable(value)?.mutate()
+    }
+
+    /** sets the icon gravity of the popup using the resource. */
+    fun setIconGravity(value: IconGravity) = apply {
+      this.iconGravity = value
     }
 
     /** sets the size of the icon drawable. */

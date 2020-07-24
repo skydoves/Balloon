@@ -37,8 +37,9 @@ inline fun iconForm(context: Context, block: IconForm.Builder.() -> Unit): IconF
  * for customizing popup icons easily.
  */
 class IconForm(builder: Builder) {
-
   val drawable = builder.drawable
+  var drawableRes = builder.drawableRes
+  val iconGravity = builder.iconGravity
   @Px val iconSize = builder.iconSize
   @Px val iconSpace = builder.iconSpace
   @ColorInt val iconColor = builder.iconColor
@@ -48,6 +49,10 @@ class IconForm(builder: Builder) {
   class Builder(val context: Context) {
     @JvmField
     var drawable: Drawable? = null
+    @JvmField
+    var drawableRes: Int? = null
+    @JvmField
+    var iconGravity = IconGravity.LEFT
     @JvmField @Px
     var iconSize: Int = context.dp2Px(28)
     @JvmField @Px
@@ -60,9 +65,13 @@ class IconForm(builder: Builder) {
 
     /** sets the [Drawable] of the icon using resource. */
     fun setDrawableResource(@DrawableRes value: Int): Builder = apply {
-      this.drawable = context.contextDrawable(value)
+      this.drawableRes = value
     }
 
+    /** sets gravity ofthe [Drawable] of the icon using resource. */
+    fun setDrawableGravity(value: IconGravity): Builder = apply {
+      this.iconGravity = value
+    }
     /** sets the size of the icon. */
     fun setIconSize(@Px value: Int): Builder = apply { this.iconSize = value }
 
@@ -79,4 +88,11 @@ class IconForm(builder: Builder) {
 
     fun build() = IconForm(this)
   }
+}
+
+enum class IconGravity {
+  LEFT,
+  RIGHT,
+  TOP,
+  BOTTOM
 }

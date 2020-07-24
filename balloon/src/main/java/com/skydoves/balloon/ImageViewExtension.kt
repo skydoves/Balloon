@@ -16,18 +16,35 @@
 
 package com.skydoves.balloon
 
-import android.content.res.ColorStateList
-import android.widget.LinearLayout
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.widget.ImageViewCompat
+import com.skydoves.balloon.custom.DrawableSimpleTextView
+import com.skydoves.balloon.custom.VectorTextView
 
 /** applies icon form attributes to a ImageView instance. */
-internal fun AppCompatImageView.applyIconForm(iconForm: IconForm) {
-  iconForm.drawable?.let {
-    setImageDrawable(it)
-    ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(iconForm.iconColor))
-    layoutParams = LinearLayout.LayoutParams(iconForm.iconSize, iconForm.iconSize)
-      .apply { setMargins(0, 0, iconForm.iconSpace, 0) }
-    visible(true)
-  }
+internal fun VectorTextView.applyIconForm(iconForm: IconForm) {
+    iconForm.drawable?.let {
+        drawableTextView = DrawableSimpleTextView(
+                iconSize = iconForm.iconSize,
+                compoundDrawablePadding = iconForm.iconSpace,
+                tintColorRes = iconForm.iconColor
+        ).apply {
+            when (iconForm.iconGravity) {
+                IconGravity.LEFT -> {
+                    drawableLeft = iconForm.drawable
+                    drawableLeftRes = iconForm.drawableRes
+                }
+                IconGravity.TOP -> {
+                    drawableTop = iconForm.drawable
+                    drawableTopRes = iconForm.drawableRes
+                }
+                IconGravity.BOTTOM -> {
+                    drawableBottom = iconForm.drawable
+                    drawableBottomRes = iconForm.drawableRes
+                }
+                IconGravity.RIGHT -> {
+                    drawableRight = iconForm.drawable
+                    drawableRightRes = iconForm.drawableRes
+                }
+            }
+        }
+    }
 }

@@ -25,34 +25,14 @@
       app:cardElevation="0dp"
       tools:cardBackgroundColor="@android:color/darker_gray">
 
-      <LinearLayout
-        android:id="@+id/balloon_detail"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatImageView
-          android:id="@+id/balloon_icon"
-          android:layout_width="28dp"
-          android:layout_height="28dp"
-          android:layout_gravity="center_vertical"
-          android:layout_marginEnd="8dp"
-          android:layout_marginRight="8dp"
-          android:scaleType="fitXY"
-          android:visibility="gone"
-          tools:src="@drawable/arrow" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-          android:id="@+id/balloon_text"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
+      <com.skydoves.balloon.custom.VectorTextView
+          android:id="@+id/balloon_detail"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:textColor="@android:color/white"
           android:layout_gravity="center_vertical"
           android:gravity="center"
-          android:textColor="@android:color/white"
           tools:text="@tools:sample/lorem" />
-
-      </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
