@@ -89,10 +89,3 @@ class IconForm(builder: Builder) {
     fun build() = IconForm(this)
   }
 }
-
-enum class IconGravity {
-  LEFT,
-  RIGHT,
-  TOP,
-  BOTTOM
-}
