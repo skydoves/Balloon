@@ -77,7 +77,6 @@ fun TextView.applyDrawable(vectorTextViewModel: VectorTextViewModel) {
       AppCompatResources.getDrawable(context, it)
     }?.tint(context, vectorTextViewModel.tintColorRes)?.resize(context, width, height)
 
-
   setCompoundDrawablesWithIntrinsicBounds(drawableLeft, drawableTop, drawableRight, drawableBottom)
 
   vectorTextViewModel.compoundDrawablePadding?.let { compoundDrawablePadding = it }

@@ -16,8 +16,8 @@
 
 package com.skydoves.balloon
 
-import com.skydoves.balloon.custom.VectorTextViewModel
 import com.skydoves.balloon.custom.VectorTextView
+import com.skydoves.balloon.custom.VectorTextViewModel
 
 /** applies icon form attributes to a ImageView instance. */
 internal fun VectorTextView.applyIconForm(iconForm: IconForm) {
