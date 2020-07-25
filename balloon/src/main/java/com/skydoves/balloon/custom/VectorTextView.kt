@@ -31,7 +31,7 @@ open class VectorTextView @JvmOverloads constructor(
   attrs: AttributeSet? = null
 ) : AppCompatTextView(context, attrs) {
 
-  var drawableTextView: DrawableSimpleTextView? = null
+  var drawableTextViewModel: VectorTextViewModel? = null
     set(value) {
       field = value?.also { applyDrawable(it) }
     }
@@ -43,7 +43,7 @@ open class VectorTextView @JvmOverloads constructor(
   private fun initAttrs(context: Context, attrs: AttributeSet?) {
     if (attrs != null) {
       val attributeArray = context.obtainStyledAttributes(attrs, R.styleable.VectorTextView)
-      drawableTextView = DrawableSimpleTextView(
+      drawableTextViewModel = VectorTextViewModel(
         drawableLeftRes = attributeArray.getResourceId(R.styleable.VectorTextView_drawableLeft, 0)
           .takeIf { it != 0 },
         drawableRightRes = attributeArray.getResourceId(R.styleable.VectorTextView_drawableRight, 0)
@@ -73,21 +73,3 @@ open class VectorTextView @JvmOverloads constructor(
     }
   }
 }
-
-data class DrawableSimpleTextView(
-  var drawableLeftRes: Int? = null,
-  var drawableRightRes: Int? = null,
-  var drawableBottomRes: Int? = null,
-  var drawableTopRes: Int? = null,
-  var drawableLeft: Drawable? = null,
-  var drawableRight: Drawable? = null,
-  var drawableBottom: Drawable? = null,
-  var drawableTop: Drawable? = null,
-  @Px val compoundDrawablePadding: Int? = null,
-  @Px val iconSize: Int? = null,
-  @DimenRes var compoundDrawablePaddingRes: Int? = null,
-  @ColorRes var tintColorRes: Int? = null,
-  @DimenRes var widthRes: Int? = null,
-  @DimenRes var heightRes: Int? = null,
-  @DimenRes var squareSizeRes: Int? = null
-)
