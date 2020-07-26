@@ -22,7 +22,7 @@ import android.text.Html
 import android.text.Spanned
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
-import com.skydoves.balloon.custom.VectorTextViewModel
+import com.skydoves.balloon.custom.VectorTextViewParams
 import com.skydoves.balloon.extensions.resize
 import com.skydoves.balloon.extensions.tint
 
@@ -47,40 +47,39 @@ private fun fromHtml(text: String): Spanned? {
   }
 }
 
-fun TextView.applyDrawable(vectorTextViewModel: VectorTextViewModel) {
-  val height = vectorTextViewModel.iconSize
-    ?: vectorTextViewModel.heightRes?.let { context.resources.getDimensionPixelSize(it) }
-    ?: vectorTextViewModel.squareSizeRes?.let { context.resources.getDimensionPixelSize(it) }
+internal fun TextView.applyDrawable(vectorTextViewParams: VectorTextViewParams) {
+  val height = vectorTextViewParams.iconSize
+    ?: vectorTextViewParams.heightRes?.let { context.resources.getDimensionPixelSize(it) }
+    ?: vectorTextViewParams.squareSizeRes?.let { context.resources.getDimensionPixelSize(it) }
 
-  val width = vectorTextViewModel.iconSize
-    ?: vectorTextViewModel.widthRes?.let { context.resources.getDimensionPixelSize(it) }
-    ?: vectorTextViewModel.squareSizeRes?.let { context.resources.getDimensionPixelSize(it) }
+  val width = vectorTextViewParams.iconSize
+    ?: vectorTextViewParams.widthRes?.let { context.resources.getDimensionPixelSize(it) }
+    ?: vectorTextViewParams.squareSizeRes?.let { context.resources.getDimensionPixelSize(it) }
 
   val drawableLeft: Drawable? =
-    vectorTextViewModel.drawableLeft ?: vectorTextViewModel.drawableLeftRes
-      ?.let {
+    vectorTextViewParams.drawableLeft ?: vectorTextViewParams.drawableLeftRes?.let {
         AppCompatResources.getDrawable(context, it)
-      }?.tint(context, vectorTextViewModel.tintColorRes)?.resize(context, width, height)
+      }?.tint(context, vectorTextViewParams.tintColorRes)?.resize(context, width, height)
 
   val drawableRight: Drawable? =
-    vectorTextViewModel.drawableRight ?: vectorTextViewModel.drawableRightRes?.let {
+    vectorTextViewParams.drawableRight ?: vectorTextViewParams.drawableRightRes?.let {
       AppCompatResources.getDrawable(context, it)
-    }?.tint(context, vectorTextViewModel.tintColorRes)?.resize(context, width, height)
+    }?.tint(context, vectorTextViewParams.tintColorRes)?.resize(context, width, height)
 
   val drawableBottom: Drawable? =
-    vectorTextViewModel.drawableBottom ?: vectorTextViewModel.drawableBottomRes?.let {
+    vectorTextViewParams.drawableBottom ?: vectorTextViewParams.drawableBottomRes?.let {
       AppCompatResources.getDrawable(context, it)
-    }?.tint(context, vectorTextViewModel.tintColorRes)?.resize(context, width, height)
+    }?.tint(context, vectorTextViewParams.tintColorRes)?.resize(context, width, height)
 
   val drawableTop: Drawable? =
-    vectorTextViewModel.drawableTop ?: vectorTextViewModel.drawableTopRes?.let {
+    vectorTextViewParams.drawableTop ?: vectorTextViewParams.drawableTopRes?.let {
       AppCompatResources.getDrawable(context, it)
-    }?.tint(context, vectorTextViewModel.tintColorRes)?.resize(context, width, height)
+    }?.tint(context, vectorTextViewParams.tintColorRes)?.resize(context, width, height)
 
   setCompoundDrawablesWithIntrinsicBounds(drawableLeft, drawableTop, drawableRight, drawableBottom)
 
-  vectorTextViewModel.compoundDrawablePadding?.let { compoundDrawablePadding = it }
-    ?: vectorTextViewModel.compoundDrawablePaddingRes?.let {
+  vectorTextViewParams.compoundDrawablePadding?.let { compoundDrawablePadding = it }
+    ?: vectorTextViewParams.compoundDrawablePaddingRes?.let {
       compoundDrawablePadding = context.resources.getDimensionPixelSize(it)
     }
 }

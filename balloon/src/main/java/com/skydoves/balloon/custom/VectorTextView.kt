@@ -27,7 +27,7 @@ open class VectorTextView @JvmOverloads constructor(
   attrs: AttributeSet? = null
 ) : AppCompatTextView(context, attrs) {
 
-  var drawableTextViewModel: VectorTextViewModel? = null
+  var drawableTextViewParams: VectorTextViewParams? = null
     set(value) {
       field = value?.also { applyDrawable(it) }
     }
@@ -39,7 +39,7 @@ open class VectorTextView @JvmOverloads constructor(
   private fun initAttrs(context: Context, attrs: AttributeSet?) {
     if (attrs != null) {
       val attributeArray = context.obtainStyledAttributes(attrs, R.styleable.VectorTextView)
-      drawableTextViewModel = VectorTextViewModel(
+      drawableTextViewParams = VectorTextViewParams(
         drawableLeftRes = attributeArray.getResourceId(R.styleable.VectorTextView_drawableLeft, 0)
           .takeIf { it != 0 },
         drawableRightRes = attributeArray.getResourceId(R.styleable.VectorTextView_drawableRight, 0)

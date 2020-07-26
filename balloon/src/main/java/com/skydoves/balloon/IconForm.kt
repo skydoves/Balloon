@@ -38,7 +38,7 @@ inline fun iconForm(context: Context, block: IconForm.Builder.() -> Unit): IconF
  */
 class IconForm(builder: Builder) {
   val drawable = builder.drawable
-  var drawableRes = builder.drawableRes
+  @DrawableRes var drawableRes = builder.drawableRes
   val iconGravity = builder.iconGravity
   @Px val iconSize = builder.iconSize
   @Px val iconSpace = builder.iconSpace
@@ -49,7 +49,7 @@ class IconForm(builder: Builder) {
   class Builder(val context: Context) {
     @JvmField
     var drawable: Drawable? = null
-    @JvmField
+    @JvmField @DrawableRes
     var drawableRes: Int? = null
     @JvmField
     var iconGravity = IconGravity.LEFT
@@ -68,7 +68,7 @@ class IconForm(builder: Builder) {
       this.drawableRes = value
     }
 
-    /** sets gravity ofthe [Drawable] of the icon using resource. */
+    /** sets gravity of the [Drawable] of the icon using resource. */
     fun setDrawableGravity(value: IconGravity): Builder = apply {
       this.iconGravity = value
     }

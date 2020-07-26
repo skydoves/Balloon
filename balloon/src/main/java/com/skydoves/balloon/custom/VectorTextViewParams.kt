@@ -21,7 +21,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.Px
 
-data class VectorTextViewModel(
+data class VectorTextViewParams(
   var drawableLeftRes: Int? = null,
   var drawableRightRes: Int? = null,
   var drawableBottomRes: Int? = null,

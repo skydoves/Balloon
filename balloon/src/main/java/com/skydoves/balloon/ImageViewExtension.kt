@@ -17,12 +17,12 @@
 package com.skydoves.balloon
 
 import com.skydoves.balloon.custom.VectorTextView
-import com.skydoves.balloon.custom.VectorTextViewModel
+import com.skydoves.balloon.custom.VectorTextViewParams
 
 /** applies icon form attributes to a ImageView instance. */
 internal fun VectorTextView.applyIconForm(iconForm: IconForm) {
   iconForm.drawable?.let {
-    drawableTextViewModel = VectorTextViewModel(
+    drawableTextViewParams = VectorTextViewParams(
       iconSize = iconForm.iconSize,
       compoundDrawablePadding = iconForm.iconSpace,
       tintColorRes = iconForm.iconColor
