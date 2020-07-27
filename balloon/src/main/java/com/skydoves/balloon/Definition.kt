@@ -38,6 +38,6 @@ internal fun Int.unaryMinus(predicate: Boolean): Int {
 }
 
 /** returns a nullable int value if the target int is not [NO_INT_VALUE]. */
-internal fun Int.takeIfNoIntValue(): Int? {
+internal fun Int.takeIfNotNoIntValue(): Int? {
   return this.takeIf { this != NO_INT_VALUE }
 }

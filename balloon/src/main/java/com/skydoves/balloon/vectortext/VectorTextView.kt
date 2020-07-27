@@ -22,7 +22,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.skydoves.balloon.NO_INT_VALUE
 import com.skydoves.balloon.R
 import com.skydoves.balloon.extensions.applyDrawable
-import com.skydoves.balloon.takeIfNoIntValue
+import com.skydoves.balloon.takeIfNotNoIntValue
 
 /** VectorTextView is a customizable textView having a vector icon.  */
 class VectorTextView @JvmOverloads constructor(
@@ -44,24 +44,24 @@ class VectorTextView @JvmOverloads constructor(
       val attributeArray = context.obtainStyledAttributes(attrs, R.styleable.VectorTextView)
       drawableTextViewParams = VectorTextViewParams(
         drawableLeftRes = attributeArray.getResourceId(R.styleable.VectorTextView_drawableLeft,
-          NO_INT_VALUE).takeIfNoIntValue(),
+          NO_INT_VALUE).takeIfNotNoIntValue(),
         drawableRightRes = attributeArray.getResourceId(R.styleable.VectorTextView_drawableRight,
-          NO_INT_VALUE).takeIfNoIntValue(),
+          NO_INT_VALUE).takeIfNotNoIntValue(),
         drawableBottomRes = attributeArray.getResourceId(R.styleable.VectorTextView_drawableBottom,
-          NO_INT_VALUE).takeIfNoIntValue(),
+          NO_INT_VALUE).takeIfNotNoIntValue(),
         drawableTopRes = attributeArray.getResourceId(R.styleable.VectorTextView_drawableTop,
-          NO_INT_VALUE).takeIfNoIntValue(),
+          NO_INT_VALUE).takeIfNotNoIntValue(),
         compoundDrawablePaddingRes = attributeArray.getResourceId(
           R.styleable.VectorTextView_drawablePadding,
-          NO_INT_VALUE).takeIfNoIntValue(),
+          NO_INT_VALUE).takeIfNotNoIntValue(),
         tintColorRes = attributeArray.getResourceId(R.styleable.VectorTextView_drawableTintColor,
-          NO_INT_VALUE).takeIfNoIntValue(),
+          NO_INT_VALUE).takeIfNotNoIntValue(),
         widthRes = attributeArray.getResourceId(R.styleable.VectorTextView_drawableWidth,
-          NO_INT_VALUE).takeIfNoIntValue(),
+          NO_INT_VALUE).takeIfNotNoIntValue(),
         heightRes = attributeArray.getResourceId(R.styleable.VectorTextView_drawableHeight,
-          NO_INT_VALUE).takeIfNoIntValue(),
+          NO_INT_VALUE).takeIfNotNoIntValue(),
         squareSizeRes = attributeArray.getResourceId(R.styleable.VectorTextView_drawableSquareSize,
-          NO_INT_VALUE).takeIfNoIntValue())
+          NO_INT_VALUE).takeIfNotNoIntValue())
       attributeArray.recycle()
     }
   }
