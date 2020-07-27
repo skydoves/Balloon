@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package com.skydoves.balloon.custom
+package com.skydoves.balloon.vectortext
 
 import android.graphics.drawable.Drawable
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.Px
 
+/** VectorTextViewParams is a collection of [VectorTextView]'s parameters.  */
 data class VectorTextViewParams(
   var drawableLeftRes: Int? = null,
   var drawableRightRes: Int? = null,

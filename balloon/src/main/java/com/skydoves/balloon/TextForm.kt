@@ -26,6 +26,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import com.skydoves.balloon.annotations.Sp
+import com.skydoves.balloon.extensions.contextColor
 
 @DslMarker
 annotation class TextFormDsl

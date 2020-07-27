@@ -25,14 +25,14 @@
       app:cardElevation="0dp"
       tools:cardBackgroundColor="@android:color/darker_gray">
 
-      <com.skydoves.balloon.custom.VectorTextView
-          android:id="@+id/balloon_detail"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:textColor="@android:color/white"
-          android:layout_gravity="center_vertical"
-          android:gravity="center"
-          tools:text="@tools:sample/lorem" />
+      <com.skydoves.balloon.vectortext.VectorTextView
+        android:id="@+id/balloon_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        tools:text="@tools:sample/lorem" />
 
     </androidx.cardview.widget.CardView>
 

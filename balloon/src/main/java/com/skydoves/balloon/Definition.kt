@@ -29,10 +29,15 @@ const val NO_LONG_VALUE: Long = -1L
 const val LTR: Int = 1
 
 /** returns the negative of this value. */
-fun Int.unaryMinus(predicate: Boolean): Int {
+internal fun Int.unaryMinus(predicate: Boolean): Int {
   return if (predicate) {
     unaryMinus()
   } else {
     this
   }
+}
+
+/** returns a nullable int value if the target int is not [NO_INT_VALUE]. */
+internal fun Int.takeIfNoIntValue(): Int? {
+  return this.takeIf { this != NO_INT_VALUE }
 }

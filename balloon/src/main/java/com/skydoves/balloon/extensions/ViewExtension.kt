@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.skydoves.balloon
+package com.skydoves.balloon.extensions
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
