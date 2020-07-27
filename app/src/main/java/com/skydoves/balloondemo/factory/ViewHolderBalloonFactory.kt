@@ -23,6 +23,7 @@ import com.skydoves.balloon.ArrowConstraints
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.IconGravity
 import com.skydoves.balloon.createBalloon
 import com.skydoves.balloon.textForm
 import com.skydoves.balloondemo.BalloonUtils.isRtlLayout
@@ -52,6 +53,7 @@ class ViewHolderBalloonFactory : Balloon.Factory() {
       setOnBalloonDismissListener {
         Toast.makeText(context, "dismissed", Toast.LENGTH_SHORT).show()
       }
+      setIconGravity(IconGravity.RIGHT)
       setDismissWhenClicked(true)
       setDismissWhenShowAgain(true)
       setBalloonAnimation(BalloonAnimation.ELASTIC)

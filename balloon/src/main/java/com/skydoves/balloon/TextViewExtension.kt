@@ -16,10 +16,15 @@
 
 package com.skydoves.balloon
 
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.Html
 import android.text.Spanned
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
+import com.skydoves.balloon.custom.VectorTextViewParams
+import com.skydoves.balloon.extensions.resize
+import com.skydoves.balloon.extensions.tint
 
 /** applies text form attributes to a TextView instance. */
 @Suppress("unused")
@@ -40,4 +45,41 @@ private fun fromHtml(text: String): Spanned? {
   } else {
     Html.fromHtml(text)
   }
+}
+
+internal fun TextView.applyDrawable(vectorTextViewParams: VectorTextViewParams) {
+  val height = vectorTextViewParams.iconSize
+    ?: vectorTextViewParams.heightRes?.let { context.resources.getDimensionPixelSize(it) }
+    ?: vectorTextViewParams.squareSizeRes?.let { context.resources.getDimensionPixelSize(it) }
+
+  val width = vectorTextViewParams.iconSize
+    ?: vectorTextViewParams.widthRes?.let { context.resources.getDimensionPixelSize(it) }
+    ?: vectorTextViewParams.squareSizeRes?.let { context.resources.getDimensionPixelSize(it) }
+
+  val drawableLeft: Drawable? =
+    vectorTextViewParams.drawableLeft ?: vectorTextViewParams.drawableLeftRes?.let {
+        AppCompatResources.getDrawable(context, it)
+      }?.tint(context, vectorTextViewParams.tintColorRes)?.resize(context, width, height)
+
+  val drawableRight: Drawable? =
+    vectorTextViewParams.drawableRight ?: vectorTextViewParams.drawableRightRes?.let {
+      AppCompatResources.getDrawable(context, it)
+    }?.tint(context, vectorTextViewParams.tintColorRes)?.resize(context, width, height)
+
+  val drawableBottom: Drawable? =
+    vectorTextViewParams.drawableBottom ?: vectorTextViewParams.drawableBottomRes?.let {
+      AppCompatResources.getDrawable(context, it)
+    }?.tint(context, vectorTextViewParams.tintColorRes)?.resize(context, width, height)
+
+  val drawableTop: Drawable? =
+    vectorTextViewParams.drawableTop ?: vectorTextViewParams.drawableTopRes?.let {
+      AppCompatResources.getDrawable(context, it)
+    }?.tint(context, vectorTextViewParams.tintColorRes)?.resize(context, width, height)
+
+  setCompoundDrawablesWithIntrinsicBounds(drawableLeft, drawableTop, drawableRight, drawableBottom)
+
+  vectorTextViewParams.compoundDrawablePadding?.let { compoundDrawablePadding = it }
+    ?: vectorTextViewParams.compoundDrawablePaddingRes?.let {
+      compoundDrawablePadding = context.resources.getDimensionPixelSize(it)
+    }
 }
