@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package com.skydoves.balloon
+package com.skydoves.balloon.extensions
 
-import com.skydoves.balloon.custom.VectorTextView
-import com.skydoves.balloon.custom.VectorTextViewParams
+import com.skydoves.balloon.IconForm
+import com.skydoves.balloon.IconGravity
+import com.skydoves.balloon.vectortext.VectorTextView
+import com.skydoves.balloon.vectortext.VectorTextViewParams
 
 /** applies icon form attributes to a ImageView instance. */
 internal fun VectorTextView.applyIconForm(iconForm: IconForm) {

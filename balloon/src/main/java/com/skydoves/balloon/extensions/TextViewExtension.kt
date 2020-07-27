@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.skydoves.balloon
+package com.skydoves.balloon.extensions
 
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -22,9 +22,8 @@ import android.text.Html
 import android.text.Spanned
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
-import com.skydoves.balloon.custom.VectorTextViewParams
-import com.skydoves.balloon.extensions.resize
-import com.skydoves.balloon.extensions.tint
+import com.skydoves.balloon.TextForm
+import com.skydoves.balloon.vectortext.VectorTextViewParams
 
 /** applies text form attributes to a TextView instance. */
 @Suppress("unused")

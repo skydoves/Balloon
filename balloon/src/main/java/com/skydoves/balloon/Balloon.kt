@@ -56,6 +56,16 @@ import androidx.lifecycle.OnLifecycleEvent
 import com.skydoves.balloon.annotations.Dp
 import com.skydoves.balloon.annotations.Sp
 import com.skydoves.balloon.databinding.LayoutBalloonBinding
+import com.skydoves.balloon.extensions.applyIconForm
+import com.skydoves.balloon.extensions.applyTextForm
+import com.skydoves.balloon.extensions.circularRevealed
+import com.skydoves.balloon.extensions.circularUnRevealed
+import com.skydoves.balloon.extensions.contextColor
+import com.skydoves.balloon.extensions.contextDrawable
+import com.skydoves.balloon.extensions.dimen
+import com.skydoves.balloon.extensions.displaySize
+import com.skydoves.balloon.extensions.dp2Px
+import com.skydoves.balloon.extensions.visible
 
 @DslMarker
 annotation class BalloonDsl
@@ -288,7 +298,7 @@ class Balloon(
       setPadding(builder.arrowSize - 2, builder.arrowSize - 2,
         builder.arrowSize - 2, builder.arrowSize - 2)
     }
-    with(binding.balloonDetail) {
+    with(binding.balloonText) {
       if (builder.padding != NO_INT_VALUE) {
         setPadding(builder.padding, builder.padding, builder.padding, builder.padding)
       } else {
@@ -299,7 +309,7 @@ class Balloon(
   }
 
   private fun initializeIcon() {
-    with(binding.balloonDetail) {
+    with(binding.balloonText) {
       builder.iconForm?.let {
         applyIconForm(it)
       } ?: applyIconForm(iconForm(context) {
@@ -313,7 +323,7 @@ class Balloon(
   }
 
   private fun initializeText() {
-    with(binding.balloonDetail) {
+    with(binding.balloonText) {
       builder.textForm?.let {
         applyTextForm(it)
       } ?: applyTextForm(textForm(context) {
@@ -381,7 +391,7 @@ class Balloon(
         this.binding.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         this.bodyWindow.width = getMeasureWidth()
         this.bodyWindow.height = getMeasureHeight()
-        this.binding.balloonDetail.layoutParams = FrameLayout.LayoutParams(
+        this.binding.balloonText.layoutParams = FrameLayout.LayoutParams(
           FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
         initializeArrow(anchor)
 
