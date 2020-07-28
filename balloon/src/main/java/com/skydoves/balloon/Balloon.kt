@@ -90,6 +90,7 @@ class Balloon(
   private var destroyed: Boolean = false
   var onBalloonClickListener: OnBalloonClickListener? = null
   var onBalloonDismissListener: OnBalloonDismissListener? = null
+  var onBalloonInitializedListener: OnBalloonInitializedListener? = null
   var onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener? = null
   private var supportRtlLayoutFactor: Int = LTR.unaryMinus(builder.isRtlSupport)
   private val balloonPersistence = BalloonPersistence.getInstance(context)
@@ -151,6 +152,7 @@ class Balloon(
       }
       binding.root.post {
         binding.balloonArrow.visible(builder.arrowVisible)
+        onBalloonInitializedListener?.onBalloonInitialized(getContentView())
         when (builder.arrowOrientation) {
           ArrowOrientation.BOTTOM, ArrowOrientation.TOP -> {
             x = getArrowConstraintPositionX(anchor)
@@ -266,6 +268,7 @@ class Balloon(
   private fun initializeBalloonListeners() {
     this.onBalloonClickListener = builder.onBalloonClickListener
     this.onBalloonDismissListener = builder.onBalloonDismissListener
+    this.onBalloonInitializedListener = builder.onBalloonInitializedListener
     this.onBalloonOutsideTouchListener = builder.onBalloonOutsideTouchListener
     this.binding.root.setOnClickListener {
       this.onBalloonClickListener?.onBalloonClick(it)
@@ -868,6 +871,9 @@ class Balloon(
     var onBalloonDismissListener: OnBalloonDismissListener? = null
 
     @JvmField
+    var onBalloonInitializedListener: OnBalloonInitializedListener? = null
+
+    @JvmField
     var onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener? = null
 
     @JvmField
@@ -1216,6 +1222,11 @@ class Balloon(
       this.onBalloonDismissListener = value
     }
 
+    /** sets a [OnBalloonInitializedListener] to the popup. */
+    fun setOnBalloonInitializedListener(value: OnBalloonInitializedListener): Builder = apply {
+      this.onBalloonInitializedListener = value
+    }
+
     /** sets a [OnBalloonOutsideTouchListener] to the popup. */
     fun setOnBalloonOutsideTouchListener(value: OnBalloonOutsideTouchListener): Builder = apply {
       this.onBalloonOutsideTouchListener = value
@@ -1235,6 +1246,15 @@ class Balloon(
       this.onBalloonDismissListener = object : OnBalloonDismissListener {
         override fun onBalloonDismiss() {
           unit()
+        }
+      }
+    }
+
+    /** sets a [OnBalloonInitializedListener] to the popup using lambda. */
+    fun setOnBalloonInitializedListener(unit: (View) -> Unit): Builder = apply {
+      this.onBalloonInitializedListener = object : OnBalloonInitializedListener {
+        override fun onBalloonInitialized(contentView: View) {
+          unit(contentView)
         }
       }
     }
