@@ -1,8 +1,8 @@
 ext.versions = [
     minSdk           : 16,
     compileSdk       : 29,
-    versionCode      : 20,
-    versionName      : '1.1.9',
+    versionCode      : 21,
+    versionName      : '1.2.0',
 
     gradleBuildTool  : '3.6.3',
     spotlessGradle   : '4.5.1',
@@ -15,5 +15,5 @@ ext.versions = [
     cardView         : '1.0.0',
 
     // for demo
-    googleMaterial   : '1.3.0-alpha01'
+    googleMaterial   : '1.3.0-alpha02'
 ]
