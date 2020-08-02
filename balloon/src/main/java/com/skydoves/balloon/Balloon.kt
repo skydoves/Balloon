@@ -617,6 +617,32 @@ class Balloon(
     it.showAlignLeft(anchor, xOff, yOff)
   }
 
+  /** updates popup and arrow position of the popup based on a new target anchor view. */
+  fun update(anchor: View) {
+    update(anchor = anchor) {
+      this.bodyWindow.update(anchor, getMeasureWidth(), getMeasureHeight())
+    }
+  }
+
+  /**
+   * updates popup and arrow position of the popup based on
+   * a new target anchor view with additional x-off and y-off.
+   */
+  fun update(anchor: View, xOff: Int, yOff: Int) {
+    update(anchor = anchor) {
+      this.bodyWindow.update(anchor, xOff, yOff, getMeasureWidth(), getMeasureHeight())
+    }
+  }
+
+  /** updates popup and arrow position of the popup based on a new target anchor view. */
+  @MainThread
+  private inline fun update(anchor: View, crossinline block: () -> Unit) {
+    if (isShowing) {
+      initializeArrow(anchor)
+      block()
+    }
+  }
+
   /** dismiss the popup menu. */
   fun dismiss() {
     if (this.isShowing) {
