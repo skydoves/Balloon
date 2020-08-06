@@ -742,7 +742,7 @@ class Balloon(
     return binding.balloonCard
   }
 
-  /** dismisses when the [LifecycleOwner] be on paused.  */
+  /** dismiss when the [LifecycleOwner] be on paused. */
   @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
   fun onPause() {
     if (builder.dismissWhenLifecycleOnPause) {

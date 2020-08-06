@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'org.jetbrains.dokka'
 apply from: '../dependencies.gradle'
 apply from: '../publish.gradle'
@@ -21,7 +22,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
     implementation "androidx.appcompat:appcompat:$versions.androidxAppcompat"
     implementation "androidx.cardview:cardview:$versions.cardView"
-    annotationProcessor "android.arch.lifecycle:compiler:$versions.lifecycle"
+    kapt "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle"
 }
 
 dokka {
