@@ -646,9 +646,10 @@ class Balloon(
   /** dismiss the popup menu. */
   fun dismiss() {
     if (this.isShowing) {
-      this.isShowing = false
-
-      val dismissWindow: () -> Unit = { this.bodyWindow.dismiss() }
+      val dismissWindow: () -> Unit = {
+        this.isShowing = false
+        this.bodyWindow.dismiss()
+      }
       if (this.builder.balloonAnimation == BalloonAnimation.CIRCULAR) {
         this.bodyWindow.contentView.circularUnRevealed(builder.circularDuration) {
           dismissWindow()
