@@ -32,7 +32,7 @@ object BalloonUtils {
   fun getProfileBalloon(context: Context, lifecycleOwner: LifecycleOwner): Balloon {
     return Balloon.Builder(context)
       .setText("You can edit your profile now!")
-      .setArrowSize(24)
+      .setArrowSize(10)
       .setWidthRatio(1.0f)
       .setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
       .setArrowPosition(0.5f)

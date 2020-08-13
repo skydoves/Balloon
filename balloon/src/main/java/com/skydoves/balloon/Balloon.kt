@@ -396,6 +396,7 @@ class Balloon(
       }
 
       anchor.post {
+        initializeText()
         this.binding.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         this.bodyWindow.width = getMeasureWidth()
         this.bodyWindow.height = getMeasureHeight()
