@@ -297,9 +297,14 @@ class Balloon(
   }
 
   private fun initializeBalloonContent() {
+    val paddingSize = builder.arrowSize * 2 - 2
     with(binding.balloonContent) {
-      setPadding(builder.arrowSize - 2, builder.arrowSize - 2,
-        builder.arrowSize - 2, builder.arrowSize - 2)
+      when (builder.arrowOrientation) {
+        ArrowOrientation.LEFT -> setPadding(paddingSize, 0, 0, 0)
+        ArrowOrientation.TOP -> setPadding(0, paddingSize, 0, 0)
+        ArrowOrientation.RIGHT -> setPadding(0, 0, paddingSize, 0)
+        ArrowOrientation.BOTTOM -> setPadding(0, 0, 0, paddingSize)
+      }
     }
     with(binding.balloonText) {
       if (builder.padding != NO_INT_VALUE) {
@@ -391,12 +396,14 @@ class Balloon(
       }
 
       anchor.post {
+        initializeText()
         this.binding.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         this.bodyWindow.width = getMeasureWidth()
         this.bodyWindow.height = getMeasureHeight()
         this.binding.balloonText.layoutParams = FrameLayout.LayoutParams(
           FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
         initializeArrow(anchor)
+        initializeBalloonContent()
 
         applyBalloonAnimation()
         block()
