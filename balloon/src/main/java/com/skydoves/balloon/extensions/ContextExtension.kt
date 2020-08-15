@@ -21,6 +21,7 @@ import android.graphics.Point
 import android.graphics.drawable.Drawable
 import android.view.WindowManager
 import androidx.annotation.DimenRes
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 
 /** gets display size as a point. */
@@ -56,5 +57,5 @@ internal fun Context.contextColor(resource: Int): Int {
 
 /** gets a drawable from the resource. */
 internal fun Context.contextDrawable(resource: Int): Drawable? {
-  return ContextCompat.getDrawable(this, resource)
+  return AppCompatResources.getDrawable(this, resource)
 }
