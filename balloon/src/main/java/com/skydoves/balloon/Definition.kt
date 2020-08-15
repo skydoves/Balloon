@@ -17,16 +17,16 @@
 package com.skydoves.balloon
 
 /** definition of the non-value of Int type. */
-const val NO_INT_VALUE: Int = Int.MIN_VALUE
+internal const val NO_INT_VALUE: Int = Int.MIN_VALUE
 
 /** definition of the non-value of Float type. */
-const val NO_Float_VALUE: Float = 0f
+internal const val NO_Float_VALUE: Float = 0f
 
 /** definition of the non-value of Long type. */
-const val NO_LONG_VALUE: Long = -1L
+internal const val NO_LONG_VALUE: Long = -1L
 
 /** definition of the left-to-right value. */
-const val LTR: Int = 1
+internal const val LTR: Int = 1
 
 /** returns the negative of this value. */
 internal fun Int.unaryMinus(predicate: Boolean): Int {
