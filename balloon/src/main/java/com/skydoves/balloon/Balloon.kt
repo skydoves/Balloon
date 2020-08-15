@@ -38,6 +38,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
@@ -343,12 +344,7 @@ class Balloon(
         setTextTypeface(builder.textTypeface)
         setTextTypeface(builder.textTypefaceObject)
       })
-      val widthSpec =
-        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-      val heightSpec =
-        View.MeasureSpec.makeMeasureSpec(context.displaySize().y, View.MeasureSpec.UNSPECIFIED)
-      measure(widthSpec, heightSpec)
-      layoutParams.width = getMeasureTextWidth(measuredWidth)
+      measureTextWidth(this)
     }
   }
 
@@ -361,6 +357,23 @@ class Balloon(
   private fun initializeCustomLayoutWithView() {
     binding.balloonCard.removeAllViews()
     binding.balloonCard.addView(builder.layout)
+  }
+
+  /**
+   * measures the width of a [TextView] and set the measured with.
+   * If the width of parent XML layout is wrapped content, and also
+   * the widths of [TextView]s in the parent layout is wrapped content, this functionality
+   * will measure the width exactly.
+   */
+  fun measureTextWidth(textView: TextView) {
+    with(textView) {
+      val widthSpec =
+        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+      val heightSpec =
+        View.MeasureSpec.makeMeasureSpec(context.displaySize().y, View.MeasureSpec.UNSPECIFIED)
+      measure(widthSpec, heightSpec)
+      layoutParams.width = getMeasureTextWidth(measuredWidth)
+    }
   }
 
   private fun applyBalloonAnimation() {
