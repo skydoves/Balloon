@@ -728,32 +728,18 @@ class Balloon(
 
   /** sets a [OnBalloonClickListener] to the popup using lambda. */
   fun setOnBalloonClickListener(unit: (View) -> Unit) {
-    this.onBalloonClickListener = object : OnBalloonClickListener {
-      override fun onBalloonClick(view: View) {
-        unit(view)
-      }
-    }
+    this.onBalloonClickListener = OnBalloonClickListener { view -> unit(view) }
   }
 
   /** sets a [OnBalloonDismissListener] to the popup using lambda. */
   fun setOnBalloonDismissListener(unit: () -> Unit) {
-    this.onBalloonDismissListener = object : OnBalloonDismissListener {
-      override fun onBalloonDismiss() {
-        unit()
-      }
-    }
+    this.onBalloonDismissListener = OnBalloonDismissListener { unit() }
   }
 
   /** sets a [OnBalloonOutsideTouchListener] to the popup using lambda. */
   fun setOnBalloonOutsideTouchListener(unit: (View, MotionEvent) -> Unit) {
-    this.onBalloonOutsideTouchListener = object : OnBalloonOutsideTouchListener {
-      override fun onBalloonOutsideTouch(
-        view: View,
-        event: MotionEvent
-      ) {
-        unit(view, event)
-      }
-    }
+    this.onBalloonOutsideTouchListener =
+      OnBalloonOutsideTouchListener { view, event -> unit(view, event) }
   }
 
   /** gets measured width size of the balloon popup. */
@@ -1322,41 +1308,24 @@ class Balloon(
 
     /** sets a [OnBalloonClickListener] to the popup using lambda. */
     fun setOnBalloonClickListener(unit: (View) -> Unit): Builder = apply {
-      this.onBalloonClickListener = object : OnBalloonClickListener {
-        override fun onBalloonClick(view: View) {
-          unit(view)
-        }
-      }
+      this.onBalloonClickListener = OnBalloonClickListener { view -> unit(view) }
     }
 
     /** sets a [OnBalloonDismissListener] to the popup using lambda. */
     fun setOnBalloonDismissListener(unit: () -> Unit): Builder = apply {
-      this.onBalloonDismissListener = object : OnBalloonDismissListener {
-        override fun onBalloonDismiss() {
-          unit()
-        }
-      }
+      this.onBalloonDismissListener = OnBalloonDismissListener { unit() }
     }
 
     /** sets a [OnBalloonInitializedListener] to the popup using lambda. */
     fun setOnBalloonInitializedListener(unit: (View) -> Unit): Builder = apply {
-      this.onBalloonInitializedListener = object : OnBalloonInitializedListener {
-        override fun onBalloonInitialized(contentView: View) {
-          unit(contentView)
-        }
-      }
+      this.onBalloonInitializedListener =
+        OnBalloonInitializedListener { contentView -> unit(contentView) }
     }
 
     /** sets a [OnBalloonOutsideTouchListener] to the popup using lambda. */
     fun setOnBalloonOutsideTouchListener(unit: (View, MotionEvent) -> Unit): Builder = apply {
-      this.onBalloonOutsideTouchListener = object : OnBalloonOutsideTouchListener {
-        override fun onBalloonOutsideTouch(
-          view: View,
-          event: MotionEvent
-        ) {
-          unit(view, event)
-        }
-      }
+      this.onBalloonOutsideTouchListener =
+        OnBalloonOutsideTouchListener { view, event -> unit(view, event) }
     }
 
     /** dismisses when touch outside. */

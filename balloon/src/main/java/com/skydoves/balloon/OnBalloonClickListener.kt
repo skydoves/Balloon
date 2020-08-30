@@ -19,7 +19,7 @@ package com.skydoves.balloon
 import android.view.View
 
 /** Interface definition for a callback to be invoked when a balloon view is clicked. */
-interface OnBalloonClickListener {
+fun interface OnBalloonClickListener {
 
   /** invoked when the [Balloon] is clicked. */
   fun onBalloonClick(view: View)

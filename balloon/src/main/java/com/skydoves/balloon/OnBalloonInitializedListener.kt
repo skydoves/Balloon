@@ -19,7 +19,7 @@ package com.skydoves.balloon
 import android.view.View
 
 /** Interface definition for a callback to be invoked when a balloon view is initialized. */
-interface OnBalloonInitializedListener {
+fun interface OnBalloonInitializedListener {
 
   /** invoked when the [Balloon] is initialized. */
   fun onBalloonInitialized(contentView: View)
