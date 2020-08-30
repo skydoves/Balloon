@@ -97,8 +97,11 @@ class Balloon(
   private val balloonPersistence = BalloonPersistence.getInstance(context)
 
   init {
-    this.bodyWindow = PopupWindow(binding.root, RelativeLayout.LayoutParams.WRAP_CONTENT,
-      RelativeLayout.LayoutParams.WRAP_CONTENT)
+    this.bodyWindow = PopupWindow(
+      binding.root,
+      RelativeLayout.LayoutParams.WRAP_CONTENT,
+      RelativeLayout.LayoutParams.WRAP_CONTENT
+    )
     createByBuilder()
   }
 
@@ -144,8 +147,12 @@ class Balloon(
       layoutParams = params
       alpha = builder.alpha
       builder.arrowDrawable?.let { setImageDrawable(it) }
-      setPadding(builder.arrowLeftPadding, builder.arrowTopPadding,
-        builder.arrowRightPadding, builder.arrowBottomPadding)
+      setPadding(
+        builder.arrowLeftPadding,
+        builder.arrowTopPadding,
+        builder.arrowRightPadding,
+        builder.arrowBottomPadding
+      )
       if (builder.arrowColor != NO_INT_VALUE) {
         ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.arrowColor))
       } else {
@@ -281,19 +288,21 @@ class Balloon(
         this@Balloon.dismiss()
         onBalloonDismissListener?.onBalloonDismiss()
       }
-      setTouchInterceptor(object : View.OnTouchListener {
-        @SuppressLint("ClickableViewAccessibility")
-        override fun onTouch(view: View, event: MotionEvent): Boolean {
-          if (event.action == MotionEvent.ACTION_OUTSIDE) {
-            if (builder.dismissWhenTouchOutside) {
-              this@Balloon.dismiss()
+      setTouchInterceptor(
+        object : View.OnTouchListener {
+          @SuppressLint("ClickableViewAccessibility")
+          override fun onTouch(view: View, event: MotionEvent): Boolean {
+            if (event.action == MotionEvent.ACTION_OUTSIDE) {
+              if (builder.dismissWhenTouchOutside) {
+                this@Balloon.dismiss()
+              }
+              onBalloonOutsideTouchListener?.onBalloonOutsideTouch(view, event)
+              return true
             }
-            onBalloonOutsideTouchListener?.onBalloonOutsideTouch(view, event)
-            return true
+            return false
           }
-          return false
         }
-      })
+      )
     }
   }
 
@@ -311,8 +320,12 @@ class Balloon(
       if (builder.padding != NO_INT_VALUE) {
         setPadding(builder.padding, builder.padding, builder.padding, builder.padding)
       } else {
-        setPadding(builder.paddingLeft, builder.paddingTop,
-          builder.paddingRight, builder.paddingBottom)
+        setPadding(
+          builder.paddingLeft,
+          builder.paddingTop,
+          builder.paddingRight,
+          builder.paddingBottom
+        )
       }
     }
   }
@@ -321,13 +334,15 @@ class Balloon(
     with(binding.balloonText) {
       builder.iconForm?.let {
         applyIconForm(it)
-      } ?: applyIconForm(iconForm(context) {
-        setDrawable(builder.iconDrawable)
-        setIconSize(builder.iconSize)
-        setIconColor(builder.iconColor)
-        setIconSpace(builder.iconSpace)
-        setDrawableGravity(builder.iconGravity)
-      })
+      } ?: applyIconForm(
+        iconForm(context) {
+          setDrawable(builder.iconDrawable)
+          setIconSize(builder.iconSize)
+          setIconColor(builder.iconColor)
+          setIconSpace(builder.iconSpace)
+          setDrawableGravity(builder.iconGravity)
+        }
+      )
     }
   }
 
@@ -335,15 +350,17 @@ class Balloon(
     with(binding.balloonText) {
       builder.textForm?.let {
         applyTextForm(it)
-      } ?: applyTextForm(textForm(context) {
-        setText(builder.text)
-        setTextSize(builder.textSize)
-        setTextColor(builder.textColor)
-        setTextIsHtml(builder.textIsHtml)
-        setTextGravity(builder.textGravity)
-        setTextTypeface(builder.textTypeface)
-        setTextTypeface(builder.textTypefaceObject)
-      })
+      } ?: applyTextForm(
+        textForm(context) {
+          setText(builder.text)
+          setTextSize(builder.textSize)
+          setTextColor(builder.textColor)
+          setTextIsHtml(builder.textIsHtml)
+          setTextGravity(builder.textGravity)
+          setTextTypeface(builder.textTypeface)
+          setTextTypeface(builder.textTypefaceObject)
+        }
+      )
       measureTextWidth(this)
     }
   }
@@ -414,7 +431,9 @@ class Balloon(
         this.bodyWindow.width = getMeasureWidth()
         this.bodyWindow.height = getMeasureHeight()
         this.binding.balloonText.layoutParams = FrameLayout.LayoutParams(
-          FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
+          FrameLayout.LayoutParams.MATCH_PARENT,
+          FrameLayout.LayoutParams.MATCH_PARENT
+        )
         initializeArrow(anchor)
         initializeBalloonContent()
 
@@ -442,9 +461,11 @@ class Balloon(
   /** shows the balloon on the center of an anchor view. */
   fun show(anchor: View) {
     show(anchor) {
-      bodyWindow.showAsDropDown(anchor,
+      bodyWindow.showAsDropDown(
+        anchor,
         supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
-        -getMeasureHeight() - (anchor.measuredHeight / 2))
+        -getMeasureHeight() - (anchor.measuredHeight / 2)
+      )
     }
   }
 
@@ -500,9 +521,11 @@ class Balloon(
   /** shows the balloon on an anchor view as the top alignment. */
   fun showAlignTop(anchor: View) {
     show(anchor) {
-      bodyWindow.showAsDropDown(anchor,
+      bodyWindow.showAsDropDown(
+        anchor,
         supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
-        -getMeasureHeight() - anchor.measuredHeight)
+        -getMeasureHeight() - anchor.measuredHeight
+      )
     }
   }
 
@@ -518,9 +541,11 @@ class Balloon(
   /** shows the balloon on an anchor view as the top alignment with x-off and y-off. */
   fun showAlignTop(anchor: View, xOff: Int, yOff: Int) {
     show(anchor) {
-      bodyWindow.showAsDropDown(anchor,
+      bodyWindow.showAsDropDown(
+        anchor,
         supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff),
-        -getMeasureHeight() - anchor.measuredHeight + yOff)
+        -getMeasureHeight() - anchor.measuredHeight + yOff
+      )
     }
   }
 
@@ -536,9 +561,11 @@ class Balloon(
   /** shows the balloon on an anchor view as the bottom alignment. */
   fun showAlignBottom(anchor: View) {
     show(anchor) {
-      bodyWindow.showAsDropDown(anchor,
+      bodyWindow.showAsDropDown(
+        anchor,
         supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
-        0)
+        0
+      )
     }
   }
 
@@ -554,9 +581,11 @@ class Balloon(
   /** shows the balloon on an anchor view as the bottom alignment with x-off and y-off. */
   fun showAlignBottom(anchor: View, xOff: Int, yOff: Int) {
     show(anchor) {
-      bodyWindow.showAsDropDown(anchor,
+      bodyWindow.showAsDropDown(
+        anchor,
         supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff),
-        yOff)
+        yOff
+      )
     }
   }
 
@@ -572,8 +601,11 @@ class Balloon(
   /** shows the balloon on an anchor view as the right alignment. */
   fun showAlignRight(anchor: View) {
     show(anchor) {
-      bodyWindow.showAsDropDown(anchor, anchor.measuredWidth,
-        -(getMeasureHeight() / 2) - (anchor.measuredHeight / 2))
+      bodyWindow.showAsDropDown(
+        anchor,
+        anchor.measuredWidth,
+        -(getMeasureHeight() / 2) - (anchor.measuredHeight / 2)
+      )
     }
   }
 
@@ -589,8 +621,11 @@ class Balloon(
   /** shows the balloon on an anchor view as the right alignment with x-off and y-off. */
   fun showAlignRight(anchor: View, xOff: Int, yOff: Int) {
     show(anchor) {
-      bodyWindow.showAsDropDown(anchor, anchor.measuredWidth + xOff,
-        -(getMeasureHeight() / 2) - (anchor.measuredHeight / 2) + yOff)
+      bodyWindow.showAsDropDown(
+        anchor,
+        anchor.measuredWidth + xOff,
+        -(getMeasureHeight() / 2) - (anchor.measuredHeight / 2) + yOff
+      )
     }
   }
 
@@ -606,8 +641,11 @@ class Balloon(
   /** shows the balloon on an anchor view as the left alignment. */
   fun showAlignLeft(anchor: View) {
     show(anchor) {
-      bodyWindow.showAsDropDown(anchor, -(getMeasureWidth()),
-        -(getMeasureHeight() / 2) - (anchor.measuredHeight / 2))
+      bodyWindow.showAsDropDown(
+        anchor,
+        -(getMeasureWidth()),
+        -(getMeasureHeight() / 2) - (anchor.measuredHeight / 2)
+      )
     }
   }
 
@@ -623,8 +661,11 @@ class Balloon(
   /** shows the balloon on an anchor view as the left alignment with x-off and y-off. */
   fun showAlignLeft(anchor: View, xOff: Int, yOff: Int) {
     show(anchor) {
-      bodyWindow.showAsDropDown(anchor, -(getMeasureWidth()) + xOff,
-        -(getMeasureHeight() / 2) - (anchor.measuredHeight / 2) + yOff)
+      bodyWindow.showAsDropDown(
+        anchor,
+        -(getMeasureWidth()) + xOff,
+        -(getMeasureHeight() / 2) - (anchor.measuredHeight / 2) + yOff
+      )
     }
   }
 

@@ -44,11 +44,13 @@ internal fun View.circularRevealed(circularDuration: Long) {
     post {
       if (isAttachedToWindow) {
         visibility = View.VISIBLE
-        ViewAnimationUtils.createCircularReveal(this,
+        ViewAnimationUtils.createCircularReveal(
+          this,
           (left + right) / 2,
           (top + bottom) / 2,
           0f,
-          max(width, height).toFloat()).apply {
+          max(width, height).toFloat()
+        ).apply {
           duration = circularDuration
           start()
         }
@@ -64,19 +66,23 @@ internal fun View.circularUnRevealed(circularDuration: Long, doAfterFinish: () -
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
     post {
       if (isAttachedToWindow) {
-        ViewAnimationUtils.createCircularReveal(this,
+        ViewAnimationUtils.createCircularReveal(
+          this,
           (left + right) / 2,
           (top + bottom) / 2,
           max(width, height).toFloat(),
-          0f).apply {
+          0f
+        ).apply {
           duration = circularDuration
           start()
-        }.addListener(object : AnimatorListenerAdapter() {
-          override fun onAnimationEnd(animation: Animator?) {
-            super.onAnimationEnd(animation)
-            doAfterFinish()
+        }.addListener(
+          object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator?) {
+              super.onAnimationEnd(animation)
+              doAfterFinish()
+            }
           }
-        })
+        )
       }
     }
   }

@@ -38,7 +38,8 @@ import kotlinx.android.synthetic.main.activity_custom.recyclerView
 import kotlinx.android.synthetic.main.activity_custom.tabLayout
 import kotlinx.android.synthetic.main.toolbar_custom.toolbar_list
 
-class CustomActivity : AppCompatActivity(),
+class CustomActivity :
+  AppCompatActivity(),
   SampleAdapter.SampleViewHolder.Delegate,
   CustomAdapter.CustomViewHolder.Delegate {
 

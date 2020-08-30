@@ -27,21 +27,41 @@ object ItemUtils {
   fun getSamples(context: Context): List<SampleItem> {
     val samples = ArrayList<SampleItem>()
     for (i in 0..1) {
-      samples.add(SampleItem(drawable(context, R.drawable.sample0),
-        "Vincent",
-        "It is such a mysterious place, the land of tears."))
-      samples.add(SampleItem(drawable(context, R.drawable.sample1),
-        "Vermeer",
-        "Be clearly aware of the stars and infinity on high."))
-      samples.add(SampleItem(drawable(context, R.drawable.sample2),
-        "Mia Vance",
-        "The most beautiful things in the world cannot be seen or touched."))
-      samples.add(SampleItem(drawable(context, R.drawable.sample3),
-        "Monet",
-        "And now here is my secret, a very simple secret."))
-      samples.add(SampleItem(drawable(context, R.drawable.sample4),
-        "Picasso",
-        "Everything you can imagine is real."))
+      samples.add(
+        SampleItem(
+          drawable(context, R.drawable.sample0),
+          "Vincent",
+          "It is such a mysterious place, the land of tears."
+        )
+      )
+      samples.add(
+        SampleItem(
+          drawable(context, R.drawable.sample1),
+          "Vermeer",
+          "Be clearly aware of the stars and infinity on high."
+        )
+      )
+      samples.add(
+        SampleItem(
+          drawable(context, R.drawable.sample2),
+          "Mia Vance",
+          "The most beautiful things in the world cannot be seen or touched."
+        )
+      )
+      samples.add(
+        SampleItem(
+          drawable(context, R.drawable.sample3),
+          "Monet",
+          "And now here is my secret, a very simple secret."
+        )
+      )
+      samples.add(
+        SampleItem(
+          drawable(context, R.drawable.sample4),
+          "Picasso",
+          "Everything you can imagine is real."
+        )
+      )
     }
     return samples
   }

@@ -57,8 +57,8 @@ internal fun TextView.applyDrawable(vectorTextViewParams: VectorTextViewParams) 
 
   val drawableLeft: Drawable? =
     vectorTextViewParams.drawableLeft ?: vectorTextViewParams.drawableLeftRes?.let {
-        AppCompatResources.getDrawable(context, it)
-      }?.tint(context, vectorTextViewParams.tintColorRes)?.resize(context, width, height)
+      AppCompatResources.getDrawable(context, it)
+    }?.tint(context, vectorTextViewParams.tintColorRes)?.resize(context, width, height)
 
   val drawableRight: Drawable? =
     vectorTextViewParams.drawableRight ?: vectorTextViewParams.drawableRightRes?.let {

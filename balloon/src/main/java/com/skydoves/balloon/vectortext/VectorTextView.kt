@@ -43,25 +43,43 @@ class VectorTextView @JvmOverloads constructor(
     if (attrs != null) {
       val attributeArray = context.obtainStyledAttributes(attrs, R.styleable.VectorTextView)
       drawableTextViewParams = VectorTextViewParams(
-        drawableLeftRes = attributeArray.getResourceId(R.styleable.VectorTextView_drawableLeft,
-          NO_INT_VALUE).takeIfNotNoIntValue(),
-        drawableRightRes = attributeArray.getResourceId(R.styleable.VectorTextView_drawableRight,
-          NO_INT_VALUE).takeIfNotNoIntValue(),
-        drawableBottomRes = attributeArray.getResourceId(R.styleable.VectorTextView_drawableBottom,
-          NO_INT_VALUE).takeIfNotNoIntValue(),
-        drawableTopRes = attributeArray.getResourceId(R.styleable.VectorTextView_drawableTop,
-          NO_INT_VALUE).takeIfNotNoIntValue(),
+        drawableLeftRes = attributeArray.getResourceId(
+          R.styleable.VectorTextView_drawableLeft,
+          NO_INT_VALUE
+        ).takeIfNotNoIntValue(),
+        drawableRightRes = attributeArray.getResourceId(
+          R.styleable.VectorTextView_drawableRight,
+          NO_INT_VALUE
+        ).takeIfNotNoIntValue(),
+        drawableBottomRes = attributeArray.getResourceId(
+          R.styleable.VectorTextView_drawableBottom,
+          NO_INT_VALUE
+        ).takeIfNotNoIntValue(),
+        drawableTopRes = attributeArray.getResourceId(
+          R.styleable.VectorTextView_drawableTop,
+          NO_INT_VALUE
+        ).takeIfNotNoIntValue(),
         compoundDrawablePaddingRes = attributeArray.getResourceId(
           R.styleable.VectorTextView_drawablePadding,
-          NO_INT_VALUE).takeIfNotNoIntValue(),
-        tintColorRes = attributeArray.getResourceId(R.styleable.VectorTextView_drawableTintColor,
-          NO_INT_VALUE).takeIfNotNoIntValue(),
-        widthRes = attributeArray.getResourceId(R.styleable.VectorTextView_drawableWidth,
-          NO_INT_VALUE).takeIfNotNoIntValue(),
-        heightRes = attributeArray.getResourceId(R.styleable.VectorTextView_drawableHeight,
-          NO_INT_VALUE).takeIfNotNoIntValue(),
-        squareSizeRes = attributeArray.getResourceId(R.styleable.VectorTextView_drawableSquareSize,
-          NO_INT_VALUE).takeIfNotNoIntValue())
+          NO_INT_VALUE
+        ).takeIfNotNoIntValue(),
+        tintColorRes = attributeArray.getResourceId(
+          R.styleable.VectorTextView_drawableTintColor,
+          NO_INT_VALUE
+        ).takeIfNotNoIntValue(),
+        widthRes = attributeArray.getResourceId(
+          R.styleable.VectorTextView_drawableWidth,
+          NO_INT_VALUE
+        ).takeIfNotNoIntValue(),
+        heightRes = attributeArray.getResourceId(
+          R.styleable.VectorTextView_drawableHeight,
+          NO_INT_VALUE
+        ).takeIfNotNoIntValue(),
+        squareSizeRes = attributeArray.getResourceId(
+          R.styleable.VectorTextView_drawableSquareSize,
+          NO_INT_VALUE
+        ).takeIfNotNoIntValue()
+      )
       attributeArray.recycle()
     }
   }

@@ -32,7 +32,8 @@ import kotlinx.android.synthetic.main.activity_main.button
 import kotlinx.android.synthetic.main.activity_main.recyclerView
 import kotlinx.android.synthetic.main.activity_main.tabLayout
 
-class MainActivity : AppCompatActivity(),
+class MainActivity :
+  AppCompatActivity(),
   SampleAdapter.SampleViewHolder.Delegate,
   OnBalloonClickListener {
 
