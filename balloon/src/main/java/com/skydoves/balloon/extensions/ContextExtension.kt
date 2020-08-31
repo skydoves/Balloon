@@ -19,18 +19,16 @@ package com.skydoves.balloon.extensions
 import android.content.Context
 import android.graphics.Point
 import android.graphics.drawable.Drawable
-import android.view.WindowManager
 import androidx.annotation.DimenRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 
 /** gets display size as a point. */
 internal fun Context.displaySize(): Point {
-  val wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-  val display = wm.defaultDisplay
-  val size = Point()
-  display.getSize(size)
-  return size
+  return Point(
+    resources.displayMetrics.widthPixels,
+    resources.displayMetrics.heightPixels
+  )
 }
 
 /** dp size to px size. */

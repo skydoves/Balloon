@@ -51,14 +51,19 @@ class IconForm(builder: Builder) {
   class Builder(val context: Context) {
     @JvmField
     var drawable: Drawable? = null
+
     @JvmField @DrawableRes
     var drawableRes: Int? = null
+
     @JvmField
     var iconGravity = IconGravity.LEFT
+
     @JvmField @Px
     var iconSize: Int = context.dp2Px(28)
+
     @JvmField @Px
     var iconSpace: Int = context.dp2Px(8)
+
     @JvmField @ColorInt
     var iconColor: Int = Color.WHITE
 
@@ -74,6 +79,7 @@ class IconForm(builder: Builder) {
     fun setDrawableGravity(value: IconGravity): Builder = apply {
       this.iconGravity = value
     }
+
     /** sets the size of the icon. */
     fun setIconSize(@Px value: Int): Builder = apply { this.iconSize = value }
 
