@@ -1,52 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/balloon"
   android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
-  android:background="@android:color/transparent">
+  android:layout_height="wrap_content">
 
   <RelativeLayout
-    android:id="@+id/balloon_content"
+    android:id="@+id/balloon_wrapper"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_centerInParent="true"
-    android:clipChildren="false"
-    android:clipToPadding="false"
-    android:padding="10dp">
+    tools:ignore="UselessParent">
 
-    <androidx.cardview.widget.CardView
-      android:id="@+id/balloon_card"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
+    <RelativeLayout
+      android:id="@+id/balloon_content"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
       android:layout_centerInParent="true"
-      app:cardCornerRadius="0dp"
-      app:cardElevation="0dp"
-      tools:cardBackgroundColor="@android:color/darker_gray">
+      android:clipChildren="false"
+      android:clipToPadding="false"
+      android:padding="10dp">
 
-      <com.skydoves.balloon.vectortext.VectorTextView
-        android:id="@+id/balloon_text"
+      <androidx.cardview.widget.CardView
+        android:id="@+id/balloon_card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:gravity="center"
-        android:textColor="@android:color/white"
-        tools:text="@tools:sample/lorem" />
+        android:layout_centerInParent="true"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
+        tools:cardBackgroundColor="@android:color/darker_gray">
 
-    </androidx.cardview.widget.CardView>
+        <com.skydoves.balloon.vectortext.VectorTextView
+          android:id="@+id/balloon_text"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_gravity="center_vertical"
+          android:gravity="center"
+          android:textColor="@android:color/white"
+          tools:text="@tools:sample/lorem" />
+
+      </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+      android:id="@+id/balloon_arrow"
+      android:layout_width="15dp"
+      android:layout_height="10dp"
+      android:layout_alignBottom="@+id/balloon_content"
+      android:layout_centerHorizontal="true"
+      android:rotation="180"
+      android:scaleType="fitXY"
+      android:src="@drawable/arrow"
+      android:tint="@android:color/black" />
 
   </RelativeLayout>
 
-  <androidx.appcompat.widget.AppCompatImageView
-    android:id="@+id/balloon_arrow"
-    android:layout_width="15dp"
-    android:layout_height="10dp"
-    android:layout_alignBottom="@+id/balloon_content"
-    android:layout_centerHorizontal="true"
-    android:rotation="180"
-    android:scaleType="fitXY"
-    android:src="@drawable/arrow"
-    android:tint="@android:color/black" />
-
-</RelativeLayout>
+</FrameLayout>

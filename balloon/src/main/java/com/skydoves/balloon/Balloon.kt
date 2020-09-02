@@ -35,6 +35,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
@@ -107,6 +108,7 @@ class Balloon(
 
   private fun createByBuilder() {
     initializeBackground()
+    initializeBalloonRoot()
     initializeBalloonWindow()
     initializeBalloonContent()
     initializeBalloonListeners()
@@ -197,13 +199,13 @@ class Balloon(
   }
 
   private fun getArrowConstraintPositionX(anchor: View): Float {
-    val balloonX: Int = getWindowBodyScreenLocation(bodyWindow.contentView)[0]
+    val balloonX: Int = getWindowBodyScreenLocation(binding.balloonContent)[0]
     val anchorX: Int = getWindowBodyScreenLocation(anchor)[0]
     val minPosition = getMinArrowPosition()
-    val maxPosition = getMeasureWidth() - minPosition
+    val maxPosition = getMeasureWidth() - minPosition - builder.marginRight - builder.marginLeft
     val arrowHalfSize = builder.arrowSize / 2f
     return when (builder.arrowConstraints) {
-      ArrowConstraints.ALIGN_BALLOON -> binding.root.width * builder.arrowPosition - arrowHalfSize
+      ArrowConstraints.ALIGN_BALLOON -> binding.balloonWrapper.width * builder.arrowPosition - arrowHalfSize
       ArrowConstraints.ALIGN_ANCHOR -> {
         when {
           anchorX + anchor.width < balloonX -> minPosition
@@ -224,13 +226,13 @@ class Balloon(
 
   private fun getArrowConstraintPositionY(anchor: View): Float {
     val balloonY: Int =
-      getWindowBodyScreenLocation(bodyWindow.contentView)[1] - getStatusBarHeight()
+      getWindowBodyScreenLocation(binding.balloonContent)[1] - getStatusBarHeight()
     val anchorY: Int = getWindowBodyScreenLocation(anchor)[1] - getStatusBarHeight()
     val minPosition = getMinArrowPosition()
-    val maxPosition = getMeasureHeight() - minPosition
+    val maxPosition = getMeasureHeight() - minPosition - builder.marginTop - builder.marginBottom
     val arrowHalfSize = builder.arrowSize / 2
     return when (builder.arrowConstraints) {
-      ArrowConstraints.ALIGN_BALLOON -> binding.root.height * builder.arrowPosition - arrowHalfSize
+      ArrowConstraints.ALIGN_BALLOON -> binding.balloonWrapper.height * builder.arrowPosition - arrowHalfSize
       ArrowConstraints.ALIGN_ANCHOR -> {
         when {
           anchorY + anchor.height < balloonY -> minPosition
@@ -278,7 +280,7 @@ class Balloon(
     this.onBalloonDismissListener = builder.onBalloonDismissListener
     this.onBalloonInitializedListener = builder.onBalloonInitializedListener
     this.onBalloonOutsideTouchListener = builder.onBalloonOutsideTouchListener
-    this.binding.root.setOnClickListener {
+    this.binding.balloonWrapper.setOnClickListener {
       this.onBalloonClickListener?.onBalloonClick(it)
       if (builder.dismissWhenClicked) dismiss()
     }
@@ -302,6 +304,17 @@ class Balloon(
             return false
           }
         }
+      )
+    }
+  }
+
+  private fun initializeBalloonRoot() {
+    with(binding.balloonWrapper) {
+      (layoutParams as ViewGroup.MarginLayoutParams).setMargins(
+        builder.marginLeft,
+        builder.marginTop,
+        builder.marginRight,
+        builder.marginBottom
       )
     }
   }
@@ -831,6 +844,18 @@ class Balloon(
 
     @JvmField @Px
     var paddingBottom: Int = 0
+
+    @JvmField @Px
+    var marginRight: Int = 0
+
+    @JvmField @Px
+    var marginLeft: Int = 0
+
+    @JvmField @Px
+    var marginTop: Int = 0
+
+    @JvmField @Px
+    var marginBottom: Int = 0
 
     @JvmField @Px
     var space: Int = 0

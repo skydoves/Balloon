@@ -30,12 +30,10 @@ class CustomListBalloonFactory : Balloon.Factory() {
   override fun create(context: Context, lifecycle: LifecycleOwner?): Balloon {
     return Balloon.Builder(context)
       .setLayout(R.layout.layout_custom_list)
-      .setArrowSize(10)
       .setArrowOrientation(ArrowOrientation.TOP)
       .setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
       .setArrowPosition(0.5f)
-      .setWidth(170)
-      .setHeight(200)
+      .setArrowSize(10)
       .setTextSize(12f)
       .isRtlSupport(BalloonUtils.isRtlLayout())
       .setCornerRadius(4f)
