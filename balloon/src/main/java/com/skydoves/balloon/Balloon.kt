@@ -330,16 +330,12 @@ class Balloon(
       }
     }
     with(binding.balloonText) {
-      if (builder.padding != NO_INT_VALUE) {
-        setPadding(builder.padding, builder.padding, builder.padding, builder.padding)
-      } else {
-        setPadding(
-          builder.paddingLeft,
-          builder.paddingTop,
-          builder.paddingRight,
-          builder.paddingBottom
-        )
-      }
+      setPadding(
+        builder.paddingLeft,
+        builder.paddingTop,
+        builder.paddingRight,
+        builder.paddingBottom
+      )
     }
   }
 
@@ -771,10 +767,7 @@ class Balloon(
   private fun getMeasureTextWidth(measuredWidth: Int): Int {
     val displayWidth = context.displaySize().x
     val spaces =
-      builder.space +
-        if (builder.padding != NO_INT_VALUE) builder.padding * 2 else {
-          builder.paddingLeft + builder.paddingRight
-        } + context.dp2Px(24) +
+      builder.space + builder.paddingLeft + builder.paddingRight + context.dp2Px(24) +
         if (builder.iconDrawable != null) {
           builder.iconSize + builder.iconSpace
         } else 0
@@ -829,9 +822,6 @@ class Balloon(
 
     @JvmField @Px
     var height: Int = NO_INT_VALUE
-
-    @JvmField @Px
-    var padding: Int = NO_INT_VALUE
 
     @JvmField @Px
     var paddingLeft: Int = 0
@@ -1042,11 +1032,17 @@ class Balloon(
     }
 
     /** sets the padding on all directions. */
-    fun setPadding(@Dp value: Int): Builder = apply { this.padding = context.dp2Px(value) }
+    fun setPadding(@Dp value: Int): Builder = apply {
+      val dimension = context.dp2Px(value)
+      setPaddingLeft(dimension)
+      setPaddingTop(dimension)
+      setPaddingRight(dimension)
+      setPaddingBottom(dimension)
+    }
 
     /** sets the padding on all directions using dimension resource. */
     fun setPaddingResource(@DimenRes value: Int): Builder = apply {
-      this.padding = context.dimen(value)
+      setPadding(context.dimen(value))
     }
 
     /** sets the left padding on all directions. */
