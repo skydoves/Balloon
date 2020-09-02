@@ -756,7 +756,7 @@ class Balloon(
     val displayWidth = context.displaySize().x
     return when {
       builder.widthRatio != NO_Float_VALUE ->
-        (displayWidth * builder.widthRatio - builder.space).toInt()
+        (displayWidth * builder.widthRatio).toInt()
       builder.width != NO_INT_VALUE && builder.width < displayWidth -> builder.width
       binding.root.measuredWidth > displayWidth -> displayWidth
       else -> this.binding.root.measuredWidth
@@ -766,11 +766,10 @@ class Balloon(
   /** gets measured width size of the balloon popup text label. */
   private fun getMeasureTextWidth(measuredWidth: Int): Int {
     val displayWidth = context.displaySize().x
-    val spaces =
-      builder.space + builder.paddingLeft + builder.paddingRight + context.dp2Px(24) +
-        if (builder.iconDrawable != null) {
-          builder.iconSize + builder.iconSpace
-        } else 0
+    val spaces = builder.paddingLeft + builder.paddingRight + context.dp2Px(24) +
+      if (builder.iconDrawable != null) {
+        builder.iconSize + builder.iconSpace
+      } else 0
 
     return when {
       builder.widthRatio != NO_Float_VALUE ->
@@ -846,9 +845,6 @@ class Balloon(
 
     @JvmField @Px
     var marginBottom: Int = 0
-
-    @JvmField @Px
-    var space: Int = 0
 
     @JvmField
     var arrowVisible: Boolean = true
@@ -1033,16 +1029,15 @@ class Balloon(
 
     /** sets the padding on all directions. */
     fun setPadding(@Dp value: Int): Builder = apply {
-      val dimension = context.dp2Px(value)
-      setPaddingLeft(dimension)
-      setPaddingTop(dimension)
-      setPaddingRight(dimension)
-      setPaddingBottom(dimension)
+      setPaddingLeft(value)
+      setPaddingTop(value)
+      setPaddingRight(value)
+      setPaddingBottom(value)
     }
 
     /** sets the padding on all directions using dimension resource. */
     fun setPaddingResource(@DimenRes value: Int): Builder = apply {
-      setPadding(context.dimen(value))
+      setPadding(value)
     }
 
     /** sets the left padding on all directions. */
@@ -1059,14 +1054,6 @@ class Balloon(
     /** sets the bottom padding on all directions. */
     fun setPaddingBottom(@Dp value: Int): Builder = apply {
       this.paddingBottom = context.dp2Px(value)
-    }
-
-    /** sets the side space between popup and display. */
-    fun setSpace(@Dp value: Int): Builder = apply { this.space = context.dp2Px(value) }
-
-    /** sets the side space between popup and display using dimension resource. */
-    fun setSpaceResource(@DimenRes value: Int): Builder = apply {
-      this.space = context.dimen(value)
     }
 
     /** sets the visibility of the arrow. */
