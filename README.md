@@ -33,7 +33,7 @@ allprojects {
 And add a dependency code to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:balloon:1.2.1"
+    implementation "com.github.skydoves:balloon:1.2.2"
 }
 ```
 
@@ -87,20 +87,20 @@ val balloon = createBalloon(context) {
 }
 ```
 ### Width and height
-We can control the size of the width and height using 3 ways: Padding, Specific size, Screen Ratio.
+We can control the size of the width and height using below ways. <br>
+If we don't set any size width/height size of the balloon, the content will be wrapped by the balloon.
 #### Padding
-Balloon wraps a content. So the balloon's width and height size will be decided by the content.<br>
-We can set the size of the balloon using paddings of the content.
+Balloon wraps a content. We can control the content size of the balloon using padding of the content.<br>
 ```kotlin
 balloon.setPadding(6) // sets 6dp padding to all directions (left-top-right-bottom)
 balloon.setPaddingLeft(8) // sets 8dp padding to content's left.
 balloon.setPaddingTop(12) // sets 12dp padding to content's top.
 ```
 #### Specific size
-We can set the specific size of the balloon regardless of contents.
+We can set the specific size of the balloon regardless size of the contents.
 ```kotlin
-balloon.setWidth(220) // sets 220dp size width.
-balloon.setHeight(160) // sets 160dp size height.
+balloon.setWidth(220) // sets 220dp width size.
+balloon.setHeight(160) // sets 160dp height size.
 ```
 #### According to screen ratio
 Also, we can set the width according to the ratio of the horizontal screen's size.
@@ -157,6 +157,15 @@ customListBalloon
 
 // show sequentially customListBalloon-customProfileBalloon-customTagBalloon
 customListBalloon.showAlignBottom(toolbar_list)
+```
+
+### Margin
+If the location of the balloon according to the anchor is located at the boundaries on the screen,<br>
+the balloon will be stick to the end of the screen. In that case, we can resolve by giving margins to the balloon.
+```kotlin
+.setMargin(12) // sets the margin on the balloon all directions.
+.setMarginLeft(14) // sets the left margin on the balloon.
+.setMarginRight(14) // sets the right margin on the balloon.
 ```
 
 ### Arrow Composition
@@ -431,6 +440,11 @@ FADE | OVERSHOOT | ELASTIC | CIRCULAR |
 .setPaddingTop(value: Int)
 .setPaddingRight(value: Int)
 .setPaddingBottom(value: Int)
+.setMargin(value: Int)
+.setMarginLeft(value: Int)
+.setMarginTop(value: Int)
+.setMarginRight(value: Int)
+.setMarginBottom(value: Int)
 .setElevation(value: Int)
 .setArrowVisible(value: Boolean)
 .setArrowSize(value: Int)
