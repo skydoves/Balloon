@@ -32,7 +32,6 @@ class ProfileBalloonFactory : Balloon.Factory() {
     return createBalloon(context) {
       setLayout(R.layout.layout_custom_profile)
       setArrowSize(10)
-      setWidthRatio(1.0f)
       setArrowOrientation(ArrowOrientation.TOP)
       setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
       setArrowPosition(0.5f)

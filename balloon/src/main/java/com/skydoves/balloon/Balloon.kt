@@ -1027,7 +1027,7 @@ class Balloon(
       this.height = context.dimen(value)
     }
 
-    /** sets the padding on all directions. */
+    /** sets the padding on the balloon content all directions. */
     fun setPadding(@Dp value: Int): Builder = apply {
       setPaddingLeft(value)
       setPaddingTop(value)
@@ -1035,25 +1035,58 @@ class Balloon(
       setPaddingBottom(value)
     }
 
-    /** sets the padding on all directions using dimension resource. */
+    /** sets the padding on the balloon content all directions using dimension resource. */
     fun setPaddingResource(@DimenRes value: Int): Builder = apply {
       setPadding(value)
     }
 
-    /** sets the left padding on all directions. */
+    /** sets the left padding on the balloon content. */
     fun setPaddingLeft(@Dp value: Int): Builder = apply { this.paddingLeft = context.dp2Px(value) }
 
-    /** sets the top padding on all directions. */
+    /** sets the top padding on the balloon content. */
     fun setPaddingTop(@Dp value: Int): Builder = apply { this.paddingTop = context.dp2Px(value) }
 
-    /** sets the right padding on all directions. */
+    /** sets the right padding on the balloon content. */
     fun setPaddingRight(@Dp value: Int): Builder = apply {
       this.paddingRight = context.dp2Px(value)
     }
 
-    /** sets the bottom padding on all directions. */
+    /** sets the bottom padding on the balloon content. */
     fun setPaddingBottom(@Dp value: Int): Builder = apply {
       this.paddingBottom = context.dp2Px(value)
+    }
+
+    /** sets the margin on the balloon all directions. */
+    fun setMargin(@Dp value: Int): Builder = apply {
+      setMarginLeft(value)
+      setMarginTop(value)
+      setMarginRight(value)
+      setMarginBottom(value)
+    }
+
+    /** sets the margin on thr balloon all directions using dimension resource. */
+    fun setMarginResource(@DimenRes value: Int): Builder = apply {
+      setMargin(value)
+    }
+
+    /** sets the left margin on the balloon. */
+    fun setMarginLeft(@Dp value: Int): Builder = apply {
+      this.marginLeft = context.dp2Px(value)
+    }
+
+    /** sets the top margin on the balloon. */
+    fun setMarginTop(@Dp value: Int): Builder = apply {
+      this.marginTop = context.dp2Px(value)
+    }
+
+    /** sets the right margin on the balloon. */
+    fun setMarginRight(@Dp value: Int): Builder = apply {
+      this.marginRight = context.dp2Px(value)
+    }
+
+    /** sets the bottom margin on the balloon. */
+    fun setMarginBottom(@Dp value: Int): Builder = apply {
+      this.marginBottom = context.dp2Px(value)
     }
 
     /** sets the visibility of the arrow. */
