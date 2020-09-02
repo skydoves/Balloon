@@ -22,7 +22,6 @@ kotlin {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
     implementation "androidx.appcompat:appcompat:$versions.androidxAppcompat"
     implementation "androidx.cardview:cardview:$versions.cardView"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle"
