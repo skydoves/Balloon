@@ -27,11 +27,11 @@ dependencies {
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle"
 }
 
-dokka {
-    outputFormat = 'html'
-    outputDirectory = "$buildDir/javadoc"
-    configuration {
-        moduleName = 'balloon'
+dokkaHtml.configure {
+    dokkaSourceSets {
+        named("main") {
+            noAndroidSdkLink.set(false)
+        }
     }
 }
 
