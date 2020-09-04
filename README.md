@@ -10,7 +10,7 @@
   <a href="https://github.com/skydoves/Balloon/actions"><img alt="Build Status" src="https://github.com/skydoves/Balloon/workflows/Android%20CI/badge.svg"/></a> 
   <a href="https://medium.com/swlh/a-lightweight-tooltip-popup-for-android-ef9484a992d7"><img alt="Medium" src="https://skydoves.github.io/badges/Story-Medium.svg"/></a>
   <a href="https://github.com/skydoves"><img alt="Profile" src="https://skydoves.github.io/badges/skydoves.svg"/></a>
-  <a href="https://skydoves.github.io/libraries/balloon/javadoc/balloon/com.skydoves.balloon/index.html"><img alt="Javadoc" src="https://skydoves.github.io/badges/javadoc-balloon.svg"/></a>
+  <a href="https://skydoves.github.io/libraries/balloon/html/balloon/com.skydoves.balloon/index.html"><img alt="Javadoc" src="https://skydoves.github.io/badges/javadoc-balloon.svg"/></a>
 </p> <br>
 
 <p align="center">
