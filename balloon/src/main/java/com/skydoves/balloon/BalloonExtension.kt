@@ -82,6 +82,7 @@ fun View.showAlignLeft(balloon: Balloon, xOff: Int, yOff: Int) {
 }
 
 @MainThread
+@JvmSynthetic
 internal inline fun View.balloon(crossinline block: () -> Unit) {
   post { block() }
 }

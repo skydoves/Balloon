@@ -29,9 +29,11 @@ import com.skydoves.balloon.annotations.Sp
 import com.skydoves.balloon.extensions.contextColor
 
 @DslMarker
-annotation class TextFormDsl
+internal annotation class TextFormDsl
 
 /** creates an instance of [TextForm] from [TextForm.Builder] using kotlin dsl. */
+@TextFormDsl
+@JvmSynthetic
 inline fun textForm(context: Context, block: TextForm.Builder.() -> Unit): TextForm =
   TextForm.Builder(context).apply(block).build()
 

@@ -70,10 +70,11 @@ import com.skydoves.balloon.extensions.dp2Px
 import com.skydoves.balloon.extensions.visible
 
 @DslMarker
-annotation class BalloonDsl
+internal annotation class BalloonDsl
 
 /** creates an instance of [Balloon] by [Balloon.Builder] using kotlin dsl. */
 @BalloonDsl
+@JvmSynthetic
 inline fun createBalloon(context: Context, block: Balloon.Builder.() -> Unit): Balloon =
   Balloon.Builder(context).apply(block).build()
 
@@ -736,16 +737,19 @@ class Balloon(
   }
 
   /** sets a [OnBalloonClickListener] to the popup using lambda. */
+  @JvmSynthetic
   fun setOnBalloonClickListener(unit: (View) -> Unit) {
     this.onBalloonClickListener = OnBalloonClickListener { view -> unit(view) }
   }
 
   /** sets a [OnBalloonDismissListener] to the popup using lambda. */
+  @JvmSynthetic
   fun setOnBalloonDismissListener(unit: () -> Unit) {
     this.onBalloonDismissListener = OnBalloonDismissListener { unit() }
   }
 
   /** sets a [OnBalloonOutsideTouchListener] to the popup using lambda. */
+  @JvmSynthetic
   fun setOnBalloonOutsideTouchListener(unit: (View, MotionEvent) -> Unit) {
     this.onBalloonOutsideTouchListener =
       OnBalloonOutsideTouchListener { view, event -> unit(view, event) }
@@ -1354,22 +1358,26 @@ class Balloon(
     }
 
     /** sets a [OnBalloonClickListener] to the popup using lambda. */
+    @JvmSynthetic
     fun setOnBalloonClickListener(unit: (View) -> Unit): Builder = apply {
       this.onBalloonClickListener = OnBalloonClickListener { view -> unit(view) }
     }
 
     /** sets a [OnBalloonDismissListener] to the popup using lambda. */
+    @JvmSynthetic
     fun setOnBalloonDismissListener(unit: () -> Unit): Builder = apply {
       this.onBalloonDismissListener = OnBalloonDismissListener { unit() }
     }
 
     /** sets a [OnBalloonInitializedListener] to the popup using lambda. */
+    @JvmSynthetic
     fun setOnBalloonInitializedListener(unit: (View) -> Unit): Builder = apply {
       this.onBalloonInitializedListener =
         OnBalloonInitializedListener { contentView -> unit(contentView) }
     }
 
     /** sets a [OnBalloonOutsideTouchListener] to the popup using lambda. */
+    @JvmSynthetic
     fun setOnBalloonOutsideTouchListener(unit: (View, MotionEvent) -> Unit): Builder = apply {
       this.onBalloonOutsideTouchListener =
         OnBalloonOutsideTouchListener { view, event -> unit(view, event) }

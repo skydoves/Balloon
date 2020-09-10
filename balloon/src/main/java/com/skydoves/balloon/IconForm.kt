@@ -28,9 +28,11 @@ import com.skydoves.balloon.extensions.contextColor
 import com.skydoves.balloon.extensions.dp2Px
 
 @DslMarker
-annotation class IconFormDsl
+internal annotation class IconFormDsl
 
 /** creates an instance of [IconForm] from [IconForm.Builder] using kotlin dsl. */
+@IconFormDsl
+@JvmSynthetic
 inline fun iconForm(context: Context, block: IconForm.Builder.() -> Unit): IconForm =
   IconForm.Builder(context).apply(block).build()
 
