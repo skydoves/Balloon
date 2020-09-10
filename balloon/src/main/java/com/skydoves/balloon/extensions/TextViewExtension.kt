@@ -36,6 +36,7 @@ internal fun TextView.applyTextForm(textForm: TextForm) {
   gravity = textForm.textGravity
   setTextColor(textForm.textColor)
   textForm.textTypeface?.let { typeface = it } ?: setTypeface(typeface, textForm.textStyle)
+  textForm.movementMethod?.let { movementMethod = it }
 }
 
 private fun fromHtml(text: String): Spanned? {

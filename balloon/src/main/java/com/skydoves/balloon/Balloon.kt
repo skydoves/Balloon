@@ -31,6 +31,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.text.method.MovementMethod
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -368,6 +369,7 @@ class Balloon(
           setTextGravity(builder.textGravity)
           setTextTypeface(builder.textTypeface)
           setTextTypeface(builder.textTypefaceObject)
+          setMovementMethod(movementMethod)
         }
       )
       measureTextWidth(this)
@@ -903,6 +905,9 @@ class Balloon(
     @JvmField
     var textIsHtml: Boolean = false
 
+    @JvmField
+    var movementMethod: MovementMethod? = null
+
     @JvmField @Sp
     var textSize: Float = 12f
 
@@ -1222,6 +1227,9 @@ class Balloon(
 
     /** sets whether the text will be parsed as HTML (using Html.fromHtml(..)) */
     fun setTextIsHtml(value: Boolean): Builder = apply { this.textIsHtml = value }
+
+    /**sets the movement method for TextView */
+    fun setMovementMethod(movementMethod: MovementMethod): Builder = apply { this.movementMethod = movementMethod }
 
     /** sets the size of the main text content. */
     fun setTextSize(@Sp value: Float): Builder = apply { this.textSize = value }
