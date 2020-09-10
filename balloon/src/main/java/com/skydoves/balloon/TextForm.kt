@@ -97,8 +97,10 @@ class TextForm(builder: Builder) {
     /** sets whether the text will be parsed as HTML (using Html.fromHtml(..)) */
     fun setTextIsHtml(value: Boolean): Builder = apply { this.textIsHtml = value }
 
-    /**sets the movement method for TextView */
-    fun setMovementMethod(movementMethod: MovementMethod): Builder = apply { this.movementMethod = movementMethod }
+    /** sets the movement method for TextView. */
+    fun setMovementMethod(value: MovementMethod): Builder = apply {
+      this.movementMethod = value
+    }
 
     /** sets the color of the text using resource. */
     fun setTextColorResource(@ColorRes value: Int): Builder = apply {

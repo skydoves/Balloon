@@ -370,7 +370,7 @@ class Balloon(
           setTextGravity(builder.textGravity)
           setTextTypeface(builder.textTypeface)
           setTextTypeface(builder.textTypefaceObject)
-          setMovementMethod(movementMethod)
+          setMovementMethod(builder.movementMethod)
         }
       )
       measureTextWidth(this)
@@ -1232,8 +1232,8 @@ class Balloon(
     /** sets whether the text will be parsed as HTML (using Html.fromHtml(..)) */
     fun setTextIsHtml(value: Boolean): Builder = apply { this.textIsHtml = value }
 
-    /**sets the movement method for TextView */
-    fun setMovementMethod(movementMethod: MovementMethod): Builder = apply { this.movementMethod = movementMethod }
+    /** sets the movement method for TextView. */
+    fun setMovementMethod(value: MovementMethod): Builder = apply { this.movementMethod = value }
 
     /** sets the size of the main text content. */
     fun setTextSize(@Sp value: Float): Builder = apply { this.textSize = value }
