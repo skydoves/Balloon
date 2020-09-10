@@ -21,6 +21,7 @@ package com.skydoves.balloon
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
+import android.text.method.MovementMethod
 import android.view.Gravity
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
@@ -47,6 +48,7 @@ class TextForm(builder: Builder) {
   @Sp val textSize: Float = builder.textSize
   @ColorInt val textColor: Int = builder.textColor
   val textIsHtml: Boolean = builder.textIsHtml
+  val movementMethod: MovementMethod? = builder.movementMethod
   val textStyle: Int = builder.textTypeface
   val textTypeface: Typeface? = builder.textTypefaceObject
   val textGravity: Int = builder.textGravity
@@ -65,6 +67,9 @@ class TextForm(builder: Builder) {
 
     @JvmField
     var textIsHtml: Boolean = false
+
+    @JvmField
+    var movementMethod: MovementMethod? = null
 
     @JvmField
     var textTypeface = Typeface.NORMAL
@@ -91,6 +96,9 @@ class TextForm(builder: Builder) {
 
     /** sets whether the text will be parsed as HTML (using Html.fromHtml(..)) */
     fun setTextIsHtml(value: Boolean): Builder = apply { this.textIsHtml = value }
+
+    /**sets the movement method for TextView */
+    fun setMovementMethod(movementMethod: MovementMethod): Builder = apply { this.movementMethod = movementMethod }
 
     /** sets the color of the text using resource. */
     fun setTextColorResource(@ColorRes value: Int): Builder = apply {
