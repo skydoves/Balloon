@@ -7,10 +7,10 @@ ext.versions = [
     gradleBuildTool  : '3.6.3',
     spotlessGradle   : '5.6.1',
     ktlintGradle     : '0.39.0',
-    dokkaGradle      : '1.4.0',
+    dokkaGradle      : '1.4.10',
     bintrayRelease   : '0.9.2',
 
-    kotlin           : '1.4.0',
+    kotlin           : '1.4.10',
     androidxAppcompat: '1.2.0',
     lifecycle        : '2.3.0-alpha06',
     cardView         : '1.0.0',
