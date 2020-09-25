@@ -92,10 +92,8 @@ class Balloon(
   var isShowing = false
     private set
   private var destroyed: Boolean = false
-  var onBalloonClickListener: OnBalloonClickListener? = null
-  var onBalloonDismissListener: OnBalloonDismissListener? = null
-  var onBalloonInitializedListener: OnBalloonInitializedListener? = null
-  var onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener? = null
+  var onBalloonInitializedListener: OnBalloonInitializedListener? =
+    builder.onBalloonInitializedListener
   private var supportRtlLayoutFactor: Int = LTR.unaryMinus(builder.isRtlSupport)
   private val balloonPersistence = BalloonPersistence.getInstance(context)
 
@@ -270,6 +268,7 @@ class Balloon(
   private fun initializeBalloonWindow() {
     with(this.bodyWindow) {
       isFocusable = builder.isFocusable
+      isOutsideTouchable = builder.dismissWhenTouchOutside
       setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         elevation = builder.elevation
@@ -278,36 +277,10 @@ class Balloon(
   }
 
   private fun initializeBalloonListeners() {
-    this.onBalloonClickListener = builder.onBalloonClickListener
-    this.onBalloonDismissListener = builder.onBalloonDismissListener
-    this.onBalloonInitializedListener = builder.onBalloonInitializedListener
-    this.onBalloonOutsideTouchListener = builder.onBalloonOutsideTouchListener
-    this.binding.balloonWrapper.setOnClickListener {
-      this.onBalloonClickListener?.onBalloonClick(it)
-      if (builder.dismissWhenClicked) dismiss()
-    }
-    with(this.bodyWindow) {
-      isOutsideTouchable = builder.dismissWhenTouchOutside
-      setOnDismissListener {
-        this@Balloon.dismiss()
-        onBalloonDismissListener?.onBalloonDismiss()
-      }
-      setTouchInterceptor(
-        object : View.OnTouchListener {
-          @SuppressLint("ClickableViewAccessibility")
-          override fun onTouch(view: View, event: MotionEvent): Boolean {
-            if (event.action == MotionEvent.ACTION_OUTSIDE) {
-              if (builder.dismissWhenTouchOutside) {
-                this@Balloon.dismiss()
-              }
-              onBalloonOutsideTouchListener?.onBalloonOutsideTouch(view, event)
-              return true
-            }
-            return false
-          }
-        }
-      )
-    }
+    setOnBalloonClickListener(builder.onBalloonClickListener)
+    setOnBalloonDismissListener(builder.onBalloonDismissListener)
+    setOnBalloonOutsideTouchListener(builder.onBalloonOutsideTouchListener)
+    setOnBalloonTouchListener(builder.onBalloonTouchListener)
   }
 
   private fun initializeBalloonRoot() {
@@ -738,23 +711,64 @@ class Balloon(
     Handler(Looper.getMainLooper()).postDelayed({ dismiss() }, delay)
   }
 
+  /** sets a [OnBalloonClickListener] to the popup. */
+  fun setOnBalloonClickListener(onBalloonClickListener: OnBalloonClickListener?) {
+    this.binding.balloonWrapper.setOnClickListener {
+      onBalloonClickListener?.onBalloonClick(it)
+      if (builder.dismissWhenClicked) dismiss()
+    }
+  }
+
   /** sets a [OnBalloonClickListener] to the popup using lambda. */
   @JvmSynthetic
   fun setOnBalloonClickListener(unit: (View) -> Unit) {
-    this.onBalloonClickListener = OnBalloonClickListener { view -> unit(view) }
+    setOnBalloonClickListener(OnBalloonClickListener { view -> unit(view) })
+  }
+
+  /** sets a [OnBalloonDismissListener] to the popup. */
+  fun setOnBalloonDismissListener(onBalloonDismissListener: OnBalloonDismissListener?) {
+    this.bodyWindow.setOnDismissListener {
+      this@Balloon.dismiss()
+      onBalloonDismissListener?.onBalloonDismiss()
+    }
   }
 
   /** sets a [OnBalloonDismissListener] to the popup using lambda. */
   @JvmSynthetic
   fun setOnBalloonDismissListener(unit: () -> Unit) {
-    this.onBalloonDismissListener = OnBalloonDismissListener { unit() }
+    setOnBalloonDismissListener(OnBalloonDismissListener { unit() })
+  }
+
+  /** sets a [OnBalloonOutsideTouchListener] to the popup. */
+  fun setOnBalloonOutsideTouchListener(onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener?) {
+    this.bodyWindow.setTouchInterceptor(
+      object : View.OnTouchListener {
+        @SuppressLint("ClickableViewAccessibility")
+        override fun onTouch(view: View, event: MotionEvent): Boolean {
+          if (event.action == MotionEvent.ACTION_OUTSIDE) {
+            if (builder.dismissWhenTouchOutside) {
+              this@Balloon.dismiss()
+            }
+            onBalloonOutsideTouchListener?.onBalloonOutsideTouch(view, event)
+            return true
+          }
+          return false
+        }
+      }
+    )
   }
 
   /** sets a [OnBalloonOutsideTouchListener] to the popup using lambda. */
   @JvmSynthetic
   fun setOnBalloonOutsideTouchListener(unit: (View, MotionEvent) -> Unit) {
-    this.onBalloonOutsideTouchListener =
+    setOnBalloonOutsideTouchListener(
       OnBalloonOutsideTouchListener { view, event -> unit(view, event) }
+    )
+  }
+
+  /** sets a [View.OnTouchListener] to the popup. */
+  fun setOnBalloonTouchListener(onTouchListener: View.OnTouchListener?) {
+    this.bodyWindow.setTouchInterceptor(onTouchListener)
   }
 
   /** gets measured width size of the balloon popup. */
@@ -969,6 +983,9 @@ class Balloon(
 
     @JvmField
     var onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener? = null
+
+    @JvmField
+    var onBalloonTouchListener: View.OnTouchListener? = null
 
     @JvmField
     var dismissWhenTouchOutside: Boolean = true
@@ -1363,6 +1380,11 @@ class Balloon(
     /** sets a [OnBalloonOutsideTouchListener] to the popup. */
     fun setOnBalloonOutsideTouchListener(value: OnBalloonOutsideTouchListener): Builder = apply {
       this.onBalloonOutsideTouchListener = value
+    }
+
+    /** sets a [View.OnTouchListener] to the popup. */
+    fun setOnBalloonTouchListener(value: View.OnTouchListener): Builder = apply {
+      this.onBalloonTouchListener = value
     }
 
     /** sets a [OnBalloonClickListener] to the popup using lambda. */
