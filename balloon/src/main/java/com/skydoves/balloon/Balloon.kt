@@ -721,8 +721,8 @@ class Balloon(
 
   /** sets a [OnBalloonClickListener] to the popup using lambda. */
   @JvmSynthetic
-  fun setOnBalloonClickListener(unit: (View) -> Unit) {
-    setOnBalloonClickListener(OnBalloonClickListener { view -> unit(view) })
+  fun setOnBalloonClickListener(block: (View) -> Unit) {
+    setOnBalloonClickListener(OnBalloonClickListener(block))
   }
 
   /** sets a [OnBalloonDismissListener] to the popup. */
@@ -735,8 +735,8 @@ class Balloon(
 
   /** sets a [OnBalloonDismissListener] to the popup using lambda. */
   @JvmSynthetic
-  fun setOnBalloonDismissListener(unit: () -> Unit) {
-    setOnBalloonDismissListener(OnBalloonDismissListener { unit() })
+  fun setOnBalloonDismissListener(block: () -> Unit) {
+    setOnBalloonDismissListener(OnBalloonDismissListener(block))
   }
 
   /** sets a [OnBalloonOutsideTouchListener] to the popup. */
@@ -760,9 +760,9 @@ class Balloon(
 
   /** sets a [OnBalloonOutsideTouchListener] to the popup using lambda. */
   @JvmSynthetic
-  fun setOnBalloonOutsideTouchListener(unit: (View, MotionEvent) -> Unit) {
+  fun setOnBalloonOutsideTouchListener(block: (View, MotionEvent) -> Unit) {
     setOnBalloonOutsideTouchListener(
-      OnBalloonOutsideTouchListener { view, event -> unit(view, event) }
+      OnBalloonOutsideTouchListener(block)
     )
   }
 
@@ -1389,28 +1389,26 @@ class Balloon(
 
     /** sets a [OnBalloonClickListener] to the popup using lambda. */
     @JvmSynthetic
-    fun setOnBalloonClickListener(unit: (View) -> Unit): Builder = apply {
-      this.onBalloonClickListener = OnBalloonClickListener { view -> unit(view) }
+    fun setOnBalloonClickListener(block: (View) -> Unit): Builder = apply {
+      this.onBalloonClickListener = OnBalloonClickListener(block)
     }
 
     /** sets a [OnBalloonDismissListener] to the popup using lambda. */
     @JvmSynthetic
-    fun setOnBalloonDismissListener(unit: () -> Unit): Builder = apply {
-      this.onBalloonDismissListener = OnBalloonDismissListener { unit() }
+    fun setOnBalloonDismissListener(block: () -> Unit): Builder = apply {
+      this.onBalloonDismissListener = OnBalloonDismissListener(block)
     }
 
     /** sets a [OnBalloonInitializedListener] to the popup using lambda. */
     @JvmSynthetic
-    fun setOnBalloonInitializedListener(unit: (View) -> Unit): Builder = apply {
-      this.onBalloonInitializedListener =
-        OnBalloonInitializedListener { contentView -> unit(contentView) }
+    fun setOnBalloonInitializedListener(block: (View) -> Unit): Builder = apply {
+      this.onBalloonInitializedListener = OnBalloonInitializedListener(block)
     }
 
     /** sets a [OnBalloonOutsideTouchListener] to the popup using lambda. */
     @JvmSynthetic
-    fun setOnBalloonOutsideTouchListener(unit: (View, MotionEvent) -> Unit): Builder = apply {
-      this.onBalloonOutsideTouchListener =
-        OnBalloonOutsideTouchListener { view, event -> unit(view, event) }
+    fun setOnBalloonOutsideTouchListener(block: (View, MotionEvent) -> Unit): Builder = apply {
+      this.onBalloonOutsideTouchListener = OnBalloonOutsideTouchListener(block)
     }
 
     /** dismisses when touch outside. */
