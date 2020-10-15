@@ -4,9 +4,9 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
+  android:background="@color/background800"
   android:gravity="center"
   android:orientation="vertical"
-  android:background="@color/background800"
   android:paddingTop="8dp">
 
   <androidx.recyclerview.widget.RecyclerView
@@ -17,4 +17,5 @@
     android:padding="8dp"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     tools:listitem="@layout/item_custom" />
+
 </LinearLayout>

@@ -16,11 +16,9 @@
 
 package com.skydoves.balloon
 
-/** BalloonAnimation is the collection of the popup animations. */
-enum class BalloonAnimation {
-  NONE,
-  ELASTIC,
-  FADE,
-  CIRCULAR,
-  OVERSHOOT
+/** Interface definition for a callback to be invoked when a balloon overlay view is clicked. */
+fun interface OnBalloonOverlayClickListener {
+
+  /** invoked when the balloon overlay is clicked. */
+  fun onBalloonOverlayClick()
 }

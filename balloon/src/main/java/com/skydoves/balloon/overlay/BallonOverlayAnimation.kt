@@ -14,13 +14,10 @@
  * limitations under the License.
  */
 
-package com.skydoves.balloon
+package com.skydoves.balloon.overlay
 
-/** BalloonAnimation is the collection of the popup animations. */
-enum class BalloonAnimation {
+/** BalloonOverlayAnimation is the collection of the popup overlay animations. */
+enum class BalloonOverlayAnimation {
   NONE,
-  ELASTIC,
   FADE,
-  CIRCULAR,
-  OVERSHOOT
 }

@@ -29,7 +29,7 @@ import java.util.Locale
 
 object BalloonUtils {
 
-  fun getProfileBalloon(context: Context, lifecycleOwner: LifecycleOwner): Balloon {
+  fun getEditBalloon(context: Context, lifecycleOwner: LifecycleOwner): Balloon {
     return Balloon.Builder(context)
       .setText("You can edit your profile now!")
       .setArrowSize(10)

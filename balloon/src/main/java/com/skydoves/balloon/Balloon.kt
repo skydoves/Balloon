@@ -24,6 +24,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
@@ -59,6 +60,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import com.skydoves.balloon.annotations.Dp
 import com.skydoves.balloon.annotations.Sp
 import com.skydoves.balloon.databinding.LayoutBalloonBinding
+import com.skydoves.balloon.databinding.LayoutBalloonOverlayBinding
 import com.skydoves.balloon.extensions.applyIconForm
 import com.skydoves.balloon.extensions.applyTextForm
 import com.skydoves.balloon.extensions.circularRevealed
@@ -69,6 +71,9 @@ import com.skydoves.balloon.extensions.dimen
 import com.skydoves.balloon.extensions.displaySize
 import com.skydoves.balloon.extensions.dp2Px
 import com.skydoves.balloon.extensions.visible
+import com.skydoves.balloon.overlay.BalloonOverlayAnimation
+import com.skydoves.balloon.overlay.BalloonOverlayOval
+import com.skydoves.balloon.overlay.BalloonOverlayShape
 
 @DslMarker
 internal annotation class BalloonDsl
@@ -88,7 +93,10 @@ class Balloon(
 
   private val binding: LayoutBalloonBinding =
     LayoutBalloonBinding.inflate(LayoutInflater.from(context), null, false)
+  private val overlayBinding: LayoutBalloonOverlayBinding =
+    LayoutBalloonOverlayBinding.inflate(LayoutInflater.from(context), null, false)
   private val bodyWindow: PopupWindow
+  private val overlayWindow: PopupWindow
   var isShowing = false
     private set
   private var destroyed: Boolean = false
@@ -103,6 +111,11 @@ class Balloon(
       RelativeLayout.LayoutParams.WRAP_CONTENT,
       RelativeLayout.LayoutParams.WRAP_CONTENT
     )
+    this.overlayWindow = PopupWindow(
+      overlayBinding.root,
+      ViewGroup.LayoutParams.MATCH_PARENT,
+      ViewGroup.LayoutParams.MATCH_PARENT
+    )
     createByBuilder()
   }
 
@@ -111,6 +124,7 @@ class Balloon(
     initializeBalloonRoot()
     initializeBalloonWindow()
     initializeBalloonContent()
+    initializeBalloonOverlay()
     initializeBalloonListeners()
 
     if (builder.layoutRes != NO_INT_VALUE) {
@@ -281,6 +295,7 @@ class Balloon(
     setOnBalloonDismissListener(builder.onBalloonDismissListener)
     setOnBalloonOutsideTouchListener(builder.onBalloonOutsideTouchListener)
     setOnBalloonTouchListener(builder.onBalloonTouchListener)
+    setOnBalloonOverlayClickListener(builder.onBalloonOverlayClickListener)
   }
 
   private fun initializeBalloonRoot() {
@@ -378,6 +393,19 @@ class Balloon(
     }
   }
 
+  private fun initializeBalloonOverlay() {
+    if (builder.isVisibleOverlay) {
+      overlayWindow.isClippingEnabled = false
+      with(overlayBinding) {
+        balloonOverlayView.overlayColor = builder.overlayColor
+        balloonOverlayView.overlayPadding = builder.overlayPadding
+        balloonOverlayView.overlayPosition = builder.overlayPosition
+        balloonOverlayView.balloonOverlayShape = builder.overlayShape
+        root.setOnClickListener { dismiss() }
+      }
+    }
+  }
+
   private fun applyBalloonAnimation() {
     if (builder.balloonAnimationStyle == NO_INT_VALUE) {
       when (builder.balloonAnimation) {
@@ -392,6 +420,17 @@ class Balloon(
       }
     } else {
       bodyWindow.animationStyle = builder.balloonAnimationStyle
+    }
+  }
+
+  private fun applyBalloonOverlayAnimation() {
+    if (builder.balloonOverlayAnimationStyle == NO_INT_VALUE) {
+      when (builder.balloonOverlayAnimation) {
+        BalloonOverlayAnimation.FADE -> overlayWindow.animationStyle = R.style.Fade
+        else -> overlayWindow.animationStyle = R.style.Normal
+      }
+    } else {
+      overlayWindow.animationStyle = builder.balloonAnimationStyle
     }
   }
 
@@ -422,11 +461,21 @@ class Balloon(
         initializeArrow(anchor)
         initializeBalloonContent()
 
+        applyBalloonOverlayAnimation()
+        showOverlayWindow(anchor)
+
         applyBalloonAnimation()
         block()
       }
     } else if (builder.dismissWhenShowAgain) {
       dismiss()
+    }
+  }
+
+  private fun showOverlayWindow(anchor: View) {
+    if (builder.isVisibleOverlay) {
+      overlayBinding.balloonOverlayView.anchorView = anchor
+      overlayWindow.showAtLocation(anchor, Gravity.CENTER, 0, 0)
     }
   }
 
@@ -694,6 +743,7 @@ class Balloon(
     if (this.isShowing) {
       val dismissWindow: () -> Unit = {
         this.isShowing = false
+        this.overlayWindow.dismiss()
         this.bodyWindow.dismiss()
       }
       if (this.builder.balloonAnimation == BalloonAnimation.CIRCULAR) {
@@ -768,7 +818,25 @@ class Balloon(
 
   /** sets a [View.OnTouchListener] to the popup. */
   fun setOnBalloonTouchListener(onTouchListener: View.OnTouchListener?) {
-    this.bodyWindow.setTouchInterceptor(onTouchListener)
+    if (onTouchListener != null) {
+      this.bodyWindow.setTouchInterceptor(onTouchListener)
+    }
+  }
+
+  /** sets a [OnBalloonOverlayClickListener] to the overlay popup. */
+  fun setOnBalloonOverlayClickListener(onBalloonOverlayClickListener: OnBalloonOverlayClickListener?) {
+    this.overlayBinding.root.setOnClickListener {
+      onBalloonOverlayClickListener?.onBalloonOverlayClick()
+      if (builder.dismissWhenOverlayClicked) dismiss()
+    }
+  }
+
+  /** sets a [OnBalloonOverlayClickListener] to the overlay popup using lambda. */
+  @JvmSynthetic
+  fun setOnBalloonOverlayClickListener(block: () -> Unit) {
+    setOnBalloonOverlayClickListener(
+      OnBalloonOverlayClickListener(block)
+    )
   }
 
   /** gets measured width size of the balloon popup. */
@@ -968,9 +1036,23 @@ class Balloon(
     @JvmField
     var layout: View? = null
 
-    @JvmField
-    @LayoutRes
+    @JvmField @LayoutRes
     var layoutRes: Int = NO_INT_VALUE
+
+    @JvmField
+    var isVisibleOverlay: Boolean = false
+
+    @JvmField @ColorInt
+    var overlayColor: Int = Color.TRANSPARENT
+
+    @JvmField @Dp
+    var overlayPadding: Float = 0f
+
+    @JvmField
+    var overlayPosition: Point? = null
+
+    @JvmField
+    var overlayShape: BalloonOverlayShape = BalloonOverlayOval
 
     @JvmField
     var onBalloonClickListener: OnBalloonClickListener? = null
@@ -988,6 +1070,9 @@ class Balloon(
     var onBalloonTouchListener: View.OnTouchListener? = null
 
     @JvmField
+    var onBalloonOverlayClickListener: OnBalloonOverlayClickListener? = null
+
+    @JvmField
     var dismissWhenTouchOutside: Boolean = true
 
     @JvmField
@@ -995,6 +1080,9 @@ class Balloon(
 
     @JvmField
     var dismissWhenClicked: Boolean = false
+
+    @JvmField
+    var dismissWhenOverlayClicked: Boolean = true
 
     @JvmField
     var dismissWhenLifecycleOnPause: Boolean = false
@@ -1008,8 +1096,14 @@ class Balloon(
     @JvmField @StyleRes
     var balloonAnimationStyle: Int = NO_INT_VALUE
 
+    @JvmField @StyleRes
+    var balloonOverlayAnimationStyle: Int = NO_INT_VALUE
+
     @JvmField
     var balloonAnimation: BalloonAnimation = BalloonAnimation.FADE
+
+    @JvmField
+    var balloonOverlayAnimation: BalloonOverlayAnimation = BalloonOverlayAnimation.FADE
 
     @JvmField
     var circularDuration: Long = 500L
@@ -1335,6 +1429,26 @@ class Balloon(
     /** sets the custom layout view to the popup content. */
     fun setLayout(layout: View): Builder = apply { this.layout = layout }
 
+    /** sets the visibility of the overlay for highlighting an anchor. */
+    fun setIsVisibleOverlay(value: Boolean) = apply { this.isVisibleOverlay = value }
+
+    /** background color of the overlay. */
+    fun setOverlayColor(@ColorInt value: Int) = apply { this.overlayColor = value }
+
+    /** background color of the overlay using a color resource. */
+    fun setOverlayColorResource(@ColorRes value: Int) = apply {
+      this.overlayColor = context.contextColor(value)
+    }
+
+    /** sets a padding value of the overlay shape internally. */
+    fun setOverlayPadding(@Dp value: Float) = apply { this.overlayPadding = value }
+
+    /** sets a specific position of the overlay shape. */
+    fun setOverlayPosition(value: Point) = apply { this.overlayPosition = value }
+
+    /** sets a shape of the overlay over the anchor view. */
+    fun setOverlayShape(value: BalloonOverlayShape) = apply { this.overlayShape = value }
+
     /**
      * sets the [LifecycleOwner] for dismissing automatically when the [LifecycleOwner] is destroyed.
      * It will prevents memory leak : [Avoid Memory Leak](https://github.com/skydoves/balloon#avoid-memory-leak)
@@ -1352,6 +1466,16 @@ class Balloon(
     /** sets the balloon showing animation using custom xml animation style. */
     fun setBalloonAnimationStyle(@StyleRes value: Int): Builder = apply {
       this.balloonAnimationStyle = value
+    }
+
+    /** sets the balloon overlay showing animation using [BalloonAnimation]. */
+    fun setBalloonOverlayAnimation(value: BalloonOverlayAnimation): Builder = apply {
+      this.balloonOverlayAnimation = value
+    }
+
+    /** sets the balloon overlay showing animation using custom xml animation style. */
+    fun setBalloonOverlayAnimationStyle(@StyleRes value: Int): Builder = apply {
+      this.balloonOverlayAnimationStyle = value
     }
 
     /**
@@ -1387,6 +1511,11 @@ class Balloon(
       this.onBalloonTouchListener = value
     }
 
+    /** sets a [OnBalloonOverlayClickListener] to the overlay popup. */
+    fun setOnBalloonOverlayClickListener(value: OnBalloonOverlayClickListener): Builder = apply {
+      this.onBalloonOverlayClickListener = value
+    }
+
     /** sets a [OnBalloonClickListener] to the popup using lambda. */
     @JvmSynthetic
     fun setOnBalloonClickListener(block: (View) -> Unit): Builder = apply {
@@ -1411,6 +1540,11 @@ class Balloon(
       this.onBalloonOutsideTouchListener = OnBalloonOutsideTouchListener(block)
     }
 
+    /** sets a [OnBalloonOverlayClickListener] to the overlay popup using lambda. */
+    fun setOnBalloonOverlayClickListener(block: () -> Unit): Builder = apply {
+      this.onBalloonOverlayClickListener = OnBalloonOverlayClickListener(block)
+    }
+
     /** dismisses when touch outside. */
     fun setDismissWhenTouchOutside(value: Boolean): Builder = apply {
       this.dismissWhenTouchOutside = value
@@ -1430,6 +1564,11 @@ class Balloon(
     /** dismisses when the [LifecycleOwner] be on paused. */
     fun setDismissWhenLifecycleOnPause(value: Boolean): Builder = apply {
       this.dismissWhenLifecycleOnPause = value
+    }
+
+    /** dismisses when the overlay popup is clicked. */
+    fun setDismissWhenOverlayClicked(value: Boolean): Builder = apply {
+      this.dismissWhenOverlayClicked = value
     }
 
     /** dismisses automatically some milliseconds later when the popup is shown. */
