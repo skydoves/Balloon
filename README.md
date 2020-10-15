@@ -33,7 +33,7 @@ allprojects {
 And add a dependency code to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:balloon:1.2.3"
+    implementation "com.github.skydoves:balloon:1.2.4"
 }
 ```
 
@@ -412,6 +412,30 @@ class ProfileBalloonFactory : Balloon.Factory() {
     }
   }
 }
+```
+
+### BalloonOverlay
+We can show an overlay window over the whole screen except an anchor view.
+```kotlin
+.setIsVisibleOverlay(true) // sets the visibility of the overlay for highlighting an anchor.
+.setOverlayColorResource(R.color.overlay) // background color of the overlay using a color resource.
+.setOverlayPadding(6f) // sets a padding value of the overlay shape internally.
+.setBalloonOverlayAnimation(BalloonOverlayAnimation.FADE) // default is fade.
+```
+We can change the shape of the highlighting using `.setOverlayShape`.
+```kotlin
+.setOverlayShape(BalloonOverlayOval) // default shape
+.setOverlayShape(BalloonOverlayRect)
+.setOverlayShape(BalloonOverlayCircle(radius = 36f))
+.setOverlayShape(BalloonOverlayRoundRect(12f, 12f))
+```
+OVAL | CIRCLE | RECT | ROUNDRECT |
+| :---------------: | :---------------: | :---------------: | :---------------: |
+| <img src="https://user-images.githubusercontent.com/24237865/96139366-c7870800-0f39-11eb-9542-e98eac7ef193.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/96138448-c0abc580-0f38-11eb-92e6-daf2f8266a3e.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/96139358-c524ae00-0f39-11eb-82ff-90a4a734e076.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/96138463-c3a6b600-0f38-11eb-8a2d-57cf96c4190c.gif" align="center" width="100%"/> |
+
+And we can set the specific position of the overlay shape using the below method.
+```kotlin
+.setOverlayPosition(Point(x, y)) // sets a specific position of the overlay shape.
 ```
 
 ### BalloonAnimation
