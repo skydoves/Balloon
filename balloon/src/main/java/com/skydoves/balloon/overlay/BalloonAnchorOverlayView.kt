@@ -16,6 +16,7 @@
 
 package com.skydoves.balloon.overlay
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -23,6 +24,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
+import android.graphics.Rect
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
@@ -128,9 +130,9 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
     anchorView?.let {
       val anchorRect = RectF(
         it.x - overlayPadding,
-        it.y - overlayPadding,
+        it.y - overlayPadding + getStatusBarHeight(),
         it.x + it.width + overlayPadding,
-        it.y + it.height + overlayPadding
+        it.y + it.height + overlayPadding + getStatusBarHeight()
       )
 
       when (val overlay = balloonOverlayShape) {
@@ -144,6 +146,15 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
     }
 
     invalidated = false
+  }
+
+  private fun getStatusBarHeight(): Int {
+    val rectangle = Rect()
+    val context = context
+    return if (context is Activity) {
+      context.window.decorView.getWindowVisibleDisplayFrame(rectangle)
+      rectangle.top
+    } else 0
   }
 
   override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {

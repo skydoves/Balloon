@@ -393,6 +393,7 @@ class Balloon(
 
   private fun initializeBalloonOverlay() {
     if (builder.isVisibleOverlay) {
+      overlayWindow.isClippingEnabled = false
       with(overlayBinding) {
         balloonOverlayView.overlayColor = builder.overlayColor
         balloonOverlayView.overlayPadding = builder.overlayPadding
