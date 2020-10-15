@@ -70,6 +70,7 @@ import com.skydoves.balloon.extensions.dimen
 import com.skydoves.balloon.extensions.displaySize
 import com.skydoves.balloon.extensions.dp2Px
 import com.skydoves.balloon.extensions.visible
+import com.skydoves.balloon.overlay.BalloonOverlayAnimation
 import com.skydoves.balloon.overlay.BalloonOverlayOval
 import com.skydoves.balloon.overlay.BalloonOverlayShape
 
@@ -419,6 +420,17 @@ class Balloon(
     }
   }
 
+  private fun applyBalloonOverlayAnimation() {
+    if (builder.balloonOverlayAnimationStyle == NO_INT_VALUE) {
+      when (builder.balloonOverlayAnimation) {
+        BalloonOverlayAnimation.FADE -> overlayWindow.animationStyle = R.style.Fade
+        else -> overlayWindow.animationStyle = R.style.Normal
+      }
+    } else {
+      overlayWindow.animationStyle = builder.balloonAnimationStyle
+    }
+  }
+
   @MainThread
   private inline fun show(anchor: View, crossinline block: () -> Unit) {
     if (!this.isShowing && !this.destroyed) {
@@ -446,6 +458,7 @@ class Balloon(
         initializeArrow(anchor)
         initializeBalloonContent()
 
+        applyBalloonOverlayAnimation()
         showOverlayWindow(anchor)
 
         applyBalloonAnimation()
@@ -1075,8 +1088,14 @@ class Balloon(
     @JvmField @StyleRes
     var balloonAnimationStyle: Int = NO_INT_VALUE
 
+    @JvmField @StyleRes
+    var balloonOverlayAnimationStyle: Int = NO_INT_VALUE
+
     @JvmField
     var balloonAnimation: BalloonAnimation = BalloonAnimation.FADE
+
+    @JvmField
+    var balloonOverlayAnimation: BalloonOverlayAnimation = BalloonOverlayAnimation.FADE
 
     @JvmField
     var circularDuration: Long = 500L
@@ -1436,6 +1455,16 @@ class Balloon(
     /** sets the balloon showing animation using custom xml animation style. */
     fun setBalloonAnimationStyle(@StyleRes value: Int): Builder = apply {
       this.balloonAnimationStyle = value
+    }
+
+    /** sets the balloon overlay showing animation using [BalloonAnimation]. */
+    fun setBalloonOverlayAnimation(value: BalloonOverlayAnimation): Builder = apply {
+      this.balloonOverlayAnimation = value
+    }
+
+    /** sets the balloon overlay showing animation using custom xml animation style. */
+    fun setBalloonOverlayAnimationStyle(@StyleRes value: Int): Builder = apply {
+      this.balloonOverlayAnimationStyle = value
     }
 
     /**

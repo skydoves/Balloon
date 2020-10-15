@@ -67,7 +67,7 @@ class CustomActivity :
     this.customAdapter.addCustomItem(ItemUtils.getCustomSamples(this))
 
     toolbar_list.setOnClickListener {
-      this.customListBalloon.showAlignBottom(it)
+      this.customListBalloon.showAlignBottom(it, 0, 36)
     }
 
     circleImageView.setOnClickListener {
