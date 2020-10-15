@@ -818,7 +818,9 @@ class Balloon(
 
   /** sets a [View.OnTouchListener] to the popup. */
   fun setOnBalloonTouchListener(onTouchListener: View.OnTouchListener?) {
-    this.bodyWindow.setTouchInterceptor(onTouchListener)
+    if (onTouchListener != null) {
+      this.bodyWindow.setTouchInterceptor(onTouchListener)
+    }
   }
 
   /** sets a [OnBalloonOverlayClickListener] to the overlay popup. */
