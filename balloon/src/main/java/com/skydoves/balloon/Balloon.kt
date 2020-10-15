@@ -293,6 +293,7 @@ class Balloon(
     setOnBalloonDismissListener(builder.onBalloonDismissListener)
     setOnBalloonOutsideTouchListener(builder.onBalloonOutsideTouchListener)
     setOnBalloonTouchListener(builder.onBalloonTouchListener)
+    setOnBalloonOverlayClickListener(builder.onBalloonOverlayClickListener)
   }
 
   private fun initializeBalloonRoot() {
@@ -803,6 +804,22 @@ class Balloon(
     this.bodyWindow.setTouchInterceptor(onTouchListener)
   }
 
+  /** sets a [OnBalloonOverlayClickListener] to the overlay popup. */
+  fun setOnBalloonOverlayClickListener(onBalloonOverlayClickListener: OnBalloonOverlayClickListener?) {
+    this.overlayBinding.root.setOnClickListener {
+      onBalloonOverlayClickListener?.onBalloonOverlayClick()
+      if (builder.dismissWhenOverlayClicked) dismiss()
+    }
+  }
+
+  /** sets a [OnBalloonOverlayClickListener] to the overlay popup using lambda. */
+  @JvmSynthetic
+  fun setOnBalloonOverlayClickListener(block: () -> Unit) {
+    setOnBalloonOverlayClickListener(
+      OnBalloonOverlayClickListener(block)
+    )
+  }
+
   /** gets measured width size of the balloon popup. */
   fun getMeasureWidth(): Int {
     val displayWidth = context.displaySize().x
@@ -1031,6 +1048,9 @@ class Balloon(
     var onBalloonTouchListener: View.OnTouchListener? = null
 
     @JvmField
+    var onBalloonOverlayClickListener: OnBalloonOverlayClickListener? = null
+
+    @JvmField
     var dismissWhenTouchOutside: Boolean = true
 
     @JvmField
@@ -1038,6 +1058,9 @@ class Balloon(
 
     @JvmField
     var dismissWhenClicked: Boolean = false
+
+    @JvmField
+    var dismissWhenOverlayClicked: Boolean = true
 
     @JvmField
     var dismissWhenLifecycleOnPause: Boolean = false
@@ -1447,6 +1470,11 @@ class Balloon(
       this.onBalloonTouchListener = value
     }
 
+    /** sets a [OnBalloonOverlayClickListener] to the overlay popup. */
+    fun setOnBalloonOverlayClickListener(value: OnBalloonOverlayClickListener): Builder = apply {
+      this.onBalloonOverlayClickListener = value
+    }
+
     /** sets a [OnBalloonClickListener] to the popup using lambda. */
     @JvmSynthetic
     fun setOnBalloonClickListener(block: (View) -> Unit): Builder = apply {
@@ -1471,6 +1499,11 @@ class Balloon(
       this.onBalloonOutsideTouchListener = OnBalloonOutsideTouchListener(block)
     }
 
+    /** sets a [OnBalloonOverlayClickListener] to the overlay popup using lambda. */
+    fun setOnBalloonOverlayClickListener(block: () -> Unit): Builder = apply {
+      this.onBalloonOverlayClickListener = OnBalloonOverlayClickListener(block)
+    }
+
     /** dismisses when touch outside. */
     fun setDismissWhenTouchOutside(value: Boolean): Builder = apply {
       this.dismissWhenTouchOutside = value
@@ -1490,6 +1523,11 @@ class Balloon(
     /** dismisses when the [LifecycleOwner] be on paused. */
     fun setDismissWhenLifecycleOnPause(value: Boolean): Builder = apply {
       this.dismissWhenLifecycleOnPause = value
+    }
+
+    /** dismisses when the overlay popup is clicked. */
+    fun setDismissWhenOverlayClicked(value: Boolean): Builder = apply {
+      this.dismissWhenOverlayClicked = value
     }
 
     /** dismisses automatically some milliseconds later when the popup is shown. */
