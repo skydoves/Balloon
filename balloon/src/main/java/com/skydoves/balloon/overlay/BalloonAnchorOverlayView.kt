@@ -22,6 +22,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Point
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
@@ -61,21 +62,30 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
       invalidate()
     }
 
-  /** shape of the overlay over the anchor view. */
-  private var _balloonOverlayShape: BalloonOverlayShape = BalloonOverlayOval
-  var balloonOverlayShape: BalloonOverlayShape
-    get() = _balloonOverlayShape
-    set(value) {
-      _balloonOverlayShape = value
-      invalidate()
-    }
-
   /** padding value of the internal overlay shape. */
   @Px private var _overlayPadding: Float = 0f
   var overlayPadding: Float
     @Px get() = _overlayPadding
     set(@Dp value) {
       _overlayPadding = context.dp2Px(value)
+      invalidate()
+    }
+
+  /** specific position of the overlay shape. */
+  private var _overlayPosition: Point? = null
+  var overlayPosition: Point?
+    get() = _overlayPosition
+    set(value) {
+      _overlayPosition = value
+      invalidate()
+    }
+
+  /** shape of the overlay over the anchor view. */
+  private var _balloonOverlayShape: BalloonOverlayShape = BalloonOverlayOval
+  var balloonOverlayShape: BalloonOverlayShape
+    get() = _balloonOverlayShape
+    set(value) {
+      _balloonOverlayShape = value
       invalidate()
     }
 
@@ -127,12 +137,19 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
       color = Color.TRANSPARENT
     }
 
-    anchorView?.let {
-      val anchorRect = RectF(
-        it.x - overlayPadding,
-        it.y - overlayPadding + getStatusBarHeight(),
-        it.x + it.width + overlayPadding,
-        it.y + it.height + overlayPadding + getStatusBarHeight()
+    anchorView?.let { anchor ->
+      val anchorRect = overlayPosition?.let { position ->
+        RectF(
+          position.x - overlayPadding,
+          position.y - overlayPadding + getStatusBarHeight(),
+          position.x + anchor.width + overlayPadding,
+          position.y + anchor.height + overlayPadding + getStatusBarHeight()
+        )
+      } ?: RectF(
+        anchor.x - overlayPadding,
+        anchor.y - overlayPadding + getStatusBarHeight(),
+        anchor.x + anchor.width + overlayPadding,
+        anchor.y + anchor.height + overlayPadding + getStatusBarHeight()
       )
 
       when (val overlay = balloonOverlayShape) {

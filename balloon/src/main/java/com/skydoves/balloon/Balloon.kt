@@ -24,6 +24,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
@@ -398,6 +399,7 @@ class Balloon(
       with(overlayBinding) {
         balloonOverlayView.overlayColor = builder.overlayColor
         balloonOverlayView.overlayPadding = builder.overlayPadding
+        balloonOverlayView.overlayPosition = builder.overlayPosition
         root.setOnClickListener { dismiss() }
       }
     }
@@ -1037,14 +1039,17 @@ class Balloon(
     @JvmField
     var isVisibleOverlay: Boolean = false
 
-    @JvmField
-    var overlayShape: BalloonOverlayShape = BalloonOverlayOval
-
     @JvmField @ColorInt
     var overlayColor: Int = Color.TRANSPARENT
 
     @JvmField @Dp
     var overlayPadding: Float = 0f
+
+    @JvmField
+    var overlayPosition: Point? = null
+
+    @JvmField
+    var overlayShape: BalloonOverlayShape = BalloonOverlayOval
 
     @JvmField
     var onBalloonClickListener: OnBalloonClickListener? = null
@@ -1434,6 +1439,9 @@ class Balloon(
 
     /** sets a padding value of the overlay shape internally. */
     fun setOverlayPadding(@Dp value: Float) = apply { this.overlayPadding = value }
+
+    /** sets a specific position of the overlay shape. */
+    fun setOverlayPosition(value: Point) = apply { this.overlayPosition = value }
 
     /** sets a shape of the overlay over the anchor view. */
     fun setOverlayShape(value: BalloonOverlayShape) = apply { this.overlayShape = value }
