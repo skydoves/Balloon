@@ -24,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.skydoves.balloon.balloon
 import com.skydoves.balloondemo.factory.CustomListBalloonFactory
+import com.skydoves.balloondemo.factory.EditBalloonFactory
 import com.skydoves.balloondemo.factory.ProfileBalloonFactory
 import com.skydoves.balloondemo.factory.TagBalloonFactory
 import com.skydoves.balloondemo.factory.ViewHolderBalloonFactory
@@ -34,6 +35,7 @@ import com.skydoves.balloondemo.recycler.SampleAdapter
 import com.skydoves.balloondemo.recycler.SampleItem
 import kotlinx.android.synthetic.main.activity_custom.bottomNavigationView
 import kotlinx.android.synthetic.main.activity_custom.circleImageView
+import kotlinx.android.synthetic.main.activity_custom.edit
 import kotlinx.android.synthetic.main.activity_custom.recyclerView
 import kotlinx.android.synthetic.main.activity_custom.tabLayout
 import kotlinx.android.synthetic.main.toolbar_custom.toolbar_list
@@ -45,6 +47,7 @@ class CustomActivity :
 
   private val adapter by lazy { SampleAdapter(this) }
   private val customAdapter by lazy { CustomAdapter(this) }
+  private val editBalloon by balloon(EditBalloonFactory::class)
   private val customListBalloon by balloon(CustomListBalloonFactory::class)
   private val customProfileBalloon by balloon(ProfileBalloonFactory::class)
   private val viewHolderBalloon by balloon(ViewHolderBalloonFactory::class)
@@ -68,6 +71,10 @@ class CustomActivity :
 
     toolbar_list.setOnClickListener {
       this.customListBalloon.showAlignBottom(it, 0, 36)
+    }
+
+    edit.setOnClickListener {
+      this.editBalloon.showAlignTop(it, 0, -30)
     }
 
     circleImageView.setOnClickListener {

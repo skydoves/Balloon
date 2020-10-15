@@ -38,7 +38,7 @@ class MainActivity :
   OnBalloonClickListener {
 
   private val adapter by lazy { SampleAdapter(this) }
-  private val profileBalloon by lazy { BalloonUtils.getProfileBalloon(this, this) }
+  private val profileBalloon by lazy { BalloonUtils.getEditBalloon(this, this) }
   private val navigationBalloon by lazy { BalloonUtils.getNavigationBalloon(this, this, this) }
   private val viewHolderBalloon by balloon(ViewHolderBalloonFactory::class)
 

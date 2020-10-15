@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package com.skydoves.balloondemo
+package com.skydoves.balloondemo.factory
 
 import android.content.Context
 import android.widget.Toast
-import androidx.core.text.TextUtilsCompat
-import androidx.core.view.ViewCompat
 import androidx.lifecycle.LifecycleOwner
 import com.skydoves.balloon.ArrowConstraints
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
-import com.skydoves.balloon.OnBalloonClickListener
-import java.util.Locale
+import com.skydoves.balloon.overlay.BalloonOverlayRoundRect
+import com.skydoves.balloondemo.BalloonUtils
+import com.skydoves.balloondemo.R
 
-object BalloonUtils {
+class EditBalloonFactory : Balloon.Factory() {
 
-  fun getEditBalloon(context: Context, lifecycleOwner: LifecycleOwner): Balloon {
+  override fun create(context: Context, lifecycle: LifecycleOwner?): Balloon {
     return Balloon.Builder(context)
       .setText("You can edit your profile now!")
       .setArrowSize(10)
@@ -40,48 +39,20 @@ object BalloonUtils {
       .setMarginRight(12)
       .setMarginLeft(12)
       .setTextSize(15f)
-      .isRtlSupport(isRtlLayout())
+      .isRtlSupport(BalloonUtils.isRtlLayout())
       .setCornerRadius(8f)
       .setTextColorResource(R.color.white_87)
       .setIconDrawableResource(R.drawable.ic_edit)
       .setBackgroundColorResource(R.color.skyBlue)
+      .setBalloonAnimation(BalloonAnimation.ELASTIC)
+      .setIsVisibleOverlay(true)
+      .setOverlayColorResource(R.color.overlay)
+      .setOverlayPadding(6f)
+      .setOverlayShape(BalloonOverlayRoundRect(12f, 12f))
+      .setLifecycleOwner(lifecycle)
+      .setDismissWhenClicked(true)
       .setOnBalloonDismissListener {
         Toast.makeText(context.applicationContext, "dismissed", Toast.LENGTH_SHORT).show()
-      }
-      .setBalloonAnimation(BalloonAnimation.ELASTIC)
-      .setLifecycleOwner(lifecycleOwner)
-      .build()
-  }
-
-  fun getNavigationBalloon(
-    context: Context,
-    onBalloonClickListener: OnBalloonClickListener,
-    lifecycleOwner: LifecycleOwner
-  ): Balloon {
-    return Balloon.Builder(context)
-      .setText("You can access your profile from on now.")
-      .setArrowSize(10)
-      .setArrowPosition(0.62f)
-      .setWidthRatio(1.0f)
-      .setTextSize(15f)
-      .isRtlSupport(isRtlLayout())
-      .setPadding(10)
-      .setMarginRight(12)
-      .setMarginLeft(12)
-      .setCornerRadius(4f)
-      .setAlpha(0.9f)
-      .setTextColorResource(R.color.white_93)
-      .setIconDrawableResource(R.drawable.ic_profile)
-      .setBackgroundColorResource(R.color.colorPrimary)
-      .setOnBalloonClickListener(onBalloonClickListener)
-      .setBalloonAnimation(BalloonAnimation.FADE)
-      .setLifecycleOwner(lifecycleOwner)
-      .build()
-  }
-
-  fun isRtlLayout(): Boolean {
-    return TextUtilsCompat.getLayoutDirectionFromLocale(
-      Locale.getDefault()
-    ) == ViewCompat.LAYOUT_DIRECTION_RTL
+      }.build()
   }
 }

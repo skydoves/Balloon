@@ -30,10 +30,10 @@
       app:shapeAppearanceOverlay="@style/CircleImageStyle" />
 
     <TextView
-      android:layout_width="wrap_content"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_gravity="center_horizontal"
       android:layout_marginTop="12dp"
+      android:gravity="center"
       android:text="skydoves"
       android:textColor="@color/white_93"
       android:textSize="16sp"
@@ -41,10 +41,10 @@
       tools:ignore="HardcodedText" />
 
     <TextView
-      android:layout_width="wrap_content"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_gravity="center_horizontal"
       android:layout_marginTop="5dp"
+      android:gravity="center"
       android:text="Love coffee, music, magic tricks and writing poems."
       android:textColor="@color/white_56"
       android:textSize="14sp"
@@ -93,7 +93,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="center_horizontal"
-          android:text="1024"
+          android:text="2333"
           android:textColor="@color/white_93"
           android:textSize="16sp"
           android:textStyle="bold" />
@@ -135,7 +135,7 @@
     </LinearLayout>
 
     <Button
-      android:id="@+id/button"
+      android:id="@+id/edit"
       android:layout_width="match_parent"
       android:layout_height="36dp"
       android:layout_marginLeft="8dp"

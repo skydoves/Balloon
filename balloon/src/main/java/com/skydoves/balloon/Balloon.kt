@@ -400,6 +400,7 @@ class Balloon(
         balloonOverlayView.overlayColor = builder.overlayColor
         balloonOverlayView.overlayPadding = builder.overlayPadding
         balloonOverlayView.overlayPosition = builder.overlayPosition
+        balloonOverlayView.balloonOverlayShape = builder.overlayShape
         root.setOnClickListener { dismiss() }
       }
     }
