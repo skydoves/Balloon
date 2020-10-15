@@ -50,7 +50,7 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
       invalidate()
     }
 
-  /** background color of the overlaying. */
+  /** background color of the overlay. */
   @ColorInt private var _overlayColor: Int = Color.TRANSPARENT
   var overlayColor: Int
     @ColorInt get() = _overlayColor
@@ -59,7 +59,7 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
       invalidate()
     }
 
-  /** shape of the overlaying over the anchor view. */
+  /** shape of the overlay over the anchor view. */
   private var _balloonOverlayShape: BalloonOverlayShape = BalloonOverlayOval
   var balloonOverlayShape: BalloonOverlayShape
     get() = _balloonOverlayShape

@@ -59,6 +59,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import com.skydoves.balloon.annotations.Dp
 import com.skydoves.balloon.annotations.Sp
 import com.skydoves.balloon.databinding.LayoutBalloonBinding
+import com.skydoves.balloon.databinding.LayoutBalloonOverlayBinding
 import com.skydoves.balloon.extensions.applyIconForm
 import com.skydoves.balloon.extensions.applyTextForm
 import com.skydoves.balloon.extensions.circularRevealed
@@ -69,6 +70,8 @@ import com.skydoves.balloon.extensions.dimen
 import com.skydoves.balloon.extensions.displaySize
 import com.skydoves.balloon.extensions.dp2Px
 import com.skydoves.balloon.extensions.visible
+import com.skydoves.balloon.overlay.BalloonOverlayOval
+import com.skydoves.balloon.overlay.BalloonOverlayShape
 
 @DslMarker
 internal annotation class BalloonDsl
@@ -88,7 +91,10 @@ class Balloon(
 
   private val binding: LayoutBalloonBinding =
     LayoutBalloonBinding.inflate(LayoutInflater.from(context), null, false)
+  private val overlayBinding: LayoutBalloonOverlayBinding =
+    LayoutBalloonOverlayBinding.inflate(LayoutInflater.from(context), null, false)
   private val bodyWindow: PopupWindow
+  private val overlayWindow: PopupWindow
   var isShowing = false
     private set
   private var destroyed: Boolean = false
@@ -103,6 +109,11 @@ class Balloon(
       RelativeLayout.LayoutParams.WRAP_CONTENT,
       RelativeLayout.LayoutParams.WRAP_CONTENT
     )
+    this.overlayWindow = PopupWindow(
+      overlayBinding.root,
+      ViewGroup.LayoutParams.MATCH_PARENT,
+      ViewGroup.LayoutParams.MATCH_PARENT
+    )
     createByBuilder()
   }
 
@@ -111,6 +122,7 @@ class Balloon(
     initializeBalloonRoot()
     initializeBalloonWindow()
     initializeBalloonContent()
+    initializeBalloonOverlay()
     initializeBalloonListeners()
 
     if (builder.layoutRes != NO_INT_VALUE) {
@@ -378,6 +390,16 @@ class Balloon(
     }
   }
 
+  private fun initializeBalloonOverlay() {
+    if (builder.isVisibleOverlay) {
+      with(overlayBinding) {
+        balloonOverlayView.overlayColor = builder.overlayColor
+        balloonOverlayView.overlayPadding = builder.overlayPadding
+        root.setOnClickListener { dismiss() }
+      }
+    }
+  }
+
   private fun applyBalloonAnimation() {
     if (builder.balloonAnimationStyle == NO_INT_VALUE) {
       when (builder.balloonAnimation) {
@@ -422,11 +444,20 @@ class Balloon(
         initializeArrow(anchor)
         initializeBalloonContent()
 
+        showOverlayWindow(anchor)
+
         applyBalloonAnimation()
         block()
       }
     } else if (builder.dismissWhenShowAgain) {
       dismiss()
+    }
+  }
+
+  private fun showOverlayWindow(anchor: View) {
+    if (builder.isVisibleOverlay) {
+      overlayBinding.balloonOverlayView.anchorView = anchor
+      overlayWindow.showAtLocation(anchor, Gravity.CENTER, 0, 0)
     }
   }
 
@@ -694,6 +725,7 @@ class Balloon(
     if (this.isShowing) {
       val dismissWindow: () -> Unit = {
         this.isShowing = false
+        this.overlayWindow.dismiss()
         this.bodyWindow.dismiss()
       }
       if (this.builder.balloonAnimation == BalloonAnimation.CIRCULAR) {
@@ -968,9 +1000,20 @@ class Balloon(
     @JvmField
     var layout: View? = null
 
-    @JvmField
-    @LayoutRes
+    @JvmField @LayoutRes
     var layoutRes: Int = NO_INT_VALUE
+
+    @JvmField
+    var isVisibleOverlay: Boolean = false
+
+    @JvmField
+    var overlayShape: BalloonOverlayShape = BalloonOverlayOval
+
+    @JvmField @ColorInt
+    var overlayColor: Int = Color.TRANSPARENT
+
+    @JvmField @Dp
+    var overlayPadding: Float = 0f
 
     @JvmField
     var onBalloonClickListener: OnBalloonClickListener? = null
@@ -1334,6 +1377,23 @@ class Balloon(
 
     /** sets the custom layout view to the popup content. */
     fun setLayout(layout: View): Builder = apply { this.layout = layout }
+
+    /** sets the visibility of the overlay for highlighting an anchor. */
+    fun setIsVisibleOverlay(value: Boolean) = apply { this.isVisibleOverlay = value }
+
+    /** background color of the overlay. */
+    fun setOverlayColor(@ColorInt value: Int) = apply { this.overlayColor = value }
+
+    /** background color of the overlay using a color resource. */
+    fun setOverlayColorResource(@ColorRes value: Int) = apply {
+      this.overlayColor = context.contextColor(value)
+    }
+
+    /** sets a padding value of the overlay shape internally. */
+    fun setOverlayPadding(@Dp value: Float) = apply { this.overlayPadding = value }
+
+    /** sets a shape of the overlay over the anchor view. */
+    fun setOverlayShape(value: BalloonOverlayShape) = apply { this.overlayShape = value }
 
     /**
      * sets the [LifecycleOwner] for dismissing automatically when the [LifecycleOwner] is destroyed.
