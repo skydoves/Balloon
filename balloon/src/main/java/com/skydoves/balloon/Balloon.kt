@@ -70,6 +70,7 @@ import com.skydoves.balloon.extensions.contextDrawable
 import com.skydoves.balloon.extensions.dimen
 import com.skydoves.balloon.extensions.displaySize
 import com.skydoves.balloon.extensions.dp2Px
+import com.skydoves.balloon.extensions.isFinishing
 import com.skydoves.balloon.extensions.visible
 import com.skydoves.balloon.overlay.BalloonOverlayAnimation
 import com.skydoves.balloon.overlay.BalloonOverlayOval
@@ -436,7 +437,7 @@ class Balloon(
 
   @MainThread
   private inline fun show(anchor: View, crossinline block: () -> Unit) {
-    if (!this.isShowing && !this.destroyed) {
+    if (!this.isShowing && !this.destroyed && !context.isFinishing()) {
       this.isShowing = true
       this.builder.preferenceName?.let {
         if (balloonPersistence.shouldShowUP(it, builder.showTimes)) {

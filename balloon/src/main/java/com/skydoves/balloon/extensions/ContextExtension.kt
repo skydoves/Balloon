@@ -16,6 +16,7 @@
 
 package com.skydoves.balloon.extensions
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Point
 import android.graphics.drawable.Drawable
@@ -56,4 +57,9 @@ internal fun Context.contextColor(resource: Int): Int {
 /** gets a drawable from the resource. */
 internal fun Context.contextDrawable(resource: Int): Drawable? {
   return AppCompatResources.getDrawable(this, resource)
+}
+
+/** returns if an Activity is finishing or not. */
+internal fun Context.isFinishing(): Boolean {
+  return this is Activity && this.isFinishing
 }
