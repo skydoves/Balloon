@@ -52,6 +52,7 @@ import androidx.annotation.MainThread
 import androidx.annotation.Px
 import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
+import androidx.core.view.ViewCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -437,7 +438,9 @@ class Balloon(
 
   @MainThread
   private inline fun show(anchor: View, crossinline block: () -> Unit) {
-    if (!isShowing && !destroyed && !context.isFinishing()) {
+    if (!isShowing && !destroyed && !context.isFinishing() &&
+      ViewCompat.isAttachedToWindow(anchor)
+    ) {
       this.isShowing = true
       this.builder.preferenceName?.let {
         if (balloonPersistence.shouldShowUP(it, builder.showTimes)) {
