@@ -891,15 +891,16 @@ class Balloon(
   @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
   fun onPause() {
     if (builder.dismissWhenLifecycleOnPause) {
-      dismiss()
+      onDestroy()
     }
   }
 
   /** dismiss automatically when lifecycle owner is destroyed. */
   @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
   fun onDestroy() {
-    destroyed = true
-    dismiss()
+    this.destroyed = true
+    this.overlayWindow.dismiss()
+    this.bodyWindow.dismiss()
   }
 
   /** Builder class for creating [Balloon]. */
