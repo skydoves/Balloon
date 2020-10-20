@@ -57,27 +57,35 @@ class TextForm(builder: Builder) {
   @TextFormDsl
   class Builder(val context: Context) {
     @JvmField
+    @set:JvmSynthetic
     var text: CharSequence = ""
 
     @JvmField @Sp
+    @set:JvmSynthetic
     var textSize: Float = 12f
 
     @JvmField @ColorInt
+    @set:JvmSynthetic
     var textColor = Color.WHITE
 
     @JvmField
+    @set:JvmSynthetic
     var textIsHtml: Boolean = false
 
     @JvmField
+    @set:JvmSynthetic
     var movementMethod: MovementMethod? = null
 
     @JvmField
+    @set:JvmSynthetic
     var textTypeface = Typeface.NORMAL
 
     @JvmField
+    @set:JvmSynthetic
     var textTypefaceObject: Typeface? = null
 
     @JvmField
+    @set:JvmSynthetic
     var textGravity: Int = Gravity.CENTER
 
     /** sets the content text of the form. */

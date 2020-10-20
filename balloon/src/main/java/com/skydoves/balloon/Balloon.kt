@@ -437,7 +437,7 @@ class Balloon(
 
   @MainThread
   private inline fun show(anchor: View, crossinline block: () -> Unit) {
-    if (!this.isShowing && !this.destroyed && !context.isFinishing()) {
+    if (!isShowing && !destroyed && !context.isFinishing()) {
       this.isShowing = true
       this.builder.preferenceName?.let {
         if (balloonPersistence.shouldShowUP(it, builder.showTimes)) {
@@ -903,225 +903,299 @@ class Balloon(
   @BalloonDsl
   class Builder(private val context: Context) {
     @JvmField @Px
+    @set:JvmSynthetic
     var width: Int = NO_INT_VALUE
 
     @JvmField @FloatRange(from = 0.0, to = 1.0)
+    @set:JvmSynthetic
     var widthRatio: Float = NO_Float_VALUE
 
     @JvmField @Px
+    @set:JvmSynthetic
     var height: Int = NO_INT_VALUE
 
     @JvmField @Px
+    @set:JvmSynthetic
     var paddingLeft: Int = 0
 
     @JvmField @Px
+    @set:JvmSynthetic
     var paddingTop: Int = 0
 
     @JvmField @Px
+    @set:JvmSynthetic
     var paddingRight: Int = 0
 
     @JvmField @Px
+    @set:JvmSynthetic
     var paddingBottom: Int = 0
 
     @JvmField @Px
+    @set:JvmSynthetic
     var marginRight: Int = 0
 
     @JvmField @Px
+    @set:JvmSynthetic
     var marginLeft: Int = 0
 
     @JvmField @Px
+    @set:JvmSynthetic
     var marginTop: Int = 0
 
     @JvmField @Px
+    @set:JvmSynthetic
     var marginBottom: Int = 0
 
     @JvmField
+    @set:JvmSynthetic
     var arrowVisible: Boolean = true
 
     @JvmField @ColorInt
+    @set:JvmSynthetic
     var arrowColor: Int = NO_INT_VALUE
 
     @JvmField @Px
+    @set:JvmSynthetic
     var arrowSize: Int = context.dp2Px(12)
 
     @JvmField @FloatRange(from = 0.0, to = 1.0)
+    @set:JvmSynthetic
     var arrowPosition: Float = 0.5f
 
     @JvmField
+    @set:JvmSynthetic
     var arrowConstraints: ArrowConstraints = ArrowConstraints.ALIGN_BALLOON
 
     @JvmField
+    @set:JvmSynthetic
     var arrowOrientation: ArrowOrientation = ArrowOrientation.BOTTOM
 
     @JvmField
+    @set:JvmSynthetic
     var arrowDrawable: Drawable? = null
 
     @JvmField
+    @set:JvmSynthetic
     var arrowLeftPadding: Int = 0
 
     @JvmField
+    @set:JvmSynthetic
     var arrowRightPadding: Int = 0
 
     @JvmField
+    @set:JvmSynthetic
     var arrowTopPadding: Int = 0
 
     @JvmField
+    @set:JvmSynthetic
     var arrowBottomPadding: Int = 0
 
     @JvmField
+    @set:JvmSynthetic
     var arrowAlignAnchorPadding: Int = 0
 
     @JvmField
+    @set:JvmSynthetic
     var arrowAlignAnchorPaddingRatio: Float = 2.5f
 
     @JvmField @ColorInt
+    @set:JvmSynthetic
     var backgroundColor: Int = Color.BLACK
 
     @JvmField
+    @set:JvmSynthetic
     var backgroundDrawable: Drawable? = null
 
     @JvmField @Px
+    @set:JvmSynthetic
     var cornerRadius: Float = context.dp2Px(5).toFloat()
 
     @JvmField
+    @set:JvmSynthetic
     var text: CharSequence = ""
 
     @JvmField @ColorInt
+    @set:JvmSynthetic
     var textColor: Int = Color.WHITE
 
     @JvmField
+    @set:JvmSynthetic
     var textIsHtml: Boolean = false
 
     @JvmField
+    @set:JvmSynthetic
     var movementMethod: MovementMethod? = null
 
     @JvmField @Sp
+    @set:JvmSynthetic
     var textSize: Float = 12f
 
     @JvmField
+    @set:JvmSynthetic
     var textTypeface: Int = Typeface.NORMAL
 
     @JvmField
+    @set:JvmSynthetic
     var textTypefaceObject: Typeface? = null
 
     @JvmField
+    @set:JvmSynthetic
     var textGravity: Int = Gravity.CENTER
 
     @JvmField
+    @set:JvmSynthetic
     var textForm: TextForm? = null
 
     @JvmField
+    @set:JvmSynthetic
     var iconDrawable: Drawable? = null
 
     @JvmField
+    @set:JvmSynthetic
     var iconGravity = IconGravity.LEFT
 
     @JvmField @Px
+    @set:JvmSynthetic
     var iconSize: Int = context.dp2Px(28)
 
     @JvmField @Px
+    @set:JvmSynthetic
     var iconSpace: Int = context.dp2Px(8)
 
     @JvmField @ColorInt
+    @set:JvmSynthetic
     var iconColor: Int = Color.WHITE
 
     @JvmField
+    @set:JvmSynthetic
     var iconForm: IconForm? = null
 
     @JvmField @FloatRange(from = 0.0, to = 1.0)
+    @set:JvmSynthetic
     var alpha: Float = 1f
 
     @JvmField
+    @set:JvmSynthetic
     var elevation: Float = context.dp2Px(2f)
 
     @JvmField
+    @set:JvmSynthetic
     var layout: View? = null
 
     @JvmField @LayoutRes
+    @set:JvmSynthetic
     var layoutRes: Int = NO_INT_VALUE
 
     @JvmField
+    @set:JvmSynthetic
     var isVisibleOverlay: Boolean = false
 
     @JvmField @ColorInt
+    @set:JvmSynthetic
     var overlayColor: Int = Color.TRANSPARENT
 
     @JvmField @Dp
+    @set:JvmSynthetic
     var overlayPadding: Float = 0f
 
     @JvmField
+    @set:JvmSynthetic
     var overlayPosition: Point? = null
 
     @JvmField
+    @set:JvmSynthetic
     var overlayShape: BalloonOverlayShape = BalloonOverlayOval
 
     @JvmField
+    @set:JvmSynthetic
     var onBalloonClickListener: OnBalloonClickListener? = null
 
     @JvmField
+    @set:JvmSynthetic
     var onBalloonDismissListener: OnBalloonDismissListener? = null
 
     @JvmField
+    @set:JvmSynthetic
     var onBalloonInitializedListener: OnBalloonInitializedListener? = null
 
     @JvmField
+    @set:JvmSynthetic
     var onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener? = null
 
     @JvmField
+    @set:JvmSynthetic
     var onBalloonTouchListener: View.OnTouchListener? = null
 
     @JvmField
+    @set:JvmSynthetic
     var onBalloonOverlayClickListener: OnBalloonOverlayClickListener? = null
 
     @JvmField
+    @set:JvmSynthetic
     var dismissWhenTouchOutside: Boolean = true
 
     @JvmField
+    @set:JvmSynthetic
     var dismissWhenShowAgain: Boolean = false
 
     @JvmField
+    @set:JvmSynthetic
     var dismissWhenClicked: Boolean = false
 
     @JvmField
+    @set:JvmSynthetic
     var dismissWhenOverlayClicked: Boolean = true
 
     @JvmField
+    @set:JvmSynthetic
     var dismissWhenLifecycleOnPause: Boolean = false
 
     @JvmField
+    @set:JvmSynthetic
     var autoDismissDuration: Long = NO_LONG_VALUE
 
     @JvmField
+    @set:JvmSynthetic
     var lifecycleOwner: LifecycleOwner? = null
 
     @JvmField @StyleRes
+    @set:JvmSynthetic
     var balloonAnimationStyle: Int = NO_INT_VALUE
 
     @JvmField @StyleRes
+    @set:JvmSynthetic
     var balloonOverlayAnimationStyle: Int = NO_INT_VALUE
 
     @JvmField
+    @set:JvmSynthetic
     var balloonAnimation: BalloonAnimation = BalloonAnimation.FADE
 
     @JvmField
+    @set:JvmSynthetic
     var balloonOverlayAnimation: BalloonOverlayAnimation = BalloonOverlayAnimation.FADE
 
     @JvmField
+    @set:JvmSynthetic
     var circularDuration: Long = 500L
 
     @JvmField
+    @set:JvmSynthetic
     var preferenceName: String? = null
 
     @JvmField
+    @set:JvmSynthetic
     var showTimes: Int = 1
 
     @JvmField
+    @set:JvmSynthetic
     var isRtlSupport: Boolean = false
 
     @JvmField
+    @set:JvmSynthetic
     var isFocusable: Boolean = true
 
     @JvmField
+    @set:JvmSynthetic
     var isStatusBarVisible: Boolean = true
 
     /** sets the width size. */

@@ -52,21 +52,27 @@ class IconForm(builder: Builder) {
   @IconFormDsl
   class Builder(val context: Context) {
     @JvmField
+    @set:JvmSynthetic
     var drawable: Drawable? = null
 
     @JvmField @DrawableRes
+    @set:JvmSynthetic
     var drawableRes: Int? = null
 
     @JvmField
+    @set:JvmSynthetic
     var iconGravity = IconGravity.LEFT
 
     @JvmField @Px
+    @set:JvmSynthetic
     var iconSize: Int = context.dp2Px(28)
 
     @JvmField @Px
+    @set:JvmSynthetic
     var iconSpace: Int = context.dp2Px(8)
 
     @JvmField @ColorInt
+    @set:JvmSynthetic
     var iconColor: Int = Color.WHITE
 
     /** sets the [Drawable] of the icon. */
