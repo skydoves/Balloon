@@ -202,7 +202,7 @@ class Balloon(
     return location
   }
 
-  fun getStatusBarHeight(): Int {
+  private fun getStatusBarHeight(): Int {
     val rectangle = Rect()
     return if (context is Activity && builder.isStatusBarVisible) {
       context.window.decorView.getWindowVisibleDisplayFrame(rectangle)
@@ -210,7 +210,7 @@ class Balloon(
     } else 0
   }
 
-  fun getDoubleArrowSize(): Int {
+  private fun getDoubleArrowSize(): Int {
     return builder.arrowSize * 2
   }
 
@@ -380,9 +380,11 @@ class Balloon(
 
   /**
    * measures the width of a [TextView] and set the measured with.
-   * If the width of parent XML layout is wrapped content, and also
-   * the widths of [TextView]s in the parent layout is wrapped content, this functionality
-   * will measure the width exactly.
+   * If the width of the parent XML layout is `WRAP_CONTENT`,
+   * and also the width of [TextView] in the parent layout is `WRAP_CONTENT`,
+   * this functionality will measure the width exactly.
+   *
+   * @param textView a target textView for measuring text width.
    */
   fun measureTextWidth(textView: TextView) {
     with(textView) {
@@ -398,12 +400,12 @@ class Balloon(
   private fun initializeBalloonOverlay() {
     if (builder.isVisibleOverlay) {
       overlayWindow.isClippingEnabled = false
-      with(overlayBinding) {
-        balloonOverlayView.overlayColor = builder.overlayColor
-        balloonOverlayView.overlayPadding = builder.overlayPadding
-        balloonOverlayView.overlayPosition = builder.overlayPosition
-        balloonOverlayView.balloonOverlayShape = builder.overlayShape
-        root.setOnClickListener { dismiss() }
+      overlayBinding.root.setOnClickListener { dismiss() }
+      with(overlayBinding.balloonOverlayView) {
+        overlayColor = builder.overlayColor
+        overlayPadding = builder.overlayPadding
+        overlayPosition = builder.overlayPosition
+        balloonOverlayShape = builder.overlayShape
       }
     }
   }
