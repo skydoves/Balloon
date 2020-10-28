@@ -1,13 +1,131 @@
-apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
 apply from: '../dependencies.gradle'
 
-publish {
-    userOrg = 'devmagician'
-    groupId = 'com.github.skydoves'
-    artifactId = 'balloon'
-    publishVersion = versions.versionName
-    desc = 'A lightweight popup like tooltips, fully customizable with arrow and animations.'
-    website = 'https://github.com/skydoves/Balloon'
-    issueTracker = "${website}/issues"
-    repository = "${website}.git"
+ext.repository = [
+    name       : "balloon",
+    description: "A lightweight popup like tooltips, fully customizable with arrow and animations.",
+    websiteUrl : "https://github.com/skydoves/Balloon",
+    scm        : 'scm:git@github.com/skydoves/Balloon.git'
+]
+
+def (property_user, property_key) = getBintrayProperties()
+bintray {
+    user = property_user
+    key = property_key
+
+    publications = ["release"]
+    publish = true
+    override = true
+    dryRun = false
+
+    pkg {
+        repo = "maven"
+        name = repository.name
+        userOrg = "devmagician"
+        desc = repository.description
+        websiteUrl = repository.websiteUrl
+        vcsUrl = "${websiteUrl}.git"
+        issueTrackerUrl = "${websiteUrl}/issues"
+        licenses = ["Apache-2.0"]
+        labels = ["android"]
+        publicDownloadNumbers = false
+
+        githubRepo = websiteUrl
+        githubReleaseNotesFile = "${websiteUrl}/releases"
+
+        version {
+            desc = repository.description
+            name = versions.versionName
+            vcsTag = versions.versionName
+            released = new Date()
+            gpg { sign = true }
+        }
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                group = "com.github.skydoves"
+                artifactId = repository.name
+                version = versions.versionName
+
+                artifact androidJavadocsJar
+                artifact(sourceJar)
+
+                pom {
+                    name = repository.name
+                    description = repository.description
+                    url = repository.websiteUrl
+                    licenses {
+                        license {
+                            name = "The Apache License, Version 2.0"
+                            url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = "skydoves"
+                            name = "Jaewoong Eum"
+                        }
+                    }
+                    scm {
+                        connection = repository.scm
+                        developerConnection = repository.scm
+                        url = repository.websiteUrl
+                    }
+                }
+            }
+        }
+    }
+}
+
+def getBintrayProperties() {
+    def filename = "local.properties"
+    def propsFile = rootProject.file(filename)
+    if (propsFile.exists()) {
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file(filename).newDataInputStream())
+        return [
+            properties.getProperty("bintray.user"),
+            properties.getProperty("bintray.key")
+        ]
+    } else {
+        print(filename + " does not exist!")
+        return ["", ""]
+    }
+}
+
+task checkBintrayConfig {
+    doLast {
+        def (user, key) = getBintrayProperties()
+        if (user == null || user.isEmpty() || key == null || key.isEmpty()) {
+            throw new IllegalArgumentException("Must specify Bintray information! Check your local.properties file.")
+        }
+    }
+}
+
+task androidJavadocs(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    android.libraryVariants.all { variant ->
+        if (variant.name == 'release') {
+            owner.classpath += variant.javaCompileProvider.get().classpath
+        }
+    }
+    exclude '**/R.html', '**/R.*.html', '**/index.html'
+}
+
+task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+    archiveClassifier.set('javadoc')
+    from androidJavadocs.destinationDir
+}
+
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier "sources"
 }

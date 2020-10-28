@@ -378,25 +378,6 @@ class Balloon(
     binding.balloonCard.addView(builder.layout)
   }
 
-  /**
-   * measures the width of a [TextView] and set the measured with.
-   * If the width of the parent XML layout is `WRAP_CONTENT`,
-   * and also the width of [TextView] in the parent layout is `WRAP_CONTENT`,
-   * this functionality will measure the width exactly.
-   *
-   * @param textView a target textView for measuring text width.
-   */
-  fun measureTextWidth(textView: TextView) {
-    with(textView) {
-      val widthSpec =
-        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-      val heightSpec =
-        View.MeasureSpec.makeMeasureSpec(context.displaySize().y, View.MeasureSpec.UNSPECIFIED)
-      measure(widthSpec, heightSpec)
-      layoutParams.width = getMeasureTextWidth(measuredWidth)
-    }
-  }
-
   private fun initializeBalloonOverlay() {
     if (builder.isVisibleOverlay) {
       overlayWindow.isClippingEnabled = false
@@ -854,6 +835,25 @@ class Balloon(
       builder.width != NO_INT_VALUE && builder.width < displayWidth -> builder.width
       binding.root.measuredWidth > displayWidth -> displayWidth
       else -> this.binding.root.measuredWidth
+    }
+  }
+
+  /**
+   * measures the width of a [TextView] and set the measured with.
+   * If the width of the parent XML layout is `WRAP_CONTENT`,
+   * and also the width of [TextView] in the parent layout is `WRAP_CONTENT`,
+   * this functionality will measure the width exactly.
+   *
+   * @param textView a target textView for measuring text width.
+   */
+  fun measureTextWidth(textView: TextView) {
+    with(textView) {
+      val widthSpec =
+        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+      val heightSpec =
+        View.MeasureSpec.makeMeasureSpec(context.displaySize().y, View.MeasureSpec.UNSPECIFIED)
+      measure(widthSpec, heightSpec)
+      layoutParams.width = getMeasureTextWidth(measuredWidth)
     }
   }
 
