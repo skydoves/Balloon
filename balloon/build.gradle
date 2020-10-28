@@ -12,8 +12,8 @@ android {
         versionCode versions.versionCode
         versionName versions.versionName
     }
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding = true
     }
 }
 
