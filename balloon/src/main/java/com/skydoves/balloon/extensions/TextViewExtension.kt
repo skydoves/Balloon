@@ -22,7 +22,11 @@ import android.text.Html
 import android.text.Spanned
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.text.HtmlCompat
+import com.skydoves.balloon.IconForm
+import com.skydoves.balloon.IconGravity
 import com.skydoves.balloon.TextForm
+import com.skydoves.balloon.vectortext.VectorTextView
 import com.skydoves.balloon.vectortext.VectorTextViewParams
 
 /** applies text form attributes to a TextView instance. */
@@ -43,7 +47,37 @@ private fun fromHtml(text: String): Spanned? {
   return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
     Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY)
   } else {
-    Html.fromHtml(text)
+    HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
+  }
+}
+
+/** applies icon form attributes to a ImageView instance. */
+internal fun VectorTextView.applyIconForm(iconForm: IconForm) {
+  iconForm.drawable?.let {
+    drawableTextViewParams = VectorTextViewParams(
+      iconSize = iconForm.iconSize,
+      compoundDrawablePadding = iconForm.iconSpace,
+      tintColorRes = iconForm.iconColor
+    ).apply {
+      when (iconForm.iconGravity) {
+        IconGravity.LEFT -> {
+          drawableLeft = iconForm.drawable
+          drawableLeftRes = iconForm.drawableRes
+        }
+        IconGravity.TOP -> {
+          drawableTop = iconForm.drawable
+          drawableTopRes = iconForm.drawableRes
+        }
+        IconGravity.BOTTOM -> {
+          drawableBottom = iconForm.drawable
+          drawableBottomRes = iconForm.drawableRes
+        }
+        IconGravity.RIGHT -> {
+          drawableRight = iconForm.drawable
+          drawableRightRes = iconForm.drawableRes
+        }
+      }
+    }
   }
 }
 
