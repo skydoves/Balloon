@@ -19,6 +19,7 @@ package com.skydoves.balloon
 import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.LifecycleOwner
+import java.io.Serializable
 import kotlin.reflect.KClass
 
 /**
@@ -30,14 +31,14 @@ class ActivityBalloonLazy<out T : Balloon.Factory>(
   private val context: Context,
   private val lifecycleOwner: LifecycleOwner,
   private val clazz: KClass<T>
-) : Lazy<Balloon> {
+) : Lazy<Balloon>, Serializable {
 
   private var cached: Balloon? = null
 
   override val value: Balloon
     get() {
       var instance = cached
-      if (instance == null) {
+      if (instance === null) {
         val factory = clazz::java.get().newInstance()
         instance = factory.create(context, lifecycleOwner)
         cached = instance
@@ -46,5 +47,7 @@ class ActivityBalloonLazy<out T : Balloon.Factory>(
       return instance
     }
 
-  override fun isInitialized() = cached != null
+  override fun isInitialized(): Boolean = cached !== null
+
+  override fun toString(): String = if (isInitialized()) value.toString() else "Lazy value not initialized yet."
 }

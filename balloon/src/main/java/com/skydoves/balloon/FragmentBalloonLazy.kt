@@ -17,6 +17,7 @@
 package com.skydoves.balloon
 
 import androidx.fragment.app.Fragment
+import java.io.Serializable
 import kotlin.reflect.KClass
 
 /**
@@ -27,26 +28,28 @@ import kotlin.reflect.KClass
 class FragmentBalloonLazy<out T : Balloon.Factory>(
   private val fragment: Fragment,
   private val clazz: KClass<T>
-) : Lazy<Balloon?> {
+) : Lazy<Balloon?>, Serializable {
 
   private var cached: Balloon? = null
 
   override val value: Balloon?
     get() {
       var instance = cached
-      if (instance == null && fragment.context != null) {
+      if (instance === null && fragment.context !== null) {
         val factory = clazz::java.get().newInstance()
-        val lifecycle = if (fragment.view != null) {
+        val lifecycle = if (fragment.view !== null) {
           fragment.viewLifecycleOwner
         } else {
           fragment
         }
-        instance = factory.create(fragment.requireContext(), lifecycle)
+        instance = factory.create(fragment.requireActivity(), lifecycle)
         cached = instance
       }
 
       return instance
     }
 
-  override fun isInitialized() = cached != null
+  override fun isInitialized() = cached !== null
+
+  override fun toString(): String = if (isInitialized()) value.toString() else "Lazy value not initialized yet."
 }
