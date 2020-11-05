@@ -283,8 +283,8 @@ class Balloon(
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   private fun initializeBalloonWindow() {
     with(this.bodyWindow) {
+      isOutsideTouchable = true
       isFocusable = builder.isFocusable
-      isOutsideTouchable = builder.dismissWhenTouchOutside
       setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         elevation = builder.elevation
@@ -1619,6 +1619,7 @@ class Balloon(
     @JvmSynthetic
     fun setOnBalloonOutsideTouchListener(block: (View, MotionEvent) -> Unit): Builder = apply {
       this.onBalloonOutsideTouchListener = OnBalloonOutsideTouchListener(block)
+      setDismissWhenTouchOutside(false)
     }
 
     /** sets a [OnBalloonOverlayClickListener] to the overlay popup using lambda. */
