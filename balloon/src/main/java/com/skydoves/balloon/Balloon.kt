@@ -1238,10 +1238,11 @@ class Balloon(
 
     /** sets the padding on the balloon content all directions using dimension resource. */
     fun setPaddingResource(@DimenRes value: Int): Builder = apply {
-      setPaddingLeft(context.dimen(value))
-      setPaddingTop(context.dimen(value))
-      setPaddingRight(context.dimen(value))
-      setPaddingBottom(context.dimen(value))
+      val padding = context.dimen(value)
+      this.paddingLeft = padding
+      this.paddingTop = padding
+      this.paddingRight = padding
+      this.paddingBottom = padding
     }
 
     /** sets the left padding on the balloon content. */
@@ -1270,10 +1271,11 @@ class Balloon(
 
     /** sets the margin on thr balloon all directions using dimension resource. */
     fun setMarginResource(@DimenRes value: Int): Builder = apply {
-      setMarginLeft(context.dimen(value))
-      setMarginTop(context.dimen(value))
-      setMarginRight(context.dimen(value))
-      setMarginBottom(context.dimen(value))
+      val margin = context.dimen(value)
+      this.marginLeft = margin
+      this.marginTop = margin
+      this.marginRight = margin
+      this.marginBottom = margin
     }
 
     /** sets the left margin on the balloon. */
