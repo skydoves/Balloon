@@ -21,16 +21,26 @@ import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
 import kotlin.reflect.KClass
 
-/** returns a [Lazy] delegate to access the [ComponentActivity]'s Balloon property. */
+/**
+ * Returns a [Lazy] delegate to access the [ComponentActivity]'s Balloon property.
+ *
+ * @param factory A [Balloon.Factory] kotlin class for creating a new instance of the Balloon.
+ */
 @MainThread
+@JvmSynthetic
 inline fun <reified T : Balloon.Factory> ComponentActivity.balloon(
   factory: KClass<T>
 ): Lazy<Balloon> {
   return ActivityBalloonLazy(this, this, factory)
 }
 
-/** returns a [Lazy] delegate to access the [Fragment]'s Balloon property. */
+/**
+ * Returns a [Lazy] delegate to access the [Fragment]'s Balloon property.
+ *
+ * @param factory A [Balloon.Factory] kotlin class for creating a new instance of the Balloon.
+ */
 @MainThread
+@JvmSynthetic
 inline fun <reified T : Balloon.Factory> Fragment.balloon(
   factory: KClass<T>
 ): Lazy<Balloon?> {

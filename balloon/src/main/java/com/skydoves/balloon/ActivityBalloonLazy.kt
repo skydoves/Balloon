@@ -17,17 +17,21 @@
 package com.skydoves.balloon
 
 import android.content.Context
-import androidx.activity.ComponentActivity
 import androidx.lifecycle.LifecycleOwner
 import java.io.Serializable
 import kotlin.reflect.KClass
 
 /**
- * An implementation of [Lazy] used by [ComponentActivity]
+ * An implementation of [Lazy] for creating an instance of the [Balloon] lazily in Activities.
+ * Tied to the given [lifecycleOwner], [clazz].
  *
- * tied to the given [lifecycleOwner], [clazz].
+ * @param context A context for creating resources of the [Balloon] lazily.
+ * @param lifecycleOwner A [LifecycleOwner] for dismissing automatically when the [LifecycleOwner] is being destroyed.
+ * This will prevents memory leak: [Avoid Memory Leak](https://github.com/skydoves/balloon#avoid-memory-leak).
+ * @param clazz A [Balloon.Factory] kotlin class for creating a new instance of the Balloon.
  */
-class ActivityBalloonLazy<out T : Balloon.Factory>(
+@PublishedApi
+internal class ActivityBalloonLazy<out T : Balloon.Factory>(
   private val context: Context,
   private val lifecycleOwner: LifecycleOwner,
   private val clazz: KClass<T>

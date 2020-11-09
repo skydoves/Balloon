@@ -21,11 +21,15 @@ import java.io.Serializable
 import kotlin.reflect.KClass
 
 /**
- * An implementation of [Lazy] used by [Fragment]
+ * An implementation of [Lazy] for creating an instance of the [Balloon] in Fragments.
+ * Tied to the given fragment's lifecycle and, [clazz].
  *
- * tied to the given fragment's lifecycle, [clazz].
+ * @param fragment An instance of the [Balloon] will be created in this Fragment lazily.
+ * This will prevents memory leak: [Avoid Memory Leak](https://github.com/skydoves/balloon#avoid-memory-leak).
+ * @param clazz A [Balloon.Factory] kotlin class for creating a new instance of the Balloon.
  */
-class FragmentBalloonLazy<out T : Balloon.Factory>(
+@PublishedApi
+internal class FragmentBalloonLazy<out T : Balloon.Factory>(
   private val fragment: Fragment,
   private val clazz: KClass<T>
 ) : Lazy<Balloon?>, Serializable {
