@@ -14,12 +14,12 @@ android {
     }
     buildFeatures {
         buildConfig false
-        viewBinding = true
+        viewBinding true
     }
 }
 
 kotlin {
-    explicitApiWarning()
+    explicitApi()
 }
 
 dependencies {

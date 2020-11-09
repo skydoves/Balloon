@@ -21,7 +21,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.Px
 
-/** VectorTextViewParams is a collection of [VectorTextView]'s parameters.  */
+/** VectorTextViewParams is a collection of [VectorTextView]'s parameters. */
 data class VectorTextViewParams(
   var drawableLeftRes: Int? = null,
   var drawableRightRes: Int? = null,
