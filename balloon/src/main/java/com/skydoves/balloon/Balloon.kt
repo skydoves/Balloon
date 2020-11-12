@@ -110,8 +110,8 @@ class Balloon(
   init {
     this.bodyWindow = PopupWindow(
       binding.root,
-      RelativeLayout.LayoutParams.WRAP_CONTENT,
-      RelativeLayout.LayoutParams.WRAP_CONTENT
+      FrameLayout.LayoutParams.WRAP_CONTENT,
+      FrameLayout.LayoutParams.WRAP_CONTENT
     )
     this.overlayWindow = PopupWindow(
       overlayBinding.root,
