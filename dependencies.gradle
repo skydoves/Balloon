@@ -10,7 +10,7 @@ ext.versions = [
     dokkaGradle      : '1.4.10.2',
     bintrayPlugin    : '1.8.5',
 
-    kotlin           : '1.4.10',
+    kotlin           : '1.4.20',
     androidxAppcompat: '1.2.0',
     lifecycle        : '2.3.0-alpha06',
     cardView         : '1.0.0',
