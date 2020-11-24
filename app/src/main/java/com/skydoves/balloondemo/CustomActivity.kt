@@ -23,6 +23,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.skydoves.balloon.balloon
+import com.skydoves.balloondemo.databinding.ActivityCustomBinding
 import com.skydoves.balloondemo.factory.CustomListBalloonFactory
 import com.skydoves.balloondemo.factory.EditBalloonFactory
 import com.skydoves.balloondemo.factory.ProfileBalloonFactory
@@ -33,12 +34,6 @@ import com.skydoves.balloondemo.recycler.CustomItem
 import com.skydoves.balloondemo.recycler.ItemUtils
 import com.skydoves.balloondemo.recycler.SampleAdapter
 import com.skydoves.balloondemo.recycler.SampleItem
-import kotlinx.android.synthetic.main.activity_custom.bottomNavigationView
-import kotlinx.android.synthetic.main.activity_custom.circleImageView
-import kotlinx.android.synthetic.main.activity_custom.edit
-import kotlinx.android.synthetic.main.activity_custom.recyclerView
-import kotlinx.android.synthetic.main.activity_custom.tabLayout
-import kotlinx.android.synthetic.main.toolbar_custom.toolbar_list
 
 class CustomActivity :
   AppCompatActivity(),
@@ -55,41 +50,45 @@ class CustomActivity :
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_custom)
 
-    tabLayout.addTab(tabLayout.newTab().setText("Timeline"))
-    tabLayout.addTab(tabLayout.newTab().setText("Contents"))
+    val binding = ActivityCustomBinding.inflate(layoutInflater)
+    setContentView(binding.root)
 
-    recyclerView.adapter = adapter
-    adapter.addItems(ItemUtils.getSamples(this))
+    with(binding) {
+      tabLayout.addTab(tabLayout.newTab().setText("Timeline"))
+      tabLayout.addTab(tabLayout.newTab().setText("Contents"))
 
-    // gets customListBalloon's recyclerView.
-    val listRecycler: RecyclerView =
-      customListBalloon.getContentView().findViewById(R.id.list_recyclerView)
-    listRecycler.adapter = customAdapter
-    this.customAdapter.addCustomItem(ItemUtils.getCustomSamples(this))
+      recyclerView.adapter = adapter
+      adapter.addItems(ItemUtils.getSamples(this@CustomActivity))
 
-    toolbar_list.setOnClickListener {
-      this.customListBalloon.showAlignBottom(it, 0, 36)
-    }
+      // gets customListBalloon's recyclerView.
+      val listRecycler: RecyclerView =
+        customListBalloon.getContentView().findViewById(R.id.list_recyclerView)
+      listRecycler.adapter = customAdapter
+      customAdapter.addCustomItem(ItemUtils.getCustomSamples(this@CustomActivity))
 
-    edit.setOnClickListener {
-      this.editBalloon.showAlignTop(it, 0, -30)
-    }
+      toolbar.toolbarList.setOnClickListener {
+        customListBalloon.showAlignBottom(it, 0, 36)
+      }
 
-    circleImageView.setOnClickListener {
-      this.customProfileBalloon.showAlignBottom(it)
-    }
+      edit.setOnClickListener {
+        editBalloon.showAlignTop(it, 0, -30)
+      }
 
-    val buttonEdit: Button = customProfileBalloon.getContentView().findViewById(R.id.button_edit)
-    buttonEdit.setOnClickListener {
-      this.customProfileBalloon.dismiss()
-      Toast.makeText(applicationContext, "Edit", Toast.LENGTH_SHORT).show()
-    }
+      circleImageView.setOnClickListener {
+        customProfileBalloon.showAlignBottom(it)
+      }
 
-    bottomNavigationView.setOnNavigationItemSelectedListener {
-      this.customTagBalloon.showAlignTop(bottomNavigationView, 130, 0)
-      true
+      val buttonEdit: Button = customProfileBalloon.getContentView().findViewById(R.id.button_edit)
+      buttonEdit.setOnClickListener {
+        customProfileBalloon.dismiss()
+        Toast.makeText(applicationContext, "Edit", Toast.LENGTH_SHORT).show()
+      }
+
+      bottomNavigationView.setOnNavigationItemSelectedListener {
+        customTagBalloon.showAlignTop(bottomNavigationView, 130, 0)
+        true
+      }
     }
   }
 

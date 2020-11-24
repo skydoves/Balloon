@@ -23,14 +23,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.skydoves.balloon.OnBalloonClickListener
 import com.skydoves.balloon.balloon
 import com.skydoves.balloon.showAlignTop
+import com.skydoves.balloondemo.databinding.ActivityMainBinding
 import com.skydoves.balloondemo.factory.ViewHolderBalloonFactory
 import com.skydoves.balloondemo.recycler.ItemUtils
 import com.skydoves.balloondemo.recycler.SampleAdapter
 import com.skydoves.balloondemo.recycler.SampleItem
-import kotlinx.android.synthetic.main.activity_main.bottomNavigationView
-import kotlinx.android.synthetic.main.activity_main.button
-import kotlinx.android.synthetic.main.activity_main.recyclerView
-import kotlinx.android.synthetic.main.activity_main.tabLayout
 
 class MainActivity :
   AppCompatActivity(),
@@ -44,30 +41,34 @@ class MainActivity :
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
 
-    tabLayout.addTab(tabLayout.newTab().setText("Timeline"))
-    tabLayout.addTab(tabLayout.newTab().setText("Contents"))
+    val binding = ActivityMainBinding.inflate(layoutInflater)
+    setContentView(binding.root)
 
-    recyclerView.adapter = adapter
-    adapter.addItems(ItemUtils.getSamples(this))
+    with(binding) {
+      tabLayout.addTab(tabLayout.newTab().setText("Timeline"))
+      tabLayout.addTab(tabLayout.newTab().setText("Contents"))
 
-    button.showAlignTop(profileBalloon)
-    button.setOnClickListener {
-      if (profileBalloon.isShowing) {
-        profileBalloon.dismiss()
-      } else {
-        profileBalloon.showAlignTop(it)
+      recyclerView.adapter = adapter
+      adapter.addItems(ItemUtils.getSamples(this@MainActivity))
+
+      button.showAlignTop(profileBalloon)
+      button.setOnClickListener {
+        if (profileBalloon.isShowing) {
+          profileBalloon.dismiss()
+        } else {
+          profileBalloon.showAlignTop(it)
+        }
       }
-    }
 
-    bottomNavigationView.setOnNavigationItemSelectedListener {
-      if (navigationBalloon.isShowing) {
-        navigationBalloon.dismiss()
-      } else {
-        navigationBalloon.showAlignTop(bottomNavigationView)
+      bottomNavigationView.setOnNavigationItemSelectedListener {
+        if (navigationBalloon.isShowing) {
+          navigationBalloon.dismiss()
+        } else {
+          navigationBalloon.showAlignTop(bottomNavigationView)
+        }
+        true
       }
-      true
     }
   }
 

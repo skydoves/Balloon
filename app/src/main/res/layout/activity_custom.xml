@@ -16,7 +16,10 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
 
-      <include layout="@layout/toolbar_custom" />
+      <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_custom" />
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.imageview.ShapeableImageView

@@ -17,12 +17,9 @@
 package com.skydoves.balloondemo.recycler
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.skydoves.balloondemo.R
-import kotlinx.android.synthetic.main.item_custom.view.item_custom_icon
-import kotlinx.android.synthetic.main.item_custom.view.item_custom_title
+import com.skydoves.balloondemo.databinding.ItemCustomBinding
 
 class CustomAdapter(
   private val delegate: CustomViewHolder.Delegate
@@ -31,16 +28,16 @@ class CustomAdapter(
   private val customItems = mutableListOf<CustomItem>()
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
-    val inflater = LayoutInflater.from(parent.context)
-    return CustomViewHolder(inflater.inflate(R.layout.item_custom, parent, false))
+    val binding = ItemCustomBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    return CustomViewHolder(binding)
   }
 
   override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
     val customItem = this.customItems[position]
-    holder.itemView.run {
-      item_custom_icon.setImageDrawable(customItem.icon)
-      item_custom_title.text = customItem.title
-      setOnClickListener { delegate.onCustomItemClick(customItem) }
+    holder.binding.run {
+      itemCustomIcon.setImageDrawable(customItem.icon)
+      itemCustomTitle.text = customItem.title
+      root.setOnClickListener { delegate.onCustomItemClick(customItem) }
     }
   }
 
@@ -51,7 +48,7 @@ class CustomAdapter(
 
   override fun getItemCount() = this.customItems.size
 
-  class CustomViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+  class CustomViewHolder(val binding: ItemCustomBinding) : RecyclerView.ViewHolder(binding.root) {
 
     interface Delegate {
       fun onCustomItemClick(customItem: CustomItem)
