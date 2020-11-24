@@ -369,8 +369,8 @@ class Balloon(
 
   private fun initializeCustomLayoutWithResource() {
     binding.balloonCard.removeAllViews()
-    val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    inflater.inflate(builder.layoutRes, binding.balloonCard)
+    val inflater = LayoutInflater.from(context)
+    inflater.inflate(builder.layoutRes, binding.balloonCard, true)
   }
 
   private fun initializeCustomLayoutWithView() {
