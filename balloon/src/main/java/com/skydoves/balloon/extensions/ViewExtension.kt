@@ -25,16 +25,6 @@ import android.view.ViewAnimationUtils
 import androidx.annotation.MainThread
 import kotlin.math.max
 
-/** makes visible or invisible a View align the value parameter. */
-@MainThread
-internal fun View.visible(value: Boolean) {
-  if (value) {
-    this.visibility = View.VISIBLE
-  } else {
-    this.visibility = View.GONE
-  }
-}
-
 /** shows circular revealed animation to a view. */
 @MainThread
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
