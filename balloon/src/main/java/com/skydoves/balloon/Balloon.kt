@@ -60,8 +60,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import com.skydoves.balloon.annotations.Dp
 import com.skydoves.balloon.annotations.Sp
-import com.skydoves.balloon.databinding.LayoutBalloonBinding
-import com.skydoves.balloon.databinding.LayoutBalloonOverlayBinding
+import com.skydoves.balloon.databinding.LayoutBalloonLibrarySkydovesBinding
+import com.skydoves.balloon.databinding.LayoutBalloonOverlayLibrarySkydovesBinding
 import com.skydoves.balloon.extensions.applyIconForm
 import com.skydoves.balloon.extensions.applyTextForm
 import com.skydoves.balloon.extensions.circularRevealed
@@ -92,10 +92,10 @@ class Balloon(
   private val builder: Builder
 ) : LifecycleObserver {
 
-  private val binding: LayoutBalloonBinding =
-    LayoutBalloonBinding.inflate(LayoutInflater.from(context), null, false)
-  private val overlayBinding: LayoutBalloonOverlayBinding =
-    LayoutBalloonOverlayBinding.inflate(LayoutInflater.from(context), null, false)
+  private val binding: LayoutBalloonLibrarySkydovesBinding =
+    LayoutBalloonLibrarySkydovesBinding.inflate(LayoutInflater.from(context), null, false)
+  private val overlayBinding: LayoutBalloonOverlayLibrarySkydovesBinding =
+    LayoutBalloonOverlayLibrarySkydovesBinding.inflate(LayoutInflater.from(context), null, false)
   private val bodyWindow: PopupWindow
   private val overlayWindow: PopupWindow
   var isShowing = false
