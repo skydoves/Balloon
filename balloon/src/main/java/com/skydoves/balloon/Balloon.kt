@@ -498,7 +498,11 @@ class Balloon(
     return balloon
   }
 
-  /** shows the balloon on the center of an anchor view. */
+  /**
+   * Shows the balloon on the center of an anchor view.
+   *
+   * @param anchor A target view which popup will be shown to.
+   */
   fun show(anchor: View) {
     show(anchor) {
       bodyWindow.showAsDropDown(
@@ -510,76 +514,87 @@ class Balloon(
   }
 
   /**
-   * shows the balloon on the center of an anchor view
-   * and shows the next balloon sequentially.
-   * This function returns the next balloon.
+   * Shows the balloon on the center of an anchor view.
+   *
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
    */
-  fun relayShow(balloon: Balloon, anchor: View) = relay(balloon) { it.show(anchor) }
-
-  /** shows the balloon on an anchor view with x-off and y-off. */
   fun show(anchor: View, xOff: Int, yOff: Int) {
     show(anchor) { bodyWindow.showAsDropDown(anchor, xOff, yOff) }
   }
 
   /**
-   * shows the balloon on an anchor view with x-off and y-off
-   * and shows the next balloon sequentially.
+   * Shows the balloon on the center of an anchor view and shows the next balloon sequentially.
    * This function returns the next balloon.
+   *
+   * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   *
+   * @return A next [balloon].
+   *
+   * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
-  fun relayShow(balloon: Balloon, anchor: View, xOff: Int, yOff: Int) = relay(balloon) {
+  @JvmOverloads
+  fun relayShow(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) = relay(balloon) {
     it.show(anchor, xOff, yOff)
   }
 
-  /** shows the balloon on an anchor view as drop down. */
-  fun showAsDropDown(anchor: View) {
-    show(anchor) { bodyWindow.showAsDropDown(anchor) }
-  }
-
   /**
-   * shows the balloon on an anchor view as drop down
-   * and shows the next balloon sequentially.
+   * Shows the balloon on an anchor view as drop down and shows the next balloon sequentially.
    * This function returns the next balloon.
+   *
+   * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
+   * @param anchor A target view which popup will be shown to.
+   *
+   * @return A next [balloon].
+   *
+   * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
   fun relayShowAsDropDown(balloon: Balloon, anchor: View) = relay(balloon) {
     it.showAsDropDown(anchor)
   }
 
-  /** shows the balloon on an anchor view as drop down with x-off and y-off. */
-  fun showAsDropDown(anchor: View, xOff: Int, yOff: Int) {
+  /**
+   * Shows the balloon on an anchor view as drop down with x-off and y-off.
+   *
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  @JvmOverloads
+  fun showAsDropDown(anchor: View, xOff: Int = 0, yOff: Int = 0) {
     show(anchor) { bodyWindow.showAsDropDown(anchor, xOff, yOff) }
   }
 
   /**
-   * shows the balloon on an anchor view as drop down with x-off and y-off
-   * and shows the next balloon sequentially.
+   * Shows the balloon on an anchor view as drop down with x-off and y-off and shows the next balloon sequentially.
    * This function returns the next balloon.
+   *
+   * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   *
+   * @return A next [balloon].
+   *
+   * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
   fun relayShowAsDropDown(balloon: Balloon, anchor: View, xOff: Int, yOff: Int) = relay(balloon) {
     it.showAsDropDown(anchor, xOff, yOff)
   }
 
-  /** shows the balloon on an anchor view as the top alignment. */
-  fun showAlignTop(anchor: View) {
-    show(anchor) {
-      bodyWindow.showAsDropDown(
-        anchor,
-        builder.supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
-        -getMeasureHeight() - anchor.measuredHeight
-      )
-    }
-  }
-
   /**
-   * shows the balloon on an anchor view as the top alignment
-   * and shows the next balloon sequentially.
-   * This function returns the next balloon.
+   * Shows the balloon on an anchor view as the top alignment with x-off and y-off.
+   *
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
    */
-  fun relayShowAlignTop(balloon: Balloon, anchor: View) = relay(balloon) {
-    it.showAlignTop(anchor)
-  }
-
-  /** shows the balloon on an anchor view as the top alignment with x-off and y-off. */
-  fun showAlignTop(anchor: View, xOff: Int, yOff: Int) {
+  @JvmOverloads
+  fun showAlignTop(anchor: View, xOff: Int = 0, yOff: Int = 0) {
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
@@ -590,36 +605,32 @@ class Balloon(
   }
 
   /**
-   * shows the balloon on an anchor view as the top alignment with x-off and y-off
-   * and shows the next balloon sequentially.
+   * Shows the balloon on an anchor view as the top alignment with x-off and y-off and shows the next balloon sequentially.
    * This function returns the next balloon.
+   *
+   * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   *
+   * @return A next [balloon].
+   *
+   * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
-  fun relayShowAlignTop(balloon: Balloon, anchor: View, xOff: Int, yOff: Int) = relay(balloon) {
+  @JvmOverloads
+  fun relayShowAlignTop(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) = relay(balloon) {
     it.showAlignTop(anchor, xOff, yOff)
   }
 
-  /** shows the balloon on an anchor view as the bottom alignment. */
-  fun showAlignBottom(anchor: View) {
-    show(anchor) {
-      bodyWindow.showAsDropDown(
-        anchor,
-        builder.supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
-        0
-      )
-    }
-  }
-
   /**
-   * shows the balloon on an anchor view as the bottom alignment
-   * and shows the next balloon sequentially.
-   * This function returns the next balloon.
+   * Shows the balloon on an anchor view as the bottom alignment with x-off and y-off.
+   *
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
    */
-  fun relayShowAlignBottom(balloon: Balloon, anchor: View) = relay(balloon) {
-    it.showAlignBottom(anchor)
-  }
-
-  /** shows the balloon on an anchor view as the bottom alignment with x-off and y-off. */
-  fun showAlignBottom(anchor: View, xOff: Int, yOff: Int) {
+  @JvmOverloads
+  fun showAlignBottom(anchor: View, xOff: Int = 0, yOff: Int = 0) {
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
@@ -630,36 +641,33 @@ class Balloon(
   }
 
   /**
-   * shows the balloon on an anchor view as the bottom alignment with x-off and y-off
+   * Shows the balloon on an anchor view as the bottom alignment with x-off and y-off
    * and shows the next balloon sequentially.
    * This function returns the next balloon.
+   *
+   * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   *
+   * @return A next [balloon].
+   *
+   * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
-  fun relayShowAlignBottom(balloon: Balloon, anchor: View, xOff: Int, yOff: Int) = relay(balloon) {
+  @JvmOverloads
+  fun relayShowAlignBottom(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) = relay(balloon) {
     it.showAlignBottom(anchor, xOff, yOff)
   }
 
-  /** shows the balloon on an anchor view as the right alignment. */
-  fun showAlignRight(anchor: View) {
-    show(anchor) {
-      bodyWindow.showAsDropDown(
-        anchor,
-        anchor.measuredWidth,
-        -(getMeasureHeight() / 2) - (anchor.measuredHeight / 2)
-      )
-    }
-  }
-
   /**
-   * shows the balloon on an anchor view as the right alignment
-   * and shows the next balloon sequentially.
-   * This function returns the next balloon.
+   * Shows the balloon on an anchor view as the right alignment with x-off and y-off.
+   *
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
    */
-  fun relayShowAlignRight(balloon: Balloon, anchor: View) = relay(balloon) {
-    it.showAlignRight(anchor)
-  }
-
-  /** shows the balloon on an anchor view as the right alignment with x-off and y-off. */
-  fun showAlignRight(anchor: View, xOff: Int, yOff: Int) {
+  @JvmOverloads
+  fun showAlignRight(anchor: View, xOff: Int = 0, yOff: Int = 0) {
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
@@ -670,36 +678,33 @@ class Balloon(
   }
 
   /**
-   * shows the balloon on an anchor view as the right alignment with x-off and y-off
+   * Shows the balloon on an anchor view as the right alignment with x-off and y-off
    * and shows the next balloon sequentially.
    * This function returns the next balloon.
+   *
+   * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   *
+   * @return A next [balloon].
+   *
+   * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
-  fun relayShowAlignRight(balloon: Balloon, anchor: View, xOff: Int, yOff: Int) = relay(balloon) {
+  @JvmOverloads
+  fun relayShowAlignRight(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) = relay(balloon) {
     it.showAlignRight(anchor, xOff, yOff)
   }
 
-  /** shows the balloon on an anchor view as the left alignment. */
-  fun showAlignLeft(anchor: View) {
-    show(anchor) {
-      bodyWindow.showAsDropDown(
-        anchor,
-        -(getMeasureWidth()),
-        -(getMeasureHeight() / 2) - (anchor.measuredHeight / 2)
-      )
-    }
-  }
-
   /**
-   * shows the balloon on an anchor view as the left alignment
-   * and shows the next balloon sequentially.
-   * This function returns the next balloon.
+   * Shows the balloon on an anchor view as the left alignment with x-off and y-off.
+   *
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
    */
-  fun relayShowAlignLeft(balloon: Balloon, anchor: View) = relay(balloon) {
-    it.showAlignLeft(anchor)
-  }
-
-  /** shows the balloon on an anchor view as the left alignment with x-off and y-off. */
-  fun showAlignLeft(anchor: View, xOff: Int, yOff: Int) {
+  @JvmOverloads
+  fun showAlignLeft(anchor: View, xOff: Int = 0, yOff: Int = 0) {
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
@@ -710,26 +715,34 @@ class Balloon(
   }
 
   /**
-   * shows the balloon on an anchor view as the left alignment with x-off and y-off
+   * Shows the balloon on an anchor view as the left alignment with x-off and y-off
    * and shows the next balloon sequentially.
    * This function returns the next balloon.
+   *
+   * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   *
+   * @return A next [balloon].
+   *
+   * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
-  fun relayShowAlignLeft(balloon: Balloon, anchor: View, xOff: Int, yOff: Int) = relay(balloon) {
+  @JvmOverloads
+  fun relayShowAlignLeft(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) = relay(balloon) {
     it.showAlignLeft(anchor, xOff, yOff)
-  }
-
-  /** updates popup and arrow position of the popup based on a new target anchor view. */
-  fun update(anchor: View) {
-    update(anchor = anchor) {
-      this.bodyWindow.update(anchor, getMeasureWidth(), getMeasureHeight())
-    }
   }
 
   /**
    * updates popup and arrow position of the popup based on
    * a new target anchor view with additional x-off and y-off.
+   *
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
    */
-  fun update(anchor: View, xOff: Int, yOff: Int) {
+  @JvmOverloads
+  fun update(anchor: View, xOff: Int = 0, yOff: Int = 0) {
     update(anchor = anchor) {
       this.bodyWindow.update(anchor, xOff, yOff, getMeasureWidth(), getMeasureHeight())
     }
