@@ -23,6 +23,7 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
+import androidx.annotation.MainThread
 import androidx.annotation.Px
 import com.skydoves.balloon.extensions.contextColor
 import com.skydoves.balloon.extensions.dp2Px
@@ -31,9 +32,10 @@ import com.skydoves.balloon.extensions.dp2Px
 internal annotation class IconFormDsl
 
 /** creates an instance of [IconForm] from [IconForm.Builder] using kotlin dsl. */
+@MainThread
 @IconFormDsl
 @JvmSynthetic
-inline fun iconForm(context: Context, block: IconForm.Builder.() -> Unit): IconForm =
+inline fun iconForm(context: Context, crossinline block: IconForm.Builder.() -> Unit): IconForm =
   IconForm.Builder(context).apply(block).build()
 
 /**

@@ -25,6 +25,7 @@ import android.text.method.MovementMethod
 import android.view.Gravity
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
+import androidx.annotation.MainThread
 import androidx.annotation.StringRes
 import com.skydoves.balloon.annotations.Sp
 import com.skydoves.balloon.extensions.contextColor
@@ -33,9 +34,10 @@ import com.skydoves.balloon.extensions.contextColor
 internal annotation class TextFormDsl
 
 /** creates an instance of [TextForm] from [TextForm.Builder] using kotlin dsl. */
+@MainThread
 @TextFormDsl
 @JvmSynthetic
-inline fun textForm(context: Context, block: TextForm.Builder.() -> Unit): TextForm =
+inline fun textForm(context: Context, crossinline block: TextForm.Builder.() -> Unit): TextForm =
   TextForm.Builder(context).apply(block).build()
 
 /**

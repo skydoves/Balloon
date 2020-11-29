@@ -79,10 +79,16 @@ import com.skydoves.balloon.overlay.BalloonOverlayShape
 @DslMarker
 internal annotation class BalloonDsl
 
-/** creates an instance of [Balloon] by [Balloon.Builder] using kotlin dsl. */
+/**
+ * Creates an instance of the [Balloon] by scope of the [Balloon.Builder] using kotlin dsl.
+ *
+ * @param context A context for creating resources of the [Balloon].
+ * @param block A dsl scope lambda from the [Balloon.Builder].
+ * */
+@MainThread
 @BalloonDsl
 @JvmSynthetic
-inline fun createBalloon(context: Context, block: Balloon.Builder.() -> Unit): Balloon =
+inline fun createBalloon(context: Context, crossinline block: Balloon.Builder.() -> Unit): Balloon =
   Balloon.Builder(context).apply(block).build()
 
 /** Balloon implements showing and dismissing text popup with arrow and animations. */
@@ -92,19 +98,35 @@ class Balloon(
   private val builder: Builder
 ) : LifecycleObserver {
 
+  /** A main content view of the popup. */
   private val binding: LayoutBalloonLibrarySkydovesBinding =
     LayoutBalloonLibrarySkydovesBinding.inflate(LayoutInflater.from(context), null, false)
+
+  /** An overlay view of the background for highlighting the popup and an anchor. */
   private val overlayBinding: LayoutBalloonOverlayLibrarySkydovesBinding =
     LayoutBalloonOverlayLibrarySkydovesBinding.inflate(LayoutInflater.from(context), null, false)
+
+  /** A main content window of the popup. */
   private val bodyWindow: PopupWindow
+
+  /** An overlay window of the background popup. */
   private val overlayWindow: PopupWindow
+
+  /** Denotes the popup is showing or not. */
   var isShowing = false
     private set
+
+  /** Denotes the popup is already destroyed internally. */
   private var destroyed: Boolean = false
+
+  /** Interface definition for a callback to be invoked when a balloon view is initialized. */
   var onBalloonInitializedListener: OnBalloonInitializedListener? =
     builder.onBalloonInitializedListener
-  private var supportRtlLayoutFactor: Int = LTR.unaryMinus(builder.isRtlSupport)
-  private val balloonPersistence = BalloonPersistence.getInstance(context)
+
+  /** A persistence helper for showing the popup a limited number of times. */
+  private val balloonPersistence: BalloonPersistence by lazy(LazyThreadSafetyMode.NONE) {
+    BalloonPersistence.getInstance(context)
+  }
 
   init {
     this.bodyWindow = PopupWindow(
@@ -481,7 +503,7 @@ class Balloon(
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
-        supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
+        builder.supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
         -getMeasureHeight() - (anchor.measuredHeight / 2)
       )
     }
@@ -541,7 +563,7 @@ class Balloon(
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
-        supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
+        builder.supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
         -getMeasureHeight() - anchor.measuredHeight
       )
     }
@@ -561,7 +583,7 @@ class Balloon(
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
-        supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff),
+        builder.supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff),
         -getMeasureHeight() - anchor.measuredHeight + yOff
       )
     }
@@ -581,7 +603,7 @@ class Balloon(
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
-        supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
+        builder.supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
         0
       )
     }
@@ -601,7 +623,7 @@ class Balloon(
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
-        supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff),
+        builder.supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff),
         yOff
       )
     }
@@ -1195,6 +1217,10 @@ class Balloon(
 
     @JvmField
     @set:JvmSynthetic
+    var supportRtlLayoutFactor: Int = LTR.unaryMinus(isRtlSupport)
+
+    @JvmField
+    @set:JvmSynthetic
     var isFocusable: Boolean = true
 
     @JvmField
@@ -1662,7 +1688,10 @@ class Balloon(
     fun setShowTime(value: Int): Builder = apply { this.showTimes = value }
 
     /** sets flag for enabling rtl support */
-    fun isRtlSupport(value: Boolean): Builder = apply { this.isRtlSupport = value }
+    fun isRtlSupport(value: Boolean): Builder = apply {
+      this.supportRtlLayoutFactor = LTR.unaryMinus(value)
+      this.isRtlSupport = value
+    }
 
     /**
      * sets isFocusable option to the body window.
