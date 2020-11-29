@@ -23,8 +23,8 @@
   </style>
 
   <style name="ElasticAndFadeOut">
-    <item name="android:windowEnterAnimation">@anim/elastic_center</item>
-    <item name="android:windowExitAnimation">@anim/fade_out</item>
+    <item name="android:windowEnterAnimation">@anim/elastic_center_balloon_library</item>
+    <item name="android:windowExitAnimation">@anim/fade_out_balloon_library</item>
   </style>
 
   <style name="CircleImageStyle" parent="">

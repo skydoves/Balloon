@@ -391,14 +391,14 @@ class Balloon(
   private fun applyBalloonAnimation() {
     if (builder.balloonAnimationStyle == NO_INT_VALUE) {
       when (builder.balloonAnimation) {
-        BalloonAnimation.ELASTIC -> bodyWindow.animationStyle = R.style.Elastic
+        BalloonAnimation.ELASTIC -> bodyWindow.animationStyle = R.style.Elastic_Balloon_Library
         BalloonAnimation.CIRCULAR -> {
           bodyWindow.contentView.circularRevealed(builder.circularDuration)
-          bodyWindow.animationStyle = R.style.NormalDispose
+          bodyWindow.animationStyle = R.style.NormalDispose_Balloon_Library
         }
-        BalloonAnimation.FADE -> bodyWindow.animationStyle = R.style.Fade
-        BalloonAnimation.OVERSHOOT -> bodyWindow.animationStyle = R.style.Overshoot
-        else -> bodyWindow.animationStyle = R.style.Normal
+        BalloonAnimation.FADE -> bodyWindow.animationStyle = R.style.Fade_Balloon_Library
+        BalloonAnimation.OVERSHOOT -> bodyWindow.animationStyle = R.style.Overshoot_Balloon_Library
+        else -> bodyWindow.animationStyle = R.style.Normal_Balloon_Library
       }
     } else {
       bodyWindow.animationStyle = builder.balloonAnimationStyle
@@ -408,8 +408,8 @@ class Balloon(
   private fun applyBalloonOverlayAnimation() {
     if (builder.balloonOverlayAnimationStyle == NO_INT_VALUE) {
       when (builder.balloonOverlayAnimation) {
-        BalloonOverlayAnimation.FADE -> overlayWindow.animationStyle = R.style.Fade
-        else -> overlayWindow.animationStyle = R.style.Normal
+        BalloonOverlayAnimation.FADE -> overlayWindow.animationStyle = R.style.Fade_Balloon_Library
+        else -> overlayWindow.animationStyle = R.style.Normal_Balloon_Library
       }
     } else {
       overlayWindow.animationStyle = builder.balloonAnimationStyle
