@@ -538,9 +538,8 @@ class Balloon(
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
   @JvmOverloads
-  fun relayShow(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) = relay(balloon) {
-    it.show(anchor, xOff, yOff)
-  }
+  fun relayShow(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) =
+    relay(balloon) { it.show(anchor, xOff, yOff) }
 
   /**
    * Shows the balloon on an anchor view as drop down and shows the next balloon sequentially.
@@ -553,9 +552,8 @@ class Balloon(
    *
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
-  fun relayShowAsDropDown(balloon: Balloon, anchor: View) = relay(balloon) {
-    it.showAsDropDown(anchor)
-  }
+  fun relayShowAsDropDown(balloon: Balloon, anchor: View) =
+    relay(balloon) { it.showAsDropDown(anchor) }
 
   /**
    * Shows the balloon on an anchor view as drop down with x-off and y-off.
@@ -582,9 +580,8 @@ class Balloon(
    *
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
-  fun relayShowAsDropDown(balloon: Balloon, anchor: View, xOff: Int, yOff: Int) = relay(balloon) {
-    it.showAsDropDown(anchor, xOff, yOff)
-  }
+  fun relayShowAsDropDown(balloon: Balloon, anchor: View, xOff: Int, yOff: Int) =
+    relay(balloon) { it.showAsDropDown(anchor, xOff, yOff) }
 
   /**
    * Shows the balloon on an anchor view as the top alignment with x-off and y-off.
@@ -618,9 +615,8 @@ class Balloon(
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
   @JvmOverloads
-  fun relayShowAlignTop(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) = relay(balloon) {
-    it.showAlignTop(anchor, xOff, yOff)
-  }
+  fun relayShowAlignTop(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) =
+    relay(balloon) { it.showAlignTop(anchor, xOff, yOff) }
 
   /**
    * Shows the balloon on an anchor view as the bottom alignment with x-off and y-off.
@@ -655,9 +651,8 @@ class Balloon(
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
   @JvmOverloads
-  fun relayShowAlignBottom(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) = relay(balloon) {
-    it.showAlignBottom(anchor, xOff, yOff)
-  }
+  fun relayShowAlignBottom(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) =
+    relay(balloon) { it.showAlignBottom(anchor, xOff, yOff) }
 
   /**
    * Shows the balloon on an anchor view as the right alignment with x-off and y-off.
@@ -692,7 +687,9 @@ class Balloon(
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
   @JvmOverloads
-  fun relayShowAlignRight(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) = relay(balloon) {
+  fun relayShowAlignRight(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) = relay(
+    balloon
+  ) {
     it.showAlignRight(anchor, xOff, yOff)
   }
 
@@ -729,9 +726,8 @@ class Balloon(
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
   @JvmOverloads
-  fun relayShowAlignLeft(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) = relay(balloon) {
-    it.showAlignLeft(anchor, xOff, yOff)
-  }
+  fun relayShowAlignLeft(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) =
+    relay(balloon) { it.showAlignLeft(anchor, xOff, yOff) }
 
   /**
    * updates popup and arrow position of the popup based on
@@ -1713,17 +1709,31 @@ class Balloon(
      * */
     fun setFocusable(value: Boolean): Builder = apply { this.isFocusable = value }
 
-    fun build(): Balloon = Balloon(context, this@Builder)
+    /**
+     * Create a new instance of the [Balloon] which includes customized attributes.
+     *
+     * @return A new created instance of the [Balloon].
+     */
+    fun build(): Balloon = Balloon(
+      context = context,
+      builder = this@Builder
+    )
   }
 
   /**
    * An abstract factory class for creating [Balloon] instance.
+   * A factory implementation class must have a default (non-argument) constructor.
+   * This class is used to initialize an instance of the [Balloon] lazily in Activities and Fragments.
    *
-   * A factory implementation class must have a non-argument constructor.
+   * @see [Lazy Initialization](https://github.com/skydoves/Balloon#lazy-initialization)
    */
   abstract class Factory {
 
-    /** returns an instance of [Balloon]. */
+    /**
+     * Creates a new instance of [Balloon].
+     *
+     * @return A new created instance of the [Balloon].
+     */
     abstract fun create(context: Context, lifecycle: LifecycleOwner?): Balloon
   }
 }
