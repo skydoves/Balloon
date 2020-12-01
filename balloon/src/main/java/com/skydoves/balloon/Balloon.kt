@@ -158,7 +158,42 @@ class Balloon(
       initializeIcon()
       initializeText()
     }
+    adjustFitsSystemWindows(binding.root)
     builder.lifecycleOwner?.lifecycle?.addObserver(this@Balloon)
+  }
+
+  private fun adjustFitsSystemWindows(parent: ViewGroup) {
+    parent.fitsSystemWindows = false
+    for (i in 0 until parent.childCount) {
+      val child = parent.getChildAt(i)
+      child.fitsSystemWindows = false
+      if (child is ViewGroup) {
+        adjustFitsSystemWindows(child)
+      }
+    }
+  }
+
+  private fun getMinArrowPosition(): Float {
+    return (builder.arrowSize.toFloat() * builder.arrowAlignAnchorPaddingRatio) +
+      builder.arrowAlignAnchorPadding
+  }
+
+  private fun getWindowBodyScreenLocation(view: View): IntArray {
+    val location: IntArray = intArrayOf(0, 0)
+    view.getLocationOnScreen(location)
+    return location
+  }
+
+  private fun getStatusBarHeight(): Int {
+    val rectangle = Rect()
+    return if (context is Activity && builder.isStatusBarVisible) {
+      context.window.decorView.getWindowVisibleDisplayFrame(rectangle)
+      rectangle.top
+    } else 0
+  }
+
+  private fun getDoubleArrowSize(): Int {
+    return builder.arrowSize * 2
   }
 
   private fun initializeArrow(anchor: View) {
@@ -208,29 +243,6 @@ class Balloon(
         }
       }
     }
-  }
-
-  private fun getMinArrowPosition(): Float {
-    return (builder.arrowSize.toFloat() * builder.arrowAlignAnchorPaddingRatio) +
-      builder.arrowAlignAnchorPadding
-  }
-
-  private fun getWindowBodyScreenLocation(view: View): IntArray {
-    val location: IntArray = intArrayOf(0, 0)
-    view.getLocationOnScreen(location)
-    return location
-  }
-
-  private fun getStatusBarHeight(): Int {
-    val rectangle = Rect()
-    return if (context is Activity && builder.isStatusBarVisible) {
-      context.window.decorView.getWindowVisibleDisplayFrame(rectangle)
-      rectangle.top
-    } else 0
-  }
-
-  private fun getDoubleArrowSize(): Int {
-    return builder.arrowSize * 2
   }
 
   private fun getArrowConstraintPositionX(anchor: View): Float {
