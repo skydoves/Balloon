@@ -51,8 +51,12 @@ internal fun View.circularRevealed(circularDuration: Long) {
 
 /** shows circular unrevealed animation to a view. */
 @MainThread
+@PublishedApi
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-internal fun View.circularUnRevealed(circularDuration: Long, doAfterFinish: () -> Unit) {
+internal inline fun View.circularUnRevealed(
+  circularDuration: Long,
+  crossinline doAfterFinish: () -> Unit
+) {
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
     post {
       if (isAttachedToWindow) {
