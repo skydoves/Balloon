@@ -77,7 +77,7 @@ import com.skydoves.balloon.overlay.BalloonOverlayOval
 import com.skydoves.balloon.overlay.BalloonOverlayShape
 
 @DslMarker
-internal annotation class BalloonDsl
+internal annotation class BalloonInlineDsl
 
 /**
  * Creates an instance of the [Balloon] by scope of the [Balloon.Builder] using kotlin dsl.
@@ -86,8 +86,8 @@ internal annotation class BalloonDsl
  * @param block A dsl scope lambda from the [Balloon.Builder].
  * */
 @MainThread
-@BalloonDsl
 @JvmSynthetic
+@BalloonInlineDsl
 inline fun createBalloon(context: Context, crossinline block: Balloon.Builder.() -> Unit): Balloon =
   Balloon.Builder(context).apply(block).build()
 
@@ -946,7 +946,7 @@ class Balloon(
   }
 
   /** Builder class for creating [Balloon]. */
-  @BalloonDsl
+  @BalloonInlineDsl
   class Builder(private val context: Context) {
     @JvmField @Px
     @set:JvmSynthetic

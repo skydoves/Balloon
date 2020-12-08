@@ -29,6 +29,7 @@ import kotlin.reflect.KClass
  */
 @MainThread
 @JvmSynthetic
+@BalloonInlineDsl
 inline fun <reified T : Balloon.Factory> ComponentActivity.balloon(
   factory: KClass<T>
 ): Lazy<Balloon> {
@@ -42,6 +43,7 @@ inline fun <reified T : Balloon.Factory> ComponentActivity.balloon(
  */
 @MainThread
 @JvmSynthetic
+@BalloonInlineDsl
 inline fun <reified T : Balloon.Factory> Fragment.balloon(
   factory: KClass<T>
 ): Lazy<Balloon?> {
@@ -55,6 +57,7 @@ inline fun <reified T : Balloon.Factory> Fragment.balloon(
  */
 @MainThread
 @JvmSynthetic
+@BalloonInlineDsl
 inline fun <reified T : Balloon.Factory> View.balloon(
   factory: KClass<T>
 ): Lazy<Balloon> {
