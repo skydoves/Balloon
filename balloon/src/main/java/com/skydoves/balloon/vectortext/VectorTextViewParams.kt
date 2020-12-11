@@ -17,7 +17,7 @@
 package com.skydoves.balloon.vectortext
 
 import android.graphics.drawable.Drawable
-import androidx.annotation.ColorRes
+import androidx.annotation.ColorInt
 import androidx.annotation.DimenRes
 import androidx.annotation.Px
 
@@ -34,7 +34,7 @@ data class VectorTextViewParams(
   @Px val compoundDrawablePadding: Int? = null,
   @Px val iconSize: Int? = null,
   @DimenRes var compoundDrawablePaddingRes: Int? = null,
-  @ColorRes var tintColorRes: Int? = null,
+  @ColorInt var tintColor: Int? = null,
   @DimenRes var widthRes: Int? = null,
   @DimenRes var heightRes: Int? = null,
   @DimenRes var squareSizeRes: Int? = null
