@@ -1518,7 +1518,7 @@ class Balloon(
     fun setIconColor(@ColorInt value: Int): Builder = apply { this.iconColor = value }
 
     /** sets the color of the icon drawable using the resource color. */
-    fun setIconColorResource(@ColorInt value: Int): Builder = apply {
+    fun setIconColorResource(@ColorRes value: Int): Builder = apply {
       this.iconColor = context.contextColor(value)
     }
 

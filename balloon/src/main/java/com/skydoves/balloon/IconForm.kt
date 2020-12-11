@@ -22,6 +22,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.MainThread
 import androidx.annotation.Px
@@ -100,7 +101,7 @@ class IconForm(builder: Builder) {
     fun setIconColor(@ColorInt value: Int): Builder = apply { this.iconColor = value }
 
     /** sets the color of the icon using resource */
-    fun setIconColorResource(@ColorInt value: Int): Builder = apply {
+    fun setIconColorResource(@ColorRes value: Int): Builder = apply {
       this.iconColor = context.contextColor(value)
     }
 
