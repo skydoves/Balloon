@@ -57,7 +57,7 @@ internal fun VectorTextView.applyIconForm(iconForm: IconForm) {
     drawableTextViewParams = VectorTextViewParams(
       iconSize = iconForm.iconSize,
       compoundDrawablePadding = iconForm.iconSpace,
-      tintColorRes = iconForm.iconColor
+      tintColor = iconForm.iconColor
     ).apply {
       when (iconForm.iconGravity) {
         IconGravity.LEFT -> {
@@ -93,22 +93,26 @@ internal fun TextView.applyDrawable(vectorTextViewParams: VectorTextViewParams) 
   val drawableLeft: Drawable? =
     vectorTextViewParams.drawableLeft ?: vectorTextViewParams.drawableLeftRes?.let {
       AppCompatResources.getDrawable(context, it)
-    }?.tint(context, vectorTextViewParams.tintColorRes)?.resize(context, width, height)
+    }
+  drawableLeft?.tint(vectorTextViewParams.tintColor)?.resize(context, width, height)
 
   val drawableRight: Drawable? =
     vectorTextViewParams.drawableRight ?: vectorTextViewParams.drawableRightRes?.let {
       AppCompatResources.getDrawable(context, it)
-    }?.tint(context, vectorTextViewParams.tintColorRes)?.resize(context, width, height)
+    }
+  drawableRight?.tint(vectorTextViewParams.tintColor)?.resize(context, width, height)
 
   val drawableBottom: Drawable? =
     vectorTextViewParams.drawableBottom ?: vectorTextViewParams.drawableBottomRes?.let {
       AppCompatResources.getDrawable(context, it)
-    }?.tint(context, vectorTextViewParams.tintColorRes)?.resize(context, width, height)
+    }
+  drawableBottom?.tint(vectorTextViewParams.tintColor)?.resize(context, width, height)
 
   val drawableTop: Drawable? =
     vectorTextViewParams.drawableTop ?: vectorTextViewParams.drawableTopRes?.let {
       AppCompatResources.getDrawable(context, it)
-    }?.tint(context, vectorTextViewParams.tintColorRes)?.resize(context, width, height)
+    }
+  drawableTop?.tint(vectorTextViewParams.tintColor)?.resize(context, width, height)
 
   setCompoundDrawablesWithIntrinsicBounds(drawableLeft, drawableTop, drawableRight, drawableBottom)
 

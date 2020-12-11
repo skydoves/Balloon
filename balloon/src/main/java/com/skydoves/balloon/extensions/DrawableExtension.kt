@@ -23,19 +23,15 @@ import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
 import androidx.annotation.Px
-import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 
-/** apply tinting to a drawable using a color resource. */
-internal fun Drawable.tint(context: Context, @ColorRes tintColorRes: Int?): Drawable =
-  tintColorRes?.let { tintWithColor(ContextCompat.getColor(context, it)) } ?: this
-
 /** apply tinting to a drawable using a color. */
-internal fun Drawable.tintWithColor(@ColorInt tintColor: Int): Drawable = apply {
-  DrawableCompat.wrap(this)
-    .apply { DrawableCompat.setTintList(this, ColorStateList.valueOf(tintColor)) }
+internal fun Drawable.tint(@ColorInt tintColor: Int?): Drawable = apply {
+  tintColor?.let {
+    DrawableCompat.wrap(this)
+      .apply { DrawableCompat.setTintList(this, ColorStateList.valueOf(it)) }
+  }
 }
 
 /** resize a drawable width and height size using specific pixel sizes.  */
