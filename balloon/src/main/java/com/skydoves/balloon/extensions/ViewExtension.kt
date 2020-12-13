@@ -25,6 +25,15 @@ import android.view.ViewAnimationUtils
 import androidx.annotation.MainThread
 import kotlin.math.max
 
+/** sets visibility of the view based on the given parameter. */
+internal fun View.visible(shouldVisible: Boolean) {
+  visibility = if (shouldVisible) {
+    View.VISIBLE
+  } else {
+    View.GONE
+  }
+}
+
 /** shows circular revealed animation to a view. */
 @MainThread
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
