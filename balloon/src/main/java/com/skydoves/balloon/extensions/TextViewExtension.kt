@@ -25,6 +25,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.text.HtmlCompat
 import com.skydoves.balloon.IconForm
 import com.skydoves.balloon.IconGravity
+import com.skydoves.balloon.NO_INT_VALUE
 import com.skydoves.balloon.TextForm
 import com.skydoves.balloon.vectortext.VectorTextView
 import com.skydoves.balloon.vectortext.VectorTextViewParams
@@ -57,7 +58,7 @@ internal fun VectorTextView.applyIconForm(iconForm: IconForm) {
     drawableTextViewParams = VectorTextViewParams(
       iconSize = iconForm.iconSize,
       compoundDrawablePadding = iconForm.iconSpace,
-      tintColor = iconForm.iconColor
+      tintColor = iconForm.iconColor.takeIf { it != NO_INT_VALUE }
     ).apply {
       when (iconForm.iconGravity) {
         IconGravity.LEFT -> {

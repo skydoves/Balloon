@@ -1112,7 +1112,7 @@ class Balloon(
 
     @JvmField @ColorInt
     @set:JvmSynthetic
-    var iconColor: Int = Color.WHITE
+    var iconColor: Int = NO_INT_VALUE
 
     @JvmField
     @set:JvmSynthetic
