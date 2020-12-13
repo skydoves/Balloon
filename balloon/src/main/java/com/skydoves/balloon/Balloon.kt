@@ -199,7 +199,7 @@ class Balloon(
 
   private fun initializeArrow(anchor: View) {
     with(binding.balloonArrow) {
-      visible(builder.arrowVisible)
+      visible(builder.isVisibleArrow)
       val params = RelativeLayout.LayoutParams(builder.arrowSize, builder.arrowSize)
       when (builder.arrowOrientation) {
         ArrowOrientation.BOTTOM -> {
@@ -996,7 +996,7 @@ class Balloon(
 
     @JvmField
     @set:JvmSynthetic
-    var arrowVisible: Boolean = true
+    var isVisibleArrow: Boolean = true
 
     @JvmField @ColorInt
     @set:JvmSynthetic
@@ -1345,7 +1345,7 @@ class Balloon(
     }
 
     /** sets the visibility of the arrow. */
-    fun setArrowVisible(value: Boolean): Builder = apply { this.arrowVisible = value }
+    fun setIsVisibleArrow(value: Boolean): Builder = apply { this.isVisibleArrow = value }
 
     /** sets a color of the arrow. */
     fun setArrowColor(@ColorInt value: Int): Builder = apply { this.arrowColor = value }
