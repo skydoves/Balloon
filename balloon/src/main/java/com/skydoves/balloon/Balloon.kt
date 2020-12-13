@@ -1375,11 +1375,6 @@ class Balloon(
      */
     fun setArrowConstraints(value: ArrowConstraints) = apply { this.arrowConstraints = value }
 
-    /** sets is status bar is visible or not in your screen. */
-    fun setIsStatusBarVisible(value: Boolean) = apply {
-      this.isStatusBarVisible = value
-    }
-
     /** sets the arrow orientation using [ArrowOrientation]. */
     fun setArrowOrientation(value: ArrowOrientation): Builder = apply {
       this.arrowOrientation = value
@@ -1577,6 +1572,11 @@ class Balloon(
 
     /** sets a shape of the overlay over the anchor view. */
     fun setOverlayShape(value: BalloonOverlayShape) = apply { this.overlayShape = value }
+
+    /** sets is status bar is visible or not in your screen. */
+    fun setIsStatusBarVisible(value: Boolean) = apply {
+      this.isStatusBarVisible = value
+    }
 
     /**
      * sets the [LifecycleOwner] for dismissing automatically when the [LifecycleOwner] is destroyed.

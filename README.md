@@ -49,7 +49,6 @@ Balloon balloon = new Balloon.Builder(context)
     .setArrowOrientation(ArrowOrientation.TOP)
     .setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
     .setArrowPosition(0.5f)
-    .setArrowVisible(true)
     .setWidthRatio(1.0f)
     .setHeight(65)
     .setTextSize(15f)
@@ -173,7 +172,7 @@ the balloon will be stick to the end of the screen. In that case, we can resolve
 We can customize the arrow on the balloon popup. <br>
 
 ```java
-.setArrowVisible(true) // sets the visibility of the arrow.
+.setIsVisibleArrow(true) // sets the visibility of the arrow.
 .setArrowSize(10) // sets the arrow size.
 .setArrowPosition(0.8f) // sets the arrow position using the popup size's ratio (0 ~ 1.0)
 .setArrowOrientation(ArrowOrientation.TOP) // sets the arrow orientation. top, bottom, left, right
@@ -474,7 +473,7 @@ We can reference all kinds and descriptions of functions details here.<br>
 .setMarginRight(value: Int)
 .setMarginBottom(value: Int)
 .setElevation(value: Int)
-.setArrowVisible(value: Boolean)
+.setIsVisibleArrow(value: Boolean)
 .setArrowSize(value: Int)
 .setArrowPosition(@FloatRange(from = 0.0, to = 1.0) value: Float)
 .setArrowOrientation(value: ArrowOrientation)
