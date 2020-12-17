@@ -22,6 +22,7 @@ import com.skydoves.balloon.ArrowConstraints
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.createBalloon
 import com.skydoves.balloondemo.BalloonUtils
 import com.skydoves.balloondemo.R
@@ -30,6 +31,7 @@ class ProfileBalloonFactory : Balloon.Factory() {
 
   override fun create(context: Context, lifecycle: LifecycleOwner?): Balloon {
     return createBalloon(context) {
+      setWidth(BalloonSizeSpec.WRAP)
       setLayout(R.layout.layout_custom_profile)
       setArrowSize(10)
       setArrowOrientation(ArrowOrientation.TOP)

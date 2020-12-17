@@ -22,6 +22,7 @@ import com.skydoves.balloon.ArrowConstraints
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloondemo.BalloonUtils
 import com.skydoves.balloondemo.R
 
@@ -30,6 +31,7 @@ class CustomListBalloonFactory : Balloon.Factory() {
   override fun create(context: Context, lifecycle: LifecycleOwner?): Balloon {
     return Balloon.Builder(context)
       .setLayout(R.layout.layout_custom_list)
+      .setWidth(BalloonSizeSpec.WRAP)
       .setArrowOrientation(ArrowOrientation.TOP)
       .setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
       .setArrowPosition(0.5f)

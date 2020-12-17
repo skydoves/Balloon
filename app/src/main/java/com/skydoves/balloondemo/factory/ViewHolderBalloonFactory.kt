@@ -23,6 +23,7 @@ import com.skydoves.balloon.ArrowConstraints
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.IconGravity
 import com.skydoves.balloon.createBalloon
 import com.skydoves.balloon.textForm
@@ -39,6 +40,7 @@ class ViewHolderBalloonFactory : Balloon.Factory() {
     }
 
     return createBalloon(context) {
+      setWidth(BalloonSizeSpec.WRAP)
       setArrowSize(10)
       setPadding(10)
       setCornerRadius(8f)

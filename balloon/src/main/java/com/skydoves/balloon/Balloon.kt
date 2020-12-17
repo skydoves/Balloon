@@ -874,7 +874,7 @@ class Balloon(
     return when {
       builder.widthRatio != NO_Float_VALUE ->
         (displayWidth * builder.widthRatio).toInt()
-      builder.width != NO_INT_VALUE && builder.width < displayWidth -> builder.width
+      builder.width != BalloonSizeSpec.WRAP && builder.width < displayWidth -> builder.width
       binding.root.measuredWidth > displayWidth -> displayWidth
       else -> this.binding.root.measuredWidth
     }
@@ -910,7 +910,7 @@ class Balloon(
     return when {
       builder.widthRatio != NO_Float_VALUE ->
         (displayWidth * builder.widthRatio).toInt() - spaces
-      builder.width != NO_INT_VALUE && builder.width <= displayWidth ->
+      builder.width != BalloonSizeSpec.WRAP && builder.width <= displayWidth ->
         builder.width - spaces
       measuredWidth < displayWidth - spaces -> measuredWidth
       measuredWidth > displayWidth - spaces -> displayWidth - spaces
@@ -920,7 +920,7 @@ class Balloon(
 
   /** gets measured height size of the balloon popup. */
   fun getMeasuredHeight(): Int {
-    if (builder.height != NO_INT_VALUE) {
+    if (builder.height != BalloonSizeSpec.WRAP) {
       return builder.height
     }
     return this.binding.root.measuredHeight
@@ -952,7 +952,7 @@ class Balloon(
   class Builder(private val context: Context) {
     @JvmField @Px
     @set:JvmSynthetic
-    var width: Int = NO_INT_VALUE
+    var width: Int = BalloonSizeSpec.WRAP
 
     @JvmField @FloatRange(from = 0.0, to = 1.0)
     @set:JvmSynthetic
@@ -960,7 +960,7 @@ class Balloon(
 
     @JvmField @Px
     @set:JvmSynthetic
-    var height: Int = NO_INT_VALUE
+    var height: Int = BalloonSizeSpec.WRAP
 
     @JvmField @Px
     @set:JvmSynthetic
@@ -1252,7 +1252,9 @@ class Balloon(
 
     /** sets the width size. */
     fun setWidth(@Dp value: Int): Builder = apply {
-      require(value > 0) { "The width of the balloon must bigger than zero." }
+      require(
+        value > 0 || value == BalloonSizeSpec.WRAP
+      ) { "The width of the balloon must bigger than zero." }
       this.width = context.dp2Px(value)
     }
 
@@ -1267,7 +1269,12 @@ class Balloon(
     ): Builder = apply { this.widthRatio = value }
 
     /** sets the height size. */
-    fun setHeight(@Dp value: Int): Builder = apply { this.height = context.dp2Px(value) }
+    fun setHeight(@Dp value: Int): Builder = apply {
+      require(
+        value > 0 || value == BalloonSizeSpec.WRAP
+      ) { "The height of the balloon must bigger than zero." }
+      this.height = context.dp2Px(value)
+    }
 
     /** sets the height size using dimension resource. */
     fun setHeightResource(@DimenRes value: Int): Builder = apply {

@@ -20,6 +20,7 @@ import android.content.Context
 import androidx.lifecycle.LifecycleOwner
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
+import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.createBalloon
 import com.skydoves.balloondemo.BalloonUtils
 import com.skydoves.balloondemo.R
@@ -28,6 +29,7 @@ class TagBalloonFactory : Balloon.Factory() {
 
   override fun create(context: Context, lifecycle: LifecycleOwner?): Balloon {
     return createBalloon(context) {
+      setWidth(BalloonSizeSpec.WRAP)
       setLayout(R.layout.layout_custom_tag)
       setArrowSize(10)
       setArrowOrientation(ArrowOrientation.BOTTOM)
