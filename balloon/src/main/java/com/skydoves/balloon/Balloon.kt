@@ -251,20 +251,20 @@ class Balloon(
     val balloonX: Int = getWindowBodyScreenLocation(binding.balloonContent)[0]
     val anchorX: Int = getWindowBodyScreenLocation(anchor)[0]
     val minPosition = getMinArrowPosition()
-    val maxPosition = getMeasureWidth() - minPosition - builder.marginRight - builder.marginLeft
+    val maxPosition = getMeasuredWidth() - minPosition - builder.marginRight - builder.marginLeft
     val arrowHalfSize = builder.arrowSize / 2f
     return when (builder.arrowConstraints) {
       ArrowConstraints.ALIGN_BALLOON -> binding.balloonWrapper.width * builder.arrowPosition - arrowHalfSize
       ArrowConstraints.ALIGN_ANCHOR -> {
         when {
           anchorX + anchor.width < balloonX -> minPosition
-          balloonX + getMeasureWidth() < anchorX -> maxPosition
+          balloonX + getMeasuredWidth() < anchorX -> maxPosition
           else -> {
             val position =
               (anchor.width) * builder.arrowPosition + anchorX - balloonX - arrowHalfSize
             when {
               position <= getDoubleArrowSize() -> minPosition
-              position > getMeasureWidth() - getDoubleArrowSize() -> maxPosition
+              position > getMeasuredWidth() - getDoubleArrowSize() -> maxPosition
               else -> position
             }
           }
@@ -278,20 +278,20 @@ class Balloon(
       getWindowBodyScreenLocation(binding.balloonContent)[1] - getStatusBarHeight()
     val anchorY: Int = getWindowBodyScreenLocation(anchor)[1] - getStatusBarHeight()
     val minPosition = getMinArrowPosition()
-    val maxPosition = getMeasureHeight() - minPosition - builder.marginTop - builder.marginBottom
+    val maxPosition = getMeasuredHeight() - minPosition - builder.marginTop - builder.marginBottom
     val arrowHalfSize = builder.arrowSize / 2
     return when (builder.arrowConstraints) {
       ArrowConstraints.ALIGN_BALLOON -> binding.balloonWrapper.height * builder.arrowPosition - arrowHalfSize
       ArrowConstraints.ALIGN_ANCHOR -> {
         when {
           anchorY + anchor.height < balloonY -> minPosition
-          balloonY + getMeasureHeight() < anchorY -> maxPosition
+          balloonY + getMeasuredHeight() < anchorY -> maxPosition
           else -> {
             val position =
               (anchor.height) * builder.arrowPosition + anchorY - balloonY - arrowHalfSize
             when {
               position <= getDoubleArrowSize() -> minPosition
-              position > getMeasureHeight() - getDoubleArrowSize() -> maxPosition
+              position > getMeasuredHeight() - getDoubleArrowSize() -> maxPosition
               else -> position
             }
           }
@@ -472,8 +472,8 @@ class Balloon(
       anchor.post {
         initializeText()
         this.binding.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-        this.bodyWindow.width = getMeasureWidth()
-        this.bodyWindow.height = getMeasureHeight()
+        this.bodyWindow.width = getMeasuredWidth()
+        this.bodyWindow.height = getMeasuredHeight()
         this.binding.balloonText.layoutParams = FrameLayout.LayoutParams(
           FrameLayout.LayoutParams.MATCH_PARENT,
           FrameLayout.LayoutParams.MATCH_PARENT
@@ -521,8 +521,8 @@ class Balloon(
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
-        builder.supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2)),
-        -getMeasureHeight() - (anchor.measuredHeight / 2)
+        builder.supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasuredWidth() / 2)),
+        -getMeasuredHeight() - (anchor.measuredHeight / 2)
       )
     }
   }
@@ -609,8 +609,8 @@ class Balloon(
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
-        builder.supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff),
-        -getMeasureHeight() - anchor.measuredHeight + yOff
+        builder.supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasuredWidth() / 2) + xOff),
+        -getMeasuredHeight() - anchor.measuredHeight + yOff
       )
     }
   }
@@ -644,7 +644,7 @@ class Balloon(
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
-        builder.supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasureWidth() / 2) + xOff),
+        builder.supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasuredWidth() / 2) + xOff),
         yOff
       )
     }
@@ -681,7 +681,7 @@ class Balloon(
       bodyWindow.showAsDropDown(
         anchor,
         anchor.measuredWidth + xOff,
-        -(getMeasureHeight() / 2) - (anchor.measuredHeight / 2) + yOff
+        -(getMeasuredHeight() / 2) - (anchor.measuredHeight / 2) + yOff
       )
     }
   }
@@ -719,8 +719,8 @@ class Balloon(
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
-        -(getMeasureWidth()) + xOff,
-        -(getMeasureHeight() / 2) - (anchor.measuredHeight / 2) + yOff
+        -(getMeasuredWidth()) + xOff,
+        -(getMeasuredHeight() / 2) - (anchor.measuredHeight / 2) + yOff
       )
     }
   }
@@ -754,7 +754,7 @@ class Balloon(
   @JvmOverloads
   fun update(anchor: View, xOff: Int = 0, yOff: Int = 0) {
     update(anchor = anchor) {
-      this.bodyWindow.update(anchor, xOff, yOff, getMeasureWidth(), getMeasureHeight())
+      this.bodyWindow.update(anchor, xOff, yOff, getMeasuredWidth(), getMeasuredHeight())
     }
   }
 
@@ -869,7 +869,7 @@ class Balloon(
   }
 
   /** gets measured width size of the balloon popup. */
-  fun getMeasureWidth(): Int {
+  fun getMeasuredWidth(): Int {
     val displayWidth = context.displaySize().x
     return when {
       builder.widthRatio != NO_Float_VALUE ->
@@ -895,12 +895,12 @@ class Balloon(
       val heightSpec =
         View.MeasureSpec.makeMeasureSpec(context.displaySize().y, View.MeasureSpec.UNSPECIFIED)
       measure(widthSpec, heightSpec)
-      layoutParams.width = getMeasureTextWidth(measuredWidth)
+      layoutParams.width = getMeasuredTextWidth(measuredWidth)
     }
   }
 
   /** gets measured width size of the balloon popup text label. */
-  private fun getMeasureTextWidth(measuredWidth: Int): Int {
+  private fun getMeasuredTextWidth(measuredWidth: Int): Int {
     val displayWidth = context.displaySize().x
     val spaces = builder.paddingLeft + builder.paddingRight + context.dp2Px(24) +
       if (builder.iconDrawable != null) {
@@ -919,7 +919,7 @@ class Balloon(
   }
 
   /** gets measured height size of the balloon popup. */
-  fun getMeasureHeight(): Int {
+  fun getMeasuredHeight(): Int {
     if (builder.height != NO_INT_VALUE) {
       return builder.height
     }
