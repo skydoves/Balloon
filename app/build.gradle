@@ -14,7 +14,7 @@
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply from: '../dependencies.gradle'
+apply from: "$rootDir/dependencies.gradle"
 
 android {
     compileSdkVersion versions.compileSdk
@@ -40,4 +40,4 @@ dependencies {
     implementation project(":balloon")
 }
 
-apply from: '../spotless.gradle'
+apply from: "$rootDir/spotless.gradle"

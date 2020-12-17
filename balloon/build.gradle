@@ -15,8 +15,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'org.jetbrains.dokka'
-apply from: '../dependencies.gradle'
-apply from: '../publish.gradle'
+apply from: "$rootDir/dependencies.gradle"
+apply from: "$rootDir/publish.gradle"
 
 android {
     compileSdkVersion versions.compileSdk
@@ -55,4 +55,4 @@ tasks.withType(Javadoc) {
     options.addBooleanOption('Xdoclint:none', true)
 }
 
-apply from: '../spotless.gradle'
+apply from: "$rootDir/spotless.gradle"

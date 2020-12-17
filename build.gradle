@@ -13,7 +13,7 @@
 // limitations under the License.
 
 buildscript {
-    apply from: './dependencies.gradle'
+    apply from: "$rootDir/dependencies.gradle"
 
     repositories {
         google()
