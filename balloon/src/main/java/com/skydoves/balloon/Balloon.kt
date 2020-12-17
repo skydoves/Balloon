@@ -76,6 +76,7 @@ import com.skydoves.balloon.extensions.visible
 import com.skydoves.balloon.overlay.BalloonOverlayAnimation
 import com.skydoves.balloon.overlay.BalloonOverlayOval
 import com.skydoves.balloon.overlay.BalloonOverlayShape
+import kotlin.math.max
 
 @DslMarker
 internal annotation class BalloonInlineDsl
@@ -1363,7 +1364,14 @@ class Balloon(
     }
 
     /** sets the size of the arrow. */
-    fun setArrowSize(@Dp value: Int): Builder = apply { this.arrowSize = context.dp2Px(value) }
+    fun setArrowSize(@Dp value: Int): Builder = apply {
+      this.arrowSize =
+        if (value == BalloonSizeSpec.WRAP) {
+          BalloonSizeSpec.WRAP
+        } else {
+          context.dp2Px(value)
+        }
+    }
 
     /** sets the size of the arrow using dimension resource. */
     fun setArrowSizeResource(@DimenRes value: Int): Builder = apply {
@@ -1390,11 +1398,14 @@ class Balloon(
     /** sets a custom drawable of the arrow. */
     fun setArrowDrawable(value: Drawable?): Builder = apply {
       this.arrowDrawable = value?.mutate()
+      if (value != null && arrowSize == BalloonSizeSpec.WRAP) {
+        arrowSize = max(value.intrinsicWidth, value.intrinsicHeight)
+      }
     }
 
     /** sets a custom drawable of the arrow using the resource. */
     fun setArrowDrawableResource(@DrawableRes value: Int): Builder = apply {
-      this.arrowDrawable = context.contextDrawable(value)?.mutate()
+      setArrowDrawable(context.contextDrawable(value))
     }
 
     /** sets the left padding of the arrow. */
