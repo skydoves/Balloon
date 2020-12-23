@@ -347,12 +347,13 @@ class Balloon(
 
   private fun initializeBalloonContent() {
     val paddingSize = builder.arrowSize * 2 - 2
+    val elevation = builder.elevation.toInt()
     with(binding.balloonContent) {
       when (builder.arrowOrientation) {
-        ArrowOrientation.LEFT -> setPadding(paddingSize, 0, 0, 0)
-        ArrowOrientation.TOP -> setPadding(0, paddingSize, 0, 0)
-        ArrowOrientation.RIGHT -> setPadding(0, 0, paddingSize, 0)
-        ArrowOrientation.BOTTOM -> setPadding(0, 0, 0, paddingSize)
+        ArrowOrientation.LEFT -> setPadding(paddingSize, elevation, 0, elevation)
+        ArrowOrientation.TOP -> setPadding(elevation, paddingSize, elevation, 0)
+        ArrowOrientation.RIGHT -> setPadding(0, elevation, paddingSize, elevation)
+        ArrowOrientation.BOTTOM -> setPadding(elevation, 0, elevation, paddingSize)
       }
     }
     with(binding.balloonText) {
