@@ -42,11 +42,11 @@ class CustomActivity :
 
   private val adapter by lazy { SampleAdapter(this) }
   private val customAdapter by lazy { CustomAdapter(this) }
-  private val editBalloon by balloon(EditBalloonFactory::class)
-  private val customListBalloon by balloon(CustomListBalloonFactory::class)
-  private val customProfileBalloon by balloon(ProfileBalloonFactory::class)
-  private val viewHolderBalloon by balloon(ViewHolderBalloonFactory::class)
-  private val customTagBalloon by balloon(TagBalloonFactory::class)
+  private val editBalloon by balloon<EditBalloonFactory>()
+  private val customListBalloon by balloon<CustomListBalloonFactory>()
+  private val customProfileBalloon by balloon<ProfileBalloonFactory>()
+  private val viewHolderBalloon by balloon<ViewHolderBalloonFactory>()
+  private val customTagBalloon by balloon<TagBalloonFactory>()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
