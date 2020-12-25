@@ -22,16 +22,16 @@ import kotlin.reflect.KClass
 
 /**
  * An implementation of [Lazy] for creating an instance of the [Balloon] in Fragments.
- * Tied to the given fragment's lifecycle and, [clazz].
+ * Tied to the given fragment's lifecycle and, [factory].
  *
  * @param fragment An instance of the [Balloon] will be created in this Fragment lazily.
  * This will prevents memory leak: [Avoid Memory Leak](https://github.com/skydoves/balloon#avoid-memory-leak).
- * @param clazz A [Balloon.Factory] kotlin class for creating a new instance of the Balloon.
+ * @param factory A [Balloon.Factory] kotlin class for creating a new instance of the Balloon.
  */
 @PublishedApi
 internal class FragmentBalloonLazy<out T : Balloon.Factory>(
   private val fragment: Fragment,
-  private val clazz: KClass<T>
+  private val factory: KClass<T>
 ) : Lazy<Balloon?>, Serializable {
 
   private var cached: Balloon? = null
@@ -40,7 +40,7 @@ internal class FragmentBalloonLazy<out T : Balloon.Factory>(
     get() {
       var instance = cached
       if (instance === null && fragment.context !== null) {
-        val factory = clazz::java.get().newInstance()
+        val factory = factory::java.get().newInstance()
         val lifecycle = if (fragment.view !== null) {
           fragment.viewLifecycleOwner
         } else {

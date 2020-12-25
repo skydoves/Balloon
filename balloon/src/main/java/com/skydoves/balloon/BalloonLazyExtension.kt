@@ -53,7 +53,7 @@ inline fun <reified T : Balloon.Factory> ComponentActivity.balloon(
 @JvmSynthetic
 @BalloonInlineDsl
 inline fun <reified T : Balloon.Factory> ComponentActivity.balloon(): Lazy<Balloon> {
-  return ActivityBalloonLazy(this, this, T::class)
+  return ActivityBalloonLazy(context = this, lifecycleOwner = this, factory = T::class)
 }
 
 /**
@@ -87,7 +87,7 @@ inline fun <reified T : Balloon.Factory> Fragment.balloon(
 @JvmSynthetic
 @BalloonInlineDsl
 inline fun <reified T : Balloon.Factory> Fragment.balloon(): Lazy<Balloon?> {
-  return FragmentBalloonLazy(this, T::class)
+  return FragmentBalloonLazy(fragment = this, factory = T::class)
 }
 
 /**
@@ -121,5 +121,5 @@ inline fun <reified T : Balloon.Factory> View.balloon(
 @JvmSynthetic
 @BalloonInlineDsl
 inline fun <reified T : Balloon.Factory> View.balloon(): Lazy<Balloon> {
-  return ViewBalloonLazy(context, T::class)
+  return ViewBalloonLazy(context = context, factory = T::class)
 }

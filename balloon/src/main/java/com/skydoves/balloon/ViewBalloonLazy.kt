@@ -23,16 +23,16 @@ import kotlin.reflect.KClass
 
 /**
  * An implementation of [Lazy] for creating an instance of the [Balloon] lazily in Activities.
- * Tied to the given Activity's lifecycleOwner, [clazz].
+ * Tied to the given Activity's lifecycleOwner, [factory].
  *
  * @param context A context for creating resources of the [Balloon] lazily.
  * This will prevents memory leak: [Avoid Memory Leak](https://github.com/skydoves/balloon#avoid-memory-leak).
- * @param clazz A [Balloon.Factory] kotlin class for creating a new instance of the Balloon.
+ * @param factory A [Balloon.Factory] kotlin class for creating a new instance of the Balloon.
  */
 @PublishedApi
 internal class ViewBalloonLazy<out T : Balloon.Factory>(
   private val context: Context,
-  private val clazz: KClass<T>
+  private val factory: KClass<T>
 ) : Lazy<Balloon>, Serializable {
 
   private var cached: Balloon? = null
@@ -42,7 +42,7 @@ internal class ViewBalloonLazy<out T : Balloon.Factory>(
       var instance = cached
       if (instance === null) {
         if (context is ComponentActivity) {
-          val factory = clazz::java.get().newInstance()
+          val factory = factory::java.get().newInstance()
           instance = factory.create(context, context)
           cached = instance
         } else {
