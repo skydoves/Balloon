@@ -26,7 +26,7 @@ ext.versions = [
 
     kotlin           : '1.4.20',
     androidxAppcompat: '1.2.0',
-    lifecycle        : '2.3.0-alpha06',
+    lifecycle        : '2.3.0-rc01',
     cardView         : '1.0.0',
 
     // for demo

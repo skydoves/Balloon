@@ -38,6 +38,7 @@ kotlin {
 
 dependencies {
     implementation "androidx.appcompat:appcompat:$versions.androidxAppcompat"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$versions.lifecycle"
     implementation "androidx.cardview:cardview:$versions.cardView"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle"
 }
