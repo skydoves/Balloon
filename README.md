@@ -49,7 +49,7 @@ Balloon balloon = new Balloon.Builder(context)
     .setArrowOrientation(ArrowOrientation.TOP)
     .setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
     .setArrowPosition(0.5f)
-    .setWidthRatio(1.0f)
+    .setWidth(BalloonSizeSpec.WRAP)
     .setHeight(65)
     .setTextSize(15f)
     .setCornerRadius(4f)
@@ -71,7 +71,7 @@ This is how to create `Balloon` instance using kotlin dsl.
 ```kotlin
 val balloon = createBalloon(context) {
   setArrowSize(10)
-  setWidthRatio(1.0f)
+  setWidth(BalloonSizeSpec.WRAP)
   setHeight(65)
   setArrowPosition(0.7f)
   setCornerRadius(4f)
@@ -87,8 +87,8 @@ val balloon = createBalloon(context) {
 }
 ```
 ### Width and height
-We can control the size of the width and height using below ways. <br>
-If we don't set any size width/height size of the balloon, the content will be wrapped by the balloon.
+We can handle sizes of the popup width and height using the below ways. <br>
+If we would not set any specific sizes of the width/height of the balloon, the size of the popup will be decided by the content. 
 #### Padding
 Balloon wraps a content. We can control the content size of the balloon using padding of the content.<br>
 ```kotlin
@@ -101,6 +101,8 @@ We can set the specific size of the balloon regardless size of the contents.
 ```kotlin
 balloon.setWidth(220) // sets 220dp width size.
 balloon.setHeight(160) // sets 160dp height size.
+balloon.setWidth(BalloonSizeSpec.WRAP) // sets width size depending on the content's size.
+balloon.setHeight(BalloonSizeSpec.WRAP) // sets height size depending on the content's size.
 ```
 #### According to screen ratio
 Also, we can set the width according to the ratio of the horizontal screen's size.
@@ -174,6 +176,7 @@ We can customize the arrow on the balloon popup. <br>
 ```java
 .setIsVisibleArrow(true) // sets the visibility of the arrow.
 .setArrowSize(10) // sets the arrow size.
+.setArrowSize(BalloonSizeSpec.WRAP) // sets arrow size depending on the original resources' size.
 .setArrowPosition(0.8f) // sets the arrow position using the popup size's ratio (0 ~ 1.0)
 .setArrowOrientation(ArrowOrientation.TOP) // sets the arrow orientation. top, bottom, left, right
 .setArrowDrawable(ContextCompat.getDrawable(context, R.drawable.arrow)) // sets the arrow drawable.

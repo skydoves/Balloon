@@ -30,6 +30,7 @@ class TagBalloonFactory : Balloon.Factory() {
   override fun create(context: Context, lifecycle: LifecycleOwner?): Balloon {
     return createBalloon(context) {
       setWidth(BalloonSizeSpec.WRAP)
+      setHeight(BalloonSizeSpec.WRAP)
       setLayout(R.layout.layout_custom_tag)
       setArrowSize(10)
       setArrowOrientation(ArrowOrientation.BOTTOM)

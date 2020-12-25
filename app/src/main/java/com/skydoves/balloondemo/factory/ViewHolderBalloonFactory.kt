@@ -41,6 +41,7 @@ class ViewHolderBalloonFactory : Balloon.Factory() {
 
     return createBalloon(context) {
       setWidth(BalloonSizeSpec.WRAP)
+      setHeight(BalloonSizeSpec.WRAP)
       setArrowSize(10)
       setPadding(10)
       setCornerRadius(8f)

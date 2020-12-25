@@ -32,6 +32,7 @@ class CustomListBalloonFactory : Balloon.Factory() {
     return Balloon.Builder(context)
       .setLayout(R.layout.layout_custom_list)
       .setWidth(BalloonSizeSpec.WRAP)
+      .setHeight(BalloonSizeSpec.WRAP)
       .setArrowOrientation(ArrowOrientation.TOP)
       .setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
       .setArrowPosition(0.5f)
