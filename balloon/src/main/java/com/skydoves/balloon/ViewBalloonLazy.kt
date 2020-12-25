@@ -17,7 +17,7 @@
 package com.skydoves.balloon
 
 import android.content.Context
-import androidx.activity.ComponentActivity
+import androidx.lifecycle.LifecycleOwner
 import java.io.Serializable
 import kotlin.reflect.KClass
 
@@ -32,6 +32,7 @@ import kotlin.reflect.KClass
 @PublishedApi
 internal class ViewBalloonLazy<out T : Balloon.Factory>(
   private val context: Context,
+  private val lifecycleOwner: LifecycleOwner?,
   private val factory: KClass<T>
 ) : Lazy<Balloon>, Serializable {
 
@@ -41,15 +42,9 @@ internal class ViewBalloonLazy<out T : Balloon.Factory>(
     get() {
       var instance = cached
       if (instance === null) {
-        if (context is ComponentActivity) {
-          val factory = factory::java.get().newInstance()
-          instance = factory.create(context, context)
-          cached = instance
-        } else {
-          throw IllegalArgumentException(
-            "Balloon can not be initialized. The passed context is not an instance of the ComponentActivity."
-          )
-        }
+        val factory = factory::java.get().newInstance()
+        instance = factory.create(context, lifecycleOwner)
+        cached = instance
       }
 
       return instance
