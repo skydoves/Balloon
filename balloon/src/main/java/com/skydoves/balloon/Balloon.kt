@@ -1260,7 +1260,7 @@ class Balloon(
       this.width = context.dp2Px(value)
     }
 
-    /** sets the width size using dimension resources. */
+    /** sets the width size using a dimension resource. */
     fun setWidthResource(@DimenRes value: Int): Builder = apply {
       this.width = context.dimen(value)
     }
@@ -1278,9 +1278,21 @@ class Balloon(
       this.height = context.dp2Px(value)
     }
 
-    /** sets the height size using dimension resource. */
+    /** sets the height size using a dimension resource. */
     fun setHeightResource(@DimenRes value: Int): Builder = apply {
       this.height = context.dimen(value)
+    }
+
+    /** sets the width and height sizes of the balloon. */
+    fun setSize(@Dp width: Int, @Dp height: Int): Builder = apply {
+      setWidth(width)
+      setHeight(height)
+    }
+
+    /** sets the width and height sizes of the balloon using a dimension resource. */
+    fun setSizeResource(@DimenRes width: Int, @DimenRes height: Int): Builder = apply {
+      setWidthResource(width)
+      setHeightResource(height)
     }
 
     /** sets the padding on the balloon content all directions. */
