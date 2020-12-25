@@ -385,7 +385,7 @@ __After__<br>
 `CustomActivity.kt`
 ```kotlin
 class CustomActivity : AppCompatActivity() {
-  private val profileBalloon by balloon(ProfileBalloonFactory::class)
+  private val profileBalloon by balloon<ProfileBalloonFactory>()
 
   // ...
 }
