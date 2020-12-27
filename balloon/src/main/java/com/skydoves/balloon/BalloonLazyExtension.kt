@@ -20,7 +20,6 @@ import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.findViewTreeLifecycleOwner
 import kotlin.reflect.KClass
 
 /**
@@ -109,7 +108,7 @@ inline fun <reified T : Balloon.Factory> Fragment.balloon(): Lazy<Balloon?> {
 inline fun <reified T : Balloon.Factory> View.balloon(
   factory: KClass<T>
 ): Lazy<Balloon> {
-  return ViewBalloonLazy(context, findViewTreeLifecycleOwner(), factory)
+  return ViewBalloonLazy(context, factory)
 }
 
 /**
@@ -122,9 +121,5 @@ inline fun <reified T : Balloon.Factory> View.balloon(
 @JvmSynthetic
 @BalloonInlineDsl
 inline fun <reified T : Balloon.Factory> View.balloon(): Lazy<Balloon> {
-  return ViewBalloonLazy(
-    context = context,
-    lifecycleOwner = findViewTreeLifecycleOwner(),
-    factory = T::class
-  )
+  return ViewBalloonLazy(context, T::class)
 }
