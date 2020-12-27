@@ -161,7 +161,13 @@ class Balloon(
       initializeText()
     }
     adjustFitsSystemWindows(binding.root)
-    builder.lifecycleOwner?.lifecycle?.addObserver(this@Balloon)
+
+    if (builder.lifecycleOwner == null && context is LifecycleOwner) {
+      builder.setLifecycleOwner(context)
+      context.lifecycle.addObserver(this@Balloon)
+    } else {
+      builder.lifecycleOwner?.lifecycle?.addObserver(this@Balloon)
+    }
   }
 
   private fun adjustFitsSystemWindows(parent: ViewGroup) {
