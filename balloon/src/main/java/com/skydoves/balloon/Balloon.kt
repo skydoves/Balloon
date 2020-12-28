@@ -172,8 +172,7 @@ class Balloon(
 
   private fun adjustFitsSystemWindows(parent: ViewGroup) {
     parent.fitsSystemWindows = false
-    for (i in 0 until parent.childCount) {
-      val child = parent.getChildAt(i)
+    (0 until parent.childCount).map { parent.getChildAt(it) }.forEach { child ->
       child.fitsSystemWindows = false
       if (child is ViewGroup) {
         adjustFitsSystemWindows(child)
