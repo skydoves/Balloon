@@ -23,23 +23,23 @@ import android.content.SharedPreferences
 internal class BalloonPersistence {
 
   /** should show or not the popup. */
-  fun shouldShowUp(name: String, times: Int): Boolean {
-    return getTimes(name) < times
+  fun shouldShowUp(name: String, counts: Int): Boolean {
+    return getPersistedCounts(name) < counts
   }
 
-  /** puts a incremented show-up times to the preference. */
-  fun putIncrementedTimes(name: String) {
-    putTimes(name, getTimes(name) + 1)
+  /** puts a incremented show-up counts to the preference. */
+  fun putIncrementedCounts(name: String) {
+    putCounts(name, getPersistedCounts(name) + 1)
   }
 
-  /** gets show-up times from the preference. */
-  private fun getTimes(name: String): Int {
+  /** gets show-up counts from the preference. */
+  private fun getPersistedCounts(name: String): Int {
     return sharedPreferenceManager.getInt(getPersistName(name), 0)
   }
 
-  /** puts show-up times to the preference. */
-  private fun putTimes(name: String, times: Int) {
-    sharedPreferenceManager.edit().putInt(getPersistName(name), times).apply()
+  /** puts show-up counts to the preference. */
+  private fun putCounts(name: String, counts: Int) {
+    sharedPreferenceManager.edit().putInt(getPersistName(name), counts).apply()
   }
 
   companion object {

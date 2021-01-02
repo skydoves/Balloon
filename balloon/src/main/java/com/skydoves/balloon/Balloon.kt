@@ -474,7 +474,7 @@ class Balloon(
       this.isShowing = true
       this.builder.preferenceName?.let {
         if (balloonPersistence.shouldShowUp(it, builder.showTimes)) {
-          balloonPersistence.putIncrementedTimes(it)
+          balloonPersistence.putIncrementedCounts(it)
         } else return
       }
 
@@ -1747,11 +1747,21 @@ class Balloon(
     /** dismisses automatically some milliseconds later when the popup is shown. */
     fun setAutoDismissDuration(value: Long): Builder = apply { this.autoDismissDuration = value }
 
-    /** sets the preference name for persisting showing times([showTimes]).  */
+    /**
+     * sets the preference name for persisting showing counts.
+     * This method should be used with the [setShowCounts].
+     *
+     * @see [Persistence](https://github.com/skydoves/balloon#persistence)
+     */
     fun setPreferenceName(value: String): Builder = apply { this.preferenceName = value }
 
-    /** sets the show times. */
-    fun setShowTime(value: Int): Builder = apply { this.showTimes = value }
+    /**
+     * sets showing counts which how many times the Balloon popup will be shown up.
+     * This method should be used with the [setPreferenceName].
+     *
+     * @see [Persistence](https://github.com/skydoves/balloon#persistence)
+     */
+    fun setShowCounts(value: Int): Builder = apply { this.showTimes = value }
 
     /** sets flag for enabling rtl support */
     fun isRtlSupport(value: Boolean): Builder = apply {
