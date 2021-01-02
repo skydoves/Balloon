@@ -93,7 +93,14 @@ internal annotation class BalloonInlineDsl
 inline fun createBalloon(context: Context, crossinline block: Balloon.Builder.() -> Unit): Balloon =
   Balloon.Builder(context).apply(block).build()
 
-/** Balloon implements showing and dismissing text popup with arrow and animations. */
+/**
+ * Balloon implements a customizable tooltips popup with and arrow and animations.
+ *
+ * @see [Balloon](https://github.com/skydoves/balloon)
+ *
+ * @param context A context for creating and accessing internal resources.
+ * @param builder A [Balloon.Builder] for creating an instance of the [Balloon].
+ */
 @Suppress("MemberVisibilityCanBePrivate")
 class Balloon(
   private val context: Context,
@@ -466,7 +473,7 @@ class Balloon(
     ) {
       this.isShowing = true
       this.builder.preferenceName?.let {
-        if (balloonPersistence.shouldShowUP(it, builder.showTimes)) {
+        if (balloonPersistence.shouldShowUp(it, builder.showTimes)) {
           balloonPersistence.putIncrementedTimes(it)
         } else return
       }

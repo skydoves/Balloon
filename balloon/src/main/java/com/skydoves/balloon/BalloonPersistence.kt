@@ -19,22 +19,12 @@ package com.skydoves.balloon
 import android.content.Context
 import android.content.SharedPreferences
 
-/** BalloonPreferenceManager helps to persist showing times. */
+/** BalloonPreferenceManager helps to persist showing counts. */
 internal class BalloonPersistence {
 
   /** should show or not the popup. */
-  fun shouldShowUP(name: String, times: Int): Boolean {
+  fun shouldShowUp(name: String, times: Int): Boolean {
     return getTimes(name) < times
-  }
-
-  /** gets show-up times from the preference. */
-  fun getTimes(name: String): Int {
-    return sharedPreferenceManager.getInt(getPersistName(name), 0)
-  }
-
-  /** puts show-up times to the preference. */
-  fun putTimes(name: String, times: Int) {
-    sharedPreferenceManager.edit().putInt(getPersistName(name), times).apply()
   }
 
   /** puts a incremented show-up times to the preference. */
@@ -42,12 +32,15 @@ internal class BalloonPersistence {
     putTimes(name, getTimes(name) + 1)
   }
 
-  /** removes a showed times history from the preference. */
-  fun removePersistedData(name: String) =
-    sharedPreferenceManager.edit().remove(SHOWED_UP + name).apply()
+  /** gets show-up times from the preference. */
+  private fun getTimes(name: String): Int {
+    return sharedPreferenceManager.getInt(getPersistName(name), 0)
+  }
 
-  /** clears all of [Balloon] showed times history on the application. */
-  fun clearAllPersistedData() = sharedPreferenceManager.edit().clear().apply()
+  /** puts show-up times to the preference. */
+  private fun putTimes(name: String, times: Int) {
+    sharedPreferenceManager.edit().putInt(getPersistName(name), times).apply()
+  }
 
   companion object {
     @Volatile
@@ -65,6 +58,7 @@ internal class BalloonPersistence {
         }
       }
 
+    @JvmStatic
     fun getPersistName(name: String) = SHOWED_UP + name
   }
 }

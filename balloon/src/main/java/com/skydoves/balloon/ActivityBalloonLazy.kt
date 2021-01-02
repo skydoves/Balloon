@@ -22,7 +22,7 @@ import java.io.Serializable
 import kotlin.reflect.KClass
 
 /**
- * An implementation of [Lazy] for creating an instance of the [Balloon] lazily in Activities.c
+ * An implementation of [Lazy] for creating an instance of the [Balloon] lazily in Activities.
  * Tied to the given [lifecycleOwner], [factory].
  *
  * @param context A context for creating resources of the [Balloon] lazily.
