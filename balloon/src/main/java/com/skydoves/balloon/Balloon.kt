@@ -475,7 +475,10 @@ class Balloon(
       this.builder.preferenceName?.let {
         if (balloonPersistence.shouldShowUp(it, builder.showTimes)) {
           balloonPersistence.putIncrementedCounts(it)
-        } else return
+        } else {
+          this.builder.runIfReachedShowCounts?.invoke()
+          return
+        }
       }
 
       val dismissDelay = this.builder.autoDismissDuration
@@ -1250,6 +1253,10 @@ class Balloon(
 
     @JvmField
     @set:JvmSynthetic
+    var runIfReachedShowCounts: (() -> Unit)? = null
+
+    @JvmField
+    @set:JvmSynthetic
     var isRtlSupport: Boolean = false
 
     @JvmField
@@ -1751,7 +1758,7 @@ class Balloon(
      * sets the preference name for persisting showing counts.
      * This method should be used with the [setShowCounts].
      *
-     * @see [Persistence](https://github.com/skydoves/balloon#persistence)
+     * @see (https://github.com/skydoves/balloon#persistence)
      */
     fun setPreferenceName(value: String): Builder = apply { this.preferenceName = value }
 
@@ -1759,11 +1766,35 @@ class Balloon(
      * sets showing counts which how many times the Balloon popup will be shown up.
      * This method should be used with the [setPreferenceName].
      *
-     * @see [Persistence](https://github.com/skydoves/balloon#persistence)
+     * @see (https://github.com/skydoves/balloon#persistence)
      */
     fun setShowCounts(value: Int): Builder = apply { this.showTimes = value }
 
-    /** sets flag for enabling rtl support */
+    /**
+     * sets a lambda for invoking after the preference showing counts is reached the goal.
+     * This method should be used ith the [setPreferenceName] and [setShowCounts].
+     *
+     * @see (https://github.com/skydoves/balloon#persistence)
+     *
+     * @param block A lambda for invoking after the preference showing counts is reached the goal.
+     */
+    fun runIfReachedShowCounts(block: () -> Unit): Builder = apply {
+      runIfReachedShowCounts = block
+    }
+
+    /**
+     * sets a [Runnable] for invoking after the preference showing counts is reached the goal.
+     * This method should be used ith the [setPreferenceName] and [setShowCounts].
+     *
+     * @see (https://github.com/skydoves/balloon#persistence)
+     *
+     * @param runnable A [Runnable] for invoking after the preference showing counts is reached the goal.
+     */
+    fun runIfReachedShowCounts(runnable: Runnable): Builder = apply {
+      runIfReachedShowCounts { runnable.run() }
+    }
+
+    /** sets a flag for enabling rtl support */
     fun isRtlSupport(value: Boolean): Builder = apply {
       this.supportRtlLayoutFactor = LTR.unaryMinus(value)
       this.isRtlSupport = value
