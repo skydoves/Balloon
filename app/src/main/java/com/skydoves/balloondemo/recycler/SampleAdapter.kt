@@ -17,14 +17,13 @@
 package com.skydoves.balloondemo.recycler
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.skydoves.balloon.balloon
 import com.skydoves.balloondemo.databinding.ItemSampleBinding
+import com.skydoves.balloondemo.factory.ViewHolderBalloonFactory
 
-class SampleAdapter(
-  private val delegate: SampleViewHolder.Delegate
-) : RecyclerView.Adapter<SampleAdapter.SampleViewHolder>() {
+class SampleAdapter : RecyclerView.Adapter<SampleAdapter.SampleViewHolder>() {
 
   private val sampleItems = mutableListOf<SampleItem>()
 
@@ -39,7 +38,6 @@ class SampleAdapter(
       sample0Avatar.setImageDrawable(sampleItem.image)
       sample0Name.text = sampleItem.name
       sample0Content.text = sampleItem.content
-      root.setOnClickListener { delegate.onItemClick(sampleItem, root) }
     }
   }
 
@@ -52,8 +50,12 @@ class SampleAdapter(
 
   class SampleViewHolder(val binding: ItemSampleBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    interface Delegate {
-      fun onItemClick(sampleItem: SampleItem, view: View)
+    private val viewHolderBalloon by binding.root.balloon<ViewHolderBalloonFactory>()
+
+    init {
+      binding.root.setOnClickListener {
+        viewHolderBalloon.showAlignBottom(it)
+      }
     }
   }
 }

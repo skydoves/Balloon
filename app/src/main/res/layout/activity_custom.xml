@@ -1,178 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:background="@color/background">
 
-  <LinearLayout
-    android:layout_width="match_parent"
+  <com.google.android.material.appbar.AppBarLayout
+    android:id="@+id/appBarLayout"
+    android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-      android:id="@+id/appBarLayout"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+    <include
+      android:id="@+id/toolbar"
+      layout="@layout/toolbar_custom" />
 
-      <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar_custom" />
+  </com.google.android.material.appbar.AppBarLayout>
 
-    </com.google.android.material.appbar.AppBarLayout>
+  <com.google.android.material.imageview.ShapeableImageView
+    android:id="@+id/circleImageView"
+    android:layout_width="85dp"
+    android:layout_height="85dp"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="30dp"
+    android:scaleType="centerCrop"
+    android:src="@drawable/lovebird"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+    app:shapeAppearanceOverlay="@style/CircleImageStyle" />
 
-    <com.google.android.material.imageview.ShapeableImageView
-      android:id="@+id/circleImageView"
-      android:layout_width="85dp"
-      android:layout_height="85dp"
-      android:layout_gravity="center_horizontal"
-      android:layout_marginTop="30dp"
-      android:scaleType="centerCrop"
-      android:src="@drawable/lovebird"
-      app:shapeAppearanceOverlay="@style/CircleImageStyle" />
+  <TextView
+    android:id="@+id/name"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:gravity="center"
+    android:text="skydoves"
+    android:textColor="@color/white_93"
+    android:textSize="16sp"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/circleImageView"
+    tools:ignore="HardcodedText" />
 
-    <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="12dp"
-      android:gravity="center"
-      android:text="skydoves"
-      android:textColor="@color/white_93"
-      android:textSize="16sp"
-      android:textStyle="bold"
-      tools:ignore="HardcodedText" />
+  <TextView
+    android:id="@+id/content"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:gravity="center"
+    android:text="Love coffee, music, magic tricks and writing poems."
+    android:textColor="@color/white_56"
+    android:textSize="14sp"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/name"
+    tools:ignore="HardcodedText" />
 
-    <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="5dp"
-      android:gravity="center"
-      android:text="Love coffee, music, magic tricks and writing poems."
-      android:textColor="@color/white_56"
-      android:textSize="14sp"
-      android:textStyle="bold"
-      tools:ignore="HardcodedText" />
+  <TextView
+    android:id="@+id/contents"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="12dp"
+    android:text="32"
+    android:textColor="@color/white_93"
+    android:textSize="16sp"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toStartOf="@id/followers"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/content" />
 
-    <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="16dp"
-      android:orientation="horizontal"
-      android:weightSum="3">
+  <TextView
+    android:id="@+id/label_contents"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:text="contents"
+    android:textColor="@color/white_56"
+    android:textSize="12sp"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toEndOf="@id/contents"
+    app:layout_constraintStart_toStartOf="@id/contents"
+    app:layout_constraintTop_toBottomOf="@id/contents" />
 
-      <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
+  <TextView
+    android:id="@+id/followers"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:text="2333"
+    android:textColor="@color/white_93"
+    android:textSize="16sp"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toStartOf="@id/following"
+    app:layout_constraintStart_toEndOf="@id/contents"
+    app:layout_constraintTop_toTopOf="@id/contents" />
 
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_horizontal"
-          android:text="32"
-          android:textColor="@color/white_93"
-          android:textSize="16sp"
-          android:textStyle="bold" />
+  <TextView
+    android:id="@+id/label_followers"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:text="followers"
+    android:textColor="@color/white_56"
+    android:textSize="12sp"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toEndOf="@id/followers"
+    app:layout_constraintStart_toStartOf="@id/followers"
+    app:layout_constraintTop_toBottomOf="@id/followers" />
 
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_horizontal"
-          android:text="contents"
-          android:textColor="@color/white_56"
-          android:textSize="12sp"
-          android:textStyle="bold" />
-      </LinearLayout>
+  <TextView
+    android:id="@+id/following"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:text="21"
+    android:textColor="@color/white_93"
+    android:textSize="16sp"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/followers"
+    app:layout_constraintTop_toTopOf="@id/followers" />
 
-      <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
+  <TextView
+    android:id="@+id/label_following"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:text="following"
+    android:textColor="@color/white_56"
+    android:textSize="12sp"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toEndOf="@id/following"
+    app:layout_constraintStart_toStartOf="@id/following"
+    app:layout_constraintTop_toBottomOf="@id/following" />
 
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_horizontal"
-          android:text="2333"
-          android:textColor="@color/white_93"
-          android:textSize="16sp"
-          android:textStyle="bold" />
+  <Button
+    android:id="@+id/edit"
+    android:layout_width="0dp"
+    android:layout_height="36dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginRight="8dp"
+    android:background="@drawable/round_button"
+    android:text="Edit Profile"
+    android:textAllCaps="false"
+    android:textColor="@color/skyBlue"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/label_contents"
+    tools:ignore="HardcodedText" />
 
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_horizontal"
-          android:text="followers"
-          android:textColor="@color/white_56"
-          android:textSize="12sp"
-          android:textStyle="bold" />
-      </LinearLayout>
+  <com.google.android.material.tabs.TabLayout
+    android:id="@+id/tabLayout"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginTop="14dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginRight="8dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/edit"
+    app:tabIndicatorColor="@color/skyBlue"
+    app:tabSelectedTextColor="@color/white_70"
+    app:tabTextAppearance="@style/TextAppearance.AppCompat.Small"
+    app:tabTextColor="@color/white_70" />
 
-      <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_horizontal"
-          android:text="21"
-          android:textColor="@color/white_93"
-          android:textSize="16sp"
-          android:textStyle="bold" />
-
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_horizontal"
-          android:text="following"
-          android:textColor="@color/white_56"
-          android:textSize="12sp"
-          android:textStyle="bold" />
-      </LinearLayout>
-    </LinearLayout>
-
-    <Button
-      android:id="@+id/edit"
-      android:layout_width="match_parent"
-      android:layout_height="36dp"
-      android:layout_marginLeft="8dp"
-      android:layout_marginTop="16dp"
-      android:layout_marginRight="8dp"
-      android:background="@drawable/round_button"
-      android:text="Edit Profile"
-      android:textAllCaps="false"
-      android:textColor="@color/skyBlue"
-      tools:ignore="HardcodedText" />
-
-    <com.google.android.material.tabs.TabLayout
-      android:id="@+id/tabLayout"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="8dp"
-      android:layout_marginLeft="8dp"
-      android:layout_marginTop="14dp"
-      android:layout_marginEnd="8dp"
-      android:layout_marginRight="8dp"
-      app:tabIndicatorColor="@color/skyBlue"
-      app:tabSelectedTextColor="@color/white_70"
-      app:tabTextAppearance="@style/TextAppearance.AppCompat.Small"
-      app:tabTextColor="@color/white_70" />
-
-    <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/recyclerView"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_margin="8dp"
-      android:orientation="vertical"
-      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-      tools:listitem="@layout/item_sample" />
-  </LinearLayout>
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/recyclerView"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:orientation="vertical"
+    android:overScrollMode="never"
+    android:padding="8dp"
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/tabLayout"
+    tools:listitem="@layout/item_sample" />
 
   <com.google.android.material.bottomnavigation.BottomNavigationView
     android:id="@+id/bottomNavigationView"
@@ -183,6 +198,9 @@
     app:itemBackground="@color/colorPrimary"
     app:itemIconTint="@color/white_93"
     app:itemTextColor="@color/white_93"
-    app:layout_behavior="tech.thdev.app.view.BottomNavigationBehavior"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/recyclerView"
     app:menu="@menu/menus" />
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

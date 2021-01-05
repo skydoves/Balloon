@@ -17,7 +17,6 @@
 package com.skydoves.balloondemo
 
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -28,24 +27,18 @@ import com.skydoves.balloondemo.factory.CustomListBalloonFactory
 import com.skydoves.balloondemo.factory.EditBalloonFactory
 import com.skydoves.balloondemo.factory.ProfileBalloonFactory
 import com.skydoves.balloondemo.factory.TagBalloonFactory
-import com.skydoves.balloondemo.factory.ViewHolderBalloonFactory
 import com.skydoves.balloondemo.recycler.CustomAdapter
 import com.skydoves.balloondemo.recycler.CustomItem
 import com.skydoves.balloondemo.recycler.ItemUtils
 import com.skydoves.balloondemo.recycler.SampleAdapter
-import com.skydoves.balloondemo.recycler.SampleItem
 
-class CustomActivity :
-  AppCompatActivity(),
-  SampleAdapter.SampleViewHolder.Delegate,
-  CustomAdapter.CustomViewHolder.Delegate {
+class CustomActivity : AppCompatActivity(), CustomAdapter.CustomViewHolder.Delegate {
 
-  private val adapter by lazy { SampleAdapter(this) }
+  private val adapter by lazy { SampleAdapter() }
   private val customAdapter by lazy { CustomAdapter(this) }
   private val editBalloon by balloon<EditBalloonFactory>()
   private val customListBalloon by balloon<CustomListBalloonFactory>()
   private val customProfileBalloon by balloon<ProfileBalloonFactory>()
-  private val viewHolderBalloon by balloon<ViewHolderBalloonFactory>()
   private val customTagBalloon by balloon<TagBalloonFactory>()
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,9 +88,5 @@ class CustomActivity :
   override fun onCustomItemClick(customItem: CustomItem) {
     this.customListBalloon.dismiss()
     Toast.makeText(applicationContext, customItem.title, Toast.LENGTH_SHORT).show()
-  }
-
-  override fun onItemClick(sampleItem: SampleItem, view: View) {
-    this.viewHolderBalloon.showAlignBottom(view)
   }
 }

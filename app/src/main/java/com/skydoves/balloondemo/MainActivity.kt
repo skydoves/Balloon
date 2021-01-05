@@ -21,23 +21,16 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.skydoves.balloon.OnBalloonClickListener
-import com.skydoves.balloon.balloon
 import com.skydoves.balloon.showAlignTop
 import com.skydoves.balloondemo.databinding.ActivityMainBinding
-import com.skydoves.balloondemo.factory.ViewHolderBalloonFactory
 import com.skydoves.balloondemo.recycler.ItemUtils
 import com.skydoves.balloondemo.recycler.SampleAdapter
-import com.skydoves.balloondemo.recycler.SampleItem
 
-class MainActivity :
-  AppCompatActivity(),
-  SampleAdapter.SampleViewHolder.Delegate,
-  OnBalloonClickListener {
+class MainActivity : AppCompatActivity(), OnBalloonClickListener {
 
-  private val adapter by lazy { SampleAdapter(this) }
+  private val adapter by lazy { SampleAdapter() }
   private val profileBalloon by lazy { BalloonUtils.getEditBalloon(this, this) }
   private val navigationBalloon by lazy { BalloonUtils.getNavigationBalloon(this, this, this) }
-  private val viewHolderBalloon by balloon<ViewHolderBalloonFactory>()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -75,9 +68,5 @@ class MainActivity :
   override fun onBalloonClick(view: View) {
     navigationBalloon.dismiss()
     Toast.makeText(applicationContext, "dismissed", Toast.LENGTH_SHORT).show()
-  }
-
-  override fun onItemClick(sampleItem: SampleItem, view: View) {
-    this.viewHolderBalloon.showAlignBottom(view)
   }
 }
