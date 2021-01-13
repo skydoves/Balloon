@@ -47,7 +47,8 @@ class IconForm(builder: Builder) {
   val drawable = builder.drawable
   @DrawableRes var drawableRes = builder.drawableRes
   val iconGravity = builder.iconGravity
-  @Px val iconSize = builder.iconSize
+  @Px val iconWidth = builder.iconWidth
+  @Px val iconHeight = builder.iconHeight
   @Px val iconSpace = builder.iconSpace
   @ColorInt val iconColor = builder.iconColor
 
@@ -68,7 +69,11 @@ class IconForm(builder: Builder) {
 
     @JvmField @Px
     @set:JvmSynthetic
-    var iconSize: Int = context.dp2Px(28)
+    var iconWidth: Int = context.dp2Px(28)
+
+    @JvmField @Px
+    @set:JvmSynthetic
+    var iconHeight: Int = context.dp2Px(28)
 
     @JvmField @Px
     @set:JvmSynthetic
@@ -91,8 +96,21 @@ class IconForm(builder: Builder) {
       this.iconGravity = value
     }
 
+    /** sets the width size of the icon. */
+    fun setIconWidth(@Px value: Int): Builder = apply {
+      this.iconWidth = value
+    }
+
+    /** sets the height size of the icon. */
+    fun setIconHeight(@Px value: Int): Builder = apply {
+      this.iconHeight = value
+    }
+
     /** sets the size of the icon. */
-    fun setIconSize(@Px value: Int): Builder = apply { this.iconSize = value }
+    fun setIconSize(@Px value: Int): Builder = apply {
+      setIconWidth(value)
+      setIconHeight(value)
+    }
 
     /** sets the space between the icon and the main text content. */
     fun setIconSpace(@Px value: Int): Builder = apply { this.iconSpace = value }

@@ -56,7 +56,8 @@ private fun fromHtml(text: String): Spanned? {
 internal fun VectorTextView.applyIconForm(iconForm: IconForm) {
   iconForm.drawable?.let {
     drawableTextViewParams = VectorTextViewParams(
-      iconSize = iconForm.iconSize,
+      iconWidth = iconForm.iconWidth,
+      iconHeight = iconForm.iconHeight,
       compoundDrawablePadding = iconForm.iconSpace,
       tintColor = iconForm.iconColor.takeIf { it != NO_INT_VALUE }
     ).apply {
@@ -83,11 +84,11 @@ internal fun VectorTextView.applyIconForm(iconForm: IconForm) {
 }
 
 internal fun TextView.applyDrawable(vectorTextViewParams: VectorTextViewParams) {
-  val height = vectorTextViewParams.iconSize
+  val height = vectorTextViewParams.iconHeight
     ?: vectorTextViewParams.heightRes?.let { context.resources.getDimensionPixelSize(it) }
     ?: vectorTextViewParams.squareSizeRes?.let { context.resources.getDimensionPixelSize(it) }
 
-  val width = vectorTextViewParams.iconSize
+  val width = vectorTextViewParams.iconWidth
     ?: vectorTextViewParams.widthRes?.let { context.resources.getDimensionPixelSize(it) }
     ?: vectorTextViewParams.squareSizeRes?.let { context.resources.getDimensionPixelSize(it) }
 
