@@ -18,8 +18,10 @@ package com.skydoves.balloon.extensions
 
 import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
 import android.graphics.Point
 import android.graphics.drawable.Drawable
+import androidx.activity.ComponentActivity
 import androidx.annotation.DimenRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
@@ -62,4 +64,16 @@ internal fun Context.contextDrawable(resource: Int): Drawable? {
 /** returns if an Activity is finishing or not. */
 internal fun Context.isFinishing(): Boolean {
   return this is Activity && this.isFinishing
+}
+
+/** returns an activity from a context. */
+internal fun Context.getActivity(): ComponentActivity? {
+  var context = this
+  while (context is ContextWrapper) {
+    if (context is ComponentActivity) {
+      return context
+    }
+    context = context.baseContext
+  }
+  return null
 }
