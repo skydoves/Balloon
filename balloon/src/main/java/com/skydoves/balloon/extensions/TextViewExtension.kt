@@ -92,28 +92,32 @@ internal fun TextView.applyDrawable(vectorTextViewParams: VectorTextViewParams) 
     ?: vectorTextViewParams.squareSizeRes?.let { context.resources.getDimensionPixelSize(it) }
 
   val drawableLeft: Drawable? =
-    vectorTextViewParams.drawableLeft ?: vectorTextViewParams.drawableLeftRes?.let {
-      AppCompatResources.getDrawable(context, it)
-    }
-  drawableLeft?.tint(vectorTextViewParams.tintColor)?.resize(context, width, height)
+    (
+      vectorTextViewParams.drawableLeft ?: vectorTextViewParams.drawableLeftRes?.let {
+        AppCompatResources.getDrawable(context, it)
+      }
+      )?.resize(context, width, height)?.tint(vectorTextViewParams.tintColor)
 
   val drawableRight: Drawable? =
-    vectorTextViewParams.drawableRight ?: vectorTextViewParams.drawableRightRes?.let {
-      AppCompatResources.getDrawable(context, it)
-    }
-  drawableRight?.tint(vectorTextViewParams.tintColor)?.resize(context, width, height)
+    (
+      vectorTextViewParams.drawableRight ?: vectorTextViewParams.drawableRightRes?.let {
+        AppCompatResources.getDrawable(context, it)
+      }
+      )?.resize(context, width, height)?.tint(vectorTextViewParams.tintColor)
 
   val drawableBottom: Drawable? =
-    vectorTextViewParams.drawableBottom ?: vectorTextViewParams.drawableBottomRes?.let {
-      AppCompatResources.getDrawable(context, it)
-    }
-  drawableBottom?.tint(vectorTextViewParams.tintColor)?.resize(context, width, height)
+    (
+      vectorTextViewParams.drawableBottom ?: vectorTextViewParams.drawableBottomRes?.let {
+        AppCompatResources.getDrawable(context, it)
+      }
+      )?.resize(context, width, height)?.tint(vectorTextViewParams.tintColor)
 
   val drawableTop: Drawable? =
-    vectorTextViewParams.drawableTop ?: vectorTextViewParams.drawableTopRes?.let {
-      AppCompatResources.getDrawable(context, it)
-    }
-  drawableTop?.tint(vectorTextViewParams.tintColor)?.resize(context, width, height)
+    (
+      vectorTextViewParams.drawableTop ?: vectorTextViewParams.drawableTopRes?.let {
+        AppCompatResources.getDrawable(context, it)
+      }
+      )?.resize(context, width, height)?.tint(vectorTextViewParams.tintColor)
 
   setCompoundDrawablesWithIntrinsicBounds(drawableLeft, drawableTop, drawableRight, drawableBottom)
 
