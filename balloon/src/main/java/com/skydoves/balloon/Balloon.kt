@@ -385,7 +385,8 @@ class Balloon(
       } ?: applyIconForm(
         iconForm(context) {
           setDrawable(builder.iconDrawable)
-          setIconSize(builder.iconSize)
+          setIconWidth(builder.iconWidth)
+          setIconHeight(builder.iconHeight)
           setIconColor(builder.iconColor)
           setIconSpace(builder.iconSpace)
           setDrawableGravity(builder.iconGravity)
@@ -921,7 +922,7 @@ class Balloon(
     val displayWidth = context.displaySize().x
     val spaces = builder.paddingLeft + builder.paddingRight + context.dp2Px(24) +
       if (builder.iconDrawable != null) {
-        builder.iconSize + builder.iconSpace
+        builder.iconWidth + builder.iconSpace
       } else 0
 
     return when {
@@ -1121,7 +1122,11 @@ class Balloon(
 
     @JvmField @Px
     @set:JvmSynthetic
-    var iconSize: Int = context.dp2Px(28)
+    var iconWidth: Int = context.dp2Px(28)
+
+    @JvmField @Px
+    @set:JvmSynthetic
+    var iconHeight: Int = context.dp2Px(28)
 
     @JvmField @Px
     @set:JvmSynthetic
@@ -1553,12 +1558,36 @@ class Balloon(
       this.iconGravity = value
     }
 
-    /** sets the size of the icon drawable. */
-    fun setIconSize(@Dp value: Int): Builder = apply { this.iconSize = context.dp2Px(value) }
+    /** sets the width size of the icon drawable. */
+    fun setIconWidth(@Dp value: Int): Builder = apply {
+      this.iconWidth = context.dp2Px(value)
+    }
 
-    /** sets the size of the icon drawable using dimension resource. */
+    /** sets the width size of the icon drawable using the dimension resource. */
+    fun setIconWidthResource(@DimenRes value: Int): Builder = apply {
+      this.iconWidth = context.dimen(value)
+    }
+
+    /** sets the height size of the icon drawable. */
+    fun setIconHeight(@Dp value: Int): Builder = apply {
+      this.iconHeight = context.dp2Px(value)
+    }
+
+    /** sets the height size of the icon drawable using the dimension resource. */
+    fun setIconHeightResource(@DimenRes value: Int): Builder = apply {
+      this.iconHeight = context.dimen(value)
+    }
+
+    /** sets the size of the icon drawable. */
+    fun setIconSize(@Dp value: Int): Builder = apply {
+      setIconWidth(value)
+      setIconHeight(value)
+    }
+
+    /** sets the size of the icon drawable using the dimension resource. */
     fun setIconSizeResource(@DimenRes value: Int): Builder = apply {
-      this.iconSize = context.dimen(value)
+      setIconWidthResource(value)
+      setIconHeightResource(value)
     }
 
     /** sets the color of the icon drawable. */
