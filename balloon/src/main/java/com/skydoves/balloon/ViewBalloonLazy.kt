@@ -17,7 +17,7 @@
 package com.skydoves.balloon
 
 import android.content.Context
-import androidx.activity.ComponentActivity
+import com.skydoves.balloon.extensions.getActivity
 import java.io.Serializable
 import kotlin.reflect.KClass
 
@@ -41,9 +41,10 @@ internal class ViewBalloonLazy<out T : Balloon.Factory>(
     get() {
       var instance = cached
       if (instance === null) {
-        if (context is ComponentActivity) {
+        val activity = context.getActivity()
+        if (activity != null) {
           val factory = factory::java.get().newInstance()
-          instance = factory.create(context, context)
+          instance = factory.create(context, activity)
           cached = instance
         } else {
           throw IllegalArgumentException(
