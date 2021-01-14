@@ -375,7 +375,7 @@ Just use `setLifecycleOwner` method. Then `dismiss` method will be called automa
 
 ### Lazy initialization
 We can initialize the balloon property lazily using `balloon` keyword and `Balloon.Factory` abstract class.<br>
-The `balloon` extension keyword can be used on `Activity` and `Fragment`.
+The `balloon` extension keyword can be used on `Activity`, `Fragment`, and `View`.
 
 __Before__<br>
 `CustomActivity.kt`
