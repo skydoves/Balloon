@@ -349,7 +349,10 @@ button.setOnClickListener {
 If you want to show-up the balloon popup only once or a specific number of times, here is how to implement it simply.<br>
 ```java
 .setPreferenceName("MyBalloon") // sets preference name of the Balloon.
-.setShowTime(3) // show-up three of times the popup. the default value is 1.
+.setShowCounts(3) // show-up three of times the popup. the default value is 1.
+.runIfReachedShowCounts {
+  // do something after the preference showing counts is reached the goal.
+}
 ```
 
 But you can implement it more variously using [Only](https://github.com/skydoves/Only).
@@ -464,6 +467,7 @@ We can reference all kinds and descriptions of functions details here.<br>
 .setWidth(value: Int)
 .setWidthRatio(@FloatRange(from = 0.0, to = 1.0) value: Float)
 .setHeight(value: Int)
+.setSize(value: Int, value: Int)
 .setSpace(value: Int)
 .setPadding(value: Int)
 .setPaddingLeft(value: Int)
@@ -482,15 +486,15 @@ We can reference all kinds and descriptions of functions details here.<br>
 .setArrowOrientation(value: ArrowOrientation)
 .setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
 .setArrowColor(value: Int)
-.setArrowColorResource(value: Int)
+.setArrowColorResource(@ColorRes value: Int)
 .setArrowDrawable(value: Drawable?)
-.setArrowDrawableResource(value: Int)
+.setArrowDrawableResource(@DrawableRes value: Int)
 .setArrowAlignAnchorPadding(value: Int)
 .setArrowAlignAnchorPaddingRatio(value: Float)
 .setBackgroundColor(value: Int)
-.setBackgroundColorResource(value: Int)
+.setBackgroundColorResource(@ColorRes value: Int)
 .setBackgroundDrawable(value: Drawable?)
-.setBackgroundDrawableResource(value: Int)
+.setBackgroundDrawableResource(@DrawableRes value: Int)
 .setCornerRadius(value: Float)
 .setText(value: String)
 .setTextResource(value: Int)
@@ -501,10 +505,12 @@ We can reference all kinds and descriptions of functions details here.<br>
 .setTextGravity(value: Int)
 .setTextForm(value: TextForm)
 .setIconDrawable(value: Drawable?)
-.setIconDrawableResource(value: Int)
+.setIconDrawableResource(@DrawableRes value: Int)
 .setIconSize(value: Int)
+.setIconWidth(value: Int)
+.setIconHeight(value: Int)
 .setIconColor(value: Int)
-.setIconColorResource(value: Int)
+.setIconColorResource(@ColorRes value: Int)
 .setIconSpace(value: Int)
 .setIconForm(value: IconForm)
 .setIconGravity(value: IconGravity)
@@ -517,7 +523,7 @@ We can reference all kinds and descriptions of functions details here.<br>
 .setOverlayPosition(value: Point)
 .setOverlayShape(value: BalloonOverlayShape)
 .setPreferenceName(value: String)
-.setShowTime(value: Int)
+.setShowCount(value: Int)
 .isRtlSupport(value: Boolean)
 .setFocusable(value: Boolean)
 .setLifecycleOwner(value: LifecycleOwner)
