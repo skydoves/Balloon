@@ -41,7 +41,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.PopupWindow
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
@@ -214,26 +213,13 @@ class Balloon(
   private fun initializeArrow(anchor: View) {
     with(binding.balloonArrow) {
       visible(builder.isVisibleArrow)
-      val params = RelativeLayout.LayoutParams(builder.arrowSize, builder.arrowSize)
-      when (builder.arrowOrientation) {
-        ArrowOrientation.BOTTOM -> {
-          params.addRule(RelativeLayout.ALIGN_BOTTOM, binding.balloonContent.id)
-          rotation = 180f
-        }
-        ArrowOrientation.TOP -> {
-          params.addRule(RelativeLayout.ALIGN_TOP, binding.balloonContent.id)
-          rotation = 0f
-        }
-        ArrowOrientation.LEFT -> {
-          params.addRule(RelativeLayout.ALIGN_LEFT, binding.balloonContent.id)
-          rotation = -90f
-        }
-        ArrowOrientation.RIGHT -> {
-          params.addRule(RelativeLayout.ALIGN_RIGHT, binding.balloonContent.id)
-          rotation = 90f
-        }
+      layoutParams = FrameLayout.LayoutParams(builder.arrowSize, builder.arrowSize)
+      rotation = when (builder.arrowOrientation) {
+        ArrowOrientation.BOTTOM -> 180f
+        ArrowOrientation.TOP -> 0f
+        ArrowOrientation.LEFT -> -90f
+        ArrowOrientation.RIGHT -> 90f
       }
-      layoutParams = params
       alpha = builder.alpha
       builder.arrowDrawable?.let { setImageDrawable(it) }
       setPadding(
@@ -247,13 +233,23 @@ class Balloon(
       } else {
         ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.backgroundColor))
       }
-      binding.root.post {
+      binding.balloonCard.post {
         onBalloonInitializedListener?.onBalloonInitialized(getContentView())
         when (builder.arrowOrientation) {
-          ArrowOrientation.BOTTOM, ArrowOrientation.TOP -> {
+          ArrowOrientation.BOTTOM -> {
             x = getArrowConstraintPositionX(anchor)
+            y = binding.balloonCard.y + binding.balloonCard.height - SIZE_ARROW_BOUNDARY
           }
-          ArrowOrientation.LEFT, ArrowOrientation.RIGHT -> {
+          ArrowOrientation.TOP -> {
+            x = getArrowConstraintPositionX(anchor)
+            y = binding.balloonCard.y - builder.arrowSize + SIZE_ARROW_BOUNDARY
+          }
+          ArrowOrientation.LEFT -> {
+            x = binding.balloonCard.x - builder.arrowSize + SIZE_ARROW_BOUNDARY
+            y = getArrowConstraintPositionY(anchor)
+          }
+          ArrowOrientation.RIGHT -> {
+            x = binding.balloonCard.x + binding.balloonCard.width - SIZE_ARROW_BOUNDARY
             y = getArrowConstraintPositionY(anchor)
           }
         }
@@ -361,7 +357,7 @@ class Balloon(
   }
 
   private fun initializeBalloonContent() {
-    val paddingSize = builder.arrowSize * 2 - 2
+    val paddingSize = (builder.arrowSize - SIZE_ARROW_BOUNDARY) * 2
     val elevation = builder.elevation.toInt()
     with(binding.balloonContent) {
       when (builder.arrowOrientation) {

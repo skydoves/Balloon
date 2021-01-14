@@ -28,6 +28,9 @@ internal const val NO_LONG_VALUE: Long = -1L
 /** definition of the left-to-right value. */
 internal const val LTR: Int = 1
 
+/** definition of the boundary size between the content and the arrow. */
+internal const val SIZE_ARROW_BOUNDARY: Int = 1
+
 /** returns the negative of this value. */
 internal fun Int.unaryMinus(predicate: Boolean): Int {
   return if (predicate) {

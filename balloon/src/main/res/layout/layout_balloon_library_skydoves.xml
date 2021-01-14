@@ -16,20 +16,20 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/balloon"
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content">
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
 
-  <RelativeLayout
+  <FrameLayout
     android:id="@+id/balloon_wrapper"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:ignore="UselessParent">
 
-    <RelativeLayout
+    <FrameLayout
       android:id="@+id/balloon_content"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_centerInParent="true"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_gravity="center"
       android:clipChildren="false"
       android:clipToPadding="false"
       android:padding="10dp">
@@ -38,7 +38,7 @@
         android:id="@+id/balloon_card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true"
+        android:layout_gravity="center"
         tools:background="@android:color/darker_gray">
 
         <com.skydoves.balloon.vectortext.VectorTextView
@@ -52,19 +52,17 @@
 
       </com.skydoves.balloon.radius.RadiusLayout>
 
-    </RelativeLayout>
+    </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatImageView
       android:id="@+id/balloon_arrow"
       android:layout_width="15dp"
       android:layout_height="10dp"
-      android:layout_alignBottom="@+id/balloon_content"
-      android:layout_centerHorizontal="true"
       android:rotation="180"
       android:scaleType="fitXY"
       android:src="@drawable/arrow_balloon_library_skydoves"
       android:tint="@android:color/black" />
 
-  </RelativeLayout>
+  </FrameLayout>
 
 </FrameLayout>
