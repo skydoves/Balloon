@@ -29,6 +29,7 @@ import android.graphics.Rect
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -316,9 +317,12 @@ class Balloon(
   private fun initializeBackground() {
     with(binding.balloonCard) {
       alpha = builder.alpha
-      cardElevation = builder.elevation
+      ViewCompat.setElevation(this, builder.elevation)
       if (builder.backgroundDrawable == null) {
-        setCardBackgroundColor(builder.backgroundColor)
+        background = GradientDrawable().apply {
+          setColor(builder.backgroundColor)
+          cornerRadius = builder.cornerRadius
+        }
         radius = builder.cornerRadius
       } else {
         background = builder.backgroundDrawable
@@ -326,7 +330,6 @@ class Balloon(
     }
   }
 
-  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   private fun initializeBalloonWindow() {
     with(this.bodyWindow) {
       isOutsideTouchable = true

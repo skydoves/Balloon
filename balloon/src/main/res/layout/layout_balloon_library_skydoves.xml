@@ -14,7 +14,6 @@
   limitations under the License.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/balloon"
   android:layout_width="wrap_content"
@@ -35,14 +34,12 @@
       android:clipToPadding="false"
       android:padding="10dp">
 
-      <androidx.cardview.widget.CardView
+      <com.skydoves.balloon.radius.RadiusLayout
         android:id="@+id/balloon_card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="0dp"
-        tools:cardBackgroundColor="@android:color/darker_gray">
+        tools:background="@android:color/darker_gray">
 
         <com.skydoves.balloon.vectortext.VectorTextView
           android:id="@+id/balloon_text"
@@ -53,7 +50,7 @@
           android:textColor="@android:color/white"
           tools:text="@tools:sample/lorem" />
 
-      </androidx.cardview.widget.CardView>
+      </com.skydoves.balloon.radius.RadiusLayout>
 
     </RelativeLayout>
 
