@@ -20,12 +20,10 @@ package com.skydoves.balloon
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
-import android.app.Activity
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Point
-import android.graphics.Rect
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -71,6 +69,7 @@ import com.skydoves.balloon.extensions.contextDrawable
 import com.skydoves.balloon.extensions.dimen
 import com.skydoves.balloon.extensions.displaySize
 import com.skydoves.balloon.extensions.dp2Px
+import com.skydoves.balloon.extensions.getStatusBarHeight
 import com.skydoves.balloon.extensions.isFinishing
 import com.skydoves.balloon.extensions.visible
 import com.skydoves.balloon.overlay.BalloonOverlayAnimation
@@ -198,14 +197,6 @@ class Balloon(
     return location
   }
 
-  private fun getStatusBarHeight(): Int {
-    val rectangle = Rect()
-    return if (context is Activity && builder.isStatusBarVisible) {
-      context.window.decorView.getWindowVisibleDisplayFrame(rectangle)
-      rectangle.top
-    } else 0
-  }
-
   private fun getDoubleArrowSize(): Int {
     return builder.arrowSize * 2
   }
@@ -284,9 +275,9 @@ class Balloon(
   }
 
   private fun getArrowConstraintPositionY(anchor: View): Float {
-    val balloonY: Int =
-      getWindowBodyScreenLocation(binding.balloonContent)[1] - getStatusBarHeight()
-    val anchorY: Int = getWindowBodyScreenLocation(anchor)[1] - getStatusBarHeight()
+    val statusBarHeight = anchor.getStatusBarHeight(builder.isStatusBarVisible)
+    val balloonY: Int = getWindowBodyScreenLocation(binding.balloonContent)[1] - statusBarHeight
+    val anchorY: Int = getWindowBodyScreenLocation(anchor)[1] - statusBarHeight
     val minPosition = getMinArrowPosition()
     val maxPosition = getMeasuredHeight() - minPosition - builder.marginTop - builder.marginBottom
     val arrowHalfSize = builder.arrowSize / 2

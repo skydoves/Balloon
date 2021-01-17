@@ -19,6 +19,8 @@ package com.skydoves.balloon.extensions
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.TargetApi
+import android.app.Activity
+import android.graphics.Rect
 import android.os.Build
 import android.view.View
 import android.view.ViewAnimationUtils
@@ -32,6 +34,16 @@ internal fun View.visible(shouldVisible: Boolean) {
   } else {
     View.GONE
   }
+}
+
+/** returns the status bar height if the anchor is on the Activity. */
+internal fun View.getStatusBarHeight(isStatusBarVisible: Boolean): Int {
+  val rectangle = Rect()
+  val context = context
+  return if (context is Activity && isStatusBarVisible) {
+    context.window.decorView.getWindowVisibleDisplayFrame(rectangle)
+    rectangle.top
+  } else 0
 }
 
 /** shows circular revealed animation to a view. */
