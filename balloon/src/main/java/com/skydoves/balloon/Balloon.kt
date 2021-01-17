@@ -70,6 +70,7 @@ import com.skydoves.balloon.extensions.dimen
 import com.skydoves.balloon.extensions.displaySize
 import com.skydoves.balloon.extensions.dp2Px
 import com.skydoves.balloon.extensions.getStatusBarHeight
+import com.skydoves.balloon.extensions.getViewPointOnScreen
 import com.skydoves.balloon.extensions.isFinishing
 import com.skydoves.balloon.extensions.visible
 import com.skydoves.balloon.overlay.BalloonOverlayAnimation
@@ -191,12 +192,6 @@ class Balloon(
       builder.arrowAlignAnchorPadding
   }
 
-  private fun getWindowBodyScreenLocation(view: View): IntArray {
-    val location: IntArray = intArrayOf(0, 0)
-    view.getLocationOnScreen(location)
-    return location
-  }
-
   private fun getDoubleArrowSize(): Int {
     return builder.arrowSize * 2
   }
@@ -249,8 +244,8 @@ class Balloon(
   }
 
   private fun getArrowConstraintPositionX(anchor: View): Float {
-    val balloonX: Int = getWindowBodyScreenLocation(binding.balloonContent)[0]
-    val anchorX: Int = getWindowBodyScreenLocation(anchor)[0]
+    val balloonX: Int = binding.balloonContent.getViewPointOnScreen().x
+    val anchorX: Int = anchor.getViewPointOnScreen().x
     val minPosition = getMinArrowPosition()
     val maxPosition = getMeasuredWidth() - minPosition - builder.marginRight - builder.marginLeft
     val arrowHalfSize = builder.arrowSize / 2f
@@ -276,8 +271,8 @@ class Balloon(
 
   private fun getArrowConstraintPositionY(anchor: View): Float {
     val statusBarHeight = anchor.getStatusBarHeight(builder.isStatusBarVisible)
-    val balloonY: Int = getWindowBodyScreenLocation(binding.balloonContent)[1] - statusBarHeight
-    val anchorY: Int = getWindowBodyScreenLocation(anchor)[1] - statusBarHeight
+    val balloonY: Int = binding.balloonContent.getViewPointOnScreen().y - statusBarHeight
+    val anchorY: Int = anchor.getViewPointOnScreen().y - statusBarHeight
     val minPosition = getMinArrowPosition()
     val maxPosition = getMeasuredHeight() - minPosition - builder.marginTop - builder.marginBottom
     val arrowHalfSize = builder.arrowSize / 2

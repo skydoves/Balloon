@@ -20,6 +20,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.TargetApi
 import android.app.Activity
+import android.graphics.Point
 import android.graphics.Rect
 import android.os.Build
 import android.view.View
@@ -34,6 +35,13 @@ internal fun View.visible(shouldVisible: Boolean) {
   } else {
     View.GONE
   }
+}
+
+/** computes and returns the coordinates of this view on the screen. */
+internal fun View.getViewPointOnScreen(): Point {
+  val location: IntArray = intArrayOf(0, 0)
+  getLocationOnScreen(location)
+  return Point(location[0], location[1])
 }
 
 /** returns the status bar height if the anchor is on the Activity. */
