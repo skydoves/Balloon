@@ -21,6 +21,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.graphics.Point
 import android.graphics.drawable.Drawable
+import android.util.TypedValue
 import androidx.activity.ComponentActivity
 import androidx.annotation.DimenRes
 import androidx.appcompat.content.res.AppCompatResources
@@ -46,9 +47,20 @@ internal fun Context.dp2Px(dp: Float): Float {
   return (dp * scale)
 }
 
+/** px size to sp size. */
+internal fun Context.px2Sp(px: Float): Float {
+  val scale = resources.displayMetrics.scaledDensity
+  return (px / scale)
+}
+
 /** gets a dimension pixel size from dimension resource. */
-internal fun Context.dimen(@DimenRes dimenRes: Int): Int {
+internal fun Context.dimenPixel(@DimenRes dimenRes: Int): Int {
   return resources.getDimensionPixelSize(dimenRes)
+}
+
+/** gets a dimension size from dimension resource. */
+internal fun Context.dimen(@DimenRes dimenRes: Int): Float {
+  return resources.getDimension(dimenRes)
 }
 
 /** gets a color from the resource. */

@@ -71,11 +71,13 @@ import com.skydoves.balloon.extensions.circularUnRevealed
 import com.skydoves.balloon.extensions.contextColor
 import com.skydoves.balloon.extensions.contextDrawable
 import com.skydoves.balloon.extensions.dimen
+import com.skydoves.balloon.extensions.dimenPixel
 import com.skydoves.balloon.extensions.displaySize
 import com.skydoves.balloon.extensions.dp2Px
 import com.skydoves.balloon.extensions.getStatusBarHeight
 import com.skydoves.balloon.extensions.getViewPointOnScreen
 import com.skydoves.balloon.extensions.isFinishing
+import com.skydoves.balloon.extensions.px2Sp
 import com.skydoves.balloon.extensions.visible
 import com.skydoves.balloon.overlay.BalloonOverlayAnimation
 import com.skydoves.balloon.overlay.BalloonOverlayOval
@@ -1339,7 +1341,7 @@ class Balloon(
 
     /** sets the width size using a dimension resource. */
     fun setWidthResource(@DimenRes value: Int): Builder = apply {
-      this.width = context.dimen(value)
+      this.width = context.dimenPixel(value)
     }
 
     /** sets the width size by the display screen size ratio. */
@@ -1357,7 +1359,7 @@ class Balloon(
 
     /** sets the height size using a dimension resource. */
     fun setHeightResource(@DimenRes value: Int): Builder = apply {
-      this.height = context.dimen(value)
+      this.height = context.dimenPixel(value)
     }
 
     /** sets the width and height sizes of the balloon. */
@@ -1382,7 +1384,7 @@ class Balloon(
 
     /** sets the padding on the balloon content all directions using dimension resource. */
     fun setPaddingResource(@DimenRes value: Int): Builder = apply {
-      val padding = context.dimen(value)
+      val padding = context.dimenPixel(value)
       this.paddingLeft = padding
       this.paddingTop = padding
       this.paddingRight = padding
@@ -1392,17 +1394,37 @@ class Balloon(
     /** sets the left padding on the balloon content. */
     fun setPaddingLeft(@Dp value: Int): Builder = apply { this.paddingLeft = context.dp2Px(value) }
 
+    /** sets the left padding on the balloon content using dimension resource. */
+    fun setPaddingLeftResource(@DimenRes value: Int): Builder = apply {
+      this.paddingLeft = context.dimenPixel(value)
+    }
+
     /** sets the top padding on the balloon content. */
     fun setPaddingTop(@Dp value: Int): Builder = apply { this.paddingTop = context.dp2Px(value) }
+
+    /** sets the top padding on the balloon content using dimension resource. */
+    fun setPaddingTopResource(@DimenRes value: Int): Builder = apply {
+      this.paddingTop = context.dimenPixel(value)
+    }
 
     /** sets the right padding on the balloon content. */
     fun setPaddingRight(@Dp value: Int): Builder = apply {
       this.paddingRight = context.dp2Px(value)
     }
 
+    /** sets the right padding on the balloon content using dimension resource. */
+    fun setPaddingRightResource(@DimenRes value: Int): Builder = apply {
+      this.paddingRight = context.dimenPixel(value)
+    }
+
     /** sets the bottom padding on the balloon content. */
     fun setPaddingBottom(@Dp value: Int): Builder = apply {
       this.paddingBottom = context.dp2Px(value)
+    }
+
+    /** sets the bottom padding on the balloon content using dimension resource. */
+    fun setPaddingBottomResource(@DimenRes value: Int): Builder = apply {
+      this.paddingBottom = context.dimenPixel(value)
     }
 
     /** sets the margin on the balloon all directions. */
@@ -1413,9 +1435,9 @@ class Balloon(
       setMarginBottom(value)
     }
 
-    /** sets the margin on thr balloon all directions using dimension resource. */
+    /** sets the margin on the balloon all directions using dimension resource. */
     fun setMarginResource(@DimenRes value: Int): Builder = apply {
-      val margin = context.dimen(value)
+      val margin = context.dimenPixel(value)
       this.marginLeft = margin
       this.marginTop = margin
       this.marginRight = margin
@@ -1427,9 +1449,19 @@ class Balloon(
       this.marginLeft = context.dp2Px(value)
     }
 
+    /** sets the left margin on the balloon using dimension resource. */
+    fun setMarginLeftResource(@DimenRes value: Int): Builder = apply {
+      this.marginLeft = context.dimenPixel(value)
+    }
+
     /** sets the top margin on the balloon. */
     fun setMarginTop(@Dp value: Int): Builder = apply {
       this.marginTop = context.dp2Px(value)
+    }
+
+    /** sets the top margin on the balloon using dimension resource. */
+    fun setMarginTopResource(@DimenRes value: Int): Builder = apply {
+      this.marginTop = context.dimenPixel(value)
     }
 
     /** sets the right margin on the balloon. */
@@ -1437,9 +1469,19 @@ class Balloon(
       this.marginRight = context.dp2Px(value)
     }
 
+    /** sets the right margin on the balloon using dimension resource. */
+    fun setMarginRightResource(@DimenRes value: Int): Builder = apply {
+      this.marginRight = context.dimenPixel(value)
+    }
+
     /** sets the bottom margin on the balloon. */
     fun setMarginBottom(@Dp value: Int): Builder = apply {
       this.marginBottom = context.dp2Px(value)
+    }
+
+    /** sets the bottom margin on the balloon using dimension resource. */
+    fun setMarginBottomResource(@DimenRes value: Int): Builder = apply {
+      this.marginBottom = context.dimenPixel(value)
     }
 
     /** sets the visibility of the arrow. */
@@ -1465,7 +1507,7 @@ class Balloon(
 
     /** sets the size of the arrow using dimension resource. */
     fun setArrowSizeResource(@DimenRes value: Int): Builder = apply {
-      this.arrowSize = context.dimen(value)
+      this.arrowSize = context.dimenPixel(value)
     }
 
     /** sets the arrow position by popup size ration. The popup size depends on [arrowOrientation]. */
@@ -1503,9 +1545,19 @@ class Balloon(
       this.arrowLeftPadding = context.dp2Px(value)
     }
 
+    /** sets the left padding of the arrow using the resource. */
+    fun setArrowLeftPaddingResource(@DimenRes value: Int): Builder = apply {
+      this.arrowLeftPadding = context.dimenPixel(value)
+    }
+
     /** sets the right padding of the arrow. */
     fun setArrowRightPadding(@Dp value: Int): Builder = apply {
       this.arrowRightPadding = context.dp2Px(value)
+    }
+
+    /** sets the right padding of the arrow using the resource. */
+    fun setArrowRightPaddingResource(@DimenRes value: Int): Builder = apply {
+      this.arrowRightPadding = context.dimenPixel(value)
     }
 
     /** sets the top padding of the arrow. */
@@ -1513,14 +1565,29 @@ class Balloon(
       this.arrowTopPadding = context.dp2Px(value)
     }
 
+    /** sets the top padding of the arrow using the resource. */
+    fun setArrowTopPaddingResource(@DimenRes value: Int): Builder = apply {
+      this.arrowTopPadding = context.dimenPixel(value)
+    }
+
     /** sets the bottom padding of the arrow. */
     fun setArrowBottomPadding(@Dp value: Int): Builder = apply {
       this.arrowBottomPadding = context.dp2Px(value)
     }
 
+    /** sets the bottom padding of the arrow using the resource. */
+    fun setArrowBottomPaddingResource(@DimenRes value: Int): Builder = apply {
+      this.arrowBottomPadding = context.dimenPixel(value)
+    }
+
     /** sets the padding of the arrow when aligning anchor using with [ArrowConstraints.ALIGN_ANCHOR]. */
     fun setArrowAlignAnchorPadding(@Dp value: Int): Builder = apply {
       this.arrowAlignAnchorPadding = context.dp2Px(value)
+    }
+
+    /** sets the padding of the arrow the resource when aligning anchor using with [ArrowConstraints.ALIGN_ANCHOR]. */
+    fun setArrowAlignAnchorPaddingResource(@DimenRes value: Int): Builder = apply {
+      this.arrowAlignAnchorPadding = context.dimenPixel(value)
     }
 
     /** sets the padding ratio of the arrow when aligning anchor using with [ArrowConstraints.ALIGN_ANCHOR]. */
@@ -1537,7 +1604,7 @@ class Balloon(
     /** sets the elevation of the arrow using dimension resource. */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     fun setArrowElevationResource(@DimenRes value: Int): Builder = apply {
-      this.arrowElevation = context.dimen(value).toFloat()
+      this.arrowElevation = context.dimen(value)
     }
 
     /** sets the background color of the arrow and popup. */
@@ -1565,7 +1632,7 @@ class Balloon(
 
     /** sets the corner radius of the popup using dimension resource. */
     fun setCornerRadiusResource(@DimenRes value: Int): Builder = apply {
-      this.cornerRadius = context.dimen(value).toFloat()
+      this.cornerRadius = context.dimen(value)
     }
 
     /** sets the main text content of the popup. */
@@ -1592,6 +1659,11 @@ class Balloon(
 
     /** sets the size of the main text content. */
     fun setTextSize(@Sp value: Float): Builder = apply { this.textSize = value }
+
+    /** sets the size of the main text content using dimension resource. */
+    fun setTextSizeResource(@DimenRes value: Int) = apply {
+      this.textSize = context.px2Sp(context.dimen(value))
+    }
 
     /** sets the typeface of the main text content. */
     fun setTextTypeface(value: Int): Builder = apply { this.textTypeface = value }
@@ -1630,7 +1702,7 @@ class Balloon(
 
     /** sets the width size of the icon drawable using the dimension resource. */
     fun setIconWidthResource(@DimenRes value: Int): Builder = apply {
-      this.iconWidth = context.dimen(value)
+      this.iconWidth = context.dimenPixel(value)
     }
 
     /** sets the height size of the icon drawable. */
@@ -1640,7 +1712,7 @@ class Balloon(
 
     /** sets the height size of the icon drawable using the dimension resource. */
     fun setIconHeightResource(@DimenRes value: Int): Builder = apply {
-      this.iconHeight = context.dimen(value)
+      this.iconHeight = context.dimenPixel(value)
     }
 
     /** sets the size of the icon drawable. */
@@ -1668,7 +1740,7 @@ class Balloon(
 
     /** sets the space between the icon and the main text content using dimension resource. */
     fun setIconSpaceResource(@DimenRes value: Int): Builder = apply {
-      this.iconSpace = context.dimen(value)
+      this.iconSpace = context.dimenPixel(value)
     }
 
     /** applies [IconForm] attributes to the icon. */
@@ -1688,7 +1760,7 @@ class Balloon(
     /** sets the elevation to the popup using dimension resource. */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     fun setElevationResource(@DimenRes value: Int): Builder = apply {
-      this.elevation = context.dimen(value).toFloat()
+      this.elevation = context.dimen(value)
     }
 
     /** sets the custom layout resource to the popup content. */
@@ -1710,6 +1782,11 @@ class Balloon(
 
     /** sets a padding value of the overlay shape internally. */
     fun setOverlayPadding(@Dp value: Float) = apply { this.overlayPadding = value }
+
+    /** sets a padding value of the overlay shape internally using dimension resource.. */
+    fun setOverlayPaddingResource(@DimenRes value: Int) = apply {
+      this.overlayPadding = context.dimen(value)
+    }
 
     /** sets a specific position of the overlay shape. */
     fun setOverlayPosition(value: Point) = apply { this.overlayPosition = value }
