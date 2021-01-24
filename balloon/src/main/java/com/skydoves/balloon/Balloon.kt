@@ -220,7 +220,6 @@ class Balloon(
       } else {
         ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.backgroundColor))
       }
-      ViewCompat.setElevation(this, builder.arrowElevation)
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         outlineProvider = ViewOutlineProvider.BOUNDS
       }
@@ -230,6 +229,7 @@ class Balloon(
           ArrowOrientation.BOTTOM -> {
             x = getArrowConstraintPositionX(anchor)
             y = binding.balloonCard.y + binding.balloonCard.height - SIZE_ARROW_BOUNDARY
+            ViewCompat.setElevation(this, builder.arrowElevation)
           }
           ArrowOrientation.TOP -> {
             x = getArrowConstraintPositionX(anchor)
