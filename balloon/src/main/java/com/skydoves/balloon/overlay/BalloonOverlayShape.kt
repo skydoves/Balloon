@@ -16,6 +16,8 @@
 
 package com.skydoves.balloon.overlay
 
+import androidx.annotation.DimenRes
+
 /** BalloonOverlay is a sealed interface for composing balloon overlay types. */
 sealed class BalloonOverlayShape
 
@@ -26,12 +28,19 @@ object BalloonOverlayRect : BalloonOverlayShape()
 object BalloonOverlayOval : BalloonOverlayShape()
 
 /** draw an rounded Rect for overlaying over an anchor. */
-data class BalloonOverlayRoundRect(
-  val radiusX: Float,
-  val radiusY: Float
-) : BalloonOverlayShape()
+class BalloonOverlayRoundRect private constructor(
+        val radiusPair: Pair<Float, Float>? = null,
+        val radiusResPair: Pair<Int, Int>? = null
+): BalloonOverlayShape() {
+    constructor(radiusX: Float, radiusY: Float): this(radiusPair = Pair(radiusX, radiusY))
+    constructor(@DimenRes radiusXRes: Int, @DimenRes radiusYRes: Int): this(radiusResPair = Pair(radiusXRes, radiusYRes))
+}
 
 /** draw a Circle for overlaying over an anchor. */
-data class BalloonOverlayCircle(
-  val radius: Float
-) : BalloonOverlayShape()
+class BalloonOverlayCircle private constructor(
+        val radius: Float? = null,
+        val radiusRes: Int? = null
+) : BalloonOverlayShape() {
+    constructor(radius: Float): this(radius, null)
+    constructor(@DimenRes radiusRes: Int): this(null, radiusRes)
+}
