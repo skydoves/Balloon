@@ -463,11 +463,11 @@ class Balloon(
   }
 
   private fun getBalloonHighlightAnimation(): Animation? {
-    val animRes = if(builder.balloonHighlightAnimationStyle == NO_INT_VALUE) {
-      when(builder.balloonHighlightAnimation) {
+    val animRes = if (builder.balloonHighlightAnimationStyle == NO_INT_VALUE) {
+      when (builder.balloonHighlightAnimation) {
         BalloonHighlightAnimation.HEARTBEAT -> {
-          if(builder.isVisibleArrow) {
-            when(builder.arrowOrientation) {
+          if (builder.isVisibleArrow) {
+            when (builder.arrowOrientation) {
               ArrowOrientation.TOP -> R.anim.heartbeat_bottom_balloon_library
               ArrowOrientation.BOTTOM -> R.anim.heartbeat_top_balloon_library
               ArrowOrientation.LEFT -> R.anim.heartbeat_right_balloon_library
@@ -488,9 +488,12 @@ class Balloon(
 
   private fun startBalloonHighlightAnimation() {
     binding.balloon.post {
-      Handler(Looper.getMainLooper()).postDelayed({
-        getBalloonHighlightAnimation()?.let { animation -> binding.balloon.startAnimation(animation) }
-      }, builder.balloonHighlightAnimationStartDelay)
+      Handler(Looper.getMainLooper()).postDelayed(
+        {
+          getBalloonHighlightAnimation()?.let { animation -> binding.balloon.startAnimation(animation) }
+        },
+        builder.balloonHighlightAnimationStartDelay
+      )
     }
   }
 

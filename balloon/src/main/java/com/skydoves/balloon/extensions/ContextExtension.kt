@@ -21,7 +21,6 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.graphics.Point
 import android.graphics.drawable.Drawable
-import android.util.TypedValue
 import androidx.activity.ComponentActivity
 import androidx.annotation.DimenRes
 import androidx.appcompat.content.res.AppCompatResources
