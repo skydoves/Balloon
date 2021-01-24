@@ -38,9 +38,12 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewOutlineProvider
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import android.widget.PopupWindow
 import android.widget.TextView
+import androidx.annotation.AnimRes
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
@@ -457,6 +460,48 @@ class Balloon(
     }
   }
 
+  private fun getBalloonHighlightAnimation(): Animation? {
+    val animRes = if(builder.balloonHighlightAnimationStyle == NO_INT_VALUE) {
+      when(builder.balloonHighlightAnimation) {
+        BalloonHighlightAnimation.HEARTBEAT -> {
+          if(builder.isVisibleArrow) {
+            when(builder.arrowOrientation) {
+              ArrowOrientation.TOP -> R.anim.heartbeat_bottom_balloon_library
+              ArrowOrientation.BOTTOM -> R.anim.heartbeat_top_balloon_library
+              ArrowOrientation.LEFT -> R.anim.heartbeat_right_balloon_library
+              ArrowOrientation.RIGHT -> R.anim.heartbeat_left_balloon_library
+            }
+          } else {
+            R.anim.heartbeat_center_balloon_library
+          }
+        }
+        else -> return null
+      }
+    } else {
+      builder.balloonHighlightAnimationStyle
+    }
+
+    return AnimationUtils.loadAnimation(context, animRes)
+  }
+
+  private fun startBalloonHighlightAnimation() {
+    binding.balloon.post {
+      Handler(Looper.getMainLooper()).postDelayed({
+        getBalloonHighlightAnimation()?.let { animation -> binding.balloon.startAnimation(animation) }
+      }, builder.balloonHighlightAnimationStartDelay)
+    }
+  }
+
+  private fun stopBalloonHighlightAnimation() {
+    binding.balloon.apply {
+      animation?.apply {
+        cancel()
+        reset()
+      }
+      clearAnimation()
+    }
+  }
+
   @MainThread
   private inline fun show(anchor: View, crossinline block: () -> Unit) {
     if (!isShowing && !destroyed && !context.isFinishing() &&
@@ -493,6 +538,7 @@ class Balloon(
         showOverlayWindow(anchor)
 
         applyBalloonAnimation()
+        startBalloonHighlightAnimation()
         block()
       }
     } else if (builder.dismissWhenShowAgain) {
@@ -815,6 +861,7 @@ class Balloon(
   /** sets a [OnBalloonDismissListener] to the popup. */
   fun setOnBalloonDismissListener(onBalloonDismissListener: OnBalloonDismissListener?) {
     this.bodyWindow.setOnDismissListener {
+      stopBalloonHighlightAnimation()
       this@Balloon.dismiss()
       onBalloonDismissListener?.onBalloonDismiss()
     }
@@ -1241,6 +1288,18 @@ class Balloon(
     @JvmField
     @set:JvmSynthetic
     var circularDuration: Long = 500L
+
+    @JvmField
+    @set:JvmSynthetic
+    var balloonHighlightAnimation: BalloonHighlightAnimation = BalloonHighlightAnimation.NONE
+
+    @JvmField @StyleRes
+    @set:JvmSynthetic
+    var balloonHighlightAnimationStyle: Int = NO_INT_VALUE
+
+    @JvmField
+    @set:JvmSynthetic
+    var balloonHighlightAnimationStartDelay: Long = 0L
 
     @JvmField
     @set:JvmSynthetic
@@ -1698,6 +1757,18 @@ class Balloon(
      */
     fun setCircularDuration(value: Long): Builder = apply {
       this.circularDuration = value
+    }
+
+    /** sets the balloon highlight animation using [BalloonHighlightAnimation]. */
+    fun setBalloonHighlightAnimation(value: BalloonHighlightAnimation, startDelay: Long = 0L): Builder = apply {
+      this.balloonHighlightAnimation = value
+      this.balloonHighlightAnimationStartDelay = startDelay
+    }
+
+    /** sets the balloon highlight animation using custom xml animation resource file. */
+    fun setBalloonHighlightAnimationResource(@AnimRes value: Int, startDelay: Long = 0L): Builder = apply {
+      this.balloonHighlightAnimationStyle = value
+      this.balloonHighlightAnimationStartDelay = startDelay
     }
 
     /** sets a [OnBalloonClickListener] to the popup. */
