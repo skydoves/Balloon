@@ -73,7 +73,7 @@ inline fun <reified T : Balloon.Factory> ComponentActivity.balloon(): Lazy<Ballo
 @BalloonInlineDsl
 inline fun <reified T : Balloon.Factory> Fragment.balloon(
   factory: KClass<T>
-): Lazy<Balloon?> {
+): Lazy<Balloon> {
   return FragmentBalloonLazy(this, factory)
 }
 
@@ -86,7 +86,7 @@ inline fun <reified T : Balloon.Factory> Fragment.balloon(
 @MainThread
 @JvmSynthetic
 @BalloonInlineDsl
-inline fun <reified T : Balloon.Factory> Fragment.balloon(): Lazy<Balloon?> {
+inline fun <reified T : Balloon.Factory> Fragment.balloon(): Lazy<Balloon> {
   return FragmentBalloonLazy(fragment = this, factory = T::class)
 }
 
