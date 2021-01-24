@@ -40,7 +40,7 @@ internal class FragmentBalloonLazy<out T : Balloon.Factory>(
     get() {
       var instance = cached
       if (instance === null) {
-        if(fragment.context != null) {
+        if (fragment.context != null) {
           val factory = factory::java.get().newInstance()
           val lifecycle = if (fragment.view !== null) {
             fragment.viewLifecycleOwner
@@ -51,7 +51,7 @@ internal class FragmentBalloonLazy<out T : Balloon.Factory>(
           cached = instance
         } else {
           throw IllegalArgumentException(
-                  "Balloon can not be initialized. The passed fragment's context is null."
+            "Balloon can not be initialized. The passed fragment's context is null."
           )
         }
       }

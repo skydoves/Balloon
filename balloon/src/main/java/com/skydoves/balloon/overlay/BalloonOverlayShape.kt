@@ -29,18 +29,18 @@ object BalloonOverlayOval : BalloonOverlayShape()
 
 /** draw an rounded Rect for overlaying over an anchor. */
 class BalloonOverlayRoundRect private constructor(
-        val radiusPair: Pair<Float, Float>? = null,
-        val radiusResPair: Pair<Int, Int>? = null
-): BalloonOverlayShape() {
-    constructor(radiusX: Float, radiusY: Float): this(radiusPair = Pair(radiusX, radiusY))
-    constructor(@DimenRes radiusXRes: Int, @DimenRes radiusYRes: Int): this(radiusResPair = Pair(radiusXRes, radiusYRes))
+  val radiusPair: Pair<Float, Float>? = null,
+  val radiusResPair: Pair<Int, Int>? = null
+) : BalloonOverlayShape() {
+  constructor(radiusX: Float, radiusY: Float) : this(radiusPair = Pair(radiusX, radiusY))
+  constructor(@DimenRes radiusXRes: Int, @DimenRes radiusYRes: Int) : this(radiusResPair = Pair(radiusXRes, radiusYRes))
 }
 
 /** draw a Circle for overlaying over an anchor. */
 class BalloonOverlayCircle private constructor(
-        val radius: Float? = null,
-        val radiusRes: Int? = null
+  val radius: Float? = null,
+  val radiusRes: Int? = null
 ) : BalloonOverlayShape() {
-    constructor(radius: Float): this(radius, null)
-    constructor(@DimenRes radiusRes: Int): this(null, radiusRes)
+  constructor(radius: Float) : this(radius, null)
+  constructor(@DimenRes radiusRes: Int) : this(null, radiusRes)
 }
