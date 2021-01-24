@@ -32,22 +32,28 @@ import kotlin.reflect.KClass
 internal class FragmentBalloonLazy<out T : Balloon.Factory>(
   private val fragment: Fragment,
   private val factory: KClass<T>
-) : Lazy<Balloon?>, Serializable {
+) : Lazy<Balloon>, Serializable {
 
   private var cached: Balloon? = null
 
-  override val value: Balloon?
+  override val value: Balloon
     get() {
       var instance = cached
-      if (instance === null && fragment.context !== null) {
-        val factory = factory::java.get().newInstance()
-        val lifecycle = if (fragment.view !== null) {
-          fragment.viewLifecycleOwner
+      if (instance === null) {
+        if(fragment.context != null) {
+          val factory = factory::java.get().newInstance()
+          val lifecycle = if (fragment.view !== null) {
+            fragment.viewLifecycleOwner
+          } else {
+            fragment
+          }
+          instance = factory.create(fragment.requireActivity(), lifecycle)
+          cached = instance
         } else {
-          fragment
+          throw IllegalArgumentException(
+                  "Balloon can not be initialized. The passed fragment's context is null."
+          )
         }
-        instance = factory.create(fragment.requireActivity(), lifecycle)
-        cached = instance
       }
 
       return instance

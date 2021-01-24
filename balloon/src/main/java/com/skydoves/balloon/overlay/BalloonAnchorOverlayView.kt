@@ -32,6 +32,7 @@ import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
 import com.skydoves.balloon.annotations.Dp
+import com.skydoves.balloon.extensions.dimen
 import com.skydoves.balloon.extensions.dp2Px
 
 /**
@@ -157,10 +158,22 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
       when (val overlay = balloonOverlayShape) {
         is BalloonOverlayRect -> canvas.drawRect(anchorRect, paint)
         is BalloonOverlayOval -> canvas.drawOval(anchorRect, paint)
-        is BalloonOverlayCircle ->
-          canvas.drawCircle(anchorRect.centerX(), anchorRect.centerY(), overlay.radius, paint)
-        is BalloonOverlayRoundRect ->
-          canvas.drawRoundRect(anchorRect, overlay.radiusX, overlay.radiusY, paint)
+        is BalloonOverlayCircle -> {
+          overlay.radius?.let { radius ->
+            canvas.drawCircle(anchorRect.centerX(), anchorRect.centerY(), radius, paint)
+          }
+          overlay.radiusRes?.let { radiusRes ->
+            canvas.drawCircle(anchorRect.centerX(), anchorRect.centerY(), context.dimen(radiusRes), paint)
+          }
+        }
+        is BalloonOverlayRoundRect -> {
+          overlay.radiusPair?.let { radiusPair ->
+            canvas.drawRoundRect(anchorRect, radiusPair.first, radiusPair.second, paint)
+          }
+          overlay.radiusResPair?.let { radiusResPair ->
+            canvas.drawRoundRect(anchorRect, context.dimen(radiusResPair.first), context.dimen(radiusResPair.second), paint)
+          }
+        }
       }
     }
 
