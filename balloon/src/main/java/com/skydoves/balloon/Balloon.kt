@@ -37,6 +37,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewOutlineProvider
 import android.widget.FrameLayout
 import android.widget.PopupWindow
 import android.widget.TextView
@@ -218,6 +219,10 @@ class Balloon(
         ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.arrowColor))
       } else {
         ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.backgroundColor))
+      }
+      ViewCompat.setElevation(this, builder.arrowElevation)
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        outlineProvider = ViewOutlineProvider.BOUNDS
       }
       binding.balloonCard.post {
         onBalloonInitializedListener?.onBalloonInitialized(getContentView())
@@ -1049,6 +1054,10 @@ class Balloon(
     @set:JvmSynthetic
     var arrowAlignAnchorPaddingRatio: Float = 2.5f
 
+    @JvmField
+    @set:JvmSynthetic
+    var arrowElevation: Float = context.dp2Px(2f)
+
     @JvmField @ColorInt
     @set:JvmSynthetic
     var backgroundColor: Int = Color.BLACK
@@ -1458,6 +1467,18 @@ class Balloon(
     /** sets the padding ratio of the arrow when aligning anchor using with [ArrowConstraints.ALIGN_ANCHOR]. */
     fun setArrowAlignAnchorPaddingRatio(value: Float): Builder = apply {
       this.arrowAlignAnchorPaddingRatio = value
+    }
+
+    /** sets the elevation of the arrow. */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    fun setArrowElevation(@Dp value: Int): Builder = apply {
+      this.arrowElevation = context.dp2Px(value).toFloat()
+    }
+
+    /** sets the elevation of the arrow using dimension resource. */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    fun setArrowElevationResource(@DimenRes value: Int): Builder = apply {
+      this.arrowElevation = context.dimen(value).toFloat()
     }
 
     /** sets the background color of the arrow and popup. */
