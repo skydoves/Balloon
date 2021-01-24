@@ -138,6 +138,8 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
     }
 
     anchorView?.let { anchor ->
+      val rect = Rect()
+      anchor.getGlobalVisibleRect(rect)
       val anchorRect = overlayPosition?.let { position ->
         RectF(
           position.x - overlayPadding,
@@ -146,10 +148,10 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
           position.y + anchor.height + overlayPadding + getStatusBarHeight()
         )
       } ?: RectF(
-        anchor.x - overlayPadding,
-        anchor.y - overlayPadding + getStatusBarHeight(),
-        anchor.x + anchor.width + overlayPadding,
-        anchor.y + anchor.height + overlayPadding + getStatusBarHeight()
+        rect.left - overlayPadding,
+        rect.top - overlayPadding,
+        rect.right + overlayPadding,
+        rect.bottom + overlayPadding
       )
 
       when (val overlay = balloonOverlayShape) {
