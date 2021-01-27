@@ -1076,6 +1076,11 @@ class Balloon(
 
     @JvmField
     @set:JvmSynthetic
+    var arrowOrientationConstraints: ArrowOrientationConstraints =
+      ArrowOrientationConstraints.ALIGN_ANCHOR
+
+    @JvmField
+    @set:JvmSynthetic
     var arrowOrientation: ArrowOrientation = ArrowOrientation.BOTTOM
 
     @JvmField
@@ -1520,10 +1525,19 @@ class Balloon(
 
     /**
      * sets the constraints of the arrow positioning.
-     * [ArrowConstraints.ALIGN_BALLOON]: aligning based on the balloon.
-     * [ArrowConstraints.ALIGN_ANCHOR]: aligning based on the anchor.
+     * [ArrowConstraints.ALIGN_BALLOON]: Align with the balloon.
+     * [ArrowConstraints.ALIGN_ANCHOR]: Align with the anchor.
      */
     fun setArrowConstraints(value: ArrowConstraints) = apply { this.arrowConstraints = value }
+
+    /**
+     * ArrowOrientationConstraints determines the orientation of the arrow.
+     * [ArrowOrientationConstraints.ALIGN_ANCHOR]: Align with depending on the position of an anchor.
+     * [ArrowOrientationConstraints.ALIGN_FIXED]: Align to fixed [ArrowOrientation].
+     */
+    fun setArrowOrientationConstraints(value: ArrowOrientationConstraints) = apply {
+      this.arrowOrientationConstraints = value
+    }
 
     /** sets the arrow orientation using [ArrowOrientation]. */
     fun setArrowOrientation(value: ArrowOrientation): Builder = apply {
