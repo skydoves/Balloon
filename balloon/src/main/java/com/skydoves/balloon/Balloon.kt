@@ -24,6 +24,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Point
+import android.graphics.Rect
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -224,6 +225,7 @@ class Balloon(
       }
       binding.balloonCard.post {
         onBalloonInitializedListener?.onBalloonInitialized(getContentView())
+        adjustArrowOrientationByConstraints(anchor)
         when (builder.arrowOrientation) {
           ArrowOrientation.BOTTOM -> {
             rotation = 180f
@@ -249,6 +251,28 @@ class Balloon(
         }
       }
     }
+  }
+
+  private fun adjustArrowOrientationByConstraints(anchor: View) {
+    if (builder.arrowOrientationConstraints == ArrowOrientationConstraints.ALIGN_FIXED) return
+
+    val anchorRect = Rect()
+    anchor.getGlobalVisibleRect(anchorRect)
+
+    val location: IntArray = intArrayOf(0, 0)
+    bodyWindow.contentView.getLocationOnScreen(location)
+
+    if (builder.arrowOrientation == ArrowOrientation.TOP &&
+      location[1] < anchorRect.bottom
+    ) {
+      builder.setArrowOrientation(ArrowOrientation.BOTTOM)
+    } else if (builder.arrowOrientation == ArrowOrientation.BOTTOM &&
+      location[1] > anchorRect.top
+    ) {
+      builder.setArrowOrientation(ArrowOrientation.TOP)
+    }
+
+    initializeBalloonContent()
   }
 
   private fun getArrowConstraintPositionX(anchor: View): Float {
@@ -351,14 +375,14 @@ class Balloon(
   }
 
   private fun initializeBalloonContent() {
-    val paddingSize = (builder.arrowSize - SIZE_ARROW_BOUNDARY) * 2
+    val paddingSize = builder.arrowSize - SIZE_ARROW_BOUNDARY
     val elevation = builder.elevation.toInt()
     with(binding.balloonContent) {
       when (builder.arrowOrientation) {
-        ArrowOrientation.LEFT -> setPadding(paddingSize, elevation, 0, elevation)
-        ArrowOrientation.TOP -> setPadding(elevation, paddingSize, elevation, 0)
-        ArrowOrientation.RIGHT -> setPadding(0, elevation, paddingSize, elevation)
-        ArrowOrientation.BOTTOM -> setPadding(elevation, 0, elevation, paddingSize)
+        ArrowOrientation.LEFT -> setPadding(paddingSize, elevation, paddingSize, elevation)
+        ArrowOrientation.TOP -> setPadding(elevation, paddingSize, elevation, paddingSize)
+        ArrowOrientation.RIGHT -> setPadding(paddingSize, elevation, paddingSize, elevation)
+        ArrowOrientation.BOTTOM -> setPadding(elevation, paddingSize, elevation, paddingSize)
       }
     }
     with(binding.balloonText) {
