@@ -206,12 +206,6 @@ class Balloon(
     with(binding.balloonArrow) {
       visible(builder.isVisibleArrow)
       layoutParams = FrameLayout.LayoutParams(builder.arrowSize, builder.arrowSize)
-      rotation = when (builder.arrowOrientation) {
-        ArrowOrientation.BOTTOM -> 180f
-        ArrowOrientation.TOP -> 0f
-        ArrowOrientation.LEFT -> -90f
-        ArrowOrientation.RIGHT -> 90f
-      }
       alpha = builder.alpha
       builder.arrowDrawable?.let { setImageDrawable(it) }
       setPadding(
@@ -232,19 +226,23 @@ class Balloon(
         onBalloonInitializedListener?.onBalloonInitialized(getContentView())
         when (builder.arrowOrientation) {
           ArrowOrientation.BOTTOM -> {
+            rotation = 180f
             x = getArrowConstraintPositionX(anchor)
             y = binding.balloonCard.y + binding.balloonCard.height - SIZE_ARROW_BOUNDARY
             ViewCompat.setElevation(this, builder.arrowElevation)
           }
           ArrowOrientation.TOP -> {
+            rotation = 0f
             x = getArrowConstraintPositionX(anchor)
             y = binding.balloonCard.y - builder.arrowSize + SIZE_ARROW_BOUNDARY
           }
           ArrowOrientation.LEFT -> {
+            rotation = -90f
             x = binding.balloonCard.x - builder.arrowSize + SIZE_ARROW_BOUNDARY
             y = getArrowConstraintPositionY(anchor)
           }
           ArrowOrientation.RIGHT -> {
+            rotation = 90f
             x = binding.balloonCard.x + binding.balloonCard.width - SIZE_ARROW_BOUNDARY
             y = getArrowConstraintPositionY(anchor)
           }
@@ -490,7 +488,9 @@ class Balloon(
     binding.balloon.post {
       Handler(Looper.getMainLooper()).postDelayed(
         {
-          getBalloonHighlightAnimation()?.let { animation -> binding.balloon.startAnimation(animation) }
+          getBalloonHighlightAnimation()?.let { animation ->
+            binding.balloon.startAnimation(animation)
+          }
         },
         builder.balloonHighlightAnimationStartDelay
       )
@@ -1840,13 +1840,19 @@ class Balloon(
     }
 
     /** sets the balloon highlight animation using [BalloonHighlightAnimation]. */
-    fun setBalloonHighlightAnimation(value: BalloonHighlightAnimation, startDelay: Long = 0L): Builder = apply {
+    fun setBalloonHighlightAnimation(
+      value: BalloonHighlightAnimation,
+      startDelay: Long = 0L
+    ): Builder = apply {
       this.balloonHighlightAnimation = value
       this.balloonHighlightAnimationStartDelay = startDelay
     }
 
     /** sets the balloon highlight animation using custom xml animation resource file. */
-    fun setBalloonHighlightAnimationResource(@AnimRes value: Int, startDelay: Long = 0L): Builder = apply {
+    fun setBalloonHighlightAnimationResource(
+      @AnimRes value: Int,
+      startDelay: Long = 0L
+    ): Builder = apply {
       this.balloonHighlightAnimationStyle = value
       this.balloonHighlightAnimationStartDelay = startDelay
     }
