@@ -17,14 +17,14 @@
 package com.skydoves.balloon
 
 /**
- * ArrowConstraints determines the constraints of the arrow positioning.
- * [ArrowConstraints.ALIGN_BALLOON]: Align with the balloon.
- * [ArrowConstraints.ALIGN_ANCHOR]: Align with the anchor.
+ * ArrowOrientationConstraints determines the orientation of the arrow.
+ * [ArrowOrientationConstraints.ALIGN_ANCHOR]: Align with depending on the position of an anchor.
+ * [ArrowOrientationConstraints.ALIGN_FIXED]: Align to fixed [ArrowOrientation].
  */
-enum class ArrowConstraints {
-  /** Align with the balloon. */
-  ALIGN_BALLOON,
+enum class ArrowOrientationConstraints {
+  /** Align with depending on the position of an anchor. */
+  ALIGN_ANCHOR,
 
-  /** Align with the anchor. */
-  ALIGN_ANCHOR
+  /** Align to fixed [ArrowOrientation]. */
+  ALIGN_FIXED
 }
