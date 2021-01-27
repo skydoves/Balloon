@@ -1556,7 +1556,7 @@ class Balloon(
 
     /**
      * ArrowOrientationConstraints determines the orientation of the arrow.
-     * [ArrowOrientationConstraints.ALIGN_ANCHOR]: Align with depending on the position of an anchor.
+     * [ArrowOrientationConstraints.ALIGN_ANCHOR]: Align depending on the position of an anchor.
      * [ArrowOrientationConstraints.ALIGN_FIXED]: Align to fixed [ArrowOrientation].
      */
     fun setArrowOrientationConstraints(value: ArrowOrientationConstraints) = apply {
