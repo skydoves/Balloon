@@ -42,7 +42,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import android.widget.PopupWindow
-import android.widget.TextView
 import androidx.annotation.AnimRes
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
@@ -972,14 +971,13 @@ class Balloon(
   }
 
   /**
-   * measures the width of a [TextView] and set the measured with.
-   * If the width of the parent XML layout is `WRAP_CONTENT`,
-   * and also the width of [TextView] in the parent layout is `WRAP_CONTENT`,
-   * this functionality will measure the width exactly.
+   * Measures the width of a [AppCompatTextView] and set the measured with.
+   * If the width of the parent XML layout is the `WRAP_CONTENT`, and the width of [AppCompatTextView]
+   * in the parent layout is `WRAP_CONTENT`, this method will measure the size of the width exactly.
    *
    * @param textView a target textView for measuring text width.
    */
-  fun measureTextWidth(textView: TextView) {
+  private fun measureTextWidth(textView: AppCompatTextView) {
     with(textView) {
       val widthSpec =
         View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
@@ -991,8 +989,8 @@ class Balloon(
   }
 
   /**
-   * Traverse a ViewGroup's view hierarchy and measure each `AppCompatTextView` for measuring
-   * the specific height of the `AppCompatTextView` and calculating the proper height size of the balloon.
+   * Traverse a [ViewGroup]'s view hierarchy and measure each [AppCompatTextView] for measuring
+   * the specific height of the [AppCompatTextView] and calculating the proper height size of the balloon.
    *
    * @param parent a parent view for traversing and measuring.
    */
