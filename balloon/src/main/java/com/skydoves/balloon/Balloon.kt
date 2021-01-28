@@ -24,6 +24,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Point
+import android.graphics.Rect
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -224,6 +225,9 @@ class Balloon(
       }
       binding.balloonCard.post {
         onBalloonInitializedListener?.onBalloonInitialized(getContentView())
+
+        adjustArrowOrientationByRules(anchor)
+
         when (builder.arrowOrientation) {
           ArrowOrientation.BOTTOM -> {
             rotation = 180f
@@ -251,15 +255,42 @@ class Balloon(
     }
   }
 
+  /**
+   * Adjust the orientation of the arrow depending on the [ArrowOrientationRules].
+   *
+   * @param anchor A target anchor to be shown under the balloon.
+   */
+  private fun adjustArrowOrientationByRules(anchor: View) {
+    if (builder.arrowOrientationRules == ArrowOrientationRules.ALIGN_FIXED) return
+
+    val anchorRect = Rect()
+    anchor.getGlobalVisibleRect(anchorRect)
+
+    val location: IntArray = intArrayOf(0, 0)
+    bodyWindow.contentView.getLocationOnScreen(location)
+
+    if (builder.arrowOrientation == ArrowOrientation.TOP &&
+      location[1] < anchorRect.bottom
+    ) {
+      builder.setArrowOrientation(ArrowOrientation.BOTTOM)
+    } else if (builder.arrowOrientation == ArrowOrientation.BOTTOM &&
+      location[1] > anchorRect.top
+    ) {
+      builder.setArrowOrientation(ArrowOrientation.TOP)
+    }
+
+    initializeBalloonContent()
+  }
+
   private fun getArrowConstraintPositionX(anchor: View): Float {
     val balloonX: Int = binding.balloonContent.getViewPointOnScreen().x
     val anchorX: Int = anchor.getViewPointOnScreen().x
     val minPosition = getMinArrowPosition()
     val maxPosition = getMeasuredWidth() - minPosition - builder.marginRight - builder.marginLeft
     val arrowHalfSize = builder.arrowSize / 2f
-    return when (builder.arrowConstraints) {
-      ArrowConstraints.ALIGN_BALLOON -> binding.balloonWrapper.width * builder.arrowPosition - arrowHalfSize
-      ArrowConstraints.ALIGN_ANCHOR -> {
+    return when (builder.arrowPositionRules) {
+      ArrowPositionRules.ALIGN_BALLOON -> binding.balloonWrapper.width * builder.arrowPosition - arrowHalfSize
+      ArrowPositionRules.ALIGN_ANCHOR -> {
         when {
           anchorX + anchor.width < balloonX -> minPosition
           balloonX + getMeasuredWidth() < anchorX -> maxPosition
@@ -284,9 +315,9 @@ class Balloon(
     val minPosition = getMinArrowPosition()
     val maxPosition = getMeasuredHeight() - minPosition - builder.marginTop - builder.marginBottom
     val arrowHalfSize = builder.arrowSize / 2
-    return when (builder.arrowConstraints) {
-      ArrowConstraints.ALIGN_BALLOON -> binding.balloonWrapper.height * builder.arrowPosition - arrowHalfSize
-      ArrowConstraints.ALIGN_ANCHOR -> {
+    return when (builder.arrowPositionRules) {
+      ArrowPositionRules.ALIGN_BALLOON -> binding.balloonWrapper.height * builder.arrowPosition - arrowHalfSize
+      ArrowPositionRules.ALIGN_ANCHOR -> {
         when {
           anchorY + anchor.height < balloonY -> minPosition
           balloonY + getMeasuredHeight() < anchorY -> maxPosition
@@ -351,14 +382,14 @@ class Balloon(
   }
 
   private fun initializeBalloonContent() {
-    val paddingSize = (builder.arrowSize - SIZE_ARROW_BOUNDARY) * 2
+    val paddingSize = builder.arrowSize - SIZE_ARROW_BOUNDARY
     val elevation = builder.elevation.toInt()
     with(binding.balloonContent) {
       when (builder.arrowOrientation) {
-        ArrowOrientation.LEFT -> setPadding(paddingSize, elevation, 0, elevation)
-        ArrowOrientation.TOP -> setPadding(elevation, paddingSize, elevation, 0)
-        ArrowOrientation.RIGHT -> setPadding(0, elevation, paddingSize, elevation)
-        ArrowOrientation.BOTTOM -> setPadding(elevation, 0, elevation, paddingSize)
+        ArrowOrientation.LEFT -> setPadding(paddingSize, elevation, paddingSize, elevation)
+        ArrowOrientation.TOP -> setPadding(elevation, paddingSize, elevation, paddingSize)
+        ArrowOrientation.RIGHT -> setPadding(paddingSize, elevation, paddingSize, elevation)
+        ArrowOrientation.BOTTOM -> setPadding(elevation, paddingSize, elevation, paddingSize)
       }
     }
     with(binding.balloonText) {
@@ -1072,7 +1103,12 @@ class Balloon(
 
     @JvmField
     @set:JvmSynthetic
-    var arrowConstraints: ArrowConstraints = ArrowConstraints.ALIGN_BALLOON
+    var arrowPositionRules: ArrowPositionRules = ArrowPositionRules.ALIGN_BALLOON
+
+    @JvmField
+    @set:JvmSynthetic
+    var arrowOrientationRules: ArrowOrientationRules =
+      ArrowOrientationRules.ALIGN_ANCHOR
 
     @JvmField
     @set:JvmSynthetic
@@ -1519,15 +1555,26 @@ class Balloon(
     ): Builder = apply { this.arrowPosition = value }
 
     /**
-     * sets the constraints of the arrow positioning.
-     * [ArrowConstraints.ALIGN_BALLOON]: aligning based on the balloon.
-     * [ArrowConstraints.ALIGN_ANCHOR]: aligning based on the anchor.
+     * ArrowPositionRules determines the position of the arrow depending on the aligning rules.
+     *
+     * [ArrowPositionRules.ALIGN_BALLOON]: Align the arrow position depending on the balloon popup body.
+     * [ArrowPositionRules.ALIGN_ANCHOR]: Align the arrow position depending on an anchor.
      */
-    fun setArrowConstraints(value: ArrowConstraints) = apply { this.arrowConstraints = value }
+    fun setArrowPositionRules(value: ArrowPositionRules) = apply { this.arrowPositionRules = value }
 
     /** sets the arrow orientation using [ArrowOrientation]. */
     fun setArrowOrientation(value: ArrowOrientation): Builder = apply {
       this.arrowOrientation = value
+    }
+
+    /**
+     * ArrowOrientationRules determines the orientation of the arrow depending on the aligning rules.
+     *
+     * [ArrowOrientationRules.ALIGN_ANCHOR]: Align depending on the position of an anchor.
+     * [ArrowOrientationRules.ALIGN_FIXED]: Align to fixed [ArrowOrientation].
+     */
+    fun setArrowOrientationRules(value: ArrowOrientationRules) = apply {
+      this.arrowOrientationRules = value
     }
 
     /** sets a custom drawable of the arrow. */
@@ -1583,17 +1630,17 @@ class Balloon(
       this.arrowBottomPadding = context.dimenPixel(value)
     }
 
-    /** sets the padding of the arrow when aligning anchor using with [ArrowConstraints.ALIGN_ANCHOR]. */
+    /** sets the padding of the arrow when aligning anchor using with [ArrowPositionRules.ALIGN_ANCHOR]. */
     fun setArrowAlignAnchorPadding(@Dp value: Int): Builder = apply {
       this.arrowAlignAnchorPadding = context.dp2Px(value)
     }
 
-    /** sets the padding of the arrow the resource when aligning anchor using with [ArrowConstraints.ALIGN_ANCHOR]. */
+    /** sets the padding of the arrow the resource when aligning anchor using with [ArrowPositionRules.ALIGN_ANCHOR]. */
     fun setArrowAlignAnchorPaddingResource(@DimenRes value: Int): Builder = apply {
       this.arrowAlignAnchorPadding = context.dimenPixel(value)
     }
 
-    /** sets the padding ratio of the arrow when aligning anchor using with [ArrowConstraints.ALIGN_ANCHOR]. */
+    /** sets the padding ratio of the arrow when aligning anchor using with [ArrowPositionRules.ALIGN_ANCHOR]. */
     fun setArrowAlignAnchorPaddingRatio(value: Float): Builder = apply {
       this.arrowAlignAnchorPaddingRatio = value
     }

@@ -19,8 +19,8 @@ package com.skydoves.balloondemo.factory
 import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
-import com.skydoves.balloon.ArrowConstraints
 import com.skydoves.balloon.ArrowOrientation
+import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
@@ -49,7 +49,7 @@ class ViewHolderBalloonFactory : Balloon.Factory() {
       setTextForm(textForm)
       isRtlSupport(isRtlLayout())
       setArrowPosition(0.5f)
-      setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
+      setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
       setArrowOrientation(ArrowOrientation.TOP)
       setIconDrawableResource(R.drawable.ic_edit)
       setBackgroundColorResource(R.color.yellow)
