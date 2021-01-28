@@ -387,9 +387,11 @@ class Balloon(
     with(binding.balloonContent) {
       when (builder.arrowOrientation) {
         ArrowOrientation.LEFT -> setPadding(paddingSize, elevation, paddingSize, elevation)
-        ArrowOrientation.TOP -> setPadding(elevation, paddingSize, elevation, paddingSize)
         ArrowOrientation.RIGHT -> setPadding(paddingSize, elevation, paddingSize, elevation)
-        ArrowOrientation.BOTTOM -> setPadding(elevation, paddingSize, elevation, paddingSize)
+        ArrowOrientation.TOP ->
+          setPadding(elevation, paddingSize, elevation, paddingSize.coerceAtLeast(elevation))
+        ArrowOrientation.BOTTOM ->
+          setPadding(elevation, paddingSize, elevation, paddingSize.coerceAtLeast(elevation))
       }
     }
     with(binding.balloonText) {
