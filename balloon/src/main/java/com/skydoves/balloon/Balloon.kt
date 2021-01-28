@@ -54,6 +54,7 @@ import androidx.annotation.MainThread
 import androidx.annotation.Px
 import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.ViewCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.Lifecycle
@@ -441,13 +442,14 @@ class Balloon(
 
   private fun initializeCustomLayoutWithResource() {
     binding.balloonCard.removeAllViews()
-    val inflater = LayoutInflater.from(context)
-    inflater.inflate(builder.layoutRes, binding.balloonCard, true)
+    LayoutInflater.from(context).inflate(builder.layoutRes, binding.balloonCard, true)
+    traverseAndMeasureTextWidth(binding.balloonCard)
   }
 
   private fun initializeCustomLayoutWithView() {
     binding.balloonCard.removeAllViews()
     binding.balloonCard.addView(builder.layout)
+    traverseAndMeasureTextWidth(binding.balloonCard)
   }
 
   private fun initializeBalloonOverlay() {
@@ -985,6 +987,22 @@ class Balloon(
         View.MeasureSpec.makeMeasureSpec(context.displaySize().y, View.MeasureSpec.UNSPECIFIED)
       measure(widthSpec, heightSpec)
       layoutParams.width = getMeasuredTextWidth(measuredWidth)
+    }
+  }
+
+  /**
+   * Traverse a ViewGroup's view hierarchy and measure each `AppCompatTextView` for measuring
+   * the specific height of the `AppCompatTextView` and calculating the proper height size of the balloon.
+   *
+   * @param parent a parent view for traversing and measuring.
+   */
+  private fun traverseAndMeasureTextWidth(parent: ViewGroup) {
+    (0 until parent.childCount).map { parent.getChildAt(it) }.forEach { child ->
+      if (child is AppCompatTextView) {
+        measureTextWidth(child)
+      } else if (child is ViewGroup) {
+        traverseAndMeasureTextWidth(child)
+      }
     }
   }
 
