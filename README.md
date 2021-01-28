@@ -47,7 +47,7 @@ Here is a basic example of implementing balloon popup with icon and text using `
 Balloon balloon = new Balloon.Builder(context)
     .setArrowSize(10)
     .setArrowOrientation(ArrowOrientation.TOP)
-    .setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
+    .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
     .setArrowPosition(0.5f)
     .setWidth(BalloonSizeSpec.WRAP)
     .setHeight(65)
@@ -182,16 +182,30 @@ We can customize the arrow on the balloon popup. <br>
 .setArrowDrawable(ContextCompat.getDrawable(context, R.drawable.arrow)) // sets the arrow drawable.
 ```
 
-#### ArrowConstraints
-We can determines the constraints of the arrow positioning using the `ArrowConstraints`.<br>
-This constraint affects the `setArrowPosition`.
+#### ArrowPositionRules
+We can determine the position of the arrow depending on the aligning rules using the `ArrowPositionRules`.<br>
 ```kotlin
-// Aligning arrow based on the anchor view. 
-// if an arrowPosition is 0.5, the arrow will be positioned center of the anchor view.
-.setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
-// Aligning arrow based on the balloon popup.
-// if an arrowPosition is 0.5, the arrow will be positioned center of the balloon popup.
-.setArrowConstraints(ArrowConstraints.ALIGN_BALLOON) // default
+// Align the arrow position depending on an anchor.
+// if `arrowPosition` is 0.5, the arrow will be located in the middle of an anchor.
+.setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR) // default
+
+// Align the arrow position depending on the balloon popup body.
+// if `arrowPosition` is 0.5, he arrow will be located in the middle of the tooltip.
+.setArrowPositionRules(ArrowPositionRules.ALIGN_BALLOON)
+```
+
+#### ArrowOrientationRules
+We can determine the orientation of the arrow depending on the aligning rules using the `ArrowOrientationRules`.<br>
+```kotlin
+// Align depending on the position of an anchor.
+// For example, `arrowOrientation` is ArrowOrientation.TOP and 
+// we want to show up the balloon under an anchor using the `Balloon.showAlignBottom`.
+// However, if there is not enough free space to place the tooltip at the bottom of the anchor,
+// tooltips will be placed top of the anchor and the orientation of the arrow will be `ArrowOrientation.BOTTOM`.
+.setArrowOrientationRules(ArrowOrientationRules.ALIGN_ANCHOR) // default
+
+// Align to fixed ArrowOrientation value.
+.setArrowOrientationRules(ArrowOrientationRules.ALIGN_FIXED)
 ```
 
 Below previews are implemented using `setArrowOrientation` and `setArrowPosition` methods. <br>
@@ -484,7 +498,7 @@ We can reference all kinds and descriptions of functions details here.<br>
 .setArrowSize(value: Int)
 .setArrowPosition(@FloatRange(from = 0.0, to = 1.0) value: Float)
 .setArrowOrientation(value: ArrowOrientation)
-.setArrowConstraints(ArrowConstraints.ALIGN_ANCHOR)
+.setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
 .setArrowColor(value: Int)
 .setArrowColorResource(@ColorRes value: Int)
 .setArrowDrawable(value: Drawable?)

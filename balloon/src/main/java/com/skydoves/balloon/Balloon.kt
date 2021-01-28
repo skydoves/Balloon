@@ -225,7 +225,9 @@ class Balloon(
       }
       binding.balloonCard.post {
         onBalloonInitializedListener?.onBalloonInitialized(getContentView())
-        adjustArrowOrientationByConstraints(anchor)
+
+        adjustArrowOrientationByRules(anchor)
+
         when (builder.arrowOrientation) {
           ArrowOrientation.BOTTOM -> {
             rotation = 180f
@@ -253,8 +255,13 @@ class Balloon(
     }
   }
 
-  private fun adjustArrowOrientationByConstraints(anchor: View) {
-    if (builder.arrowOrientationConstraints == ArrowOrientationConstraints.ALIGN_FIXED) return
+  /**
+   * Adjust the orientation of the arrow depending on the [ArrowOrientationRules].
+   *
+   * @param anchor A target anchor to be shown under the balloon.
+   */
+  private fun adjustArrowOrientationByRules(anchor: View) {
+    if (builder.arrowOrientationRules == ArrowOrientationRules.ALIGN_FIXED) return
 
     val anchorRect = Rect()
     anchor.getGlobalVisibleRect(anchorRect)
@@ -281,9 +288,9 @@ class Balloon(
     val minPosition = getMinArrowPosition()
     val maxPosition = getMeasuredWidth() - minPosition - builder.marginRight - builder.marginLeft
     val arrowHalfSize = builder.arrowSize / 2f
-    return when (builder.arrowConstraints) {
-      ArrowConstraints.ALIGN_BALLOON -> binding.balloonWrapper.width * builder.arrowPosition - arrowHalfSize
-      ArrowConstraints.ALIGN_ANCHOR -> {
+    return when (builder.arrowPositionRules) {
+      ArrowPositionRules.ALIGN_BALLOON -> binding.balloonWrapper.width * builder.arrowPosition - arrowHalfSize
+      ArrowPositionRules.ALIGN_ANCHOR -> {
         when {
           anchorX + anchor.width < balloonX -> minPosition
           balloonX + getMeasuredWidth() < anchorX -> maxPosition
@@ -308,9 +315,9 @@ class Balloon(
     val minPosition = getMinArrowPosition()
     val maxPosition = getMeasuredHeight() - minPosition - builder.marginTop - builder.marginBottom
     val arrowHalfSize = builder.arrowSize / 2
-    return when (builder.arrowConstraints) {
-      ArrowConstraints.ALIGN_BALLOON -> binding.balloonWrapper.height * builder.arrowPosition - arrowHalfSize
-      ArrowConstraints.ALIGN_ANCHOR -> {
+    return when (builder.arrowPositionRules) {
+      ArrowPositionRules.ALIGN_BALLOON -> binding.balloonWrapper.height * builder.arrowPosition - arrowHalfSize
+      ArrowPositionRules.ALIGN_ANCHOR -> {
         when {
           anchorY + anchor.height < balloonY -> minPosition
           balloonY + getMeasuredHeight() < anchorY -> maxPosition
@@ -1096,12 +1103,12 @@ class Balloon(
 
     @JvmField
     @set:JvmSynthetic
-    var arrowConstraints: ArrowConstraints = ArrowConstraints.ALIGN_BALLOON
+    var arrowPositionRules: ArrowPositionRules = ArrowPositionRules.ALIGN_BALLOON
 
     @JvmField
     @set:JvmSynthetic
-    var arrowOrientationConstraints: ArrowOrientationConstraints =
-      ArrowOrientationConstraints.ALIGN_ANCHOR
+    var arrowOrientationRules: ArrowOrientationRules =
+      ArrowOrientationRules.ALIGN_ANCHOR
 
     @JvmField
     @set:JvmSynthetic
@@ -1548,24 +1555,26 @@ class Balloon(
     ): Builder = apply { this.arrowPosition = value }
 
     /**
-     * sets the constraints of the arrow positioning.
-     * [ArrowConstraints.ALIGN_BALLOON]: Align with the balloon.
-     * [ArrowConstraints.ALIGN_ANCHOR]: Align with the anchor.
+     * ArrowPositionRules determines the position of the arrow depending on the aligning rules.
+     *
+     * [ArrowPositionRules.ALIGN_BALLOON]: Align the arrow position depending on the balloon popup body.
+     * [ArrowPositionRules.ALIGN_ANCHOR]: Align the arrow position depending on an anchor.
      */
-    fun setArrowConstraints(value: ArrowConstraints) = apply { this.arrowConstraints = value }
-
-    /**
-     * ArrowOrientationConstraints determines the orientation of the arrow.
-     * [ArrowOrientationConstraints.ALIGN_ANCHOR]: Align depending on the position of an anchor.
-     * [ArrowOrientationConstraints.ALIGN_FIXED]: Align to fixed [ArrowOrientation].
-     */
-    fun setArrowOrientationConstraints(value: ArrowOrientationConstraints) = apply {
-      this.arrowOrientationConstraints = value
-    }
+    fun setArrowPositionRules(value: ArrowPositionRules) = apply { this.arrowPositionRules = value }
 
     /** sets the arrow orientation using [ArrowOrientation]. */
     fun setArrowOrientation(value: ArrowOrientation): Builder = apply {
       this.arrowOrientation = value
+    }
+
+    /**
+     * ArrowOrientationRules determines the orientation of the arrow depending on the aligning rules.
+     *
+     * [ArrowOrientationRules.ALIGN_ANCHOR]: Align depending on the position of an anchor.
+     * [ArrowOrientationRules.ALIGN_FIXED]: Align to fixed [ArrowOrientation].
+     */
+    fun setArrowOrientationRules(value: ArrowOrientationRules) = apply {
+      this.arrowOrientationRules = value
     }
 
     /** sets a custom drawable of the arrow. */
@@ -1621,17 +1630,17 @@ class Balloon(
       this.arrowBottomPadding = context.dimenPixel(value)
     }
 
-    /** sets the padding of the arrow when aligning anchor using with [ArrowConstraints.ALIGN_ANCHOR]. */
+    /** sets the padding of the arrow when aligning anchor using with [ArrowPositionRules.ALIGN_ANCHOR]. */
     fun setArrowAlignAnchorPadding(@Dp value: Int): Builder = apply {
       this.arrowAlignAnchorPadding = context.dp2Px(value)
     }
 
-    /** sets the padding of the arrow the resource when aligning anchor using with [ArrowConstraints.ALIGN_ANCHOR]. */
+    /** sets the padding of the arrow the resource when aligning anchor using with [ArrowPositionRules.ALIGN_ANCHOR]. */
     fun setArrowAlignAnchorPaddingResource(@DimenRes value: Int): Builder = apply {
       this.arrowAlignAnchorPadding = context.dimenPixel(value)
     }
 
-    /** sets the padding ratio of the arrow when aligning anchor using with [ArrowConstraints.ALIGN_ANCHOR]. */
+    /** sets the padding ratio of the arrow when aligning anchor using with [ArrowPositionRules.ALIGN_ANCHOR]. */
     fun setArrowAlignAnchorPaddingRatio(value: Float): Builder = apply {
       this.arrowAlignAnchorPaddingRatio = value
     }
