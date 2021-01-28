@@ -26,7 +26,6 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.Typeface
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
@@ -355,7 +354,6 @@ class Balloon(
     with(this.bodyWindow) {
       isOutsideTouchable = true
       isFocusable = builder.isFocusable
-      setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         elevation = builder.elevation
       }
@@ -542,25 +540,23 @@ class Balloon(
 
   @MainThread
   private inline fun show(anchor: View, crossinline block: () -> Unit) {
-    if (!isShowing && !destroyed && !context.isFinishing() &&
-      ViewCompat.isAttachedToWindow(anchor)
-    ) {
-      this.isShowing = true
-      this.builder.preferenceName?.let {
-        if (balloonPersistence.shouldShowUp(it, builder.showTimes)) {
-          balloonPersistence.putIncrementedCounts(it)
-        } else {
-          this.builder.runIfReachedShowCounts?.invoke()
-          return
+    anchor.post {
+      if (!isShowing && !destroyed && !context.isFinishing()) {
+        this.isShowing = true
+        this.builder.preferenceName?.let {
+          if (balloonPersistence.shouldShowUp(it, builder.showTimes)) {
+            balloonPersistence.putIncrementedCounts(it)
+          } else {
+            this.builder.runIfReachedShowCounts?.invoke()
+            return@post
+          }
         }
-      }
 
-      val dismissDelay = this.builder.autoDismissDuration
-      if (dismissDelay != NO_LONG_VALUE) {
-        dismissWithDelay(dismissDelay)
-      }
+        val dismissDelay = this.builder.autoDismissDuration
+        if (dismissDelay != NO_LONG_VALUE) {
+          dismissWithDelay(dismissDelay)
+        }
 
-      anchor.post {
         initializeText()
         this.binding.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         this.bodyWindow.width = getMeasuredWidth()
@@ -578,9 +574,9 @@ class Balloon(
         applyBalloonAnimation()
         startBalloonHighlightAnimation()
         block()
+      } else if (builder.dismissWhenShowAgain) {
+        dismiss()
       }
-    } else if (builder.dismissWhenShowAgain) {
-      dismiss()
     }
   }
 
