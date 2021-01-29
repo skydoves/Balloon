@@ -21,8 +21,8 @@
   <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
     android:layout_marginTop="5dp"
+    android:gravity="center"
     android:text="skydoves"
     android:textColor="@color/background900"
     android:textSize="16sp"
@@ -32,7 +32,6 @@
   <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
     android:layout_marginTop="5dp"
     android:gravity="center"
     android:text="Love coffee, music, magic tricks and writing poems."

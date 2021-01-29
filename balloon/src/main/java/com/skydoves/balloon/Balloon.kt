@@ -435,7 +435,7 @@ class Balloon(
           setMovementMethod(builder.movementMethod)
         }
       )
-      measureTextWidth(this)
+      measureTextWidth(this, binding.balloonContent)
     }
   }
 
@@ -977,14 +977,14 @@ class Balloon(
    *
    * @param textView a target textView for measuring text width.
    */
-  private fun measureTextWidth(textView: AppCompatTextView) {
+  private fun measureTextWidth(textView: AppCompatTextView, rootView: View) {
     with(textView) {
       val widthSpec =
         View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
       val heightSpec =
         View.MeasureSpec.makeMeasureSpec(context.displaySize().y, View.MeasureSpec.UNSPECIFIED)
       measure(widthSpec, heightSpec)
-      layoutParams.width = getMeasuredTextWidth(measuredWidth)
+      maxWidth = getMeasuredTextWidth(measuredWidth, rootView)
     }
   }
 
@@ -997,7 +997,7 @@ class Balloon(
   private fun traverseAndMeasureTextWidth(parent: ViewGroup) {
     (0 until parent.childCount).map { parent.getChildAt(it) }.forEach { child ->
       if (child is AppCompatTextView) {
-        measureTextWidth(child)
+        measureTextWidth(child, parent)
       } else if (child is ViewGroup) {
         traverseAndMeasureTextWidth(child)
       }
@@ -1005,12 +1005,13 @@ class Balloon(
   }
 
   /** gets measured width size of the balloon popup text label. */
-  private fun getMeasuredTextWidth(measuredWidth: Int): Int {
+  private fun getMeasuredTextWidth(measuredWidth: Int, rootView: View): Int {
     val displayWidth = context.displaySize().x
-    val spaces = builder.paddingLeft + builder.paddingRight + context.dp2Px(24) +
-      if (builder.iconDrawable != null) {
-        builder.iconWidth + builder.iconSpace
-      } else 0
+    val spaces =
+      builder.paddingLeft + builder.paddingRight + rootView.paddingLeft + rootView.paddingRight
+    if (builder.iconDrawable != null) {
+      builder.iconWidth + builder.iconSpace
+    } else 0
 
     return when {
       builder.widthRatio != NO_Float_VALUE ->
