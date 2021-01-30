@@ -6,7 +6,7 @@
   android:layout_height="wrap_content"
   android:gravity="center"
   android:orientation="vertical"
-  android:padding="12dp">
+  tools:background="@color/background800">
 
   <com.google.android.material.imageview.ShapeableImageView
     android:id="@+id/circleImageView"
@@ -25,11 +25,13 @@
     android:id="@+id/icon"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="12dp"
-    android:layout_marginEnd="12dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
     android:src="@drawable/ic_cards"
     app:layout_constraintBottom_toBottomOf="@+id/name"
     app:layout_constraintEnd_toStartOf="@id/name"
+    app:layout_constraintHorizontal_chainStyle="packed"
+    app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="@id/name" />
 
   <TextView
@@ -38,13 +40,13 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
     android:gravity="center"
+    android:includeFontPadding="false"
     android:text="skydoves"
     android:textColor="@color/white"
     android:textSize="16sp"
     android:textStyle="bold"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toEndOf="@+id/icon"
-    app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/circleImageView"
     tools:ignore="HardcodedText" />
 
@@ -52,7 +54,7 @@
     android:id="@+id/content"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
+    android:layout_marginTop="12dp"
     android:gravity="center"
     android:text="Love coffee, music, magic tricks and writing poems."
     android:textColor="@color/white"

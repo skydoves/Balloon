@@ -35,6 +35,7 @@ class ProfileBalloonFactory : Balloon.Factory() {
       setHeight(BalloonSizeSpec.WRAP)
       setLayout(R.layout.layout_custom_profile)
       setArrowSize(10)
+      setPadding(12)
       setArrowOrientation(ArrowOrientation.TOP)
       setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
       setArrowPosition(0.5f)
