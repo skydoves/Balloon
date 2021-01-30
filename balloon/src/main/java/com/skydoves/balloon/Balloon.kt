@@ -392,7 +392,7 @@ class Balloon(
           setPadding(elevation, paddingSize, elevation, paddingSize.coerceAtLeast(elevation))
       }
     }
-    with(binding.balloonText) {
+    with(binding.balloonCard) {
       setPadding(
         builder.paddingLeft,
         builder.paddingTop,
@@ -1007,9 +1007,7 @@ class Balloon(
   /** gets measured width size of the balloon popup text label. */
   private fun getMeasuredTextWidth(measuredWidth: Int, rootView: View): Int {
     val displayWidth = context.displaySize().x
-    val spaces =
-      builder.paddingLeft + builder.paddingRight + rootView.paddingLeft + rootView.paddingRight
-    if (builder.iconDrawable != null) {
+    val spaces = rootView.paddingLeft + rootView.paddingRight + if (builder.iconDrawable != null) {
       builder.iconWidth + builder.iconSpace
     } else 0
 
