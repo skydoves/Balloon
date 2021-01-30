@@ -41,7 +41,7 @@ class ProfileBalloonFactory : Balloon.Factory() {
       isRtlSupport(BalloonUtils.isRtlLayout())
       setCornerRadius(4f)
       setElevation(6)
-      setBackgroundColorResource(R.color.white)
+      setBackgroundColorResource(R.color.background800)
       setBalloonAnimation(BalloonAnimation.CIRCULAR)
       setDismissWhenTouchOutside(true)
       setDismissWhenShowAgain(true)
