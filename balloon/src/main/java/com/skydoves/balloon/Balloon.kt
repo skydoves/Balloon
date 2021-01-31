@@ -349,6 +349,7 @@ class Balloon(
         builder.paddingRight,
         builder.paddingBottom
       )
+      runOnAfterSDK21 { clipToOutline = true }
     }
   }
 
