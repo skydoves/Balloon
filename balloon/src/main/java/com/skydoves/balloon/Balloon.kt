@@ -78,6 +78,7 @@ import com.skydoves.balloon.extensions.getStatusBarHeight
 import com.skydoves.balloon.extensions.getViewPointOnScreen
 import com.skydoves.balloon.extensions.isFinishing
 import com.skydoves.balloon.extensions.px2Sp
+import com.skydoves.balloon.extensions.runOnAfterSDK21
 import com.skydoves.balloon.extensions.visible
 import com.skydoves.balloon.overlay.BalloonOverlayAnimation
 import com.skydoves.balloon.overlay.BalloonOverlayOval
@@ -219,7 +220,7 @@ class Balloon(
       } else {
         ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.backgroundColor))
       }
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      runOnAfterSDK21 {
         outlineProvider = ViewOutlineProvider.BOUNDS
       }
       binding.balloonCard.post {
@@ -354,7 +355,7 @@ class Balloon(
     with(this.bodyWindow) {
       isOutsideTouchable = true
       isFocusable = builder.isFocusable
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      runOnAfterSDK21 {
         elevation = builder.elevation
       }
     }

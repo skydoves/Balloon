@@ -59,7 +59,7 @@ internal fun View.getStatusBarHeight(isStatusBarVisible: Boolean): Int {
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 internal fun View.circularRevealed(circularDuration: Long) {
   visibility = View.INVISIBLE
-  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+  runOnAfterSDK21 {
     post {
       if (isAttachedToWindow) {
         visibility = View.VISIBLE
@@ -86,7 +86,7 @@ internal inline fun View.circularUnRevealed(
   circularDuration: Long,
   crossinline doAfterFinish: () -> Unit
 ) {
-  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+  runOnAfterSDK21 {
     post {
       if (isAttachedToWindow) {
         ViewAnimationUtils.createCircularReveal(
