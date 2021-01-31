@@ -339,15 +339,16 @@ class Balloon(
     with(binding.balloonCard) {
       alpha = builder.alpha
       ViewCompat.setElevation(this, builder.elevation)
-      if (builder.backgroundDrawable == null) {
-        background = GradientDrawable().apply {
-          setColor(builder.backgroundColor)
-          cornerRadius = builder.cornerRadius
-        }
-        radius = builder.cornerRadius
-      } else {
-        background = builder.backgroundDrawable
+      background = builder.backgroundDrawable ?: GradientDrawable().apply {
+        setColor(builder.backgroundColor)
+        cornerRadius = builder.cornerRadius
       }
+      setPadding(
+        builder.paddingLeft,
+        builder.paddingTop,
+        builder.paddingRight,
+        builder.paddingBottom
+      )
     }
   }
 
@@ -392,14 +393,6 @@ class Balloon(
         ArrowOrientation.BOTTOM ->
           setPadding(elevation, paddingSize, elevation, paddingSize.coerceAtLeast(elevation))
       }
-    }
-    with(binding.balloonCard) {
-      setPadding(
-        builder.paddingLeft,
-        builder.paddingTop,
-        builder.paddingRight,
-        builder.paddingBottom
-      )
     }
   }
 
