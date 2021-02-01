@@ -441,6 +441,7 @@ We can show an overlay window over the whole screen except an anchor view.
 .setOverlayColorResource(R.color.overlay) // background color of the overlay using a color resource.
 .setOverlayPadding(6f) // sets a padding value of the overlay shape internally.
 .setBalloonOverlayAnimation(BalloonOverlayAnimation.FADE) // default is fade.
+.setDismissWhenOverlayClicked(false) // disable dismissing the balloon when the overlay is clicked.
 ```
 We can change the shape of the highlighting using `.setOverlayShape`.
 ```kotlin
