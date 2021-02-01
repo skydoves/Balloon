@@ -26,6 +26,7 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
@@ -557,6 +558,7 @@ class Balloon(
         this.binding.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         this.bodyWindow.width = getMeasuredWidth()
         this.bodyWindow.height = getMeasuredHeight()
+        this.bodyWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         this.binding.balloonText.layoutParams = FrameLayout.LayoutParams(
           FrameLayout.LayoutParams.MATCH_PARENT,
           FrameLayout.LayoutParams.MATCH_PARENT
@@ -856,8 +858,9 @@ class Balloon(
     if (this.isShowing) {
       val dismissWindow: () -> Unit = {
         this.isShowing = false
-        this.overlayWindow.dismiss()
+        this.bodyWindow.setBackgroundDrawable(null)
         this.bodyWindow.dismiss()
+        this.overlayWindow.dismiss()
       }
       if (this.builder.balloonAnimation == BalloonAnimation.CIRCULAR) {
         this.bodyWindow.contentView.circularUnRevealed(builder.circularDuration) {
