@@ -357,6 +357,7 @@ class Balloon(
     with(this.bodyWindow) {
       isOutsideTouchable = true
       isFocusable = builder.isFocusable
+      setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
       runOnAfterSDK21 {
         elevation = builder.elevation
       }
@@ -557,7 +558,6 @@ class Balloon(
         this.binding.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         this.bodyWindow.width = getMeasuredWidth()
         this.bodyWindow.height = getMeasuredHeight()
-        this.bodyWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         this.binding.balloonText.layoutParams = FrameLayout.LayoutParams(
           FrameLayout.LayoutParams.MATCH_PARENT,
           FrameLayout.LayoutParams.MATCH_PARENT
@@ -857,7 +857,6 @@ class Balloon(
     if (this.isShowing) {
       val dismissWindow: () -> Unit = {
         this.isShowing = false
-        this.bodyWindow.setBackgroundDrawable(null)
         this.bodyWindow.dismiss()
         this.overlayWindow.dismiss()
       }
