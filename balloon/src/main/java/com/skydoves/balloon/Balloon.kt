@@ -535,12 +535,19 @@ class Balloon(
     }
   }
 
+  /**
+   * Shows [Balloon] tooltips on the [anchor] with some initializations related to arrow, content, and overlay.
+   * The balloon will be shown with the [overlayWindow] if the anchorView's parent window is in a valid state.
+   * The size of the content will be measured internally, and it will affect calculating the popup size.
+   *
+   * @param block A lambda block for showing the [bodyWindow].
+   */
   @MainThread
   private inline fun show(anchor: View, crossinline block: () -> Unit) {
     anchor.post {
       if (!isShowing &&
         // If the balloon is already destroyed depending on the lifecycle,
-        // We should not allow showing the popupWindow, it's related to `relay()` method.
+        // We should not allow showing the popupWindow, it's related to `relay()` method. (#46)
         !destroyed &&
         // We should check the current Activity is running.
         // If the Activity is finishing, we can't attach the popupWindow to the Activity's window. (#92)
