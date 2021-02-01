@@ -538,7 +538,17 @@ class Balloon(
   @MainThread
   private inline fun show(anchor: View, crossinline block: () -> Unit) {
     anchor.post {
-      if (!isShowing && !destroyed && !context.isFinishing()) {
+      if (!isShowing &&
+        // If the balloon is already destroyed depending on the lifecycle,
+        // We should not allow showing the popupWindow, it's related to `relay()` method.
+        !destroyed &&
+        // We should check the current Activity is running.
+        // If the Activity is finishing, we can't attach the popupWindow to the Activity's window. (#92)
+        !context.isFinishing() &&
+        // We should check the contentView is already attached to the decorView or backgroundView in the popupWindow.
+        // Sometimes there is a concurrency issue between show and dismiss the popupWindow. (#149)
+        bodyWindow.contentView.parent == null
+      ) {
         this.isShowing = true
         this.builder.preferenceName?.let {
           if (balloonPersistence.shouldShowUp(it, builder.showTimes)) {
