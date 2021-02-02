@@ -163,18 +163,11 @@ class Balloon(
     initializeBackground()
     initializeBalloonRoot()
     initializeBalloonWindow()
+    initializeBalloonLayout()
     initializeBalloonContent()
     initializeBalloonOverlay()
     initializeBalloonListeners()
 
-    if (builder.layoutRes != NO_INT_VALUE) {
-      initializeCustomLayoutWithResource()
-    } else if (builder.layout != null) {
-      initializeCustomLayoutWithView()
-    } else {
-      initializeIcon()
-      initializeText()
-    }
     adjustFitsSystemWindows(binding.root)
 
     if (builder.lifecycleOwner == null && context is LifecycleOwner) {
@@ -435,15 +428,27 @@ class Balloon(
     }
   }
 
-  private fun initializeCustomLayoutWithResource() {
-    binding.balloonCard.removeAllViews()
-    LayoutInflater.from(context).inflate(builder.layoutRes, binding.balloonCard, true)
-    traverseAndMeasureTextWidth(binding.balloonCard)
+  private fun initializeBalloonLayout() {
+    if (hasCustomLayout()) {
+      initializeCustomLayout()
+    } else {
+      initializeIcon()
+      initializeText()
+    }
   }
 
-  private fun initializeCustomLayoutWithView() {
+  /** Check the [Balloon.Builder] has a custom layout [Balloon.Builder.layoutRes] or [Balloon.Builder.layout]. */
+  private fun hasCustomLayout(): Boolean {
+    return builder.layoutRes != null || builder.layout != null
+  }
+
+  /** Initializes the Balloon content using the custom layout. */
+  private fun initializeCustomLayout() {
+    val layout = builder.layoutRes?.let {
+      LayoutInflater.from(context).inflate(it, binding.balloonCard, false)
+    } ?: builder.layout ?: throw IllegalArgumentException("The custom layout is null.")
     binding.balloonCard.removeAllViews()
-    binding.balloonCard.addView(builder.layout)
+    binding.balloonCard.addView(layout)
     traverseAndMeasureTextWidth(binding.balloonCard)
   }
 
@@ -1259,7 +1264,7 @@ class Balloon(
 
     @JvmField @LayoutRes
     @set:JvmSynthetic
-    var layoutRes: Int = NO_INT_VALUE
+    var layoutRes: Int? = null
 
     @JvmField
     @set:JvmSynthetic
