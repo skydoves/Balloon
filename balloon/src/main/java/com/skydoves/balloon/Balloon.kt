@@ -448,15 +448,12 @@ class Balloon(
   }
 
   private fun initializeBalloonOverlay() {
-    if (builder.isVisibleOverlay) {
+    if (builder.isVisibleOverlay) with(overlayBinding.balloonOverlayView) {
+      overlayColor = builder.overlayColor
+      overlayPadding = builder.overlayPadding
+      overlayPosition = builder.overlayPosition
+      balloonOverlayShape = builder.overlayShape
       overlayWindow.isClippingEnabled = false
-      overlayBinding.root.setOnClickListener { dismiss() }
-      with(overlayBinding.balloonOverlayView) {
-        overlayColor = builder.overlayColor
-        overlayPadding = builder.overlayPadding
-        overlayPosition = builder.overlayPosition
-        balloonOverlayShape = builder.overlayShape
-      }
     }
   }
 

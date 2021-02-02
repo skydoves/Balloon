@@ -48,6 +48,8 @@ class CustomListBalloonFactory : Balloon.Factory() {
       .setOverlayColorResource(R.color.overlay)
       .setOverlayPadding(12.5f)
       .setDismissWhenShowAgain(true)
+      .setDismissWhenTouchOutside(false)
+      .setDismissWhenOverlayClicked(false)
       .setLifecycleOwner(lifecycle)
       .build()
   }
