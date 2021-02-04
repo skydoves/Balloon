@@ -332,6 +332,7 @@ class Balloon(
   private fun initializeBackground() {
     with(binding.balloonCard) {
       alpha = builder.alpha
+      radius = builder.cornerRadius
       ViewCompat.setElevation(this, builder.elevation)
       background = builder.backgroundDrawable ?: GradientDrawable().apply {
         setColor(builder.backgroundColor)

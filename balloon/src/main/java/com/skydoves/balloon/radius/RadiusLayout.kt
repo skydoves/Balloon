@@ -25,7 +25,6 @@ import android.widget.FrameLayout
 import androidx.annotation.Px
 import com.skydoves.balloon.annotations.Dp
 import com.skydoves.balloon.extensions.dp2Px
-import com.skydoves.balloon.extensions.runOnAfterSDK21
 
 /**
  * RadiusLayout clips four directions of inner layouts depending on the radius size.
@@ -47,10 +46,6 @@ class RadiusLayout @JvmOverloads constructor(
       _radius = context.dp2Px(value)
       invalidate()
     }
-
-  init {
-    runOnAfterSDK21 { clipToOutline = true }
-  }
 
   override fun onSizeChanged(
     w: Int,
