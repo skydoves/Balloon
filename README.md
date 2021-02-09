@@ -19,15 +19,15 @@
 </p>
 
 ## Including in your project
-[![Download](https://api.bintray.com/packages/devmagician/maven/balloon/images/download.svg)](https://bintray.com/devmagician/maven/balloon/_latestVersion)
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/balloon.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22balloon%22)
 [![Balloon](https://jitpack.io/v/skydoves/Balloon.svg)](https://jitpack.io/#skydoves/Balloon)
 ### Gradle 
 Add below codes to your **root** `build.gradle` file (not your module build.gradle file).
-```gradle
+```Gradle
+Add below codes to your **root** `build.gradle` file (not your module build.gradle file).
 allprojects {
     repositories {
-        jcenter()
+        mavenCentral()
     }
 }
 ```
@@ -37,6 +37,16 @@ dependencies {
     implementation "com.github.skydoves:balloon:1.3.1"
 }
 ```
+## SNAPSHOT [![Balloon](https://img.shields.io/static/v1?label=snapshot&message=balloon&logo=apache%20maven&color=C71A36)](https://oss.sonatype.org/content/repositories/snapshots/com/github/skydoves/balloon/) <br>
+Snapshots of the current development version of Balloon are available, which trank [the latest versions](https://oss.sonatype.org/content/repositories/snapshots/com/github/skydoves/balloon/).
+```Gradle
+repositories {
+   maven {
+     url 'https://oss.sonatype.org/content/repositories/snapshots/'
+   }
+}
+```
+
 
 ## Usage
 
