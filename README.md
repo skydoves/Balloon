@@ -24,7 +24,6 @@
 ### Gradle 
 Add below codes to your **root** `build.gradle` file (not your module build.gradle file).
 ```Gradle
-Add below codes to your **root** `build.gradle` file (not your module build.gradle file).
 allprojects {
     repositories {
         mavenCentral()
