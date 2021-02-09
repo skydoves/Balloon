@@ -16,7 +16,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'org.jetbrains.dokka'
 apply from: "$rootDir/dependencies.gradle"
-apply from: "$rootDir/publish.gradle"
 
 android {
     compileSdkVersion versions.compileSdk
@@ -49,9 +48,5 @@ dokkaHtml.configure {
     }
 }
 
-tasks.withType(Javadoc) {
-    excludes = ['**/*.kt']
-    options.addBooleanOption('Xdoclint:none', true)
-}
-
+apply plugin: "com.vanniktech.maven.publish"
 apply from: "$rootDir/spotless.gradle"

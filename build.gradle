@@ -17,20 +17,22 @@ buildscript {
 
     repositories {
         google()
+        mavenCentral()
         jcenter()
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$versions.gradleBuildTool"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
         classpath "com.diffplug.spotless:spotless-plugin-gradle:$versions.spotlessGradle"
+        classpath "com.vanniktech:gradle-maven-publish-plugin:$versions.mavenPublish"
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:$versions.dokkaGradle"
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$versions.bintrayPlugin"
     }
 }
 
 allprojects {
     repositories {
         google()
+        mavenCentral()
         jcenter()
     }
 }
