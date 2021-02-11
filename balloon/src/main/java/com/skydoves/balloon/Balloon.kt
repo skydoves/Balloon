@@ -199,7 +199,6 @@ class Balloon(
 
   private fun initializeArrow(anchor: View) {
     with(binding.balloonArrow) {
-      visible(builder.isVisibleArrow)
       layoutParams = FrameLayout.LayoutParams(builder.arrowSize, builder.arrowSize)
       alpha = builder.alpha
       builder.arrowDrawable?.let { setImageDrawable(it) }
@@ -245,6 +244,7 @@ class Balloon(
             y = getArrowConstraintPositionY(anchor)
           }
         }
+        visible(true)
       }
     }
   }
