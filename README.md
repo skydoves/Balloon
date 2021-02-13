@@ -36,8 +36,9 @@ dependencies {
     implementation "com.github.skydoves:balloon:1.3.1"
 }
 ```
-## SNAPSHOT [![Balloon](https://img.shields.io/static/v1?label=snapshot&message=balloon&logo=apache%20maven&color=C71A36)](https://oss.sonatype.org/content/repositories/snapshots/com/github/skydoves/balloon/) <br>
-Snapshots of the current development version of Balloon are available, which trank [the latest versions](https://oss.sonatype.org/content/repositories/snapshots/com/github/skydoves/balloon/).
+## SNAPSHOT 
+[![Balloon](https://img.shields.io/static/v1?label=snapshot&message=balloon&logo=apache%20maven&color=C71A36)](https://oss.sonatype.org/content/repositories/snapshots/com/github/skydoves/balloon/) <br>
+Snapshots of the current development version of Balloon are available, which track [the latest versions](https://oss.sonatype.org/content/repositories/snapshots/com/github/skydoves/balloon/).
 ```Gradle
 repositories {
    maven {
