@@ -1173,7 +1173,7 @@ class Balloon(
 
     @JvmField
     @set:JvmSynthetic
-    var arrowElevation: Float = context.dp2Px(2f)
+    var arrowElevation: Float = 0f
 
     @JvmField @ColorInt
     @set:JvmSynthetic
