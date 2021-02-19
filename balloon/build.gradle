@@ -29,6 +29,10 @@ android {
         buildConfig false
         viewBinding true
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 kotlin {
@@ -37,7 +41,7 @@ kotlin {
 
 dependencies {
     implementation "androidx.appcompat:appcompat:$versions.androidxAppcompat"
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$versions.lifecycle"
 }
 
 dokkaHtml.configure {
