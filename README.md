@@ -33,7 +33,7 @@ allprojects {
 And add a dependency code to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:balloon:1.3.2"
+    implementation "com.github.skydoves:balloon:1.3.3-SNAPSHOT"
 }
 ```
 ## SNAPSHOT 
@@ -41,9 +41,7 @@ dependencies {
 Snapshots of the current development version of Balloon are available, which track [the latest versions](https://oss.sonatype.org/content/repositories/snapshots/com/github/skydoves/balloon/).
 ```Gradle
 repositories {
-   maven {
-     url 'https://oss.sonatype.org/content/repositories/snapshots/'
-   }
+   maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 }
 ```
 
