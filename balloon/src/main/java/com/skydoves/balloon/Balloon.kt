@@ -425,7 +425,7 @@ class Balloon(
           setMovementMethod(builder.movementMethod)
         }
       )
-      measureTextWidth(this, binding.balloonContent)
+      measureTextWidth(this, binding.balloonCard)
     }
   }
 
