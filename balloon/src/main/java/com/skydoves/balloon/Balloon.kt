@@ -244,7 +244,7 @@ class Balloon(
             y = getArrowConstraintPositionY(anchor)
           }
         }
-        visible(true)
+        visible(builder.isVisibleArrow)
       }
     }
   }
