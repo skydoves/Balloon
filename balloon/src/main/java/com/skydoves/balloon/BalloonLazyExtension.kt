@@ -108,7 +108,7 @@ inline fun <reified T : Balloon.Factory> Fragment.balloon(): Lazy<Balloon> {
 inline fun <reified T : Balloon.Factory> View.balloon(
   factory: KClass<T>
 ): Lazy<Balloon> {
-  return ViewBalloonLazy(context, factory)
+  return ViewBalloonLazy(this, factory)
 }
 
 /**
@@ -121,5 +121,5 @@ inline fun <reified T : Balloon.Factory> View.balloon(
 @JvmSynthetic
 @BalloonInlineDsl
 inline fun <reified T : Balloon.Factory> View.balloon(): Lazy<Balloon> {
-  return ViewBalloonLazy(context, T::class)
+  return ViewBalloonLazy(this, T::class)
 }

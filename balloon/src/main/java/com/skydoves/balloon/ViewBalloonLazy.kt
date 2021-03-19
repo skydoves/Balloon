@@ -16,7 +16,9 @@
 
 package com.skydoves.balloon
 
-import android.content.Context
+import android.view.View
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.findFragment
 import com.skydoves.balloon.extensions.getActivity
 import java.io.Serializable
 import kotlin.reflect.KClass
@@ -31,7 +33,7 @@ import kotlin.reflect.KClass
  */
 @PublishedApi
 internal class ViewBalloonLazy<out T : Balloon.Factory>(
-  private val context: Context,
+  private val view: View,
   private val factory: KClass<T>
 ) : Lazy<Balloon>, Serializable {
 
@@ -41,15 +43,33 @@ internal class ViewBalloonLazy<out T : Balloon.Factory>(
     get() {
       var instance = cached
       if (instance === null) {
-        val activity = context.getActivity()
+        val activity = view.context.getActivity()
         if (activity != null) {
           val factory = factory::java.get().newInstance()
-          instance = factory.create(context, activity)
+          instance = factory.create(view.context, activity)
           cached = instance
         } else {
-          throw IllegalArgumentException(
-            "Balloon can not be initialized. The passed context is not an instance of the ComponentActivity."
-          )
+          try {
+            val fragment = view.findFragment<Fragment>()
+            if (fragment.context != null) {
+              val factory = factory::java.get().newInstance()
+              val lifecycle = if (fragment.view !== null) {
+                fragment.viewLifecycleOwner
+              } else {
+                fragment
+              }
+              instance = factory.create(fragment.requireActivity(), lifecycle)
+              cached = instance
+            } else {
+              throw IllegalArgumentException(
+                "Balloon can not be initialized. The passed fragment's context is null."
+              )
+            }
+          } catch (e: Exception) {
+            throw IllegalArgumentException(
+              "Balloon can not be initialized. The passed context is not an instance of the LifecycleOwner."
+            )
+          }
         }
       }
 
