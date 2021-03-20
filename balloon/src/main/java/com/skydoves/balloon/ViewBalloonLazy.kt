@@ -19,7 +19,7 @@ package com.skydoves.balloon
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.findFragment
-import com.skydoves.balloon.extensions.getActivity
+import androidx.lifecycle.LifecycleOwner
 import java.io.Serializable
 import kotlin.reflect.KClass
 
@@ -43,10 +43,10 @@ internal class ViewBalloonLazy<out T : Balloon.Factory>(
     get() {
       var instance = cached
       if (instance === null) {
-        val activity = view.context.getActivity()
-        if (activity != null) {
+        val context = view.context
+        if (context is LifecycleOwner) {
           val factory = factory::java.get().newInstance()
-          instance = factory.create(view.context, activity)
+          instance = factory.create(context, context)
           cached = instance
         } else {
           try {
