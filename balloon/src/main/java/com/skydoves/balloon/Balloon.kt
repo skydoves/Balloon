@@ -559,7 +559,6 @@ class Balloon(
         // Sometimes there is a concurrency issue between show and dismiss the popupWindow. (#149)
         bodyWindow.contentView.parent == null
       ) {
-        this.isShowing = true
         this.builder.preferenceName?.let {
           if (balloonPersistence.shouldShowUp(it, builder.showTimes)) {
             balloonPersistence.putIncrementedCounts(it)
@@ -568,6 +567,8 @@ class Balloon(
             return@post
           }
         }
+
+        this.isShowing = true
 
         val dismissDelay = this.builder.autoDismissDuration
         if (dismissDelay != NO_LONG_VALUE) {
