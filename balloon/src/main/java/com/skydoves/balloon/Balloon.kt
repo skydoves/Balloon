@@ -56,6 +56,7 @@ import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.ViewCompat
+import androidx.core.view.forEach
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -1014,7 +1015,7 @@ class Balloon(
    * @param parent a parent view for traversing and measuring.
    */
   private fun traverseAndMeasureTextWidth(parent: ViewGroup) {
-    (0 until parent.childCount).map { parent.getChildAt(it) }.forEach { child ->
+    parent.forEach { child ->
       if (child is AppCompatTextView) {
         measureTextWidth(child, parent)
       } else if (child is ViewGroup) {
