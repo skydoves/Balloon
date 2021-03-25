@@ -1079,6 +1079,14 @@ class Balloon(
     @set:JvmSynthetic
     var width: Int = BalloonSizeSpec.WRAP
 
+    @JvmField @Px
+    @set:JvmSynthetic
+    var minWidth: Int = 0
+
+    @JvmField @Px
+    @set:JvmSynthetic
+    var maxWidth: Int = context.displaySize().x
+
     @JvmField @FloatRange(from = 0.0, to = 1.0)
     @set:JvmSynthetic
     var widthRatio: Float = NO_Float_VALUE
@@ -1415,6 +1423,38 @@ class Balloon(
     /** sets the width size using a dimension resource. */
     fun setWidthResource(@DimenRes value: Int): Builder = apply {
       this.width = context.dimenPixel(value)
+    }
+
+    /**
+     * sets the minimum size of the width.
+     * this functionality works only with the [BalloonSizeSpec.WRAP].
+     */
+    fun setMinWidth(@Dp value: Int): Builder = apply {
+      this.minWidth = context.dp2Px(value)
+    }
+
+    /**
+     * sets the minimum size of the width using a dimension resource.
+     * this functionality works only with the [BalloonSizeSpec.WRAP].
+     */
+    fun setMinWidthResource(@DimenRes value: Int): Builder = apply {
+      this.minWidth = context.dimenPixel(value)
+    }
+
+    /**
+     * sets the maximum size of the width.
+     * this functionality works only with the [BalloonSizeSpec.WRAP].
+     */
+    fun setMaxWidth(@Dp value: Int): Builder = apply {
+      this.maxWidth = context.dp2Px(value)
+    }
+
+    /**
+     * sets the maximum size of the width using a dimension resource.
+     * this functionality works only with the [BalloonSizeSpec.WRAP].
+     */
+    fun setMaxWidthResource(@Dp value: Int): Builder = apply {
+      this.maxWidth = context.dimenPixel(value)
     }
 
     /** sets the width size by the display screen size ratio. */
