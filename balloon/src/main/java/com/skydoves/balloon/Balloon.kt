@@ -138,6 +138,8 @@ class Balloon(
   private var destroyed: Boolean = false
 
   /** Interface definition for a callback to be invoked when a balloon view is initialized. */
+  @JvmField
+  @set:JvmSynthetic
   var onBalloonInitializedListener: OnBalloonInitializedListener? =
     builder.onBalloonInitializedListener
 
