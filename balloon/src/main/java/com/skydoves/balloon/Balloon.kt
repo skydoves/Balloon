@@ -984,9 +984,8 @@ class Balloon(
     return when {
       builder.widthRatio != NO_Float_VALUE ->
         (displayWidth * builder.widthRatio).toInt()
-      builder.width != BalloonSizeSpec.WRAP && builder.width < displayWidth -> builder.width
-      binding.root.measuredWidth > displayWidth -> displayWidth
-      else -> this.binding.root.measuredWidth
+      builder.width != BalloonSizeSpec.WRAP -> builder.width.coerceAtMost(displayWidth)
+      else -> binding.root.measuredWidth.coerceIn(builder.minWidth, builder.maxWidth)
     }
   }
 
