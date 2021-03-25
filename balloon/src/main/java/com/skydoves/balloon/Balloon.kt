@@ -913,6 +913,25 @@ class Balloon(
     setOnBalloonClickListener(OnBalloonClickListener(block))
   }
 
+  /**
+   * sets a [OnBalloonInitializedListener] to the popup.
+   * The [OnBalloonInitializedListener.onBalloonInitialized] will be invoked when inflating the
+   * body content of the balloon is finished.
+   */
+  fun setOnBalloonInitializedListener(onBalloonInitializedListener: OnBalloonInitializedListener?) {
+    this.onBalloonInitializedListener = onBalloonInitializedListener
+  }
+
+  /**
+   * sets a [OnBalloonInitializedListener] to the popup using a lambda.
+   * The [OnBalloonInitializedListener.onBalloonInitialized] will be invoked when inflating the
+   * body content of the balloon is finished.
+   */
+  @JvmSynthetic
+  fun setOnBalloonInitializedListener(block: (View) -> Unit) {
+    setOnBalloonInitializedListener(OnBalloonInitializedListener(block))
+  }
+
   /** sets a [OnBalloonDismissListener] to the popup. */
   fun setOnBalloonDismissListener(onBalloonDismissListener: OnBalloonDismissListener?) {
     this.bodyWindow.setOnDismissListener {
