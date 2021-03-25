@@ -579,9 +579,7 @@ class Balloon(
         initializeText()
         this.binding.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         this.bodyWindow.width = getMeasuredWidth()
-        if (builder.height != BalloonSizeSpec.WRAP) {
-          this.bodyWindow.height = getMeasuredHeight()
-        }
+        this.bodyWindow.height = getMeasuredHeight()
         this.binding.balloonText.layoutParams = FrameLayout.LayoutParams(
           FrameLayout.LayoutParams.MATCH_PARENT,
           FrameLayout.LayoutParams.MATCH_PARENT
