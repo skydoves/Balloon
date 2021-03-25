@@ -579,9 +579,7 @@ class Balloon(
         initializeText()
         this.binding.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         this.bodyWindow.width = getMeasuredWidth()
-        if (builder.height != BalloonSizeSpec.WRAP) {
-          this.bodyWindow.height = getMeasuredHeight()
-        }
+        this.bodyWindow.height = getMeasuredHeight()
         this.binding.balloonText.layoutParams = FrameLayout.LayoutParams(
           FrameLayout.LayoutParams.MATCH_PARENT,
           FrameLayout.LayoutParams.MATCH_PARENT
@@ -984,9 +982,8 @@ class Balloon(
     return when {
       builder.widthRatio != NO_Float_VALUE ->
         (displayWidth * builder.widthRatio).toInt()
-      builder.width != BalloonSizeSpec.WRAP && builder.width < displayWidth -> builder.width
-      binding.root.measuredWidth > displayWidth -> displayWidth
-      else -> this.binding.root.measuredWidth
+      builder.width != BalloonSizeSpec.WRAP -> builder.width.coerceAtMost(displayWidth)
+      else -> binding.root.measuredWidth.coerceIn(builder.minWidth, builder.maxWidth)
     }
   }
 
@@ -1078,6 +1075,14 @@ class Balloon(
     @JvmField @Px
     @set:JvmSynthetic
     var width: Int = BalloonSizeSpec.WRAP
+
+    @JvmField @Px
+    @set:JvmSynthetic
+    var minWidth: Int = 0
+
+    @JvmField @Px
+    @set:JvmSynthetic
+    var maxWidth: Int = context.displaySize().x
 
     @JvmField @FloatRange(from = 0.0, to = 1.0)
     @set:JvmSynthetic
@@ -1415,6 +1420,38 @@ class Balloon(
     /** sets the width size using a dimension resource. */
     fun setWidthResource(@DimenRes value: Int): Builder = apply {
       this.width = context.dimenPixel(value)
+    }
+
+    /**
+     * sets the minimum size of the width.
+     * this functionality works only with the [BalloonSizeSpec.WRAP].
+     */
+    fun setMinWidth(@Dp value: Int): Builder = apply {
+      this.minWidth = context.dp2Px(value)
+    }
+
+    /**
+     * sets the minimum size of the width using a dimension resource.
+     * this functionality works only with the [BalloonSizeSpec.WRAP].
+     */
+    fun setMinWidthResource(@DimenRes value: Int): Builder = apply {
+      this.minWidth = context.dimenPixel(value)
+    }
+
+    /**
+     * sets the maximum size of the width.
+     * this functionality works only with the [BalloonSizeSpec.WRAP].
+     */
+    fun setMaxWidth(@Dp value: Int): Builder = apply {
+      this.maxWidth = context.dp2Px(value)
+    }
+
+    /**
+     * sets the maximum size of the width using a dimension resource.
+     * this functionality works only with the [BalloonSizeSpec.WRAP].
+     */
+    fun setMaxWidthResource(@Dp value: Int): Builder = apply {
+      this.maxWidth = context.dimenPixel(value)
     }
 
     /** sets the width size by the display screen size ratio. */
