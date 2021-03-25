@@ -138,6 +138,8 @@ class Balloon(
   private var destroyed: Boolean = false
 
   /** Interface definition for a callback to be invoked when a balloon view is initialized. */
+  @JvmField
+  @set:JvmSynthetic
   var onBalloonInitializedListener: OnBalloonInitializedListener? =
     builder.onBalloonInitializedListener
 
@@ -909,6 +911,25 @@ class Balloon(
   @JvmSynthetic
   fun setOnBalloonClickListener(block: (View) -> Unit) {
     setOnBalloonClickListener(OnBalloonClickListener(block))
+  }
+
+  /**
+   * sets a [OnBalloonInitializedListener] to the popup.
+   * The [OnBalloonInitializedListener.onBalloonInitialized] will be invoked when inflating the
+   * body content of the balloon is finished.
+   */
+  fun setOnBalloonInitializedListener(onBalloonInitializedListener: OnBalloonInitializedListener?) {
+    this.onBalloonInitializedListener = onBalloonInitializedListener
+  }
+
+  /**
+   * sets a [OnBalloonInitializedListener] to the popup using a lambda.
+   * The [OnBalloonInitializedListener.onBalloonInitialized] will be invoked when inflating the
+   * body content of the balloon is finished.
+   */
+  @JvmSynthetic
+  fun setOnBalloonInitializedListener(block: (View) -> Unit) {
+    setOnBalloonInitializedListener(OnBalloonInitializedListener(block))
   }
 
   /** sets a [OnBalloonDismissListener] to the popup. */
