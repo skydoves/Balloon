@@ -15,8 +15,8 @@
 -->
 <resources>
   <declare-styleable name="VectorTextView">
-    <attr name="drawableLeft" format="reference" />
-    <attr name="drawableRight" format="reference" />
+    <attr name="drawableStart" format="reference" />
+    <attr name="drawableEnd" format="reference" />
     <attr name="drawableTop" format="reference" />
     <attr name="drawableBottom" format="reference" />
     <attr name="drawablePadding" format="dimension" />

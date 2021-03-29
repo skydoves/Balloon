@@ -23,12 +23,12 @@ import androidx.annotation.Px
 
 /** VectorTextViewParams is a collection of [VectorTextView]'s parameters. */
 data class VectorTextViewParams(
-  var drawableLeftRes: Int? = null,
-  var drawableRightRes: Int? = null,
+  var drawableStartRes: Int? = null,
+  var drawableEndRes: Int? = null,
   var drawableBottomRes: Int? = null,
   var drawableTopRes: Int? = null,
-  var drawableLeft: Drawable? = null,
-  var drawableRight: Drawable? = null,
+  var drawableStart: Drawable? = null,
+  var drawableEnd: Drawable? = null,
   var drawableBottom: Drawable? = null,
   var drawableTop: Drawable? = null,
   @Px val compoundDrawablePadding: Int? = null,
