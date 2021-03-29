@@ -56,7 +56,7 @@ class ViewHolderBalloonFactory : Balloon.Factory() {
       setOnBalloonDismissListener {
         Toast.makeText(context, "dismissed", Toast.LENGTH_SHORT).show()
       }
-      setIconGravity(IconGravity.RIGHT)
+      setIconGravity(IconGravity.END)
       setDismissWhenClicked(true)
       setDismissWhenShowAgain(true)
       setBalloonAnimation(BalloonAnimation.ELASTIC)

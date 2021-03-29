@@ -53,6 +53,7 @@ private fun fromHtml(text: String): Spanned? {
 }
 
 /** applies icon form attributes to a ImageView instance. */
+@Suppress("DEPRECATION")
 internal fun VectorTextView.applyIconForm(iconForm: IconForm) {
   iconForm.drawable?.let {
     drawableTextViewParams = VectorTextViewParams(
@@ -62,9 +63,9 @@ internal fun VectorTextView.applyIconForm(iconForm: IconForm) {
       tintColor = iconForm.iconColor.takeIf { it != NO_INT_VALUE }
     ).apply {
       when (iconForm.iconGravity) {
-        IconGravity.LEFT -> {
-          drawableLeft = iconForm.drawable
-          drawableLeftRes = iconForm.drawableRes
+        IconGravity.LEFT, IconGravity.START -> {
+          drawableStart = iconForm.drawable
+          drawableStartRes = iconForm.drawableRes
         }
         IconGravity.TOP -> {
           drawableTop = iconForm.drawable
@@ -74,9 +75,9 @@ internal fun VectorTextView.applyIconForm(iconForm: IconForm) {
           drawableBottom = iconForm.drawable
           drawableBottomRes = iconForm.drawableRes
         }
-        IconGravity.RIGHT -> {
-          drawableRight = iconForm.drawable
-          drawableRightRes = iconForm.drawableRes
+        IconGravity.RIGHT, IconGravity.END -> {
+          drawableEnd = iconForm.drawable
+          drawableEndRes = iconForm.drawableRes
         }
       }
     }
@@ -92,16 +93,16 @@ internal fun TextView.applyDrawable(vectorTextViewParams: VectorTextViewParams) 
     ?: vectorTextViewParams.widthRes?.let { context.resources.getDimensionPixelSize(it) }
     ?: vectorTextViewParams.squareSizeRes?.let { context.resources.getDimensionPixelSize(it) }
 
-  val drawableLeft: Drawable? =
+  val drawableStart: Drawable? =
     (
-      vectorTextViewParams.drawableLeft ?: vectorTextViewParams.drawableLeftRes?.let {
+      vectorTextViewParams.drawableStart ?: vectorTextViewParams.drawableStartRes?.let {
         AppCompatResources.getDrawable(context, it)
       }
       )?.resize(context, width, height)?.tint(vectorTextViewParams.tintColor)
 
-  val drawableRight: Drawable? =
+  val drawableEnd: Drawable? =
     (
-      vectorTextViewParams.drawableRight ?: vectorTextViewParams.drawableRightRes?.let {
+      vectorTextViewParams.drawableEnd ?: vectorTextViewParams.drawableEndRes?.let {
         AppCompatResources.getDrawable(context, it)
       }
       )?.resize(context, width, height)?.tint(vectorTextViewParams.tintColor)
@@ -120,7 +121,17 @@ internal fun TextView.applyDrawable(vectorTextViewParams: VectorTextViewParams) 
       }
       )?.resize(context, width, height)?.tint(vectorTextViewParams.tintColor)
 
-  setCompoundDrawablesWithIntrinsicBounds(drawableLeft, drawableTop, drawableRight, drawableBottom)
+  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+    setCompoundDrawablesRelativeWithIntrinsicBounds(
+      drawableStart, drawableTop, drawableEnd,
+      drawableBottom
+    )
+  } else {
+    setCompoundDrawablesWithIntrinsicBounds(
+      drawableStart, drawableTop, drawableEnd,
+      drawableBottom
+    )
+  }
 
   vectorTextViewParams.compoundDrawablePadding?.let { compoundDrawablePadding = it }
     ?: vectorTextViewParams.compoundDrawablePaddingRes?.let {

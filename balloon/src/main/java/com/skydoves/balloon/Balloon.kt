@@ -1260,7 +1260,7 @@ class Balloon(
 
     @JvmField
     @set:JvmSynthetic
-    var iconGravity = IconGravity.LEFT
+    var iconGravity = IconGravity.START
 
     @JvmField @Px
     @set:JvmSynthetic

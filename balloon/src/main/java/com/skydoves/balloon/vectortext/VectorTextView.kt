@@ -43,12 +43,12 @@ class VectorTextView @JvmOverloads constructor(
     if (attrs != null) {
       val attributeArray = context.obtainStyledAttributes(attrs, R.styleable.VectorTextView)
       drawableTextViewParams = VectorTextViewParams(
-        drawableLeftRes = attributeArray.getResourceId(
-          R.styleable.VectorTextView_drawableLeft,
+        drawableStartRes = attributeArray.getResourceId(
+          R.styleable.VectorTextView_drawableStart,
           NO_INT_VALUE
         ).takeIfNotNoIntValue(),
-        drawableRightRes = attributeArray.getResourceId(
-          R.styleable.VectorTextView_drawableRight,
+        drawableEndRes = attributeArray.getResourceId(
+          R.styleable.VectorTextView_drawableEnd,
           NO_INT_VALUE
         ).takeIfNotNoIntValue(),
         drawableBottomRes = attributeArray.getResourceId(
