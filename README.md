@@ -547,7 +547,6 @@ We can reference all kinds and descriptions of functions details here.<br>
 .setOverlayShape(value: BalloonOverlayShape)
 .setPreferenceName(value: String)
 .setShowCount(value: Int)
-.isRtlSupport(value: Boolean)
 .setFocusable(value: Boolean)
 .setLifecycleOwner(value: LifecycleOwner)
 .setDismissWhenClicked(value: Boolean)

@@ -24,7 +24,6 @@ import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.createBalloon
-import com.skydoves.balloondemo.BalloonUtils
 import com.skydoves.balloondemo.R
 
 class ProfileBalloonFactory : Balloon.Factory() {
@@ -39,7 +38,6 @@ class ProfileBalloonFactory : Balloon.Factory() {
       setArrowOrientation(ArrowOrientation.TOP)
       setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
       setArrowPosition(0.5f)
-      isRtlSupport(BalloonUtils.isRtlLayout())
       setCornerRadius(4f)
       setElevation(6)
       setBackgroundColorResource(R.color.background800)

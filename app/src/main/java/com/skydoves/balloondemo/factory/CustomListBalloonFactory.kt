@@ -23,7 +23,6 @@ import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
-import com.skydoves.balloondemo.BalloonUtils
 import com.skydoves.balloondemo.R
 
 class CustomListBalloonFactory : Balloon.Factory() {
@@ -38,7 +37,6 @@ class CustomListBalloonFactory : Balloon.Factory() {
       .setArrowPosition(0.5f)
       .setArrowSize(10)
       .setTextSize(12f)
-      .isRtlSupport(BalloonUtils.isRtlLayout())
       .setCornerRadius(6f)
       .setMarginRight(12)
       .setElevation(6)
