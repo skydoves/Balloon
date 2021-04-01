@@ -18,15 +18,12 @@ package com.skydoves.balloondemo
 
 import android.content.Context
 import android.widget.Toast
-import androidx.core.text.TextUtilsCompat
-import androidx.core.view.ViewCompat
 import androidx.lifecycle.LifecycleOwner
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.OnBalloonClickListener
-import java.util.Locale
 
 object BalloonUtils {
 
@@ -42,7 +39,6 @@ object BalloonUtils {
       .setMarginRight(12)
       .setMarginLeft(12)
       .setTextSize(15f)
-      .isRtlSupport(isRtlLayout())
       .setCornerRadius(8f)
       .setTextColorResource(R.color.white_87)
       .setIconDrawableResource(R.drawable.ic_edit)
@@ -67,7 +63,6 @@ object BalloonUtils {
       .setWidthRatio(1.0f)
       .setHeight(BalloonSizeSpec.WRAP)
       .setTextSize(15f)
-      .isRtlSupport(isRtlLayout())
       .setPadding(10)
       .setMarginRight(12)
       .setMarginLeft(12)
@@ -80,11 +75,5 @@ object BalloonUtils {
       .setBalloonAnimation(BalloonAnimation.FADE)
       .setLifecycleOwner(lifecycleOwner)
       .build()
-  }
-
-  fun isRtlLayout(): Boolean {
-    return TextUtilsCompat.getLayoutDirectionFromLocale(
-      Locale.getDefault()
-    ) == ViewCompat.LAYOUT_DIRECTION_RTL
   }
 }

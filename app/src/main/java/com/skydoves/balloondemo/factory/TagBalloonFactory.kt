@@ -22,7 +22,6 @@ import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.createBalloon
-import com.skydoves.balloondemo.BalloonUtils
 import com.skydoves.balloondemo.R
 
 class TagBalloonFactory : Balloon.Factory() {
@@ -36,7 +35,6 @@ class TagBalloonFactory : Balloon.Factory() {
       setArrowOrientation(ArrowOrientation.BOTTOM)
       setArrowPosition(0.5f)
       setPadding(4)
-      isRtlSupport(BalloonUtils.isRtlLayout())
       setCornerRadius(4f)
       setBalloonAnimationStyle(R.style.Fade_Balloon_Library)
       setBackgroundColorResource(R.color.white_93)

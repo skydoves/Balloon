@@ -121,15 +121,13 @@ internal fun TextView.applyDrawable(vectorTextViewParams: VectorTextViewParams) 
       }
       )?.resize(context, width, height)?.tint(vectorTextViewParams.tintColor)
 
-  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-    setCompoundDrawablesRelativeWithIntrinsicBounds(
-      drawableStart, drawableTop, drawableEnd,
-      drawableBottom
+  if (vectorTextViewParams.isRtlLayout) {
+    setCompoundDrawablesWithIntrinsicBounds(
+      drawableEnd, drawableTop, drawableStart, drawableBottom
     )
   } else {
     setCompoundDrawablesWithIntrinsicBounds(
-      drawableStart, drawableTop, drawableEnd,
-      drawableBottom
+      drawableStart, drawableTop, drawableEnd, drawableBottom
     )
   }
 

@@ -27,7 +27,6 @@ import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.IconGravity
 import com.skydoves.balloon.createBalloon
 import com.skydoves.balloon.textForm
-import com.skydoves.balloondemo.BalloonUtils.isRtlLayout
 import com.skydoves.balloondemo.R
 
 class ViewHolderBalloonFactory : Balloon.Factory() {
@@ -47,7 +46,6 @@ class ViewHolderBalloonFactory : Balloon.Factory() {
       setCornerRadius(8f)
       setElevation(4)
       setTextForm(textForm)
-      isRtlSupport(isRtlLayout())
       setArrowPosition(0.5f)
       setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
       setArrowOrientation(ArrowOrientation.TOP)

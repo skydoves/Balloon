@@ -24,7 +24,6 @@ import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.overlay.BalloonOverlayRoundRect
-import com.skydoves.balloondemo.BalloonUtils
 import com.skydoves.balloondemo.R
 
 class EditBalloonFactory : Balloon.Factory() {
@@ -41,7 +40,6 @@ class EditBalloonFactory : Balloon.Factory() {
       .setMarginRight(12)
       .setMarginLeft(12)
       .setTextSize(15f)
-      .isRtlSupport(BalloonUtils.isRtlLayout())
       .setCornerRadius(8f)
       .setTextColorResource(R.color.white_87)
       .setIconDrawableResource(R.drawable.ic_edit)

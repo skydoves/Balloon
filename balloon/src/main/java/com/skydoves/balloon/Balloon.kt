@@ -33,6 +33,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.text.method.MovementMethod
+import android.util.LayoutDirection
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -409,6 +410,7 @@ class Balloon(
           setDrawableGravity(builder.iconGravity)
         }
       )
+      isRtlSupport(builder.isRtlLayout)
     }
   }
 
@@ -1416,11 +1418,12 @@ class Balloon(
 
     @JvmField
     @set:JvmSynthetic
-    var isRtlSupport: Boolean = false
+    var isRtlLayout: Boolean =
+      context.resources.configuration.layoutDirection == LayoutDirection.RTL
 
     @JvmField
     @set:JvmSynthetic
-    var supportRtlLayoutFactor: Int = LTR.unaryMinus(isRtlSupport)
+    var supportRtlLayoutFactor: Int = LTR.unaryMinus(isRtlLayout)
 
     @JvmField
     @set:JvmSynthetic
@@ -2123,12 +2126,6 @@ class Balloon(
      */
     fun runIfReachedShowCounts(runnable: Runnable): Builder = apply {
       runIfReachedShowCounts { runnable.run() }
-    }
-
-    /** sets a flag for enabling rtl support */
-    fun isRtlSupport(value: Boolean): Builder = apply {
-      this.supportRtlLayoutFactor = LTR.unaryMinus(value)
-      this.isRtlSupport = value
     }
 
     /**

@@ -31,6 +31,7 @@ data class VectorTextViewParams(
   var drawableEnd: Drawable? = null,
   var drawableBottom: Drawable? = null,
   var drawableTop: Drawable? = null,
+  var isRtlLayout: Boolean = false,
   @Px val compoundDrawablePadding: Int? = null,
   @Px val iconWidth: Int? = null,
   @Px val iconHeight: Int? = null,
