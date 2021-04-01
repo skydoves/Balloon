@@ -43,3 +43,8 @@ internal fun Drawable.resize(context: Context, @Px width: Int?, @Px height: Int?
     draw(canvas)
     BitmapDrawable(context.resources, bitmap)
   } else this
+
+/** returns intrinsic height size of a drawable. */
+internal fun Drawable?.getHeight(): Int {
+  return this?.intrinsicHeight ?: 0
+}

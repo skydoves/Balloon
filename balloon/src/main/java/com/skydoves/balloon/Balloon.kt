@@ -77,6 +77,7 @@ import com.skydoves.balloon.extensions.dimen
 import com.skydoves.balloon.extensions.dimenPixel
 import com.skydoves.balloon.extensions.displaySize
 import com.skydoves.balloon.extensions.dp2Px
+import com.skydoves.balloon.extensions.getHeight
 import com.skydoves.balloon.extensions.getStatusBarHeight
 import com.skydoves.balloon.extensions.getViewPointOnScreen
 import com.skydoves.balloon.extensions.isFinishing
@@ -1025,6 +1026,11 @@ class Balloon(
         View.MeasureSpec.makeMeasureSpec(context.displaySize().y, View.MeasureSpec.UNSPECIFIED)
       measure(widthSpec, heightSpec)
       maxWidth = getMeasuredTextWidth(measuredWidth, rootView)
+      if (textView.compoundDrawables[0] != null || textView.compoundDrawables[2] != null) {
+        textView.minHeight = textView.compoundDrawables[0].getHeight().coerceAtLeast(
+          textView.compoundDrawables[2].getHeight()
+        )
+      }
     }
   }
 
