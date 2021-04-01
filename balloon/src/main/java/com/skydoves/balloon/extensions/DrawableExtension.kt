@@ -44,6 +44,16 @@ internal fun Drawable.resize(context: Context, @Px width: Int?, @Px height: Int?
     BitmapDrawable(context.resources, bitmap)
   } else this
 
+/** returns true if there is a start/left or end/right drawable in the array. */
+internal fun Array<Drawable?>.isExistHorizontalDrawable(): Boolean {
+  return this[0] != null || this[2] != null
+}
+
+/** returns intrinsic height size of a drawable array. */
+internal fun Array<Drawable?>.getIntrinsicHeight(): Int {
+  return this[0].getHeight().coerceAtLeast(this[2].getHeight())
+}
+
 /** returns intrinsic height size of a drawable. */
 internal fun Drawable?.getHeight(): Int {
   return this?.intrinsicHeight ?: 0
