@@ -83,4 +83,11 @@ class VectorTextView @JvmOverloads constructor(
       attributeArray.recycle()
     }
   }
+
+  fun isRtlSupport(rtlLayout: Boolean) {
+    drawableTextViewParams?.apply {
+      isRtlLayout = rtlLayout
+      applyDrawable(this)
+    }
+  }
 }
