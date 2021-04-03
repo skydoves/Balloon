@@ -1083,6 +1083,11 @@ class Balloon(
     return binding.balloonCard
   }
 
+  /** gets a arrow view of the balloon popup window. */
+  fun getBalloonArrowView(): View {
+    return binding.balloonArrow
+  }
+
   /** dismiss when the [LifecycleOwner] be on paused. */
   @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
   fun onPause() {
