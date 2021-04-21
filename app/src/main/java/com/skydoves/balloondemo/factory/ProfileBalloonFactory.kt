@@ -44,6 +44,7 @@ class ProfileBalloonFactory : Balloon.Factory() {
       setBalloonAnimation(BalloonAnimation.CIRCULAR)
       setDismissWhenTouchOutside(true)
       setDismissWhenShowAgain(true)
+      setDismissWhenLifecycleOnPause(true)
       setLifecycleOwner(lifecycle)
     }
   }

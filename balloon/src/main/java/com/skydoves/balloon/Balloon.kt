@@ -1092,7 +1092,7 @@ class Balloon(
   @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
   fun onPause() {
     if (builder.dismissWhenLifecycleOnPause) {
-      onDestroy()
+      dismiss()
     }
   }
 
