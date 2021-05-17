@@ -31,6 +31,7 @@ import com.skydoves.balloon.vectortext.VectorTextView
 import com.skydoves.balloon.vectortext.VectorTextViewParams
 
 /** applies text form attributes to a TextView instance. */
+@JvmSynthetic
 @Suppress("unused")
 internal fun TextView.applyTextForm(textForm: TextForm) {
   text = when (textForm.textIsHtml) {
@@ -53,6 +54,7 @@ private fun fromHtml(text: String): Spanned? {
 }
 
 /** applies icon form attributes to a ImageView instance. */
+@JvmSynthetic
 @Suppress("DEPRECATION")
 internal fun VectorTextView.applyIconForm(iconForm: IconForm) {
   iconForm.drawable?.let {
@@ -84,6 +86,7 @@ internal fun VectorTextView.applyIconForm(iconForm: IconForm) {
   }
 }
 
+@JvmSynthetic
 internal fun TextView.applyDrawable(vectorTextViewParams: VectorTextViewParams) {
   val height = vectorTextViewParams.iconHeight
     ?: vectorTextViewParams.heightRes?.let { context.resources.getDimensionPixelSize(it) }

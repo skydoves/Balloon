@@ -27,6 +27,7 @@ import androidx.annotation.Px
 import androidx.core.graphics.drawable.DrawableCompat
 
 /** apply tinting to a drawable using a color. */
+@JvmSynthetic
 internal fun Drawable.tint(@ColorInt tintColor: Int?): Drawable = apply {
   tintColor?.let {
     DrawableCompat.wrap(this)
@@ -35,6 +36,7 @@ internal fun Drawable.tint(@ColorInt tintColor: Int?): Drawable = apply {
 }
 
 /** resize a drawable width and height size using specific pixel sizes.  */
+@JvmSynthetic
 internal fun Drawable.resize(context: Context, @Px width: Int?, @Px height: Int?): Drawable =
   if (width != null && height != null) {
     val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
@@ -45,16 +47,19 @@ internal fun Drawable.resize(context: Context, @Px width: Int?, @Px height: Int?
   } else this
 
 /** returns true if there is a start/left or end/right drawable in the array. */
+@JvmSynthetic
 internal fun Array<Drawable?>.isExistHorizontalDrawable(): Boolean {
   return this[0] != null || this[2] != null
 }
 
 /** returns intrinsic height size of a drawable array. */
+@JvmSynthetic
 internal fun Array<Drawable?>.getIntrinsicHeight(): Int {
   return this[0].getHeight().coerceAtLeast(this[2].getHeight())
 }
 
 /** returns intrinsic height size of a drawable. */
+@JvmSynthetic
 internal fun Drawable?.getHeight(): Int {
   return this?.intrinsicHeight ?: 0
 }

@@ -29,6 +29,7 @@ import androidx.annotation.MainThread
 import kotlin.math.max
 
 /** sets visibility of the view based on the given parameter. */
+@JvmSynthetic
 internal fun View.visible(shouldVisible: Boolean) {
   visibility = if (shouldVisible) {
     View.VISIBLE
@@ -38,6 +39,7 @@ internal fun View.visible(shouldVisible: Boolean) {
 }
 
 /** computes and returns the coordinates of this view on the screen. */
+@JvmSynthetic
 internal fun View.getViewPointOnScreen(): Point {
   val location: IntArray = intArrayOf(0, 0)
   getLocationOnScreen(location)
@@ -45,6 +47,7 @@ internal fun View.getViewPointOnScreen(): Point {
 }
 
 /** returns the status bar height if the anchor is on the Activity. */
+@JvmSynthetic
 internal fun View.getStatusBarHeight(isStatusBarVisible: Boolean): Int {
   val rectangle = Rect()
   val context = context
@@ -56,6 +59,7 @@ internal fun View.getStatusBarHeight(isStatusBarVisible: Boolean): Int {
 
 /** shows circular revealed animation to a view. */
 @MainThread
+@JvmSynthetic
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 internal fun View.circularRevealed(circularDuration: Long) {
   visibility = View.INVISIBLE
@@ -81,6 +85,7 @@ internal fun View.circularRevealed(circularDuration: Long) {
 /** shows circular unrevealed animation to a view. */
 @MainThread
 @PublishedApi
+@JvmSynthetic
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 internal inline fun View.circularUnRevealed(
   circularDuration: Long,

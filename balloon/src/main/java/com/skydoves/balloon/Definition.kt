@@ -17,21 +17,27 @@
 package com.skydoves.balloon
 
 /** definition of the non-value of Int type. */
+@get:JvmSynthetic
 internal const val NO_INT_VALUE: Int = Int.MIN_VALUE
 
 /** definition of the non-value of Float type. */
+@get:JvmSynthetic
 internal const val NO_Float_VALUE: Float = 0f
 
 /** definition of the non-value of Long type. */
+@get:JvmSynthetic
 internal const val NO_LONG_VALUE: Long = -1L
 
 /** definition of the left-to-right value. */
+@get:JvmSynthetic
 internal const val LTR: Int = 1
 
 /** definition of the boundary size between the content and the arrow. */
+@get:JvmSynthetic
 internal const val SIZE_ARROW_BOUNDARY: Int = 1
 
 /** returns the negative of this value. */
+@JvmSynthetic
 internal fun Int.unaryMinus(predicate: Boolean): Int {
   return if (predicate) {
     unaryMinus()
@@ -41,6 +47,7 @@ internal fun Int.unaryMinus(predicate: Boolean): Int {
 }
 
 /** returns a nullable int value if the target int is not [NO_INT_VALUE]. */
+@JvmSynthetic
 internal fun Int.takeIfNotNoIntValue(): Int? {
   return this.takeIf { this != NO_INT_VALUE }
 }
