@@ -1486,7 +1486,7 @@ class Balloon(
      * sets the maximum size of the width using a dimension resource.
      * this functionality works only with the [BalloonSizeSpec.WRAP].
      */
-    fun setMaxWidthResource(@Dp value: Int): Builder = apply {
+    fun setMaxWidthResource(@DimenRes value: Int): Builder = apply {
       this.maxWidth = context.dimenPixel(value)
     }
 
