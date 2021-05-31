@@ -1064,9 +1064,7 @@ class Balloon(
         (displayWidth * builder.widthRatio).toInt() - spaces
       builder.width != BalloonSizeSpec.WRAP && builder.width <= displayWidth ->
         builder.width - spaces
-      measuredWidth < maxTextWidth -> measuredWidth
-      measuredWidth > maxTextWidth -> maxTextWidth
-      else -> maxTextWidth
+      else -> measuredWidth.coerceAtMost(maxTextWidth)
     }
   }
 
