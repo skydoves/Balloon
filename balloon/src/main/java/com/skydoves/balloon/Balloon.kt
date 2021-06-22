@@ -1535,6 +1535,30 @@ class Balloon(
       this.paddingBottom = padding
     }
 
+    /** sets the horizontal (right and left) padding on the balloon content. */
+    fun setPaddingHorizontal(@Dp value: Int): Builder = apply {
+      setPaddingLeft(value)
+      setPaddingRight(value)
+    }
+
+    /** sets the horizontal (right and left) padding on the balloon content using dimension resource. */
+    fun setPaddingHorizontalResource(@DimenRes value: Int): Builder = apply {
+      setPaddingLeftResource(value)
+      setPaddingRightResource(value)
+    }
+
+    /** sets the vertical (top and bottom) padding on the balloon content. */
+    fun setPaddingVertical(@Dp value: Int): Builder = apply {
+      setPaddingTop(value)
+      setPaddingBottom(value)
+    }
+
+    /** sets the vertical (top and bottom) padding on the balloon content using dimension resource. */
+    fun setPaddingVerticalResource(@DimenRes value: Int): Builder = apply {
+      setPaddingTopResource(value)
+      setPaddingBottomResource(value)
+    }
+
     /** sets the left padding on the balloon content. */
     fun setPaddingLeft(@Dp value: Int): Builder = apply { this.paddingLeft = context.dp2Px(value) }
 
