@@ -1603,13 +1603,37 @@ class Balloon(
       setMarginBottom(value)
     }
 
-    /** sets the margin on the balloon all directions using dimension resource. */
+    /** sets the margin on the balloon all directions using a dimension resource. */
     fun setMarginResource(@DimenRes value: Int): Builder = apply {
       val margin = context.dimenPixel(value)
       this.marginLeft = margin
       this.marginTop = margin
       this.marginRight = margin
       this.marginBottom = margin
+    }
+
+    /** sets the horizontal (left and right) margins on the balloon. */
+    fun setMarginHorizontal(@Dp value: Int): Builder = apply {
+      setMarginLeft(value)
+      setMarginRight(value)
+    }
+
+    /** sets the horizontal (left and right) margins on the balloon using a dimension resource. */
+    fun setMarginHorizontalResource(@DimenRes value: Int): Builder = apply {
+      setMarginLeftResource(value)
+      setMarginRightResource(value)
+    }
+
+    /** sets the vertical (top and bottom) margins on the balloon. */
+    fun setMarginVertical(@Dp value: Int): Builder = apply {
+      setMarginTop(value)
+      setMarginBottom(value)
+    }
+
+    /** sets the vertical (top and bottom) margins on the balloon using a dimension resource. */
+    fun setMarginVerticalResource(@DimenRes value: Int): Builder = apply {
+      setMarginTopResource(value)
+      setMarginBottomResource(value)
     }
 
     /** sets the left margin on the balloon. */
