@@ -1535,6 +1535,30 @@ class Balloon(
       this.paddingBottom = padding
     }
 
+    /** sets the horizontal (right and left) padding on the balloon content. */
+    fun setPaddingHorizontal(@Dp value: Int): Builder = apply {
+      setPaddingLeft(value)
+      setPaddingRight(value)
+    }
+
+    /** sets the horizontal (right and left) padding on the balloon content using dimension resource. */
+    fun setPaddingHorizontalResource(@DimenRes value: Int): Builder = apply {
+      setPaddingLeftResource(value)
+      setPaddingRightResource(value)
+    }
+
+    /** sets the vertical (top and bottom) padding on the balloon content. */
+    fun setPaddingVertical(@Dp value: Int): Builder = apply {
+      setPaddingTop(value)
+      setPaddingBottom(value)
+    }
+
+    /** sets the vertical (top and bottom) padding on the balloon content using dimension resource. */
+    fun setPaddingVerticalResource(@DimenRes value: Int): Builder = apply {
+      setPaddingTopResource(value)
+      setPaddingBottomResource(value)
+    }
+
     /** sets the left padding on the balloon content. */
     fun setPaddingLeft(@Dp value: Int): Builder = apply { this.paddingLeft = context.dp2Px(value) }
 
@@ -1579,13 +1603,37 @@ class Balloon(
       setMarginBottom(value)
     }
 
-    /** sets the margin on the balloon all directions using dimension resource. */
+    /** sets the margin on the balloon all directions using a dimension resource. */
     fun setMarginResource(@DimenRes value: Int): Builder = apply {
       val margin = context.dimenPixel(value)
       this.marginLeft = margin
       this.marginTop = margin
       this.marginRight = margin
       this.marginBottom = margin
+    }
+
+    /** sets the horizontal (left and right) margins on the balloon. */
+    fun setMarginHorizontal(@Dp value: Int): Builder = apply {
+      setMarginLeft(value)
+      setMarginRight(value)
+    }
+
+    /** sets the horizontal (left and right) margins on the balloon using a dimension resource. */
+    fun setMarginHorizontalResource(@DimenRes value: Int): Builder = apply {
+      setMarginLeftResource(value)
+      setMarginRightResource(value)
+    }
+
+    /** sets the vertical (top and bottom) margins on the balloon. */
+    fun setMarginVertical(@Dp value: Int): Builder = apply {
+      setMarginTop(value)
+      setMarginBottom(value)
+    }
+
+    /** sets the vertical (top and bottom) margins on the balloon using a dimension resource. */
+    fun setMarginVerticalResource(@DimenRes value: Int): Builder = apply {
+      setMarginTopResource(value)
+      setMarginBottomResource(value)
     }
 
     /** sets the left margin on the balloon. */
