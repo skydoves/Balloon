@@ -480,7 +480,7 @@ class Balloon(
         }
         BalloonAnimation.FADE -> bodyWindow.animationStyle = R.style.Fade_Balloon_Library
         BalloonAnimation.OVERSHOOT -> bodyWindow.animationStyle = R.style.Overshoot_Balloon_Library
-        else -> bodyWindow.animationStyle = R.style.Normal_Balloon_Library
+        BalloonAnimation.NONE -> bodyWindow.animationStyle = R.style.Normal_Balloon_Library
       }
     } else {
       bodyWindow.animationStyle = builder.balloonAnimationStyle
