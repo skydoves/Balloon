@@ -25,10 +25,13 @@ import android.text.method.MovementMethod
 import android.view.Gravity
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
+import androidx.annotation.DimenRes
 import androidx.annotation.MainThread
 import androidx.annotation.StringRes
 import com.skydoves.balloon.annotations.Sp
 import com.skydoves.balloon.extensions.contextColor
+import com.skydoves.balloon.extensions.dimen
+import com.skydoves.balloon.extensions.px2Sp
 
 @DslMarker
 internal annotation class TextFormDsl
@@ -100,6 +103,11 @@ class TextForm(builder: Builder) {
 
     /** sets the size of the text. */
     fun setTextSize(@Sp value: Float): Builder = apply { this.textSize = value }
+
+    /** sets the size of the main text content using dimension resource. */
+    fun setTextSizeResource(@DimenRes value: Int): Builder = apply {
+      this.textSize = context.px2Sp(context.dimen(value))
+    }
 
     /** sets the color of the text. */
     fun setTextColor(@ColorInt value: Int): Builder = apply { this.textColor = value }

@@ -35,20 +35,6 @@ internal fun Context.displaySize(): Point {
   )
 }
 
-/** dp size to px size. */
-@JvmSynthetic
-internal fun Context.dp2Px(dp: Int): Int {
-  val scale = resources.displayMetrics.density
-  return (dp * scale).toInt()
-}
-
-/** dp size to px size. */
-@JvmSynthetic
-internal fun Context.dp2Px(dp: Float): Float {
-  val scale = resources.displayMetrics.density
-  return (dp * scale)
-}
-
 /** px size to sp size. */
 @JvmSynthetic
 internal fun Context.px2Sp(px: Float): Float {
