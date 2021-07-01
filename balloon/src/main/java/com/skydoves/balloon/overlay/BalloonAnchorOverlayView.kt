@@ -33,7 +33,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.Px
 import com.skydoves.balloon.annotations.Dp
 import com.skydoves.balloon.extensions.dimen
-import com.skydoves.balloon.extensions.dp2Px
+import com.skydoves.balloon.extensions.dp
 
 /**
  * BalloonAnchorOverlayView is an overlay view for highlighting an anchor
@@ -68,7 +68,7 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
   var overlayPadding: Float
     @Px get() = _overlayPadding
     set(@Dp value) {
-      _overlayPadding = context.dp2Px(value)
+      _overlayPadding = value.dp
       invalidate()
     }
 
@@ -163,7 +163,10 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
             canvas.drawCircle(anchorRect.centerX(), anchorRect.centerY(), radius, paint)
           }
           overlay.radiusRes?.let { radiusRes ->
-            canvas.drawCircle(anchorRect.centerX(), anchorRect.centerY(), context.dimen(radiusRes), paint)
+            canvas.drawCircle(
+              anchorRect.centerX(), anchorRect.centerY(), context.dimen(radiusRes),
+              paint
+            )
           }
         }
         is BalloonOverlayRoundRect -> {
@@ -171,7 +174,10 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
             canvas.drawRoundRect(anchorRect, radiusPair.first, radiusPair.second, paint)
           }
           overlay.radiusResPair?.let { radiusResPair ->
-            canvas.drawRoundRect(anchorRect, context.dimen(radiusResPair.first), context.dimen(radiusResPair.second), paint)
+            canvas.drawRoundRect(
+              anchorRect, context.dimen(radiusResPair.first),
+              context.dimen(radiusResPair.second), paint
+            )
           }
         }
       }

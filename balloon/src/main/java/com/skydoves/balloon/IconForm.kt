@@ -27,7 +27,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.MainThread
 import androidx.annotation.Px
 import com.skydoves.balloon.extensions.contextColor
-import com.skydoves.balloon.extensions.dp2Px
+import com.skydoves.balloon.extensions.dp
 
 @DslMarker
 internal annotation class IconFormDsl
@@ -65,19 +65,19 @@ class IconForm(builder: Builder) {
 
     @JvmField
     @set:JvmSynthetic
-    var iconGravity = IconGravity.LEFT
+    var iconGravity = IconGravity.START
 
     @JvmField @Px
     @set:JvmSynthetic
-    var iconWidth: Int = context.dp2Px(28)
+    var iconWidth: Int = 28.dp
 
     @JvmField @Px
     @set:JvmSynthetic
-    var iconHeight: Int = context.dp2Px(28)
+    var iconHeight: Int = 28.dp
 
     @JvmField @Px
     @set:JvmSynthetic
-    var iconSpace: Int = context.dp2Px(8)
+    var iconSpace: Int = 8.dp
 
     @JvmField @ColorInt
     @set:JvmSynthetic
