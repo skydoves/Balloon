@@ -22,10 +22,18 @@ import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.LinearGradient
+import android.graphics.Paint
 import android.graphics.Point
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
+import android.graphics.Shader
 import android.graphics.Typeface
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
@@ -55,6 +63,7 @@ import androidx.annotation.MainThread
 import androidx.annotation.Px
 import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.ViewCompat
 import androidx.core.view.forEach
@@ -227,32 +236,111 @@ class Balloon(
 
         adjustArrowOrientationByRules(anchor)
 
+        @SuppressLint("NewApi")
         when (builder.arrowOrientation) {
           ArrowOrientation.BOTTOM -> {
             rotation = 180f
             x = getArrowConstraintPositionX(anchor)
             y = binding.balloonCard.y + binding.balloonCard.height - SIZE_ARROW_BOUNDARY
             ViewCompat.setElevation(this, builder.arrowElevation)
+            if (builder.arrowColorMatchBalloon) {
+              foreground = BitmapDrawable(resources, adjustArrowColorByMatchingCardBackground(this, x, binding.balloonCard.height.toFloat()))
+            }
           }
           ArrowOrientation.TOP -> {
             rotation = 0f
             x = getArrowConstraintPositionX(anchor)
             y = binding.balloonCard.y - builder.arrowSize + SIZE_ARROW_BOUNDARY
+            if (builder.arrowColorMatchBalloon) {
+              foreground = BitmapDrawable(resources, adjustArrowColorByMatchingCardBackground(this, x, 0f))
+            }
           }
           ArrowOrientation.LEFT -> {
             rotation = -90f
             x = binding.balloonCard.x - builder.arrowSize + SIZE_ARROW_BOUNDARY
             y = getArrowConstraintPositionY(anchor)
+            if (builder.arrowColorMatchBalloon) {
+              foreground = BitmapDrawable(resources, adjustArrowColorByMatchingCardBackground(this, 0f, y))
+            }
           }
           ArrowOrientation.RIGHT -> {
             rotation = 90f
             x = binding.balloonCard.x + binding.balloonCard.width - SIZE_ARROW_BOUNDARY
             y = getArrowConstraintPositionY(anchor)
+            if (builder.arrowColorMatchBalloon) {
+              foreground = BitmapDrawable(resources, adjustArrowColorByMatchingCardBackground(this, binding.balloonCard.width.toFloat(), y))
+            }
           }
         }
         visible(builder.isVisibleArrow)
       }
     }
+  }
+
+  /**
+   * Calculate the color at arrow position from ballonCard. The color is then set as a foreground to the arrow.
+   *
+   * @param imageView the arrow imageview containing the drawable.
+   * @param x x position of the point where the middle of the arrow is connected to the balloon
+   * @param y y position of the point where the middle of the arrow is connected to the balloon
+   *
+   * @throws IllegalArgumentException Throws an exception when the arrow is attached outside the balloon.
+   *
+   */
+  private fun adjustArrowColorByMatchingCardBackground(imageView: AppCompatImageView, x: Float, y: Float): Bitmap {
+    imageView.setColorFilter(builder.backgroundColor, PorterDuff.Mode.SRC_IN)
+    val oldBitmap = drawableToBitmap(imageView.drawable, imageView.drawable.intrinsicWidth, imageView.drawable.intrinsicHeight)
+    val colors: Pair<Int, Int>
+    try {
+      colors = getColorsFromBalloonCard(x, y)
+    } catch (e: IllegalArgumentException) {
+      throw IllegalArgumentException("Arrow attached outside balloon. Could not get a matching color.")
+    }
+    val startColor = colors.first
+    val endColor = colors.second
+
+    val updatedBitmap = Bitmap.createBitmap(oldBitmap.width, oldBitmap.height, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(updatedBitmap)
+    canvas.drawBitmap(oldBitmap, 0f, 0f, null)
+    val paint = Paint()
+    val shader: LinearGradient = when (builder.arrowOrientation) {
+      ArrowOrientation.BOTTOM, ArrowOrientation.LEFT -> {
+        LinearGradient(oldBitmap.width.toFloat() / 2 - builder.arrowSize / 2, 0f, oldBitmap.width.toFloat(), 0f, startColor, endColor, Shader.TileMode.CLAMP)
+      }
+      ArrowOrientation.RIGHT, ArrowOrientation.TOP -> {
+        LinearGradient(oldBitmap.width.toFloat() / 2 + builder.arrowSize / 2, 0f, 0f, 0f, startColor, endColor, Shader.TileMode.CLAMP)
+      }
+    }
+    paint.shader = shader
+    paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
+    canvas.drawRect(0f, 0f, oldBitmap.width.toFloat(), oldBitmap.height.toFloat(), paint)
+    imageView.setColorFilter(Color.TRANSPARENT, PorterDuff.Mode.SRC_IN)
+    return updatedBitmap
+  }
+
+  private fun getColorsFromBalloonCard(x: Float, y: Float): Pair<Int, Int> {
+    val bitmap = drawableToBitmap(binding.balloonCard.background, binding.balloonCard.width + 1, binding.balloonCard.height + 1)
+    val startColor: Int
+    val endColor: Int
+    when (builder.arrowOrientation) {
+      ArrowOrientation.BOTTOM, ArrowOrientation.TOP -> {
+        startColor = bitmap.getPixel((x + builder.arrowSize / 2f).toInt(), y.toInt())
+        endColor = bitmap.getPixel((x - builder.arrowSize / 2f).toInt(), y.toInt())
+      }
+      ArrowOrientation.LEFT, ArrowOrientation.RIGHT -> {
+        startColor = bitmap.getPixel(x.toInt(), (y + builder.arrowSize / 2f).toInt())
+        endColor = bitmap.getPixel(x.toInt(), (y - builder.arrowSize / 2f).toInt())
+      }
+    }
+    return Pair(startColor, endColor)
+  }
+
+  private fun drawableToBitmap(drawable: Drawable, width: Int, height: Int): Bitmap {
+    val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(bitmap)
+    drawable.setBounds(0, 0, canvas.width, canvas.height)
+    drawable.draw(canvas)
+    return bitmap
   }
 
   /**
@@ -1167,6 +1255,10 @@ class Balloon(
     @set:JvmSynthetic
     var arrowColor: Int = NO_INT_VALUE
 
+    @JvmField
+    @set:JvmSynthetic
+    var arrowColorMatchBalloon: Boolean = false
+
     @JvmField @Px
     @set:JvmSynthetic
     var arrowSize: Int = 12.dp
@@ -1683,6 +1775,11 @@ class Balloon(
 
     /** sets a color of the arrow. */
     fun setArrowColor(@ColorInt value: Int): Builder = apply { this.arrowColor = value }
+
+    /** sets if arrow color should match the color of the balloon card. Overrides [arrowColor].
+     * Does not work with custom arrows.
+     */
+    fun setArrowColorMatchBalloon(value: Boolean): Builder = apply { this.arrowColorMatchBalloon = value }
 
     /** sets a color of the arrow using a resource. */
     fun setArrowColorResource(@ColorRes value: Int): Builder = apply {
