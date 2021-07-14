@@ -458,6 +458,7 @@ class Balloon(
     setOnBalloonOutsideTouchListener(builder.onBalloonOutsideTouchListener)
     setOnBalloonTouchListener(builder.onBalloonTouchListener)
     setOnBalloonOverlayClickListener(builder.onBalloonOverlayClickListener)
+    setOnBalloonOverlayTouchListener(builder.onBalloonOverlayTouchListener)
   }
 
   private fun initializeBalloonRoot() {
@@ -1075,6 +1076,13 @@ class Balloon(
     }
   }
 
+  /** sets a [View.OnTouchListener] to the overlay popup */
+  fun setOnBalloonOverlayTouchListener(onTouchListener: View.OnTouchListener?) {
+    if (onTouchListener != null) {
+      this.overlayWindow.setTouchInterceptor(onTouchListener)
+    }
+  }
+
   /** sets a [OnBalloonOverlayClickListener] to the overlay popup. */
   fun setOnBalloonOverlayClickListener(onBalloonOverlayClickListener: OnBalloonOverlayClickListener?) {
     this.overlayBinding.root.setOnClickListener {
@@ -1443,6 +1451,10 @@ class Balloon(
     @JvmField
     @set:JvmSynthetic
     var onBalloonTouchListener: View.OnTouchListener? = null
+
+    @JvmField
+    @set:JvmSynthetic
+    var onBalloonOverlayTouchListener: View.OnTouchListener? = null
 
     @JvmField
     @set:JvmSynthetic
@@ -2222,6 +2234,12 @@ class Balloon(
       if (!value) {
         setFocusable(value)
       }
+    }
+
+    /** sets a [View.OnTouchListener] to the overlay popup. */
+    fun setOnBalloonOverlayTouchListener(value: View.OnTouchListener): Builder = apply {
+      this.onBalloonOverlayTouchListener = value
+      setDismissWhenOverlayClicked(false)
     }
 
     /** dismisses when invoked show function again. */
