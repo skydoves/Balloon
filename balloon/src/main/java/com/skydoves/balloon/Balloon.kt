@@ -668,6 +668,15 @@ class Balloon(
   }
 
   /**
+   * Checks if the balloon should show up.
+   */
+  fun shouldShowUp(): Boolean {
+    return this.builder.preferenceName?.let {
+      this.balloonPersistence.shouldShowUp(it, builder.showTimes)
+    } ?: true
+  }
+
+  /**
    * Shows [Balloon] tooltips on the [anchor] with some initializations related to arrow, content, and overlay.
    * The balloon will be shown with the [overlayWindow] if the anchorView's parent window is in a valid state.
    * The size of the content will be measured internally, and it will affect calculating the popup size.
