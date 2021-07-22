@@ -15,12 +15,12 @@
 ext.versions = [
     minSdk           : 17,
     compileSdk       : 30,
-    versionCode      : 34,
-    versionName      : '1.3.3',
+    versionCode      : 36,
+    versionName      : '1.3.5',
 
     gradleBuildTool  : '4.1.3',
-    spotlessGradle   : '5.13.0',
-    ktlintGradle     : '0.40.0',
+    spotlessGradle   : '5.14.0',
+    ktlintGradle     : '0.41.0',
     dokkaGradle      : '1.4.32',
     mavenPublish     : '0.15.1',
 
