@@ -58,8 +58,20 @@ internal fun Array<Drawable?>.getIntrinsicHeight(): Int {
   return this[0].getHeight().coerceAtLeast(this[2].getHeight())
 }
 
+/** returns intrinsic height size of a drawable array. */
+@JvmSynthetic
+internal fun Array<Drawable?>.getSumOfIntrinsicWidth(): Int {
+  return this[0].getWidth() + this[2].getWidth()
+}
+
 /** returns intrinsic height size of a drawable. */
 @JvmSynthetic
 internal fun Drawable?.getHeight(): Int {
   return this?.intrinsicHeight ?: 0
+}
+
+/** returns intrinsic height size of a drawable. */
+@JvmSynthetic
+internal fun Drawable?.getWidth(): Int {
+  return this?.intrinsicWidth ?: 0
 }
