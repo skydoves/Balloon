@@ -88,11 +88,13 @@ import com.skydoves.balloon.extensions.displaySize
 import com.skydoves.balloon.extensions.dp
 import com.skydoves.balloon.extensions.getIntrinsicHeight
 import com.skydoves.balloon.extensions.getStatusBarHeight
+import com.skydoves.balloon.extensions.getSumOfIntrinsicWidth
 import com.skydoves.balloon.extensions.getViewPointOnScreen
 import com.skydoves.balloon.extensions.isExistHorizontalDrawable
 import com.skydoves.balloon.extensions.isFinishing
 import com.skydoves.balloon.extensions.px2Sp
 import com.skydoves.balloon.extensions.runOnAfterSDK21
+import com.skydoves.balloon.extensions.sumOfCompoundPadding
 import com.skydoves.balloon.extensions.visible
 import com.skydoves.balloon.overlay.BalloonOverlayAnimation
 import com.skydoves.balloon.overlay.BalloonOverlayOval
@@ -715,7 +717,11 @@ class Balloon(
           dismissWithDelay(dismissDelay)
         }
 
-        initializeText()
+        if (hasCustomLayout()) {
+          traverseAndMeasureTextWidth(binding.balloonCard)
+        } else {
+          measureTextWidth(binding.balloonText, binding.balloonCard)
+        }
         this.binding.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         this.bodyWindow.width = getMeasuredWidth()
         this.bodyWindow.height = getMeasuredHeight()
@@ -1168,17 +1174,15 @@ class Balloon(
    */
   private fun measureTextWidth(textView: AppCompatTextView, rootView: View) {
     with(textView) {
-      val widthSpec =
-        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-      val heightSpec =
-        View.MeasureSpec.makeMeasureSpec(context.displaySize().y, View.MeasureSpec.UNSPECIFIED)
-      measure(widthSpec, heightSpec)
-      maxWidth = getMeasuredTextWidth(measuredWidth, rootView)
+      var measuredTextWidth = textView.paint.measureText(textView.text.toString()).toInt()
       if (compoundDrawablesRelative.isExistHorizontalDrawable()) {
         minHeight = compoundDrawablesRelative.getIntrinsicHeight()
+        measuredTextWidth += compoundDrawablesRelative.getSumOfIntrinsicWidth() + sumOfCompoundPadding
       } else if (compoundDrawables.isExistHorizontalDrawable()) {
         minHeight = compoundDrawables.getIntrinsicHeight()
+        measuredTextWidth += compoundDrawables.getSumOfIntrinsicWidth() + sumOfCompoundPadding
       }
+      maxWidth = getMeasuredTextWidth(measuredTextWidth, rootView)
     }
   }
 
@@ -1224,7 +1228,7 @@ class Balloon(
   }
 
   /** gets a content view of the balloon popup window. */
-  fun getContentView(): View {
+  fun getContentView(): ViewGroup {
     return binding.balloonCard
   }
 
