@@ -1495,7 +1495,7 @@ class Balloon(
     @set:JvmSynthetic
     var overlayColor: Int = Color.TRANSPARENT
 
-    @JvmField @Dp
+    @JvmField @Px
     @set:JvmSynthetic
     var overlayPadding: Float = 0f
 
@@ -2182,7 +2182,7 @@ class Balloon(
     }
 
     /** sets a padding value of the overlay shape internally. */
-    fun setOverlayPadding(@Dp value: Float) = apply { this.overlayPadding = value }
+    fun setOverlayPadding(@Dp value: Float) = apply { this.overlayPadding = value.dp }
 
     /** sets a padding value of the overlay shape internally using dimension resource.. */
     fun setOverlayPaddingResource(@DimenRes value: Int) = apply {

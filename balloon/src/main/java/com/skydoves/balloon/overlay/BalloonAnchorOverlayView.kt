@@ -31,9 +31,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
-import com.skydoves.balloon.annotations.Dp
 import com.skydoves.balloon.extensions.dimen
-import com.skydoves.balloon.extensions.dp
 
 /**
  * BalloonAnchorOverlayView is an overlay view for highlighting an anchor
@@ -67,8 +65,8 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
   @Px private var _overlayPadding: Float = 0f
   var overlayPadding: Float
     @Px get() = _overlayPadding
-    set(@Dp value) {
-      _overlayPadding = value.dp
+    set(@Px value) {
+      _overlayPadding = value
       invalidate()
     }
 
