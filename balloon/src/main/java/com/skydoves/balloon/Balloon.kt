@@ -1223,6 +1223,10 @@ class Balloon(
     return when {
       builder.widthRatio != NO_Float_VALUE ->
         (displayWidth * builder.widthRatio).toInt() - spaces
+      builder.minWidthRatio != NO_Float_VALUE || builder.maxWidthRatio != NO_Float_VALUE -> {
+        val max = if (builder.maxWidthRatio != NO_Float_VALUE) builder.maxWidthRatio else 1f
+        binding.root.measuredWidth.coerceIn((displayWidth * builder.minWidthRatio).toInt(), (displayWidth * max).toInt())
+      }
       builder.width != BalloonSizeSpec.WRAP && builder.width <= displayWidth ->
         builder.width - spaces
       else -> measuredWidth.coerceAtMost(maxTextWidth)
