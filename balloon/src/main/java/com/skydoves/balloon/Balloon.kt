@@ -302,7 +302,7 @@ class Balloon(
   }
 
   /**
-   * Calculate the color at arrow position from ballonCard. The color is then set as a foreground to the arrow.
+   * Calculate the color at arrow position from balloonCard. The color is then set as a foreground to the arrow.
    *
    * @param imageView the arrow imageview containing the drawable.
    * @param x x position of the point where the middle of the arrow is connected to the balloon
