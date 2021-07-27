@@ -302,7 +302,7 @@ class Balloon(
   }
 
   /**
-   * Calculate the color at arrow position from ballonCard. The color is then set as a foreground to the arrow.
+   * Calculate the color at arrow position from balloonCard. The color is then set as a foreground to the arrow.
    *
    * @param imageView the arrow imageview containing the drawable.
    * @param x x position of the point where the middle of the arrow is connected to the balloon
@@ -1164,6 +1164,10 @@ class Balloon(
     return when {
       builder.widthRatio != NO_Float_VALUE ->
         (displayWidth * builder.widthRatio).toInt()
+      builder.minWidthRatio != NO_Float_VALUE || builder.maxWidthRatio != NO_Float_VALUE -> {
+        val max = if (builder.maxWidthRatio != NO_Float_VALUE) builder.maxWidthRatio else 1f
+        binding.root.measuredWidth.coerceIn((displayWidth * builder.minWidthRatio).toInt(), (displayWidth * max).toInt())
+      }
       builder.width != BalloonSizeSpec.WRAP -> builder.width.coerceAtMost(displayWidth)
       else -> binding.root.measuredWidth.coerceIn(builder.minWidth, builder.maxWidth)
     }
@@ -1219,6 +1223,10 @@ class Balloon(
     return when {
       builder.widthRatio != NO_Float_VALUE ->
         (displayWidth * builder.widthRatio).toInt() - spaces
+      builder.minWidthRatio != NO_Float_VALUE || builder.maxWidthRatio != NO_Float_VALUE -> {
+        val max = if (builder.maxWidthRatio != NO_Float_VALUE) builder.maxWidthRatio else 1f
+        binding.root.measuredWidth.coerceIn((displayWidth * builder.minWidthRatio).toInt(), (displayWidth * max).toInt()) - spaces
+      }
       builder.width != BalloonSizeSpec.WRAP && builder.width <= displayWidth ->
         builder.width - spaces
       else -> measuredWidth.coerceAtMost(maxTextWidth)
@@ -1277,6 +1285,14 @@ class Balloon(
     @JvmField @FloatRange(from = 0.0, to = 1.0)
     @set:JvmSynthetic
     var widthRatio: Float = NO_Float_VALUE
+
+    @JvmField @FloatRange(from = 0.0, to = 1.0)
+    @set:JvmSynthetic
+    var minWidthRatio: Float = NO_Float_VALUE
+
+    @JvmField @FloatRange(from = 0.0, to = 1.0)
+    @set:JvmSynthetic
+    var maxWidthRatio: Float = NO_Float_VALUE
 
     @JvmField @Px
     @set:JvmSynthetic
@@ -1657,6 +1673,16 @@ class Balloon(
     fun setWidthRatio(
       @FloatRange(from = 0.0, to = 1.0) value: Float
     ): Builder = apply { this.widthRatio = value }
+
+    /** sets the minimum width size by the display screen size ratio. */
+    fun setMinWidthRatio(
+      @FloatRange(from = 0.0, to = 1.0) value: Float
+    ): Builder = apply { this.minWidthRatio = value }
+
+    /** sets the maximum width size by the display screen size ratio. */
+    fun setMaxWidthRatio(
+      @FloatRange(from = 0.0, to = 1.0) value: Float
+    ): Builder = apply { this.maxWidthRatio = value }
 
     /** sets the height size. */
     fun setHeight(@Dp value: Int): Builder = apply {
