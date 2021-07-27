@@ -155,6 +155,16 @@ class Balloon(
   var onBalloonInitializedListener: OnBalloonInitializedListener? =
     builder.onBalloonInitializedListener
 
+  /** A handler for running [autoDismissRunnable]. */
+  private val handler: Handler by lazy(LazyThreadSafetyMode.NONE) {
+    Handler(Looper.getMainLooper())
+  }
+
+  /** A runnable for dismissing the balloon with the [Builder.autoDismissDuration]. */
+  private val autoDismissRunnable: AutoDismissRunnable by lazy(
+    LazyThreadSafetyMode.NONE
+  ) { AutoDismissRunnable(this) }
+
   /** A persistence helper for showing the popup a limited number of times. */
   private val balloonPersistence: BalloonPersistence by lazy(LazyThreadSafetyMode.NONE) {
     BalloonPersistence.getInstance(context)
@@ -1020,6 +1030,7 @@ class Balloon(
         this.isShowing = false
         this.bodyWindow.dismiss()
         this.overlayWindow.dismiss()
+        this.handler.removeCallbacks(autoDismissRunnable)
       }
       if (this.builder.balloonAnimation == BalloonAnimation.CIRCULAR) {
         this.bodyWindow.contentView.circularUnRevealed(builder.circularDuration) {
@@ -1032,9 +1043,8 @@ class Balloon(
   }
 
   /** dismiss the popup menu with milliseconds delay. */
-  fun dismissWithDelay(delay: Long) {
-    Handler(Looper.getMainLooper()).postDelayed({ dismiss() }, delay)
-  }
+  fun dismissWithDelay(delay: Long) =
+    handler.postDelayed(autoDismissRunnable, delay)
 
   /** sets a [OnBalloonClickListener] to the popup. */
   fun setOnBalloonClickListener(onBalloonClickListener: OnBalloonClickListener?) {
