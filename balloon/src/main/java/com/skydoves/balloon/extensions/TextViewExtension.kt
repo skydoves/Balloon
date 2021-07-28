@@ -139,3 +139,7 @@ internal fun TextView.applyDrawable(vectorTextViewParams: VectorTextViewParams) 
       compoundDrawablePadding = context.resources.getDimensionPixelSize(it)
     }
 }
+
+/** returns sum of the compound padding (start and end). */
+internal val TextView.sumOfCompoundPadding: Int
+  inline get() = compoundPaddingStart + compoundPaddingEnd
