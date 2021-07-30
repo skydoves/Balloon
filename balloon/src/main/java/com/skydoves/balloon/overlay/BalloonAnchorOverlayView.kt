@@ -153,7 +153,7 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
     paddingColorPaint.apply {
       color = overlayPaddingColor
       style = Paint.Style.STROKE
-      strokeWidth =  overlayPadding * 2
+      strokeWidth = overlayPadding * 2
     }
 
     anchorView?.let { anchor ->
