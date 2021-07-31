@@ -61,6 +61,15 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
       invalidate()
     }
 
+  /** padding color of the overlay shape. */
+  @ColorInt private var _overlayPaddingColor: Int = Color.TRANSPARENT
+  var overlayPaddingColor: Int
+    @ColorInt get() = _overlayPaddingColor
+    set(@ColorInt value) {
+      _overlayPaddingColor = value
+      invalidate()
+    }
+
   /** padding value of the internal overlay shape. */
   @Px private var _overlayPadding: Float = 0f
   var overlayPadding: Float
@@ -90,10 +99,16 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
 
   private var bitmap: Bitmap? = null
   private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+  private val paddingColorPaint = Paint(Paint.ANTI_ALIAS_FLAG)
   private var invalidated: Boolean = false
 
   init {
     paint.apply {
+      isAntiAlias = true
+      isFilterBitmap = true
+      isDither = true
+    }
+    paddingColorPaint.apply {
       isAntiAlias = true
       isFilterBitmap = true
       isDither = true
@@ -135,6 +150,11 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
       xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
       color = Color.TRANSPARENT
     }
+    paddingColorPaint.apply {
+      color = overlayPaddingColor
+      style = Paint.Style.STROKE
+      strokeWidth = overlayPadding * 2
+    }
 
     anchorView?.let { anchor ->
       val rect = Rect()
@@ -154,27 +174,43 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
       )
 
       when (val overlay = balloonOverlayShape) {
-        is BalloonOverlayRect -> canvas.drawRect(anchorRect, paint)
-        is BalloonOverlayOval -> canvas.drawOval(anchorRect, paint)
+        is BalloonOverlayRect -> {
+          canvas.drawRect(anchorRect, paint)
+          canvas.drawRect(anchorRect, paddingColorPaint)
+        }
+        is BalloonOverlayOval -> {
+          canvas.drawOval(anchorRect, paint)
+          canvas.drawOval(anchorRect, paddingColorPaint)
+        }
         is BalloonOverlayCircle -> {
           overlay.radius?.let { radius ->
             canvas.drawCircle(anchorRect.centerX(), anchorRect.centerY(), radius, paint)
+            canvas.drawCircle(anchorRect.centerX(), anchorRect.centerY(), radius, paddingColorPaint)
           }
           overlay.radiusRes?.let { radiusRes ->
             canvas.drawCircle(
               anchorRect.centerX(), anchorRect.centerY(), context.dimen(radiusRes),
               paint
             )
+            canvas.drawCircle(
+              anchorRect.centerX(), anchorRect.centerY(), context.dimen(radiusRes),
+              paddingColorPaint
+            )
           }
         }
         is BalloonOverlayRoundRect -> {
           overlay.radiusPair?.let { radiusPair ->
             canvas.drawRoundRect(anchorRect, radiusPair.first, radiusPair.second, paint)
+            canvas.drawRoundRect(anchorRect, radiusPair.first, radiusPair.second, paddingColorPaint)
           }
           overlay.radiusResPair?.let { radiusResPair ->
             canvas.drawRoundRect(
               anchorRect, context.dimen(radiusResPair.first),
               context.dimen(radiusResPair.second), paint
+            )
+            canvas.drawRoundRect(
+              anchorRect, context.dimen(radiusResPair.first),
+              context.dimen(radiusResPair.second), paddingColorPaint
             )
           }
         }
