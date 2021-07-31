@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <dimen name="textSize">15sp</dimen>
+  <dimen name="editBalloonOverlayPadding">6dp</dimen>
+  <dimen name="editBalloonOverlayRadius">11dp</dimen>
 </resources>

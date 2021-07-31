@@ -47,8 +47,8 @@ class EditBalloonFactory : Balloon.Factory() {
       .setBalloonAnimation(BalloonAnimation.ELASTIC)
       .setIsVisibleOverlay(true)
       .setOverlayColorResource(R.color.overlay)
-      .setOverlayPadding(6f)
-      .setOverlayShape(BalloonOverlayRoundRect(12f, 12f))
+      .setOverlayPaddingResource(R.dimen.editBalloonOverlayPadding)
+      .setOverlayShape(BalloonOverlayRoundRect(R.dimen.editBalloonOverlayRadius, R.dimen.editBalloonOverlayRadius))
       .setLifecycleOwner(lifecycle)
       .setDismissWhenClicked(true)
       .setOnBalloonDismissListener {
