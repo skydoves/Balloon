@@ -153,7 +153,7 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
     paddingColorPaint.apply {
       color = overlayPaddingColor
       style = Paint.Style.STROKE
-      strokeWidth = overlayPadding * 2
+      strokeWidth = overlayPadding
     }
 
     anchorView?.let { anchor ->
@@ -173,19 +173,29 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
         rect.bottom + overlayPadding
       )
 
+      val halfOfOverlayPadding = overlayPadding / 2
+      val anchorPaddingRect = RectF(anchorRect).apply {
+        inset(halfOfOverlayPadding, halfOfOverlayPadding)
+      }
+
       when (val overlay = balloonOverlayShape) {
         is BalloonOverlayRect -> {
           canvas.drawRect(anchorRect, paint)
-          canvas.drawRect(anchorRect, paddingColorPaint)
+          canvas.drawRect(anchorPaddingRect, paddingColorPaint)
         }
         is BalloonOverlayOval -> {
           canvas.drawOval(anchorRect, paint)
-          canvas.drawOval(anchorRect, paddingColorPaint)
+          canvas.drawOval(anchorPaddingRect, paddingColorPaint)
         }
         is BalloonOverlayCircle -> {
           overlay.radius?.let { radius ->
             canvas.drawCircle(anchorRect.centerX(), anchorRect.centerY(), radius, paint)
-            canvas.drawCircle(anchorRect.centerX(), anchorRect.centerY(), radius, paddingColorPaint)
+            canvas.drawCircle(
+              anchorPaddingRect.centerX(),
+              anchorPaddingRect.centerY(),
+              radius - halfOfOverlayPadding,
+              paddingColorPaint
+            )
           }
           overlay.radiusRes?.let { radiusRes ->
             canvas.drawCircle(
@@ -193,7 +203,7 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
               paint
             )
             canvas.drawCircle(
-              anchorRect.centerX(), anchorRect.centerY(), context.dimen(radiusRes),
+              anchorPaddingRect.centerX(), anchorPaddingRect.centerY(), context.dimen(radiusRes) - halfOfOverlayPadding,
               paddingColorPaint
             )
           }
@@ -201,7 +211,12 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
         is BalloonOverlayRoundRect -> {
           overlay.radiusPair?.let { radiusPair ->
             canvas.drawRoundRect(anchorRect, radiusPair.first, radiusPair.second, paint)
-            canvas.drawRoundRect(anchorRect, radiusPair.first, radiusPair.second, paddingColorPaint)
+            canvas.drawRoundRect(
+              anchorPaddingRect,
+              radiusPair.first - halfOfOverlayPadding,
+              radiusPair.second - halfOfOverlayPadding,
+              paddingColorPaint
+            )
           }
           overlay.radiusResPair?.let { radiusResPair ->
             canvas.drawRoundRect(
@@ -209,8 +224,8 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
               context.dimen(radiusResPair.second), paint
             )
             canvas.drawRoundRect(
-              anchorRect, context.dimen(radiusResPair.first),
-              context.dimen(radiusResPair.second), paddingColorPaint
+              anchorPaddingRect, context.dimen(radiusResPair.first) - halfOfOverlayPadding,
+              context.dimen(radiusResPair.second) - halfOfOverlayPadding, paddingColorPaint
             )
           }
         }
