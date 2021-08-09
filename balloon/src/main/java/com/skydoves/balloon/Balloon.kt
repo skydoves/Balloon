@@ -1226,7 +1226,7 @@ class Balloon(
     val spaces = rootView.paddingLeft + rootView.paddingRight + if (builder.iconDrawable != null) {
       builder.iconWidth + builder.iconSpace
     } else 0 + builder.marginRight + builder.marginLeft + (builder.arrowSize * 2)
-    val maxTextWidth = displayWidth - spaces
+    val maxTextWidth = builder.maxWidth - spaces
 
     return when {
       builder.widthRatio != NO_Float_VALUE ->
