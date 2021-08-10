@@ -1018,6 +1018,9 @@ class Balloon(
   fun update(anchor: View, xOff: Int = 0, yOff: Int = 0) {
     update(anchor = anchor) {
       this.bodyWindow.update(anchor, xOff, yOff, getMeasuredWidth(), getMeasuredHeight())
+      if (builder.isVisibleOverlay) {
+        overlayBinding.balloonOverlayView.forceInvalidate()
+      }
     }
   }
 

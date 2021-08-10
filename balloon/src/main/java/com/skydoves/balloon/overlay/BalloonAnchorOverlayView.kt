@@ -115,6 +115,11 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
     }
   }
 
+  fun forceInvalidate() {
+    invalidated = true
+    invalidate()
+  }
+
   override fun dispatchDraw(canvas: Canvas?) {
     if (invalidated || bitmap == null || bitmap?.isRecycled == true) {
       prepareBitmap()
