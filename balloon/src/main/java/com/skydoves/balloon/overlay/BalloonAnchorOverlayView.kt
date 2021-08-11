@@ -61,6 +61,15 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
       invalidate()
     }
 
+  /** padding color of the overlay shape. */
+  @ColorInt private var _overlayPaddingColor: Int = Color.TRANSPARENT
+  var overlayPaddingColor: Int
+    @ColorInt get() = _overlayPaddingColor
+    set(@ColorInt value) {
+      _overlayPaddingColor = value
+      invalidate()
+    }
+
   /** padding value of the internal overlay shape. */
   @Px private var _overlayPadding: Float = 0f
   var overlayPadding: Float
@@ -90,6 +99,7 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
 
   private var bitmap: Bitmap? = null
   private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+  private val paddingColorPaint = Paint(Paint.ANTI_ALIAS_FLAG)
   private var invalidated: Boolean = false
 
   init {
@@ -98,6 +108,16 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
       isFilterBitmap = true
       isDither = true
     }
+    paddingColorPaint.apply {
+      isAntiAlias = true
+      isFilterBitmap = true
+      isDither = true
+    }
+  }
+
+  fun forceInvalidate() {
+    invalidated = true
+    invalidate()
   }
 
   override fun dispatchDraw(canvas: Canvas?) {
@@ -135,6 +155,11 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
       xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
       color = Color.TRANSPARENT
     }
+    paddingColorPaint.apply {
+      color = overlayPaddingColor
+      style = Paint.Style.STROKE
+      strokeWidth = overlayPadding
+    }
 
     anchorView?.let { anchor ->
       val rect = Rect()
@@ -153,28 +178,59 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
         rect.bottom + overlayPadding
       )
 
+      val halfOfOverlayPadding = overlayPadding / 2
+      val anchorPaddingRect = RectF(anchorRect).apply {
+        inset(halfOfOverlayPadding, halfOfOverlayPadding)
+      }
+
       when (val overlay = balloonOverlayShape) {
-        is BalloonOverlayRect -> canvas.drawRect(anchorRect, paint)
-        is BalloonOverlayOval -> canvas.drawOval(anchorRect, paint)
+        is BalloonOverlayRect -> {
+          canvas.drawRect(anchorRect, paint)
+          canvas.drawRect(anchorPaddingRect, paddingColorPaint)
+        }
+        is BalloonOverlayOval -> {
+          canvas.drawOval(anchorRect, paint)
+          canvas.drawOval(anchorPaddingRect, paddingColorPaint)
+        }
         is BalloonOverlayCircle -> {
           overlay.radius?.let { radius ->
             canvas.drawCircle(anchorRect.centerX(), anchorRect.centerY(), radius, paint)
+            canvas.drawCircle(
+              anchorPaddingRect.centerX(),
+              anchorPaddingRect.centerY(),
+              radius - halfOfOverlayPadding,
+              paddingColorPaint
+            )
           }
           overlay.radiusRes?.let { radiusRes ->
             canvas.drawCircle(
               anchorRect.centerX(), anchorRect.centerY(), context.dimen(radiusRes),
               paint
             )
+            canvas.drawCircle(
+              anchorPaddingRect.centerX(), anchorPaddingRect.centerY(), context.dimen(radiusRes) - halfOfOverlayPadding,
+              paddingColorPaint
+            )
           }
         }
         is BalloonOverlayRoundRect -> {
           overlay.radiusPair?.let { radiusPair ->
             canvas.drawRoundRect(anchorRect, radiusPair.first, radiusPair.second, paint)
+            canvas.drawRoundRect(
+              anchorPaddingRect,
+              radiusPair.first - halfOfOverlayPadding,
+              radiusPair.second - halfOfOverlayPadding,
+              paddingColorPaint
+            )
           }
           overlay.radiusResPair?.let { radiusResPair ->
             canvas.drawRoundRect(
               anchorRect, context.dimen(radiusResPair.first),
               context.dimen(radiusResPair.second), paint
+            )
+            canvas.drawRoundRect(
+              anchorPaddingRect, context.dimen(radiusResPair.first) - halfOfOverlayPadding,
+              context.dimen(radiusResPair.second) - halfOfOverlayPadding, paddingColorPaint
             )
           }
         }

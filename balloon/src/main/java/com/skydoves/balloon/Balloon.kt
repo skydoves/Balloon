@@ -600,6 +600,7 @@ class Balloon(
       overlayPadding = builder.overlayPadding
       overlayPosition = builder.overlayPosition
       balloonOverlayShape = builder.overlayShape
+      overlayPaddingColor = builder.overlayPaddingColor
       overlayWindow.isClippingEnabled = false
     }
   }
@@ -1017,6 +1018,9 @@ class Balloon(
   fun update(anchor: View, xOff: Int = 0, yOff: Int = 0) {
     update(anchor = anchor) {
       this.bodyWindow.update(anchor, xOff, yOff, getMeasuredWidth(), getMeasuredHeight())
+      if (builder.isVisibleOverlay) {
+        overlayBinding.balloonOverlayView.forceInvalidate()
+      }
     }
   }
 
@@ -1171,10 +1175,10 @@ class Balloon(
       builder.widthRatio != NO_Float_VALUE ->
         (displayWidth * builder.widthRatio).toInt()
       builder.minWidthRatio != NO_Float_VALUE || builder.maxWidthRatio != NO_Float_VALUE -> {
-        val max = if (builder.maxWidthRatio != NO_Float_VALUE) builder.maxWidthRatio else 1f
+        val maxWidthRatio = if (builder.maxWidthRatio != NO_Float_VALUE) builder.maxWidthRatio else 1f
         binding.root.measuredWidth.coerceIn(
           (displayWidth * builder.minWidthRatio).toInt(),
-          (displayWidth * max).toInt()
+          (displayWidth * maxWidthRatio).toInt()
         )
       }
       builder.width != BalloonSizeSpec.WRAP -> builder.width.coerceAtMost(displayWidth)
@@ -1225,17 +1229,14 @@ class Balloon(
     val spaces = rootView.paddingLeft + rootView.paddingRight + if (builder.iconDrawable != null) {
       builder.iconWidth + builder.iconSpace
     } else 0 + builder.marginRight + builder.marginLeft + (builder.arrowSize * 2)
-    val maxTextWidth = displayWidth - spaces
+    val maxTextWidth = builder.maxWidth - spaces
 
     return when {
       builder.widthRatio != NO_Float_VALUE ->
         (displayWidth * builder.widthRatio).toInt() - spaces
       builder.minWidthRatio != NO_Float_VALUE || builder.maxWidthRatio != NO_Float_VALUE -> {
-        val max = if (builder.maxWidthRatio != NO_Float_VALUE) builder.maxWidthRatio else 1f
-        binding.root.measuredWidth.coerceIn(
-          (displayWidth * builder.minWidthRatio).toInt(),
-          (displayWidth * max).toInt()
-        ) - spaces
+        val maxWidthRatio = if (builder.maxWidthRatio != NO_Float_VALUE) builder.maxWidthRatio else 1f
+        measuredWidth.coerceAtMost((displayWidth * maxWidthRatio).toInt() - spaces)
       }
       builder.width != BalloonSizeSpec.WRAP && builder.width <= displayWidth ->
         builder.width - spaces
@@ -1508,6 +1509,10 @@ class Balloon(
     @JvmField @Px
     @set:JvmSynthetic
     var overlayPadding: Float = 0f
+
+    @JvmField @ColorInt
+    @set:JvmSynthetic
+    var overlayPaddingColor: Int = Color.TRANSPARENT
 
     @JvmField
     @set:JvmSynthetic
@@ -2199,6 +2204,12 @@ class Balloon(
     fun setOverlayPaddingResource(@DimenRes value: Int) = apply {
       this.overlayPadding = context.dimen(value)
     }
+
+    /** color of the overlay padding. */
+    fun setOverlayPaddingColor(@ColorInt value: Int) = apply { this.overlayPaddingColor = value }
+
+    /** color of the overlay padding using a color resource. */
+    fun setOverlayPaddingColorResource(@ColorRes value: Int) = apply { this.overlayPaddingColor = context.contextColor(value) }
 
     /** sets a specific position of the overlay shape. */
     fun setOverlayPosition(value: Point) = apply { this.overlayPosition = value }
