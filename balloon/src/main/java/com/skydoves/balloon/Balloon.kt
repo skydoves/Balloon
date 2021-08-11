@@ -1170,7 +1170,7 @@ class Balloon(
 
   /** gets measured width size of the balloon popup. */
   fun getMeasuredWidth(): Int {
-    val displayWidth = context.displaySize().x
+    val displayWidth = displaySize.x
     return when {
       builder.widthRatio != NO_Float_VALUE ->
         (displayWidth * builder.widthRatio).toInt()
@@ -1225,7 +1225,7 @@ class Balloon(
 
   /** gets measured width size of the balloon popup text label. */
   private fun getMeasuredTextWidth(measuredWidth: Int, rootView: View): Int {
-    val displayWidth = context.displaySize().x
+    val displayWidth = displaySize.x
     val spaces = rootView.paddingLeft + rootView.paddingRight + if (builder.iconDrawable != null) {
       builder.iconWidth + builder.iconSpace
     } else 0 + builder.marginRight + builder.marginLeft + (builder.arrowSize * 2)
@@ -1291,7 +1291,7 @@ class Balloon(
 
     @JvmField @Px
     @set:JvmSynthetic
-    var maxWidth: Int = context.displaySize().x
+    var maxWidth: Int = displaySize.x
 
     @JvmField @FloatRange(from = 0.0, to = 1.0)
     @set:JvmSynthetic
@@ -1888,8 +1888,9 @@ class Balloon(
     /** sets a color of the arrow. */
     fun setArrowColor(@ColorInt value: Int): Builder = apply { this.arrowColor = value }
 
-    /** sets if arrow color should match the color of the balloon card. Overrides [arrowColor].
-     * Does not work with custom arrows.
+    /**
+     * sets if arrow color should match the color of the balloon card.
+     * Overrides [arrowColor]. Does not work with custom arrows.
      */
     fun setArrowColorMatchBalloon(value: Boolean): Builder = apply {
       this.arrowColorMatchBalloon = value

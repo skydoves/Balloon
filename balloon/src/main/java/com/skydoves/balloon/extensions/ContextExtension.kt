@@ -19,21 +19,11 @@ package com.skydoves.balloon.extensions
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
-import android.graphics.Point
 import android.graphics.drawable.Drawable
 import androidx.activity.ComponentActivity
 import androidx.annotation.DimenRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
-
-/** gets display size as a point. */
-@JvmSynthetic
-internal fun Context.displaySize(): Point {
-  return Point(
-    resources.displayMetrics.widthPixels,
-    resources.displayMetrics.heightPixels
-  )
-}
 
 /** px size to sp size. */
 @JvmSynthetic
