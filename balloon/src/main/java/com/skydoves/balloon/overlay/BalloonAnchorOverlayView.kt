@@ -208,7 +208,8 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
               paint
             )
             canvas.drawCircle(
-              anchorPaddingRect.centerX(), anchorPaddingRect.centerY(), context.dimen(radiusRes) - halfOfOverlayPadding,
+              anchorPaddingRect.centerX(), anchorPaddingRect.centerY(),
+              context.dimen(radiusRes) - halfOfOverlayPadding,
               paddingColorPaint
             )
           }
