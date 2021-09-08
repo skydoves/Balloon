@@ -24,7 +24,8 @@ import android.os.Build
  * @param block A lambda that should be run when the device's SDK level is 21 or higher.
  */
 @JvmSynthetic
-inline fun runOnAfterSDK21(block: () -> Unit) {
+@PublishedApi
+internal inline fun runOnAfterSDK21(block: () -> Unit) {
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
     block()
   }
