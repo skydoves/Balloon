@@ -1,11 +1,3 @@
-public final class com/skydoves/balloon/ActivityBalloonLazy : java/io/Serializable, kotlin/Lazy {
-	public fun <init> (Landroid/content/Context;Landroidx/lifecycle/LifecycleOwner;Lkotlin/reflect/KClass;)V
-	public fun getValue ()Lcom/skydoves/balloon/Balloon;
-	public synthetic fun getValue ()Ljava/lang/Object;
-	public fun isInitialized ()Z
-	public fun toString ()Ljava/lang/String;
-}
-
 public final class com/skydoves/balloon/ArrowOrientation : java/lang/Enum {
 	public static final field BOTTOM Lcom/skydoves/balloon/ArrowOrientation;
 	public static final field LEFT Lcom/skydoves/balloon/ArrowOrientation;
@@ -431,14 +423,6 @@ public final class com/skydoves/balloon/BalloonSizeSpec {
 	public static final field WRAP I
 }
 
-public final class com/skydoves/balloon/FragmentBalloonLazy : java/io/Serializable, kotlin/Lazy {
-	public fun <init> (Landroidx/fragment/app/Fragment;Lkotlin/reflect/KClass;)V
-	public fun getValue ()Lcom/skydoves/balloon/Balloon;
-	public synthetic fun getValue ()Ljava/lang/Object;
-	public fun isInitialized ()Z
-	public fun toString ()Ljava/lang/String;
-}
-
 public final class com/skydoves/balloon/IconForm {
 	public fun <init> (Lcom/skydoves/balloon/IconForm$Builder;)V
 	public final fun getDrawable ()Landroid/graphics/drawable/Drawable;
@@ -549,20 +533,10 @@ public final class com/skydoves/balloon/TextFormKt {
 	public static final synthetic fun textForm (Landroid/content/Context;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/balloon/TextForm;
 }
 
-public final class com/skydoves/balloon/ViewBalloonLazy : java/io/Serializable, kotlin/Lazy {
-	public fun <init> (Landroid/view/View;Lkotlin/reflect/KClass;)V
-	public fun getValue ()Lcom/skydoves/balloon/Balloon;
-	public synthetic fun getValue ()Ljava/lang/Object;
-	public fun isInitialized ()Z
-	public fun toString ()Ljava/lang/String;
-}
-
 public final class com/skydoves/balloon/extensions/GlobalExtensionKt {
-	public static final synthetic fun runOnAfterSDK21 (Lkotlin/jvm/functions/Function0;)V
 }
 
 public final class com/skydoves/balloon/extensions/ViewExtensionKt {
-	public static final synthetic fun circularUnRevealed (Landroid/view/View;JLkotlin/jvm/functions/Function0;)V
 }
 
 public final class com/skydoves/balloon/overlay/BalloonAnchorOverlayView : android/view/View {

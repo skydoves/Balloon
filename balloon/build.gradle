@@ -48,6 +48,9 @@ apiValidation {
     ignoredPackages += [
         "com/skydoves/balloon/databinding",
     ]
+    nonPublicMarkers += [
+        "kotlin.PublishedApi",
+    ]
 }
 
 dependencies {
