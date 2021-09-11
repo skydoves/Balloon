@@ -57,6 +57,7 @@ public final class com/skydoves/balloon/Balloon : androidx/lifecycle/LifecycleOb
 	public static synthetic fun relayShowAlignTop$default (Lcom/skydoves/balloon/Balloon;Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
 	public final fun relayShowAsDropDown (Lcom/skydoves/balloon/Balloon;Landroid/view/View;)Lcom/skydoves/balloon/Balloon;
 	public final fun relayShowAsDropDown (Lcom/skydoves/balloon/Balloon;Landroid/view/View;II)Lcom/skydoves/balloon/Balloon;
+	public final fun setIsAttachedInDecor (Z)Lcom/skydoves/balloon/Balloon;
 	public final fun setOnBalloonClickListener (Lcom/skydoves/balloon/OnBalloonClickListener;)V
 	public final synthetic fun setOnBalloonClickListener (Lkotlin/jvm/functions/Function1;)V
 	public final fun setOnBalloonDismissListener (Lcom/skydoves/balloon/OnBalloonDismissListener;)V
@@ -142,6 +143,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public field iconHeight I
 	public field iconSpace I
 	public field iconWidth I
+	public field isAttachedInDecor Z
 	public field isFocusable Z
 	public field isRtlLayout Z
 	public field isStatusBarVisible Z
@@ -258,6 +260,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun setIconSpaceResource (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setIconWidth (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setIconWidthResource (I)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setIsAttachedInDecor (Z)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setIsStatusBarVisible (Z)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setIsVisibleArrow (Z)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setIsVisibleOverlay (Z)Lcom/skydoves/balloon/Balloon$Builder;

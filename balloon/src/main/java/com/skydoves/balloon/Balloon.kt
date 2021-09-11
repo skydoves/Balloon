@@ -94,6 +94,7 @@ import com.skydoves.balloon.extensions.isExistHorizontalDrawable
 import com.skydoves.balloon.extensions.isFinishing
 import com.skydoves.balloon.extensions.px2Sp
 import com.skydoves.balloon.extensions.runOnAfterSDK21
+import com.skydoves.balloon.extensions.runOnAfterSDK22
 import com.skydoves.balloon.extensions.sumOfCompoundPadding
 import com.skydoves.balloon.extensions.visible
 import com.skydoves.balloon.overlay.BalloonOverlayAnimation
@@ -492,6 +493,7 @@ class Balloon(
       runOnAfterSDK21 {
         elevation = builder.elevation
       }
+      setIsAttachedInDecor(builder.isAttachedInDecor)
     }
   }
 
@@ -1166,6 +1168,16 @@ class Balloon(
     )
   }
 
+  /**
+   * sets whether the popup window will be attached in the decor frame of its parent window.
+   * If you want to show up balloon on your DialogFragment, it's recommended to use with true. (#131)
+   */
+  fun setIsAttachedInDecor(value: Boolean) = apply {
+    runOnAfterSDK22 {
+      this.bodyWindow.isAttachedInDecor = value
+    }
+  }
+
   /** gets measured width size of the balloon popup. */
   fun getMeasuredWidth(): Int {
     val displayWidth = displaySize.x
@@ -1638,6 +1650,10 @@ class Balloon(
     @JvmField
     @set:JvmSynthetic
     var isStatusBarVisible: Boolean = true
+
+    @JvmField
+    @set:JvmSynthetic
+    var isAttachedInDecor: Boolean = true
 
     /** sets the width size. */
     fun setWidth(@Dp value: Int): Builder = apply {
@@ -2222,6 +2238,14 @@ class Balloon(
     /** sets is status bar is visible or not in your screen. */
     fun setIsStatusBarVisible(value: Boolean) = apply {
       this.isStatusBarVisible = value
+    }
+
+    /**
+     * sets whether the popup window will be attached in the decor frame of its parent window.
+     * If you want to show up balloon on your DialogFragment, it's recommended to use with true. (#131)
+     */
+    fun setIsAttachedInDecor(value: Boolean) = apply {
+      this.isAttachedInDecor = value
     }
 
     /**
