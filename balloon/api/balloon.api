@@ -24,6 +24,7 @@ public final class com/skydoves/balloon/ArrowPositionRules : java/lang/Enum {
 public final class com/skydoves/balloon/Balloon : androidx/lifecycle/LifecycleObserver {
 	public field onBalloonInitializedListener Lcom/skydoves/balloon/OnBalloonInitializedListener;
 	public fun <init> (Landroid/content/Context;Lcom/skydoves/balloon/Balloon$Builder;)V
+	public final fun clearAllPreferences ()V
 	public final fun dismiss ()V
 	public final fun dismissWithDelay (J)Z
 	public final fun getBalloonArrowView ()Landroid/view/View;
