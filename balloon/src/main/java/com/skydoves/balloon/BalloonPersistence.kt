@@ -21,7 +21,7 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 
 /** BalloonPreferenceManager helps to persist showing counts. */
-internal class BalloonPersistence {
+class BalloonPersistence private constructor() {
 
   /** should show or not the popup. */
   fun shouldShowUp(name: String, counts: Int): Boolean {

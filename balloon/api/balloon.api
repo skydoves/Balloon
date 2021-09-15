@@ -424,6 +424,20 @@ public final class com/skydoves/balloon/BalloonKt$sam$i$com_skydoves_balloon_OnB
 	public final synthetic fun onBalloonOverlayClick ()V
 }
 
+public final class com/skydoves/balloon/BalloonPersistence {
+	public static final field Companion Lcom/skydoves/balloon/BalloonPersistence$Companion;
+	public final fun clearAllPreferences ()V
+	public static final fun getInstance (Landroid/content/Context;)Lcom/skydoves/balloon/BalloonPersistence;
+	public static final fun getPersistName (Ljava/lang/String;)Ljava/lang/String;
+	public final fun putIncrementedCounts (Ljava/lang/String;)V
+	public final fun shouldShowUp (Ljava/lang/String;I)Z
+}
+
+public final class com/skydoves/balloon/BalloonPersistence$Companion {
+	public final fun getInstance (Landroid/content/Context;)Lcom/skydoves/balloon/BalloonPersistence;
+	public final fun getPersistName (Ljava/lang/String;)Ljava/lang/String;
+}
+
 public final class com/skydoves/balloon/BalloonSizeSpec {
 	public static final field INSTANCE Lcom/skydoves/balloon/BalloonSizeSpec;
 	public static final field WRAP I
