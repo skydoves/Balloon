@@ -18,6 +18,7 @@ package com.skydoves.balloon
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 
 /** BalloonPreferenceManager helps to persist showing counts. */
 internal class BalloonPersistence {
@@ -30,6 +31,11 @@ internal class BalloonPersistence {
   /** puts a incremented show-up counts to the preference. */
   fun putIncrementedCounts(name: String) {
     putCounts(name, getPersistedCounts(name) + 1)
+  }
+
+  /** clears all persisted preferences. */
+  fun clearAllPreferences() {
+    sharedPreferenceManager.edit { clear() }
   }
 
   /** gets show-up counts from the preference. */
