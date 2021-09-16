@@ -45,7 +45,7 @@ class BalloonPersistence private constructor() {
 
   /** puts show-up counts to the preference. */
   private fun putCounts(name: String, counts: Int) {
-    sharedPreferenceManager.edit().putInt(getPersistName(name), counts).apply()
+    sharedPreferenceManager.edit { putInt(getPersistName(name), counts) }
   }
 
   companion object {
