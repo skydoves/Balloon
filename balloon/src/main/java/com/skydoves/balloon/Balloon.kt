@@ -1064,6 +1064,11 @@ class Balloon(
     }
   }
 
+  /** clears all persisted preferences. */
+  fun clearAllPreferences() {
+    this.balloonPersistence.clearAllPreferences()
+  }
+
   /** sets a [OnBalloonClickListener] to the popup using lambda. */
   @JvmSynthetic
   fun setOnBalloonClickListener(block: (View) -> Unit) {

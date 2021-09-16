@@ -18,9 +18,10 @@ package com.skydoves.balloon
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 
 /** BalloonPreferenceManager helps to persist showing counts. */
-internal class BalloonPersistence {
+class BalloonPersistence private constructor() {
 
   /** should show or not the popup. */
   fun shouldShowUp(name: String, counts: Int): Boolean {
@@ -32,6 +33,11 @@ internal class BalloonPersistence {
     putCounts(name, getPersistedCounts(name) + 1)
   }
 
+  /** clears all persisted preferences. */
+  fun clearAllPreferences() {
+    sharedPreferenceManager.edit { clear() }
+  }
+
   /** gets show-up counts from the preference. */
   private fun getPersistedCounts(name: String): Int {
     return sharedPreferenceManager.getInt(getPersistName(name), 0)
@@ -39,7 +45,7 @@ internal class BalloonPersistence {
 
   /** puts show-up counts to the preference. */
   private fun putCounts(name: String, counts: Int) {
-    sharedPreferenceManager.edit().putInt(getPersistName(name), counts).apply()
+    sharedPreferenceManager.edit { putInt(getPersistName(name), counts) }
   }
 
   companion object {

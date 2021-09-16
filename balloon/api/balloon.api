@@ -24,6 +24,7 @@ public final class com/skydoves/balloon/ArrowPositionRules : java/lang/Enum {
 public final class com/skydoves/balloon/Balloon : androidx/lifecycle/LifecycleObserver {
 	public field onBalloonInitializedListener Lcom/skydoves/balloon/OnBalloonInitializedListener;
 	public fun <init> (Landroid/content/Context;Lcom/skydoves/balloon/Balloon$Builder;)V
+	public final fun clearAllPreferences ()V
 	public final fun dismiss ()V
 	public final fun dismissWithDelay (J)Z
 	public final fun getBalloonArrowView ()Landroid/view/View;
@@ -421,6 +422,20 @@ public final class com/skydoves/balloon/BalloonKt$sam$i$com_skydoves_balloon_OnB
 	public fun getFunctionDelegate ()Lkotlin/Function;
 	public fun hashCode ()I
 	public final synthetic fun onBalloonOverlayClick ()V
+}
+
+public final class com/skydoves/balloon/BalloonPersistence {
+	public static final field Companion Lcom/skydoves/balloon/BalloonPersistence$Companion;
+	public final fun clearAllPreferences ()V
+	public static final fun getInstance (Landroid/content/Context;)Lcom/skydoves/balloon/BalloonPersistence;
+	public static final fun getPersistName (Ljava/lang/String;)Ljava/lang/String;
+	public final fun putIncrementedCounts (Ljava/lang/String;)V
+	public final fun shouldShowUp (Ljava/lang/String;I)Z
+}
+
+public final class com/skydoves/balloon/BalloonPersistence$Companion {
+	public final fun getInstance (Landroid/content/Context;)Lcom/skydoves/balloon/BalloonPersistence;
+	public final fun getPersistName (Ljava/lang/String;)Ljava/lang/String;
 }
 
 public final class com/skydoves/balloon/BalloonSizeSpec {
