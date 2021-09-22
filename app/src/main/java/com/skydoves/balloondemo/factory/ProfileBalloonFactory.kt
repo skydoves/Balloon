@@ -38,7 +38,7 @@ class ProfileBalloonFactory : Balloon.Factory() {
       setArrowOrientation(ArrowOrientation.TOP)
       setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
       setArrowPosition(0.5f)
-      setCornerRadius(4f)
+      setCornerRadius(6f)
       setElevation(6)
       setBackgroundColorResource(R.color.background800)
       setBalloonAnimation(BalloonAnimation.CIRCULAR)
