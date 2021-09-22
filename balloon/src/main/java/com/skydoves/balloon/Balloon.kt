@@ -806,7 +806,7 @@ class Balloon(
    * @param anchor A target view which popup will be shown with overlap.
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
-   * @param centerAlign A rule for deciding the align of the balloon.
+   * @param centerAlign A rule for deciding the alignment of the balloon.
    */
   @JvmOverloads
   fun showAtCenter(

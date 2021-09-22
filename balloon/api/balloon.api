@@ -57,7 +57,14 @@ public final class com/skydoves/balloon/Balloon : androidx/lifecycle/LifecycleOb
 	public final fun relayShowAlignTop (Lcom/skydoves/balloon/Balloon;Landroid/view/View;II)Lcom/skydoves/balloon/Balloon;
 	public static synthetic fun relayShowAlignTop$default (Lcom/skydoves/balloon/Balloon;Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
 	public final fun relayShowAsDropDown (Lcom/skydoves/balloon/Balloon;Landroid/view/View;)Lcom/skydoves/balloon/Balloon;
+	public final fun relayShowAsDropDown (Lcom/skydoves/balloon/Balloon;Landroid/view/View;I)Lcom/skydoves/balloon/Balloon;
 	public final fun relayShowAsDropDown (Lcom/skydoves/balloon/Balloon;Landroid/view/View;II)Lcom/skydoves/balloon/Balloon;
+	public static synthetic fun relayShowAsDropDown$default (Lcom/skydoves/balloon/Balloon;Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
+	public final fun relayShowAtCenter (Lcom/skydoves/balloon/Balloon;Landroid/view/View;)Lcom/skydoves/balloon/Balloon;
+	public final fun relayShowAtCenter (Lcom/skydoves/balloon/Balloon;Landroid/view/View;I)Lcom/skydoves/balloon/Balloon;
+	public final fun relayShowAtCenter (Lcom/skydoves/balloon/Balloon;Landroid/view/View;II)Lcom/skydoves/balloon/Balloon;
+	public final fun relayShowAtCenter (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IILcom/skydoves/balloon/BalloonCenterAlign;)Lcom/skydoves/balloon/Balloon;
+	public static synthetic fun relayShowAtCenter$default (Lcom/skydoves/balloon/Balloon;Lcom/skydoves/balloon/Balloon;Landroid/view/View;IILcom/skydoves/balloon/BalloonCenterAlign;ILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
 	public final fun setIsAttachedInDecor (Z)Lcom/skydoves/balloon/Balloon;
 	public final fun setOnBalloonClickListener (Lcom/skydoves/balloon/OnBalloonClickListener;)V
 	public final synthetic fun setOnBalloonClickListener (Lkotlin/jvm/functions/Function1;)V
@@ -95,6 +102,11 @@ public final class com/skydoves/balloon/Balloon : androidx/lifecycle/LifecycleOb
 	public final fun showAsDropDown (Landroid/view/View;I)V
 	public final fun showAsDropDown (Landroid/view/View;II)V
 	public static synthetic fun showAsDropDown$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public final fun showAtCenter (Landroid/view/View;)V
+	public final fun showAtCenter (Landroid/view/View;I)V
+	public final fun showAtCenter (Landroid/view/View;II)V
+	public final fun showAtCenter (Landroid/view/View;IILcom/skydoves/balloon/BalloonCenterAlign;)V
+	public static synthetic fun showAtCenter$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IILcom/skydoves/balloon/BalloonCenterAlign;ILjava/lang/Object;)V
 	public final fun update (Landroid/view/View;)V
 	public final fun update (Landroid/view/View;I)V
 	public final fun update (Landroid/view/View;II)V
@@ -358,19 +370,43 @@ public final class com/skydoves/balloon/BalloonAnimation : java/lang/Enum {
 	public static fun values ()[Lcom/skydoves/balloon/BalloonAnimation;
 }
 
+public final class com/skydoves/balloon/BalloonCenterAlign : java/lang/Enum {
+	public static final field BOTTOM Lcom/skydoves/balloon/BalloonCenterAlign;
+	public static final field END Lcom/skydoves/balloon/BalloonCenterAlign;
+	public static final field START Lcom/skydoves/balloon/BalloonCenterAlign;
+	public static final field TOP Lcom/skydoves/balloon/BalloonCenterAlign;
+	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/BalloonCenterAlign;
+	public static fun values ()[Lcom/skydoves/balloon/BalloonCenterAlign;
+}
+
 public final class com/skydoves/balloon/BalloonExtensionKt {
 	public static final fun showAlignBottom (Landroid/view/View;Lcom/skydoves/balloon/Balloon;)V
-	public static final fun showAlignBottom (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public static final fun showAlignBottom (Landroid/view/View;Lcom/skydoves/balloon/Balloon;I)V
+	public static final synthetic fun showAlignBottom (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public static synthetic fun showAlignBottom$default (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)V
 	public static final fun showAlignLeft (Landroid/view/View;Lcom/skydoves/balloon/Balloon;)V
-	public static final fun showAlignLeft (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public static final fun showAlignLeft (Landroid/view/View;Lcom/skydoves/balloon/Balloon;I)V
+	public static final synthetic fun showAlignLeft (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public static synthetic fun showAlignLeft$default (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)V
 	public static final fun showAlignRight (Landroid/view/View;Lcom/skydoves/balloon/Balloon;)V
-	public static final fun showAlignRight (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public static final fun showAlignRight (Landroid/view/View;Lcom/skydoves/balloon/Balloon;I)V
+	public static final synthetic fun showAlignRight (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public static synthetic fun showAlignRight$default (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)V
 	public static final fun showAlignTop (Landroid/view/View;Lcom/skydoves/balloon/Balloon;)V
-	public static final fun showAlignTop (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public static final fun showAlignTop (Landroid/view/View;Lcom/skydoves/balloon/Balloon;I)V
+	public static final synthetic fun showAlignTop (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public static synthetic fun showAlignTop$default (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)V
 	public static final fun showAsDropDown (Landroid/view/View;Lcom/skydoves/balloon/Balloon;)V
-	public static final fun showAsDropDown (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
-	public static final fun showBalloon (Landroid/view/View;Lcom/skydoves/balloon/Balloon;)V
-	public static final fun showBalloon (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public static final fun showAsDropDown (Landroid/view/View;Lcom/skydoves/balloon/Balloon;I)V
+	public static final synthetic fun showAsDropDown (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public static synthetic fun showAsDropDown$default (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)V
+	public static final fun showAtCenter (Landroid/view/View;Lcom/skydoves/balloon/Balloon;)V
+	public static final fun showAtCenter (Landroid/view/View;Lcom/skydoves/balloon/Balloon;I)V
+	public static final fun showAtCenter (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public static final synthetic fun showAtCenter (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IILcom/skydoves/balloon/BalloonCenterAlign;)V
+	public static synthetic fun showAtCenter$default (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IILcom/skydoves/balloon/BalloonCenterAlign;ILjava/lang/Object;)V
+	public static final synthetic fun showBalloon (Landroid/view/View;Lcom/skydoves/balloon/Balloon;)V
+	public static final synthetic fun showBalloon (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
 }
 
 public final class com/skydoves/balloon/BalloonHighlightAnimation : java/lang/Enum {
