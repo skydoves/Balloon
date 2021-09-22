@@ -927,20 +927,6 @@ class Balloon(
   }
 
   /**
-   * Shows the balloon on an anchor view as drop down and shows the next balloon sequentially.
-   * This function returns the next balloon.
-   *
-   * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
-   * @param anchor A target view which popup will be shown to.
-   *
-   * @return A next [balloon].
-   *
-   * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
-   */
-  fun relayShowAsDropDown(balloon: Balloon, anchor: View) =
-    relay(balloon) { it.showAsDropDown(anchor) }
-
-  /**
    * Shows the balloon on an anchor view as drop down with x-off and y-off and shows the next balloon sequentially.
    * This function returns the next balloon.
    *
@@ -953,7 +939,8 @@ class Balloon(
    *
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
-  fun relayShowAsDropDown(balloon: Balloon, anchor: View, xOff: Int, yOff: Int) =
+  @JvmOverloads
+  fun relayShowAsDropDown(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) =
     relay(balloon) { it.showAsDropDown(anchor, xOff, yOff) }
 
   /**
