@@ -850,6 +850,29 @@ class Balloon(
   }
 
   /**
+   * Shows the balloon on an anchor view as the center alignment with x-off and y-off and shows the next balloon sequentially.
+   * This function returns the next balloon.
+   *
+   * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   * @param centerAlign A rule for deciding the align of the balloon.
+   *
+   * @return A next [balloon].
+   *
+   * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
+   */
+  @JvmOverloads
+  fun relayShowAtCenter(
+    balloon: Balloon,
+    anchor: View,
+    xOff: Int = 0,
+    yOff: Int = 0,
+    centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP
+  ) = relay(balloon) { it.showAtCenter(anchor, xOff, yOff, centerAlign) }
+
+  /**
    * Shows the balloon on the center of an anchor view.
    *
    * @param anchor A target view which popup will be shown to.
