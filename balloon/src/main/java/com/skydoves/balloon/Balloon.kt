@@ -101,6 +101,7 @@ import com.skydoves.balloon.overlay.BalloonOverlayAnimation
 import com.skydoves.balloon.overlay.BalloonOverlayOval
 import com.skydoves.balloon.overlay.BalloonOverlayShape
 import kotlin.math.max
+import kotlin.math.roundToInt
 
 @DslMarker
 internal annotation class BalloonInlineDsl
@@ -780,6 +781,13 @@ class Balloon(
    *
    * @param anchor A target view which popup will be shown to.
    */
+  @Deprecated(
+    message = "show() method will be deprecated since `1.3.8`. Use showAtCenter() instead.",
+    replaceWith = ReplaceWith(
+      "showAtCenter(anchor)",
+      imports = ["com.skydoves.balloon.Balloon.showAtCenter"]
+    ),
+  )
   fun show(anchor: View) {
     show(anchor) {
       bodyWindow.showAsDropDown(
@@ -787,6 +795,57 @@ class Balloon(
         builder.supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasuredWidth() / 2)),
         -getMeasuredHeight() - (anchor.measuredHeight / 2)
       )
+    }
+  }
+
+  /**
+   * Shows the balloon over the anchor view (overlap) as the center aligns.
+   * Even if you use with the [ArrowOrientationRules.ALIGN_ANCHOR], the alignment will not be guaranteed.
+   * So if you use the function, use with [ArrowOrientationRules.ALIGN_FIXED] and fixed [ArrowOrientation].
+   *
+   * @param anchor A target view which popup will be shown with overlap.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   * @param centerAlign A rule for deciding the align of the balloon.
+   */
+  @JvmOverloads
+  fun showAtCenter(
+    anchor: View,
+    xOff: Int = 0,
+    yOff: Int = 0,
+    centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP
+  ) {
+    val halfAnchorWidth = (anchor.measuredWidth * 0.5f).roundToInt()
+    val halfAnchorHeight = (anchor.measuredHeight * 0.5f).roundToInt()
+    val halfBalloonWidth = (getMeasuredWidth() * 0.5f).roundToInt()
+    val halfBalloonHeight = (getMeasuredHeight() * 0.5f).roundToInt()
+    show(anchor) {
+      when (centerAlign) {
+        BalloonCenterAlign.TOP ->
+          bodyWindow.showAsDropDown(
+            anchor,
+            builder.supportRtlLayoutFactor * (halfAnchorWidth - halfBalloonWidth + xOff),
+            -(getMeasuredHeight() + halfAnchorHeight) + yOff
+          )
+        BalloonCenterAlign.BOTTOM ->
+          bodyWindow.showAsDropDown(
+            anchor,
+            builder.supportRtlLayoutFactor * (halfAnchorWidth - halfBalloonWidth + xOff),
+            -halfBalloonHeight + halfAnchorWidth + yOff
+          )
+        BalloonCenterAlign.START ->
+          bodyWindow.showAsDropDown(
+            anchor,
+            builder.supportRtlLayoutFactor * (halfAnchorWidth - getMeasuredWidth() + xOff),
+            (-getMeasuredHeight() + halfAnchorHeight) + yOff
+          )
+        BalloonCenterAlign.END ->
+          bodyWindow.showAsDropDown(
+            anchor,
+            builder.supportRtlLayoutFactor * (halfAnchorWidth + getMeasuredWidth() + xOff),
+            (-getMeasuredHeight() + halfAnchorHeight) + yOff
+          )
+      }
     }
   }
 
