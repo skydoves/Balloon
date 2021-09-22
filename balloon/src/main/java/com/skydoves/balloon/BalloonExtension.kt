@@ -29,10 +29,12 @@ import androidx.annotation.MainThread
     imports = ["com.skydoves.balloon.showAtCenter"]
   ),
 )
+@JvmSynthetic
 fun View.showBalloon(balloon: Balloon) = showAtCenter(balloon)
 
 /** shows the balloon on the center of an anchor view. */
 @JvmOverloads
+@JvmSynthetic
 fun View.showAtCenter(
   balloon: Balloon,
   xOff: Int = 0,
@@ -50,56 +52,42 @@ fun View.showAtCenter(
     imports = ["com.skydoves.balloon.showAsDropDown"]
   ),
 )
+@JvmSynthetic
 fun View.showBalloon(balloon: Balloon, xOff: Int, yOff: Int) =
   showAsDropDown(balloon, xOff, yOff)
 
-/** shows the balloon on an anchor view as drop down. */
-fun View.showAsDropDown(balloon: Balloon) {
-  balloon { balloon.showAsDropDown(this) }
-}
-
 /** shows the balloon on an anchor view as drop down with x-off and y-off. */
-fun View.showAsDropDown(balloon: Balloon, xOff: Int, yOff: Int) {
+@JvmOverloads
+@JvmSynthetic
+fun View.showAsDropDown(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
   balloon { balloon.showAsDropDown(this, xOff, yOff) }
 }
 
-/** shows the balloon on an anchor view as the top alignment. */
-fun View.showAlignTop(balloon: Balloon) {
-  balloon { balloon.showAlignTop(this) }
-}
-
+@JvmOverloads
+@JvmSynthetic
 /** shows the balloon on an anchor view as the top alignment with x-off and y-off. */
-fun View.showAlignTop(balloon: Balloon, xOff: Int, yOff: Int) {
+fun View.showAlignTop(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
   balloon { balloon.showAlignTop(this, xOff, yOff) }
 }
 
-/** shows the balloon on an anchor view as the bottom alignment. */
-fun View.showAlignBottom(balloon: Balloon) {
-  balloon { balloon.showAlignBottom(this) }
-}
-
 /** shows the balloon on an anchor view as the bottom alignment with x-off and y-off. */
-fun View.showAlignBottom(balloon: Balloon, xOff: Int, yOff: Int) {
+@JvmOverloads
+@JvmSynthetic
+fun View.showAlignBottom(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
   balloon { balloon.showAlignBottom(this, xOff, yOff) }
 }
 
-/** shows the balloon on an anchor view as the right alignment. */
-fun View.showAlignRight(balloon: Balloon) {
-  balloon { balloon.showAlignRight(this) }
-}
-
 /** shows the balloon on an anchor view as the right alignment with x-off and y-off. */
-fun View.showAlignRight(balloon: Balloon, xOff: Int, yOff: Int) {
+@JvmOverloads
+@JvmSynthetic
+fun View.showAlignRight(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
   balloon { balloon.showAlignRight(this, xOff, yOff) }
 }
 
-/** shows the balloon on an anchor view as the left alignment. */
-fun View.showAlignLeft(balloon: Balloon) {
-  balloon { balloon.showAlignLeft(this) }
-}
-
 /** shows the balloon on an anchor view as the left alignment with x-off and y-off.. */
-fun View.showAlignLeft(balloon: Balloon, xOff: Int, yOff: Int) {
+@JvmOverloads
+@JvmSynthetic
+fun View.showAlignLeft(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
   balloon { balloon.showAlignLeft(this, xOff, yOff) }
 }
 
