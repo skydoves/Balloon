@@ -23,8 +23,6 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.annotation.Px
-import com.skydoves.balloon.annotations.Dp
-import com.skydoves.balloon.extensions.dp
 
 /**
  * RadiusLayout clips four directions of inner layouts depending on the radius size.
@@ -42,8 +40,8 @@ class RadiusLayout @JvmOverloads constructor(
   @Px private var _radius: Float = 0f
   var radius: Float
     @Px get() = _radius
-    set(@Dp value) {
-      _radius = value.dp
+    set(@Px value) {
+      _radius = value
       invalidate()
     }
 

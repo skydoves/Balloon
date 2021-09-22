@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
-  android:layout_marginBottom="8dp"
-  android:orientation="horizontal"
-  android:paddingLeft="5dp"
-  android:paddingRight="5dp"
-  android:paddingBottom="5dp">
+  android:background="?android:selectableItemBackground">
 
   <com.google.android.material.imageview.ShapeableImageView
     android:id="@+id/item_custom_icon"
     android:layout_width="28dp"
     android:layout_height="28dp"
     android:layout_gravity="center_vertical"
-    android:layout_marginEnd="8dp"
-    android:layout_marginRight="8dp"
+    android:layout_margin="8dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
     app:shapeAppearanceOverlay="@style/CircleImageStyle"
     tools:src="@tools:sample/avatars" />
 
@@ -25,10 +23,14 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
-    android:layout_marginStart="10dp"
-    android:layout_marginLeft="10dp"
+    android:layout_marginHorizontal="10dp"
     android:textColor="@color/white_87"
     android:textSize="15sp"
     android:textStyle="bold"
+    app:layout_constraintBottom_toBottomOf="@id/item_custom_icon"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/item_custom_icon"
+    app:layout_constraintTop_toTopOf="@id/item_custom_icon"
     tools:text="@tools:sample/full_names" />
-</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

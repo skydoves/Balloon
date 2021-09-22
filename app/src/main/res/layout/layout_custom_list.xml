@@ -6,8 +6,7 @@
   android:layout_height="wrap_content"
   android:background="@color/background800"
   android:gravity="center"
-  android:orientation="vertical"
-  android:paddingTop="8dp">
+  android:orientation="vertical">
 
   <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/list_recyclerView"
@@ -15,8 +14,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:overScrollMode="never"
-    android:padding="8dp"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    tools:itemCount="5"
     tools:listitem="@layout/item_custom" />
 
 </LinearLayout>
