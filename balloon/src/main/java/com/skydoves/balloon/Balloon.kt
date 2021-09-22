@@ -101,6 +101,7 @@ import com.skydoves.balloon.overlay.BalloonOverlayAnimation
 import com.skydoves.balloon.overlay.BalloonOverlayOval
 import com.skydoves.balloon.overlay.BalloonOverlayShape
 import kotlin.math.max
+import kotlin.math.roundToInt
 
 @DslMarker
 internal annotation class BalloonInlineDsl
@@ -780,6 +781,13 @@ class Balloon(
    *
    * @param anchor A target view which popup will be shown to.
    */
+  @Deprecated(
+    message = "show() method will be deprecated since `1.3.8`. Use showAtCenter() instead.",
+    replaceWith = ReplaceWith(
+      "showAtCenter(anchor)",
+      imports = ["com.skydoves.balloon.Balloon.showAtCenter"]
+    ),
+  )
   fun show(anchor: View) {
     show(anchor) {
       bodyWindow.showAsDropDown(
@@ -791,12 +799,93 @@ class Balloon(
   }
 
   /**
+   * Shows the balloon over the anchor view (overlap) as the center aligns.
+   * Even if you use with the [ArrowOrientationRules.ALIGN_ANCHOR], the alignment will not be guaranteed.
+   * So if you use the function, use with [ArrowOrientationRules.ALIGN_FIXED] and fixed [ArrowOrientation].
+   *
+   * @param anchor A target view which popup will be shown with overlap.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   * @param centerAlign A rule for deciding the alignment of the balloon.
+   */
+  @JvmOverloads
+  fun showAtCenter(
+    anchor: View,
+    xOff: Int = 0,
+    yOff: Int = 0,
+    centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP
+  ) {
+    val halfAnchorWidth = (anchor.measuredWidth * 0.5f).roundToInt()
+    val halfAnchorHeight = (anchor.measuredHeight * 0.5f).roundToInt()
+    val halfBalloonWidth = (getMeasuredWidth() * 0.5f).roundToInt()
+    val halfBalloonHeight = (getMeasuredHeight() * 0.5f).roundToInt()
+    show(anchor) {
+      when (centerAlign) {
+        BalloonCenterAlign.TOP ->
+          bodyWindow.showAsDropDown(
+            anchor,
+            builder.supportRtlLayoutFactor * (halfAnchorWidth - halfBalloonWidth + xOff),
+            -(getMeasuredHeight() + halfAnchorHeight) + yOff
+          )
+        BalloonCenterAlign.BOTTOM ->
+          bodyWindow.showAsDropDown(
+            anchor,
+            builder.supportRtlLayoutFactor * (halfAnchorWidth - halfBalloonWidth + xOff),
+            -halfBalloonHeight + halfAnchorWidth + yOff
+          )
+        BalloonCenterAlign.START ->
+          bodyWindow.showAsDropDown(
+            anchor,
+            builder.supportRtlLayoutFactor * (halfAnchorWidth - getMeasuredWidth() + xOff),
+            (-getMeasuredHeight() + halfAnchorHeight) + yOff
+          )
+        BalloonCenterAlign.END ->
+          bodyWindow.showAsDropDown(
+            anchor,
+            builder.supportRtlLayoutFactor * (halfAnchorWidth + getMeasuredWidth() + xOff),
+            (-getMeasuredHeight() + halfAnchorHeight) + yOff
+          )
+      }
+    }
+  }
+
+  /**
+   * Shows the balloon on an anchor view as the center alignment with x-off and y-off and shows the next balloon sequentially.
+   * This function returns the next balloon.
+   *
+   * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   * @param centerAlign A rule for deciding the align of the balloon.
+   *
+   * @return A next [balloon].
+   *
+   * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
+   */
+  @JvmOverloads
+  fun relayShowAtCenter(
+    balloon: Balloon,
+    anchor: View,
+    xOff: Int = 0,
+    yOff: Int = 0,
+    centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP
+  ) = relay(balloon) { it.showAtCenter(anchor, xOff, yOff, centerAlign) }
+
+  /**
    * Shows the balloon on the center of an anchor view.
    *
    * @param anchor A target view which popup will be shown to.
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    */
+  @Deprecated(
+    message = "show() method will be deprecated since `1.3.8`. Use showAsDropDown() instead.",
+    replaceWith = ReplaceWith(
+      "showAsDropDown(anchor, xOff, yOff)",
+      imports = ["com.skydoves.balloon.Balloon.showAsDropDown"]
+    ),
+  )
   fun show(anchor: View, xOff: Int, yOff: Int) {
     show(anchor) { bodyWindow.showAsDropDown(anchor, xOff, yOff) }
   }
@@ -814,23 +903,16 @@ class Balloon(
    *
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
+  @Deprecated(
+    message = "relayShow() method will be deprecated since `1.3.8`. Use relayShowAsDropDown() instead.",
+    replaceWith = ReplaceWith(
+      "relayShowAsDropDown(anchor, xOff, yOff)",
+      imports = ["com.skydoves.balloon.Balloon.relayShowAsDropDown"]
+    ),
+  )
   @JvmOverloads
   fun relayShow(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) =
-    relay(balloon) { it.show(anchor, xOff, yOff) }
-
-  /**
-   * Shows the balloon on an anchor view as drop down and shows the next balloon sequentially.
-   * This function returns the next balloon.
-   *
-   * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
-   * @param anchor A target view which popup will be shown to.
-   *
-   * @return A next [balloon].
-   *
-   * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
-   */
-  fun relayShowAsDropDown(balloon: Balloon, anchor: View) =
-    relay(balloon) { it.showAsDropDown(anchor) }
+    relayShowAsDropDown(balloon, anchor, xOff, yOff)
 
   /**
    * Shows the balloon on an anchor view as drop down with x-off and y-off.
@@ -857,7 +939,8 @@ class Balloon(
    *
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
-  fun relayShowAsDropDown(balloon: Balloon, anchor: View, xOff: Int, yOff: Int) =
+  @JvmOverloads
+  fun relayShowAsDropDown(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) =
     relay(balloon) { it.showAsDropDown(anchor, xOff, yOff) }
 
   /**
@@ -1298,63 +1381,78 @@ class Balloon(
   /** Builder class for creating [Balloon]. */
   @BalloonInlineDsl
   class Builder(private val context: Context) {
-    @JvmField @Px
+    @JvmField
+    @Px
     @set:JvmSynthetic
     var width: Int = BalloonSizeSpec.WRAP
 
-    @JvmField @Px
+    @JvmField
+    @Px
     @set:JvmSynthetic
     var minWidth: Int = 0
 
-    @JvmField @Px
+    @JvmField
+    @Px
     @set:JvmSynthetic
     var maxWidth: Int = displaySize.x
 
-    @JvmField @FloatRange(from = 0.0, to = 1.0)
+    @JvmField
+    @FloatRange(from = 0.0, to = 1.0)
     @set:JvmSynthetic
     var widthRatio: Float = NO_Float_VALUE
 
-    @JvmField @FloatRange(from = 0.0, to = 1.0)
+    @JvmField
+    @FloatRange(from = 0.0, to = 1.0)
     @set:JvmSynthetic
     var minWidthRatio: Float = NO_Float_VALUE
 
-    @JvmField @FloatRange(from = 0.0, to = 1.0)
+    @JvmField
+    @FloatRange(from = 0.0, to = 1.0)
     @set:JvmSynthetic
     var maxWidthRatio: Float = NO_Float_VALUE
 
-    @JvmField @Px
+    @JvmField
+    @Px
     @set:JvmSynthetic
     var height: Int = BalloonSizeSpec.WRAP
 
-    @JvmField @Px
+    @JvmField
+    @Px
     @set:JvmSynthetic
     var paddingLeft: Int = 0
 
-    @JvmField @Px
+    @JvmField
+    @Px
     @set:JvmSynthetic
     var paddingTop: Int = 0
 
-    @JvmField @Px
+    @JvmField
+    @Px
     @set:JvmSynthetic
     var paddingRight: Int = 0
 
-    @JvmField @Px
+    @JvmField
+    @Px
     @set:JvmSynthetic
     var paddingBottom: Int = 0
 
-    @JvmField @Px
+    @JvmField
+    @Px
     @set:JvmSynthetic
     var marginRight: Int = 0
 
-    @JvmField @Px
+    @JvmField
+    @Px
     @set:JvmSynthetic
     var marginLeft: Int = 0
 
-    @JvmField @Px
+    @JvmField
+    @Px
     @set:JvmSynthetic
     var marginTop: Int = 0
 
-    @JvmField @Px
+    @JvmField
+    @Px
     @set:JvmSynthetic
     var marginBottom: Int = 0
 
@@ -1362,7 +1460,8 @@ class Balloon(
     @set:JvmSynthetic
     var isVisibleArrow: Boolean = true
 
-    @JvmField @ColorInt
+    @JvmField
+    @ColorInt
     @set:JvmSynthetic
     var arrowColor: Int = NO_INT_VALUE
 
@@ -1370,11 +1469,13 @@ class Balloon(
     @set:JvmSynthetic
     var arrowColorMatchBalloon: Boolean = false
 
-    @JvmField @Px
+    @JvmField
+    @Px
     @set:JvmSynthetic
     var arrowSize: Int = 12.dp
 
-    @JvmField @FloatRange(from = 0.0, to = 1.0)
+    @JvmField
+    @FloatRange(from = 0.0, to = 1.0)
     @set:JvmSynthetic
     var arrowPosition: Float = 0.5f
 
@@ -1423,7 +1524,8 @@ class Balloon(
     @set:JvmSynthetic
     var arrowElevation: Float = 0f
 
-    @JvmField @ColorInt
+    @JvmField
+    @ColorInt
     @set:JvmSynthetic
     var backgroundColor: Int = Color.BLACK
 
@@ -1431,7 +1533,8 @@ class Balloon(
     @set:JvmSynthetic
     var backgroundDrawable: Drawable? = null
 
-    @JvmField @Px
+    @JvmField
+    @Px
     @set:JvmSynthetic
     var cornerRadius: Float = 5f.dp
 
@@ -1439,7 +1542,8 @@ class Balloon(
     @set:JvmSynthetic
     var text: CharSequence = ""
 
-    @JvmField @ColorInt
+    @JvmField
+    @ColorInt
     @set:JvmSynthetic
     var textColor: Int = Color.WHITE
 
@@ -1451,7 +1555,8 @@ class Balloon(
     @set:JvmSynthetic
     var movementMethod: MovementMethod? = null
 
-    @JvmField @Sp
+    @JvmField
+    @Sp
     @set:JvmSynthetic
     var textSize: Float = 12f
 
@@ -1479,19 +1584,23 @@ class Balloon(
     @set:JvmSynthetic
     var iconGravity = IconGravity.START
 
-    @JvmField @Px
+    @JvmField
+    @Px
     @set:JvmSynthetic
     var iconWidth: Int = 28.dp
 
-    @JvmField @Px
+    @JvmField
+    @Px
     @set:JvmSynthetic
     var iconHeight: Int = 28.dp
 
-    @JvmField @Px
+    @JvmField
+    @Px
     @set:JvmSynthetic
     var iconSpace: Int = 8.dp
 
-    @JvmField @ColorInt
+    @JvmField
+    @ColorInt
     @set:JvmSynthetic
     var iconColor: Int = NO_INT_VALUE
 
@@ -1499,7 +1608,8 @@ class Balloon(
     @set:JvmSynthetic
     var iconForm: IconForm? = null
 
-    @JvmField @FloatRange(from = 0.0, to = 1.0)
+    @JvmField
+    @FloatRange(from = 0.0, to = 1.0)
     @set:JvmSynthetic
     var alpha: Float = 1f
 
@@ -1511,7 +1621,8 @@ class Balloon(
     @set:JvmSynthetic
     var layout: View? = null
 
-    @JvmField @LayoutRes
+    @JvmField
+    @LayoutRes
     @set:JvmSynthetic
     var layoutRes: Int? = null
 
@@ -1519,15 +1630,18 @@ class Balloon(
     @set:JvmSynthetic
     var isVisibleOverlay: Boolean = false
 
-    @JvmField @ColorInt
+    @JvmField
+    @ColorInt
     @set:JvmSynthetic
     var overlayColor: Int = Color.TRANSPARENT
 
-    @JvmField @Px
+    @JvmField
+    @Px
     @set:JvmSynthetic
     var overlayPadding: Float = 0f
 
-    @JvmField @ColorInt
+    @JvmField
+    @ColorInt
     @set:JvmSynthetic
     var overlayPaddingColor: Int = Color.TRANSPARENT
 
@@ -1595,11 +1709,13 @@ class Balloon(
     @set:JvmSynthetic
     var lifecycleOwner: LifecycleOwner? = null
 
-    @JvmField @StyleRes
+    @JvmField
+    @StyleRes
     @set:JvmSynthetic
     var balloonAnimationStyle: Int = NO_INT_VALUE
 
-    @JvmField @StyleRes
+    @JvmField
+    @StyleRes
     @set:JvmSynthetic
     var balloonOverlayAnimationStyle: Int = NO_INT_VALUE
 
@@ -1619,7 +1735,8 @@ class Balloon(
     @set:JvmSynthetic
     var balloonHighlightAnimation: BalloonHighlightAnimation = BalloonHighlightAnimation.NONE
 
-    @JvmField @StyleRes
+    @JvmField
+    @StyleRes
     @set:JvmSynthetic
     var balloonHighlightAnimationStyle: Int = NO_INT_VALUE
 
