@@ -342,13 +342,13 @@ class Balloon(
     val shader: LinearGradient = when (builder.arrowOrientation) {
       ArrowOrientation.BOTTOM, ArrowOrientation.LEFT -> {
         LinearGradient(
-          oldBitmap.width.toFloat() / 2 - builder.arrowSize / 2, 0f,
+          oldBitmap.width.toFloat() / 2 - builder.arrowHalfSize, 0f,
           oldBitmap.width.toFloat(), 0f, startColor, endColor, Shader.TileMode.CLAMP
         )
       }
       ArrowOrientation.RIGHT, ArrowOrientation.TOP -> {
         LinearGradient(
-          oldBitmap.width.toFloat() / 2 + builder.arrowSize / 2, 0f, 0f, 0f,
+          oldBitmap.width.toFloat() / 2 + builder.arrowHalfSize, 0f, 0f, 0f,
           startColor, endColor, Shader.TileMode.CLAMP
         )
       }
@@ -369,12 +369,12 @@ class Balloon(
     val endColor: Int
     when (builder.arrowOrientation) {
       ArrowOrientation.BOTTOM, ArrowOrientation.TOP -> {
-        startColor = bitmap.getPixel((x + builder.arrowSize / 2f).toInt(), y.toInt())
-        endColor = bitmap.getPixel((x - builder.arrowSize / 2f).toInt(), y.toInt())
+        startColor = bitmap.getPixel((x + builder.arrowHalfSize).toInt(), y.toInt())
+        endColor = bitmap.getPixel((x - builder.arrowHalfSize).toInt(), y.toInt())
       }
       ArrowOrientation.LEFT, ArrowOrientation.RIGHT -> {
-        startColor = bitmap.getPixel(x.toInt(), (y + builder.arrowSize / 2f).toInt())
-        endColor = bitmap.getPixel(x.toInt(), (y - builder.arrowSize / 2f).toInt())
+        startColor = bitmap.getPixel(x.toInt(), (y + builder.arrowHalfSize).toInt())
+        endColor = bitmap.getPixel(x.toInt(), (y - builder.arrowHalfSize).toInt())
       }
     }
     return Pair(startColor, endColor)
@@ -420,16 +420,15 @@ class Balloon(
     val anchorX: Int = anchor.getViewPointOnScreen().x
     val minPosition = getMinArrowPosition()
     val maxPosition = getMeasuredWidth() - minPosition - builder.marginRight - builder.marginLeft
-    val arrowHalfSize = builder.arrowSize / 2f
     return when (builder.arrowPositionRules) {
-      ArrowPositionRules.ALIGN_BALLOON -> binding.balloonWrapper.width * builder.arrowPosition - arrowHalfSize
+      ArrowPositionRules.ALIGN_BALLOON -> binding.balloonWrapper.width * builder.arrowPosition - builder.arrowHalfSize
       ArrowPositionRules.ALIGN_ANCHOR -> {
         when {
           anchorX + anchor.width < balloonX -> minPosition
           balloonX + getMeasuredWidth() < anchorX -> maxPosition
           else -> {
             val position =
-              (anchor.width) * builder.arrowPosition + anchorX - balloonX - arrowHalfSize
+              (anchor.width) * builder.arrowPosition + anchorX - balloonX - builder.arrowHalfSize
             when {
               position <= getDoubleArrowSize() -> minPosition
               position > getMeasuredWidth() - getDoubleArrowSize() -> maxPosition
@@ -705,7 +704,7 @@ class Balloon(
       !destroyed &&
       // We should check the current Activity is running.
       // If the Activity is finishing, we can't attach the popupWindow to the Activity's window. (#92)
-      !context.isFinishing() &&
+      !context.isFinishing &&
       // We should check the contentView is already attached to the decorView or backgroundView in the popupWindow.
       // Sometimes there is a concurrency issue between show and dismiss the popupWindow. (#149)
       bodyWindow.contentView.parent == null &&
@@ -1473,6 +1472,10 @@ class Balloon(
     @Px
     @set:JvmSynthetic
     var arrowSize: Int = 12.dp
+
+    val arrowHalfSize: Float
+      @JvmSynthetic @Px
+      inline get() = arrowSize * 0.5f
 
     @JvmField
     @FloatRange(from = 0.0, to = 1.0)

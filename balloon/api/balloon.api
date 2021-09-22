@@ -206,6 +206,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public field widthRatio F
 	public fun <init> (Landroid/content/Context;)V
 	public final fun build ()Lcom/skydoves/balloon/Balloon;
+	public final synthetic fun getArrowHalfSize ()F
 	public final fun runIfReachedShowCounts (Ljava/lang/Runnable;)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun runIfReachedShowCounts (Lkotlin/jvm/functions/Function0;)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setAlpha (F)Lcom/skydoves/balloon/Balloon$Builder;

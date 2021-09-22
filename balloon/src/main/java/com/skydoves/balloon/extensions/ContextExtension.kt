@@ -57,10 +57,8 @@ internal fun Context.contextDrawable(resource: Int): Drawable? {
 }
 
 /** returns if an Activity is finishing or not. */
-@JvmSynthetic
-internal fun Context.isFinishing(): Boolean {
-  return this is Activity && this.isFinishing
-}
+internal val Context.isFinishing: Boolean
+  @JvmSynthetic inline get() = this is Activity && this.isFinishing
 
 /** returns an activity from a context. */
 @JvmSynthetic
