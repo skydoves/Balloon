@@ -704,7 +704,7 @@ class Balloon(
       !destroyed &&
       // We should check the current Activity is running.
       // If the Activity is finishing, we can't attach the popupWindow to the Activity's window. (#92)
-      !context.isFinishing() &&
+      !context.isFinishing &&
       // We should check the contentView is already attached to the decorView or backgroundView in the popupWindow.
       // Sometimes there is a concurrency issue between show and dismiss the popupWindow. (#149)
       bodyWindow.contentView.parent == null &&
