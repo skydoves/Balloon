@@ -19,6 +19,9 @@
 <img src="https://user-images.githubusercontent.com/24237865/61225579-d346b600-a75b-11e9-84f8-3c06047b5003.gif" width="32%"/>
 </p>
 
+## Who's using Balloon?
+[See who's using Landscapist](/usecases.md).
+
 ## Including in your project
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/balloon.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22balloon%22)
 ### Gradle 
