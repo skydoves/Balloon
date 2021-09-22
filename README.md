@@ -20,7 +20,7 @@
 </p>
 
 ## Who's using Balloon?
-[See who's using Landscapist](/usecases.md).
+[See who's using Balloon](/usecases.md).
 
 ## Including in your project
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/balloon.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22balloon%22)
