@@ -22,14 +22,36 @@ import android.view.View
 import androidx.annotation.MainThread
 
 /** shows the balloon on the center of an anchor view. */
-fun View.showBalloon(balloon: Balloon) {
-  balloon { balloon.show(this) }
+@Deprecated(
+  message = "show() method will be deprecated since `1.3.8`. Use showAtCenter() instead.",
+  replaceWith = ReplaceWith(
+    "showAtCenter(anchor)",
+    imports = ["com.skydoves.balloon.showAtCenter"]
+  ),
+)
+fun View.showBalloon(balloon: Balloon) = showAtCenter(balloon)
+
+/** shows the balloon on the center of an anchor view. */
+@JvmOverloads
+fun View.showAtCenter(
+  balloon: Balloon,
+  xOff: Int = 0,
+  yOff: Int = 0,
+  centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP
+) {
+  balloon { balloon.showAtCenter(this, xOff, yOff, centerAlign) }
 }
 
 /** shows the balloon on an anchor view with x-off and y-off. */
-fun View.showBalloon(balloon: Balloon, xOff: Int, yOff: Int) {
-  balloon { balloon.show(this, xOff, yOff) }
-}
+@Deprecated(
+  message = "show() method will be deprecated since `1.3.8`. Use showAsDropDown() instead.",
+  replaceWith = ReplaceWith(
+    "showAsDropDown(anchor, xOff, yOff)",
+    imports = ["com.skydoves.balloon.showAsDropDown"]
+  ),
+)
+fun View.showBalloon(balloon: Balloon, xOff: Int, yOff: Int) =
+  showAsDropDown(balloon, xOff, yOff)
 
 /** shows the balloon on an anchor view as drop down. */
 fun View.showAsDropDown(balloon: Balloon) {
