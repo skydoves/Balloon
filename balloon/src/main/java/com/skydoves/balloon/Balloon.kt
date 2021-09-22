@@ -2346,10 +2346,10 @@ class Balloon(
       this.overlayPadding = context.dimen(value)
     }
 
-    /** color of the overlay padding. */
+    /** sets color of the overlay padding. */
     fun setOverlayPaddingColor(@ColorInt value: Int) = apply { this.overlayPaddingColor = value }
 
-    /** color of the overlay padding using a color resource. */
+    /** sets color of the overlay padding using a color resource. */
     fun setOverlayPaddingColorResource(@ColorRes value: Int) = apply {
       this.overlayPaddingColor = context.contextColor(value)
     }
