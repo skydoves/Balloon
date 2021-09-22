@@ -50,7 +50,7 @@ repositories {
 ## Usage
 
 ### Basic Example for Java
-Here is a basic example of implementing balloon popup with icon and text using `Balloon.Builder` class.<br>
+Here is a basic example of implementing a balloon popup that has an icon and text using `Balloon.Builder` class.<br>
 
 ```java
 Balloon balloon = new Balloon.Builder(context)
@@ -74,8 +74,8 @@ Balloon balloon = new Balloon.Builder(context)
     .build();
 ```
 
-### Create using kotlin dsl
-This is how to create `Balloon` instance using kotlin dsl.
+### Create using Kotlin DSL
+We can create an instance of the Balloon using the Kotlin DSL.
 
 ```kotlin
 val balloon = createBalloon(context) {
@@ -96,15 +96,9 @@ val balloon = createBalloon(context) {
 }
 ```
 ### Width and height
-We can handle sizes of the popup width and height using the below ways. <br>
-If we would not set any specific sizes of the width/height of the balloon, the size of the popup will be decided by the content. 
-#### Padding
-Balloon wraps a content. We can control the content size of the balloon using padding of the content.<br>
-```kotlin
-balloon.setPadding(6) // sets 6dp padding to all directions (left-top-right-bottom)
-balloon.setPaddingLeft(8) // sets 8dp padding to content's left.
-balloon.setPaddingTop(12) // sets 12dp padding to content's top.
-```
+We can adjust specific width and height sizes of the balloon using the below builder methods. <br>
+If we would not set any specific sizes of the width and height of the balloon, the size of the popup will be decided by the content.
+
 #### Specific size
 We can set the specific size of the balloon regardless size of the contents.
 ```kotlin
@@ -118,15 +112,20 @@ Also, we can set the width according to the ratio of the horizontal screen's siz
 ```kotlin
 balloon.setWidthRatio(0.5f) // sets width as 50% of the horizontal screen's size.
 ```
+#### Padding
+Balloon wraps a content. We can control the content size of the balloon using padding of the content.<br>
+```kotlin
+balloon.setPadding(6) // sets 6dp padding to all directions (left-top-right-bottom)
+balloon.setPaddingLeft(8) // sets 8dp padding to content's left.
+balloon.setPaddingTop(12) // sets 12dp padding to content's top.
+```
 
 ### Show and dismiss
-This is how to show balloon popup and dismiss. <br>
-We can set the balloon popup's position using `x-Offset` and `y-Offset` attributes. <br>
-And show based on top/bottom/right/left alignment if we use `showAlign__` method.
+We can show up the balloon using the below functions.
+Basically, we can show up the balloon based on top/bottom/right/left alignment if we use `showAlign__` method.
+Also, we can adjust more specific positions of the balloon using `x-Offset` and `y-Offset` parameters. <br>
 
 ```kotlin
-balloon.show(anchor: View) // shows the balloon on the center of an anchor view.
-balloon.show(anchor: View, xOff: Int, yOff: Int) // shows the balloon on an anchor view with x-off and y-off.
 balloon.showAlignTop(anchor: View) // shows the balloon on an anchor view as the top alignment.
 balloon.showAlignTop(anchor: View, xOff: Int, yOff: Int) // shows top alignment with x-off and y-off.
 balloon.showAlignBottom(anchor: View) // shows the balloon on an anchor view as the bottom alignment.
@@ -135,21 +134,25 @@ balloon.showAlignRight(anchor: View) // shows the balloon on an anchor view as t
 balloon.showAlignRight(anchor: View, xOff: Int, yOff: Int) // shows right alignment with x-off and y-off.
 balloon.showAlignLeft(anchor: View) // shows the balloon on an anchor view as the left alignment.
 balloon.showAlignLeft(anchor: View, xOff: Int, yOff: Int) // shows left alignment with x-off and y-off.
+balloon.showAsDropDown(anchor: View) // shows the balloon as a dropdown without any alignments.
+balloon.showAsDropDown(anchor: View, xOff: Int, yOff: Int) // shows no alignments with x-off and y-off.
+balloon.showAtCenter(anchor: View, xOff: Int, yOff: Int, centerAlign: BalloonCenterAlign.TOP)
+// shows the balloon over the anchor view (overlap) as the center aligns.
 ```
 
-Or we can show balloon popup using kotlin extension.
+Or we can show up the balloon using Kotlin extensions.
 
-```java
+```kotlin
 myButton.showAlignTop(balloon)
 ```
 We can dismiss popup simply using `Balloon.dismiss()` method.
-```java
+```kotlin
 balloon.dismiss()
 balloon.dismissWithDelay(1000L) // dismisses 1000 milliseconds later when the popup is shown
 ```
-We can dismiss  automatically some milliseconds later when the popup is shown using <br> 
+We can dismiss automatically some milliseconds later when the popup is shown using <br> 
 `setAutoDismissDuration` method on `Balloon.Builder`.
-```java
+```kotlin
 Balloon.Builder(context)
    // dismisses automatically 1000 milliseconds later when the popup is shown.
    .setAutoDismissDuration(1000L)
@@ -157,7 +160,7 @@ Balloon.Builder(context)
 ```
 
 ### Show sequentially
-We can show balloon popup sequentially using `relayShow` method. <br>
+We can show up multiple balloons sequentially using the `relayShow` method. <br>
 The `relayShow` method makes that `setOnDismissListener` of the first balloon is reset to show the <br>
 next balloon and returns an instance of the next balloon.
 
@@ -171,8 +174,8 @@ customListBalloon.showAlignBottom(toolbar_list)
 ```
 
 ### Margin
-If the location of the balloon according to the anchor is located at the boundaries on the screen,<br>
-the balloon will be stick to the end of the screen. In that case, we can resolve by giving margins to the balloon.
+If the location of the balloon according to the anchor would be located at the boundaries on the screen,<br>
+the balloon will be stick to the end of the screen. In this case, we can give horizontal margins to the balloon.
 ```kotlin
 .setMargin(12) // sets the margin on the balloon all directions.
 .setMarginLeft(14) // sets the left margin on the balloon.
@@ -180,7 +183,7 @@ the balloon will be stick to the end of the screen. In that case, we can resolve
 ```
 
 ### Arrow Composition
-We can customize the arrow on the balloon popup. <br>
+We can customize the arrow on the balloon. <br>
 
 ```java
 .setIsVisibleArrow(true) // sets the visibility of the arrow.
@@ -192,7 +195,7 @@ We can customize the arrow on the balloon popup. <br>
 ```
 
 #### ArrowPositionRules
-We can determine the position of the arrow depending on the aligning rules using the `ArrowPositionRules`.<br>
+We can decide the position of the arrow depending on the aligning rules using the `ArrowPositionRules`.<br>
 ```kotlin
 // Align the arrow position depending on an anchor.
 // if `arrowPosition` is 0.5, the arrow will be located in the middle of an anchor.
@@ -204,7 +207,7 @@ We can determine the position of the arrow depending on the aligning rules using
 ```
 
 #### ArrowOrientationRules
-We can determine the orientation of the arrow depending on the aligning rules using the `ArrowOrientationRules`.<br>
+We can decide the orientation of the arrow depending on the aligning rules using the `ArrowOrientationRules`.<br>
 ```kotlin
 // Align depending on the position of an anchor.
 // For example, `arrowOrientation` is ArrowOrientation.TOP and 
@@ -242,7 +245,7 @@ If your text has HTML in it, you can enable HTML rendering by adding this:
 This will parse the text using `Html.fromHtml(text)`.
 
 ### TextForm
-TextFrom is an attribute class that has some attributes about TextView for customizing popup text.
+`TextForm` is a property class that has some attributes about `TextView` for customizing the text of the balloon.
 
 ```java
 TextForm textForm = new TextForm.Builder(context)
@@ -255,19 +258,19 @@ TextForm textForm = new TextForm.Builder(context)
 builder.setTextForm(textForm);
 ```
 
-This is how to create `TextForm` using kotlin dsl.
+Here is how to create the `TextForm` using the Kotlin DSL.
 
 ```kotlin
 val form = textForm(context) {
-  text = "This is a TextForm"
-  textColor = ContextCompat.getColor(context, com.skydoves.balloondemo.R.color.white_87)
-  textSize = 14f
-  textTypeface = Typeface.BOLD
+  setText("This is a TextForm")
+  setTextColorResource(R.color.white_87)
+  setTextSize(14f)
+  setTextTypeface(Typeface.BOLD)
 }
 ```
 
 ### Icon Composition
-We can customize the icon on the balloon popup.
+We can customize the icon on the balloon.
 
 ```java
 .setIconSpace(10) // sets right margin of the icon.
@@ -276,12 +279,12 @@ We can customize the icon on the balloon popup.
 ```
 
 ### IconForm
-IconForm is an attribute class that has some attributes about ImageView for customizing popup icon.
+`IconForm` is a property class that has some attributes about `ImageView` for customizing the icon of the balloon.
  
 ```java
 IconForm iconForm = new IconForm.Builder(context)
-  .setDrawable(ContextCompat.getDrawable(context, R.drawable.arrow))
-  .setIconColor(ContextCompat.getColor(context, R.color.colorPrimary))
+  .setDrawableResource(R.drawable.arrow)
+  .setIconColorResource(R.color.colorPrimary)
   .setIconSize(20)
   .setIconSpace(12)
   .build();
@@ -289,7 +292,7 @@ IconForm iconForm = new IconForm.Builder(context)
 builder.setIconForm(iconForm);
 ```
 
-This is how to create `IconForm` using kotlin dsl.
+Here is how to create `IconForm` using kotlin dsl.
 
 ```kotlin
 val form = iconForm(context) {
@@ -301,7 +304,7 @@ val form = iconForm(context) {
 ```
 
 ### OnBalloonClickListener, OnBalloonDismissListener, OnBalloonOutsideTouchListener
-We can listen to the balloon popup is clicked, dismissed or touched outside using listeners.
+We can listen to the balloon is clicked, dismissed, and touched outside by users using the below listeners.
 
 ```java
 balloon.setOnBalloonClickListener(new OnBalloonClickListener() {
@@ -326,7 +329,7 @@ balloon.setOnBalloonOutsideTouchListener(new OnBalloonOutsideTouchListener() {
 });
 ```
 
-We can simplify it using kotlin.
+We can simplify them on Kotlin.
 ```kotlin
 .setOnBalloonClickListener { Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show() }
 .setOnBalloonDismissListener { Toast.makeText(context, "dismissed", Toast.LENGTH_SHORT).show() }
@@ -334,16 +337,16 @@ We can simplify it using kotlin.
 ```
 
 ### Customized layout
-We can fully customize the balloon layout using below method.
+We can fully customize the layout of the balloon using below method.
 ```java
 .setLayout(R.layout.my_balloon_layout)
 ```
 
-This is an example of implementing custom balloon popup.
+Here is an example of implementing custom balloon.
 
 <img src="https://user-images.githubusercontent.com/24237865/61226019-aba41d80-a75c-11e9-9362-52e4742244b5.gif" align="right" width="32%"/>
 
-Firstly create an xml layout file like `layout_custom_profile` on your taste.
+Firstly, create an XML layout file like `layout_custom_profile` on your taste.
 ```kotlin
 val balloon = Balloon.Builder(context)
       .setLayout(R.layout.layout_custom_profile)
@@ -358,8 +361,8 @@ val balloon = Balloon.Builder(context)
       .setLifecycleOwner(lifecycleOwner)
       .build()
 ```
-And next we can get the inflated custom layout using `getContentView` method.
-```java
+And next, we can get the inflated custom layout using the `getContentView()` method from an instance of your `Balloon`.
+```kotlin
 val button: Button = 
   balloon.getContentView().findViewById(R.id.button_edit)
 button.setOnClickListener {
@@ -369,16 +372,21 @@ button.setOnClickListener {
 ```
 
 ### Persistence
-If you want to show-up the balloon popup only once or a specific number of times, here is how to implement it simply.<br>
-```java
-.setPreferenceName("MyBalloon") // sets preference name of the Balloon.
-.setShowCounts(3) // show-up three of times the popup. the default value is 1.
-.runIfReachedShowCounts {
+If we want to show up the balloon only once or a specific number of times, here is how to implement it simply.<br>
+```kotlin
+balloon.setPreferenceName("MyBalloon") // sets preference name of the Balloon.
+balloon.setShowCounts(3) // show-up three of times the popup. the default value is 1.
+balloon.runIfReachedShowCounts {
   // do something after the preference showing counts is reached the goal.
-}
+  }
 ```
 
-But you can implement it more variously using [Only](https://github.com/skydoves/Only).
+We can clear all persisted preferences using the below method.
+```kotlin
+balloon.clearAllPreferences()
+```
+
+If you want to implement these kinds of persisting features more variously, consider using [Only](https://github.com/skydoves/Only).
 
 ```kotlin
 only("introPopup", times = 3) {
@@ -387,18 +395,18 @@ only("introPopup", times = 3) {
 ```
 
 ### Avoid Memory leak
-Dialog, PopupWindow and etc.. have memory leak issue if not dismissed before activity or fragment are destroyed.<br>
+Dialog, PopupWindow and etc, have memory leak issue if not dismissed before activity or fragment are destroyed.<br>
 But Lifecycles are now integrated with the Support Library since Architecture Components 1.0 Stable released.<br>
-So we can solve the memory leak issue so easily.<br>
+So we can solve the memory leak issue very easily like the below.<br>
 
-Just use `setLifecycleOwner` method. Then `dismiss` method will be called automatically before activity or fragment would be destroyed.
+Just use `setLifecycleOwner` method. Then the `dismiss()` method will be called automatically before your activity or fragment would be destroyed.
 ```java
 .setLifecycleOwner(lifecycleOwner)
 ```
 
 ### Lazy initialization
-We can initialize the balloon property lazily using `balloon` keyword and `Balloon.Factory` abstract class.<br>
-The `balloon` extension keyword can be used on `Activity`, `Fragment`, and `View`.
+We can initialize the balloon property lazily using the `balloon()` extension and `Balloon.Factory` abstract class.<br>
+The `balloon` extension keyword can be used on your `Activity`, `Fragment`, and `View`.
 
 __Before__<br>
 `CustomActivity.kt`
@@ -446,18 +454,19 @@ class ProfileBalloonFactory : Balloon.Factory() {
 ### BalloonOverlay
 We can show an overlay window over the whole screen except an anchor view.
 ```kotlin
-.setIsVisibleOverlay(true) // sets the visibility of the overlay for highlighting an anchor.
-.setOverlayColorResource(R.color.overlay) // background color of the overlay using a color resource.
-.setOverlayPadding(6f) // sets a padding value of the overlay shape internally.
-.setBalloonOverlayAnimation(BalloonOverlayAnimation.FADE) // default is fade.
-.setDismissWhenOverlayClicked(false) // disable dismissing the balloon when the overlay is clicked.
+balloon.setIsVisibleOverlay(true) // sets the visibility of the overlay for highlighting an anchor.
+balloon.setOverlayColorResource(R.color.overlay) // background color of the overlay using a color resource.
+balloon.setOverlayPadding(6f) // sets a padding value of the overlay shape internally.  
+balloon.setOverlayPaddingColorResource(R.color.colorPrimary) // sets color of the overlay padding using a color resource.
+balloon.setBalloonOverlayAnimation(BalloonOverlayAnimation.FADE) // default is fade.
+balloon.setDismissWhenOverlayClicked(false) // disable dismissing the balloon when the overlay is clicked.
 ```
 We can change the shape of the highlighting using `.setOverlayShape`.
 ```kotlin
-.setOverlayShape(BalloonOverlayOval) // default shape
-.setOverlayShape(BalloonOverlayRect)
-.setOverlayShape(BalloonOverlayCircle(radius = 36f))
-.setOverlayShape(BalloonOverlayRoundRect(12f, 12f))
+balloon.setOverlayShape(BalloonOverlayOval) // default shape
+balloon.setOverlayShape(BalloonOverlayRect)
+balloon.setOverlayShape(BalloonOverlayCircle(radius = 36f))
+balloon.setOverlayShape(BalloonOverlayRoundRect(12f, 12f))
 ```
 OVAL | CIRCLE | RECT | ROUNDRECT |
 | :---------------: | :---------------: | :---------------: | :---------------: |
@@ -465,7 +474,7 @@ OVAL | CIRCLE | RECT | ROUNDRECT |
 
 And we can set the specific position of the overlay shape using the below method.
 ```kotlin
-.setOverlayPosition(Point(x, y)) // sets a specific position of the overlay shape.
+balloon.setOverlayPosition(Point(x, y)) // sets a specific position of the overlay shape.
 ```
 
 ### BalloonAnimation
@@ -484,7 +493,7 @@ FADE | OVERSHOOT | ELASTIC | CIRCULAR |
 | <img src="https://user-images.githubusercontent.com/24237865/74601168-6115c580-50de-11ea-817b-a334f33b6f96.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/74601171-6410b600-50de-11ea-9ba0-5634e11f148a.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/74601170-63781f80-50de-11ea-8db4-93f1dd1291fc.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/74607359-b6bc9300-511b-11ea-978b-23bcc4399dce.gif" align="center" width="100%"/> |
 
 ## Balloon builder methods
-We can reference all kinds and descriptions of functions details here.<br>
+We can reference every specification of this library here.<br>
 - [Balloon documentations](https://skydoves.github.io/libraries/balloon/html/balloon/com.skydoves.balloon/-balloon/index.html)
 - [Builder documentations](https://skydoves.github.io/libraries/balloon/html/balloon/com.skydoves.balloon/-balloon/-builder/index.html)
 ```java
