@@ -140,6 +140,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public field balloonHighlightAnimationStyle I
 	public field balloonOverlayAnimation Lcom/skydoves/balloon/overlay/BalloonOverlayAnimation;
 	public field balloonOverlayAnimationStyle I
+	public field balloonRotationAnimation Lcom/skydoves/balloon/animations/BalloonRotationAnimation;
 	public field circularDuration J
 	public field cornerRadius F
 	public field dismissWhenClicked Z
@@ -247,6 +248,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public static synthetic fun setBalloonHighlightAnimationResource$default (Lcom/skydoves/balloon/Balloon$Builder;IJILjava/lang/Object;)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setBalloonOverlayAnimation (Lcom/skydoves/balloon/overlay/BalloonOverlayAnimation;)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setBalloonOverlayAnimationStyle (I)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setBalloonRotationAnimation (Lcom/skydoves/balloon/animations/BalloonRotationAnimation;)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setCircularDuration (J)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setCornerRadius (F)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setCornerRadiusResource (I)Lcom/skydoves/balloon/Balloon$Builder;
@@ -414,6 +416,7 @@ public final class com/skydoves/balloon/BalloonHighlightAnimation : java/lang/En
 	public static final field BREATH Lcom/skydoves/balloon/BalloonHighlightAnimation;
 	public static final field HEARTBEAT Lcom/skydoves/balloon/BalloonHighlightAnimation;
 	public static final field NONE Lcom/skydoves/balloon/BalloonHighlightAnimation;
+	public static final field ROTATION Lcom/skydoves/balloon/BalloonHighlightAnimation;
 	public static final field SHAKE Lcom/skydoves/balloon/BalloonHighlightAnimation;
 	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/BalloonHighlightAnimation;
 	public static fun values ()[Lcom/skydoves/balloon/BalloonHighlightAnimation;
@@ -590,6 +593,36 @@ public final class com/skydoves/balloon/TextForm$Builder {
 
 public final class com/skydoves/balloon/TextFormKt {
 	public static final synthetic fun textForm (Landroid/content/Context;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/balloon/TextForm;
+}
+
+public final class com/skydoves/balloon/animations/BalloonRotationAnimation : android/view/animation/Animation {
+	public synthetic fun <init> (Lcom/skydoves/balloon/animations/BalloonRotationAnimation$Builder;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun initialize (IIII)V
+}
+
+public final class com/skydoves/balloon/animations/BalloonRotationAnimation$Builder {
+	public field degreeX I
+	public field degreeZ I
+	public field direction Lcom/skydoves/balloon/animations/BalloonRotationDirection;
+	public field loop I
+	public field speed I
+	public field turn I
+	public fun <init> ()V
+	public final fun build ()Lcom/skydoves/balloon/animations/BalloonRotationAnimation;
+	public final fun setDegreeX (I)Lcom/skydoves/balloon/animations/BalloonRotationAnimation$Builder;
+	public final fun setDegreeZ (I)Lcom/skydoves/balloon/animations/BalloonRotationAnimation$Builder;
+	public final fun setDirection (Lcom/skydoves/balloon/animations/BalloonRotationDirection;)Lcom/skydoves/balloon/animations/BalloonRotationAnimation$Builder;
+	public final fun setLoops (I)Lcom/skydoves/balloon/animations/BalloonRotationAnimation$Builder;
+	public final fun setSpeeds (I)Lcom/skydoves/balloon/animations/BalloonRotationAnimation$Builder;
+	public final fun setTurns (I)Lcom/skydoves/balloon/animations/BalloonRotationAnimation$Builder;
+}
+
+public final class com/skydoves/balloon/animations/BalloonRotationDirection : java/lang/Enum {
+	public static final field LEFT Lcom/skydoves/balloon/animations/BalloonRotationDirection;
+	public static final field RIGHT Lcom/skydoves/balloon/animations/BalloonRotationDirection;
+	public final fun getValue ()I
+	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/animations/BalloonRotationDirection;
+	public static fun values ()[Lcom/skydoves/balloon/animations/BalloonRotationDirection;
 }
 
 public final class com/skydoves/balloon/extensions/GlobalExtensionKt {
