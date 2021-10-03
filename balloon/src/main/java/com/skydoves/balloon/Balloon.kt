@@ -648,6 +648,14 @@ class Balloon(
             R.anim.heartbeat_center_balloon_library
           }
         }
+        BalloonHighlightAnimation.SHAKE -> {
+          when (builder.arrowOrientation) {
+            ArrowOrientation.TOP -> R.anim.shake_bottom_balloon_library
+            ArrowOrientation.BOTTOM -> R.anim.shake_top_balloon_library
+            ArrowOrientation.LEFT -> R.anim.shake_right_balloon_library
+            ArrowOrientation.RIGHT -> R.anim.shake_left_balloon_library
+          }
+        }
         else -> return null
       }
     } else {
