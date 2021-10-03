@@ -16,6 +16,8 @@
 
 package com.skydoves.balloon
 
+import com.skydoves.balloon.animations.BalloonRotationAnimation
+
 /**
  * BalloonHighlightAnimation gives repeated dynamic animations on Balloon when it's showing.
  * The animation would work differently by the position of the arrow.
@@ -35,5 +37,8 @@ enum class BalloonHighlightAnimation {
   SHAKE,
 
   /** Fade animation like breathing mode. */
-  BREATH
+  BREATH,
+
+  /** Rotation animation. We can change properties using the [BalloonRotationAnimation]. */
+  ROTATION,
 }
