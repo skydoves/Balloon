@@ -36,13 +36,13 @@ class BalloonRotationAnimation private constructor(
 
   init {
     degreeX = builder.degreeX.toFloat()
-    degreeY = (360 * builder.turn).toFloat() * builder.direction.value
+    degreeY = (360 * builder.turns).toFloat() * builder.direction.value
     degreeZ = builder.degreeZ.toFloat()
-    duration = builder.speed.toLong()
-    repeatCount = if (builder.loop == INFINITE) {
+    duration = builder.speeds.toLong()
+    repeatCount = if (builder.loops == INFINITE) {
       INFINITE
     } else {
-      builder.loop - 1
+      builder.loops - 1
     }
   }
 
@@ -77,15 +77,15 @@ class BalloonRotationAnimation private constructor(
 
     @JvmField
     @set:JvmSynthetic
-    var turn: Int = 1
+    var turns: Int = 1
 
     @JvmField
     @set:JvmSynthetic
-    var loop: Int = INFINITE
+    var loops: Int = INFINITE
 
     @JvmField
     @set:JvmSynthetic
-    var speed: Int = 2500
+    var speeds: Int = 2500
 
     @JvmField
     @set:JvmSynthetic
@@ -101,13 +101,13 @@ class BalloonRotationAnimation private constructor(
     }
 
     /** sets the turning count of the rotation animation. */
-    fun setTurns(turn: Int): Builder = apply { this.turn = turn }
+    fun setTurns(turn: Int): Builder = apply { this.turns = turn }
 
     /** sets the iteration of the rotation animation. */
-    fun setLoops(loop: Int): Builder = apply { this.loop = loop }
+    fun setLoops(loop: Int): Builder = apply { this.loops = loop }
 
     /** sets the speed of the rotation animation. */
-    fun setSpeeds(speed: Int): Builder = apply { this.speed = speed }
+    fun setSpeeds(speed: Int): Builder = apply { this.speeds = speed }
 
     /** sets the degree X of the rotation animation. */
     fun setDegreeX(degreeX: Int): Builder = apply { this.degreeX = degreeX }

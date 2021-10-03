@@ -604,9 +604,9 @@ public final class com/skydoves/balloon/animations/BalloonRotationAnimation$Buil
 	public field degreeX I
 	public field degreeZ I
 	public field direction Lcom/skydoves/balloon/animations/BalloonRotationDirection;
-	public field loop I
-	public field speed I
-	public field turn I
+	public field loops I
+	public field speeds I
+	public field turns I
 	public fun <init> ()V
 	public final fun build ()Lcom/skydoves/balloon/animations/BalloonRotationAnimation;
 	public final fun setDegreeX (I)Lcom/skydoves/balloon/animations/BalloonRotationAnimation$Builder;
