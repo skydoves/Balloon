@@ -72,7 +72,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
-import com.skydoves.balloon.animations.BalloonRotationAnimation
+import com.skydoves.balloon.animations.BalloonRotateAnimation
 import com.skydoves.balloon.annotations.Dp
 import com.skydoves.balloon.annotations.Sp
 import com.skydoves.balloon.databinding.LayoutBalloonLibrarySkydovesBinding
@@ -658,7 +658,7 @@ class Balloon(
           }
         }
         BalloonHighlightAnimation.BREATH -> R.anim.fade_balloon_library
-        BalloonHighlightAnimation.ROTATION -> return builder.balloonRotationAnimation
+        BalloonHighlightAnimation.ROTATE -> return builder.balloonRotateAnimation
         else -> return null
       }
     } else {
@@ -1760,7 +1760,7 @@ class Balloon(
 
     @JvmField
     @set:JvmSynthetic
-    var balloonRotationAnimation: BalloonRotationAnimation? = null
+    var balloonRotateAnimation: BalloonRotateAnimation? = null
 
     @JvmField
     @set:JvmSynthetic
@@ -2443,11 +2443,11 @@ class Balloon(
       this.balloonHighlightAnimationStartDelay = startDelay
     }
 
-    /** sets a [BalloonRotationAnimation] to give highlight animation. */
+    /** sets a [BalloonRotateAnimation] to give highlight animation. */
     fun setBalloonRotationAnimation(
-      balloonRotationAnimation: BalloonRotationAnimation
+      balloonRotateAnimation: BalloonRotateAnimation
     ): Builder = apply {
-      this.balloonRotationAnimation = balloonRotationAnimation
+      this.balloonRotateAnimation = balloonRotateAnimation
     }
 
     /** sets a [OnBalloonClickListener] to the popup. */

@@ -16,7 +16,7 @@
 
 package com.skydoves.balloon
 
-import com.skydoves.balloon.animations.BalloonRotationAnimation
+import com.skydoves.balloon.animations.BalloonRotateAnimation
 
 /**
  * BalloonHighlightAnimation gives repeated dynamic animations on Balloon when it's showing.
@@ -39,6 +39,6 @@ enum class BalloonHighlightAnimation {
   /** Fade animation like breathing mode. */
   BREATH,
 
-  /** Rotation animation. We can change properties using the [BalloonRotationAnimation]. */
-  ROTATION,
+  /** Rotation animation. We can change properties using the [BalloonRotateAnimation]. */
+  ROTATE,
 }

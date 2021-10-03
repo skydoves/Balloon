@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("unused")
+
 package com.skydoves.balloon.animations
 
 import android.graphics.Camera
@@ -21,11 +23,11 @@ import android.view.animation.Animation
 import android.view.animation.Transformation
 
 /**
- * BalloonRotationAnimation gives rotation animation to the balloon.
- * This class can be created by [BalloonRotationAnimation.Builder].
+ * BalloonRotateAnimation gives rotation animation to the balloon.
+ * This class can be created by [BalloonRotateAnimation.Builder].
  */
-class BalloonRotationAnimation private constructor(
-  private val builder: Builder,
+class BalloonRotateAnimation private constructor(
+  builder: Builder,
 ) : Animation() {
 
   private val degreeX: Float
@@ -69,11 +71,11 @@ class BalloonRotationAnimation private constructor(
     matrix.postTranslate(width, height)
   }
 
-  /** Builder class to create [BalloonRotationAnimation]. */
+  /** Builder class to create [BalloonRotateAnimation]. */
   class Builder {
     @JvmField
     @set:JvmSynthetic
-    var direction: BalloonRotationDirection = BalloonRotationDirection.RIGHT
+    var direction: BalloonRotateDirection = BalloonRotateDirection.RIGHT
 
     @JvmField
     @set:JvmSynthetic
@@ -96,8 +98,8 @@ class BalloonRotationAnimation private constructor(
     var degreeZ: Int = 0
 
     /** sets the direction of the rotation animation. */
-    fun setDirection(rotationDirection: BalloonRotationDirection) = apply {
-      this.direction = rotationDirection
+    fun setDirection(rotateDirection: BalloonRotateDirection) = apply {
+      this.direction = rotateDirection
     }
 
     /** sets the turning count of the rotation animation. */
@@ -115,7 +117,7 @@ class BalloonRotationAnimation private constructor(
     /** sets the degree Y of the rotation animation. */
     fun setDegreeZ(degreeZ: Int): Builder = apply { this.degreeZ = degreeZ }
 
-    /** Build the [BalloonRotationAnimation]. */
-    fun build(): BalloonRotationAnimation = BalloonRotationAnimation(this)
+    /** Build the [BalloonRotateAnimation]. */
+    fun build(): BalloonRotateAnimation = BalloonRotateAnimation(this)
   }
 }

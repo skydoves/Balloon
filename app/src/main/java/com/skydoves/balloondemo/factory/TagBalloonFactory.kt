@@ -22,7 +22,7 @@ import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonHighlightAnimation
 import com.skydoves.balloon.BalloonSizeSpec
-import com.skydoves.balloon.animations.BalloonRotationAnimation
+import com.skydoves.balloon.animations.BalloonRotateAnimation
 import com.skydoves.balloon.createBalloon
 import com.skydoves.balloondemo.R
 
@@ -40,8 +40,8 @@ class TagBalloonFactory : Balloon.Factory() {
       setCornerRadius(4f)
       setBalloonAnimationStyle(R.style.Fade_Balloon_Library)
       setBackgroundColorResource(R.color.white_93)
-      setBalloonHighlightAnimation(BalloonHighlightAnimation.ROTATION)
-      setBalloonRotationAnimation(BalloonRotationAnimation.Builder().build())
+      setBalloonHighlightAnimation(BalloonHighlightAnimation.ROTATE)
+      setBalloonRotationAnimation(BalloonRotateAnimation.Builder().build())
       setDismissWhenClicked(true)
       setDismissWhenShowAgain(true)
       setLifecycleOwner(lifecycle)
