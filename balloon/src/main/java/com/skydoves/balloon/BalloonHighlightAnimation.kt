@@ -16,7 +16,21 @@
 
 package com.skydoves.balloon
 
+/**
+ * BalloonHighlightAnimation gives repeated dynamic animations on Balloon when it's showing.
+ * The animation would work differently by the position of the arrow.
+ *
+ * ```kotlin
+ * .setBalloonHighlightAnimation(BalloonHighlightAnimation.SHAKE)
+ * ```
+ */
 enum class BalloonHighlightAnimation {
+  /** Default, no animation. */
   NONE,
-  HEARTBEAT
+
+  /** Heart beating animation. */
+  HEARTBEAT,
+
+  /** Shake animation. */
+  SHAKE,
 }

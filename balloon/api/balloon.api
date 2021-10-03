@@ -413,6 +413,7 @@ public final class com/skydoves/balloon/BalloonExtensionKt {
 public final class com/skydoves/balloon/BalloonHighlightAnimation : java/lang/Enum {
 	public static final field HEARTBEAT Lcom/skydoves/balloon/BalloonHighlightAnimation;
 	public static final field NONE Lcom/skydoves/balloon/BalloonHighlightAnimation;
+	public static final field SHAKE Lcom/skydoves/balloon/BalloonHighlightAnimation;
 	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/BalloonHighlightAnimation;
 	public static fun values ()[Lcom/skydoves/balloon/BalloonHighlightAnimation;
 }

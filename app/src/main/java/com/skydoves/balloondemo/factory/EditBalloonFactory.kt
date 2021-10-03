@@ -22,6 +22,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.BalloonHighlightAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.overlay.BalloonOverlayRoundRect
 import com.skydoves.balloondemo.R
@@ -48,7 +49,13 @@ class EditBalloonFactory : Balloon.Factory() {
       .setIsVisibleOverlay(true)
       .setOverlayColorResource(R.color.overlay)
       .setOverlayPaddingResource(R.dimen.editBalloonOverlayPadding)
-      .setOverlayShape(BalloonOverlayRoundRect(R.dimen.editBalloonOverlayRadius, R.dimen.editBalloonOverlayRadius))
+      .setBalloonHighlightAnimation(BalloonHighlightAnimation.SHAKE)
+      .setOverlayShape(
+        BalloonOverlayRoundRect(
+          R.dimen.editBalloonOverlayRadius,
+          R.dimen.editBalloonOverlayRadius
+        )
+      )
       .setLifecycleOwner(lifecycle)
       .setDismissWhenClicked(true)
       .setOnBalloonDismissListener {

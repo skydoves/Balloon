@@ -20,6 +20,7 @@ import android.content.Context
 import androidx.lifecycle.LifecycleOwner
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
+import com.skydoves.balloon.BalloonHighlightAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.createBalloon
 import com.skydoves.balloondemo.R
@@ -38,6 +39,7 @@ class TagBalloonFactory : Balloon.Factory() {
       setCornerRadius(4f)
       setBalloonAnimationStyle(R.style.Fade_Balloon_Library)
       setBackgroundColorResource(R.color.white_93)
+      setBalloonHighlightAnimation(BalloonHighlightAnimation.SHAKE)
       setAutoDismissDuration(2000L)
       setDismissWhenClicked(true)
       setDismissWhenShowAgain(true)
