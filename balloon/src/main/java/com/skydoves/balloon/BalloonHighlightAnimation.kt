@@ -33,4 +33,7 @@ enum class BalloonHighlightAnimation {
 
   /** Shake animation. */
   SHAKE,
+
+  /** Fade animation like breathing mode. */
+  BREATH
 }

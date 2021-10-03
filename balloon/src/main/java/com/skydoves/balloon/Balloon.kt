@@ -656,6 +656,7 @@ class Balloon(
             ArrowOrientation.RIGHT -> R.anim.shake_left_balloon_library
           }
         }
+        BalloonHighlightAnimation.BREATH -> R.anim.fade_balloon_library
         else -> return null
       }
     } else {
