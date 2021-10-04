@@ -498,6 +498,10 @@ FADE | OVERSHOOT | ELASTIC | CIRCULAR |
 We can give repeated dynamic animations to Balloon when it's showing.<br>
 The animation would work differently by the position of the arrow.
 
+HEARTBEAT | SHAKE | BREATH | ROTATE |
+| :---------------: | :---------------: | :---------------: | :---------------: |
+| <img src="https://user-images.githubusercontent.com/24237865/135755074-6a9c87fc-55b2-460e-b34e-0b6808684a97.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/135755077-02eeddbe-95fe-49ee-ad22-1f15879e84f1.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/135755079-29ed8cd8-92fe-4b2a-8671-b3522999c551.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/135755080-36dc7c8b-063a-442b-bcbd-bc000e92f9ac.gif" align="center" width="100%"/> |
+
 ```kotlin
 BalloonHighlightAnimation.NONE
 BalloonHighlightAnimation.HEARTBEAT
@@ -507,11 +511,12 @@ BalloonHighlightAnimation.ROTATE
 
 .setBalloonHighlightAnimation(BalloonHighlightAnimation.SHAKE)
 ```
-
-HEARTBEAT | SHAKE | BREATH | ROTATE |
-| :---------------: | :---------------: | :---------------: | :---------------: |
-| <img src="https://user-images.githubusercontent.com/24237865/135755074-6a9c87fc-55b2-460e-b34e-0b6808684a97.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/135755077-02eeddbe-95fe-49ee-ad22-1f15879e84f1.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/135755079-29ed8cd8-92fe-4b2a-8671-b3522999c551.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/135755080-36dc7c8b-063a-442b-bcbd-bc000e92f9ac.gif" align="center" width="100%"/> |
-
+We can implement the rotate animation like the below.
+```kotlin
+.setBalloonHighlightAnimation(BalloonHighlightAnimation.ROTATE)
+.setBalloonRotationAnimation(
+        BalloonRotateAnimation.Builder().setLoops(2).setSpeeds(2500).setTurns(INFINITE).build())
+```
 
 ## Balloon builder methods
 We can reference every specification of this library here.<br>
