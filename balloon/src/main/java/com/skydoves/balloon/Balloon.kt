@@ -128,7 +128,7 @@ inline fun createBalloon(context: Context, crossinline block: Balloon.Builder.()
  * @param builder A [Balloon.Builder] for creating an instance of the [Balloon].
  */
 @Suppress("MemberVisibilityCanBePrivate")
-class Balloon(
+class Balloon private constructor(
   private val context: Context,
   private val builder: Builder
 ) : LifecycleObserver {

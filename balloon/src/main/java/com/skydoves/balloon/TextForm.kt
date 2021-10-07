@@ -47,15 +47,26 @@ inline fun textForm(context: Context, crossinline block: TextForm.Builder.() -> 
  * TextFrom is an attribute class what has some attributes about TextView
  * for customizing popup texts easily.
  */
-class TextForm(builder: Builder) {
+class TextForm private constructor(
+  builder: Builder
+) {
 
   val text: CharSequence = builder.text
-  @Sp val textSize: Float = builder.textSize
-  @ColorInt val textColor: Int = builder.textColor
+
+  @Sp
+  val textSize: Float = builder.textSize
+
+  @ColorInt
+  val textColor: Int = builder.textColor
+
   val textIsHtml: Boolean = builder.textIsHtml
+
   val movementMethod: MovementMethod? = builder.movementMethod
+
   val textStyle: Int = builder.textTypeface
+
   val textTypeface: Typeface? = builder.textTypefaceObject
+
   val textGravity: Int = builder.textGravity
 
   /** Builder class for [TextForm]. */
@@ -65,11 +76,13 @@ class TextForm(builder: Builder) {
     @set:JvmSynthetic
     var text: CharSequence = ""
 
-    @JvmField @Sp
+    @Sp
+    @JvmField
     @set:JvmSynthetic
     var textSize: Float = 12f
 
-    @JvmField @ColorInt
+    @ColorInt
+    @JvmField
     @set:JvmSynthetic
     var textColor = Color.WHITE
 

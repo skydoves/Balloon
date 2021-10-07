@@ -43,14 +43,28 @@ inline fun iconForm(context: Context, crossinline block: IconForm.Builder.() -> 
  * IconForm is an attribute class which has TextView attributes
  * for customizing popup icons easily.
  */
-class IconForm(builder: Builder) {
+class IconForm private constructor(
+  builder: Builder
+) {
+
   val drawable = builder.drawable
-  @DrawableRes var drawableRes = builder.drawableRes
+
+  @DrawableRes
+  var drawableRes = builder.drawableRes
+
   val iconGravity = builder.iconGravity
-  @Px val iconWidth = builder.iconWidth
-  @Px val iconHeight = builder.iconHeight
-  @Px val iconSpace = builder.iconSpace
-  @ColorInt val iconColor = builder.iconColor
+
+  @Px
+  val iconWidth = builder.iconWidth
+
+  @Px
+  val iconHeight = builder.iconHeight
+
+  @Px
+  val iconSpace = builder.iconSpace
+
+  @ColorInt
+  val iconColor = builder.iconColor
 
   /** Builder class for [IconForm]. */
   @IconFormDsl
@@ -59,7 +73,8 @@ class IconForm(builder: Builder) {
     @set:JvmSynthetic
     var drawable: Drawable? = null
 
-    @JvmField @DrawableRes
+    @JvmField
+    @DrawableRes
     @set:JvmSynthetic
     var drawableRes: Int? = null
 
@@ -67,19 +82,23 @@ class IconForm(builder: Builder) {
     @set:JvmSynthetic
     var iconGravity = IconGravity.START
 
-    @JvmField @Px
+    @Px
+    @JvmField
     @set:JvmSynthetic
     var iconWidth: Int = 28.dp
 
-    @JvmField @Px
+    @Px
+    @JvmField
     @set:JvmSynthetic
     var iconHeight: Int = 28.dp
 
-    @JvmField @Px
+    @Px
+    @JvmField
     @set:JvmSynthetic
     var iconSpace: Int = 8.dp
 
-    @JvmField @ColorInt
+    @ColorInt
+    @JvmField
     @set:JvmSynthetic
     var iconColor: Int = Color.WHITE
 
