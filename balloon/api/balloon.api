@@ -242,8 +242,10 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun setBackgroundDrawableResource (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setBalloonAnimation (Lcom/skydoves/balloon/BalloonAnimation;)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setBalloonAnimationStyle (I)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setBalloonHighlightAnimation (Lcom/skydoves/balloon/BalloonHighlightAnimation;)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setBalloonHighlightAnimation (Lcom/skydoves/balloon/BalloonHighlightAnimation;J)Lcom/skydoves/balloon/Balloon$Builder;
 	public static synthetic fun setBalloonHighlightAnimation$default (Lcom/skydoves/balloon/Balloon$Builder;Lcom/skydoves/balloon/BalloonHighlightAnimation;JILjava/lang/Object;)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setBalloonHighlightAnimationResource (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setBalloonHighlightAnimationResource (IJ)Lcom/skydoves/balloon/Balloon$Builder;
 	public static synthetic fun setBalloonHighlightAnimationResource$default (Lcom/skydoves/balloon/Balloon$Builder;IJILjava/lang/Object;)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setBalloonOverlayAnimation (Lcom/skydoves/balloon/overlay/BalloonOverlayAnimation;)Lcom/skydoves/balloon/Balloon$Builder;

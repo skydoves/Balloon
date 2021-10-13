@@ -2426,6 +2426,7 @@ class Balloon private constructor(
     }
 
     /** sets the balloon highlight animation using [BalloonHighlightAnimation]. */
+    @JvmOverloads
     fun setBalloonHighlightAnimation(
       value: BalloonHighlightAnimation,
       startDelay: Long = 0L
@@ -2435,6 +2436,7 @@ class Balloon private constructor(
     }
 
     /** sets the balloon highlight animation using custom xml animation resource file. */
+    @JvmOverloads
     fun setBalloonHighlightAnimationResource(
       @AnimRes value: Int,
       startDelay: Long = 0L
