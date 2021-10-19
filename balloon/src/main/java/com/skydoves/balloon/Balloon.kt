@@ -756,6 +756,7 @@ class Balloon private constructor(
 
         applyBalloonOverlayAnimation()
         showOverlayWindow(anchor)
+        passTouchEventToAnchor(anchor)
 
         applyBalloonAnimation()
         startBalloonHighlightAnimation()
@@ -1250,6 +1251,19 @@ class Balloon private constructor(
     )
   }
 
+  private fun passTouchEventToAnchor(anchor: View) {
+    if (!this.builder.passTouchEventToAnchor) return
+    setOnBalloonOverlayTouchListener { view, event ->
+      view.performClick()
+      val rect = Rect()
+      anchor.getGlobalVisibleRect(rect)
+      if (rect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+        anchor.rootView.dispatchTouchEvent(event)
+        true
+      } else false
+    }
+  }
+
   /** sets a [OnBalloonOverlayClickListener] to the overlay popup. */
   fun setOnBalloonOverlayClickListener(onBalloonOverlayClickListener: OnBalloonOverlayClickListener?) {
     this.overlayBinding.root.setOnClickListener {
@@ -1714,6 +1728,10 @@ class Balloon private constructor(
     @JvmField
     @set:JvmSynthetic
     var dismissWhenLifecycleOnPause: Boolean = false
+
+    @JvmField
+    @set:JvmSynthetic
+    var passTouchEventToAnchor: Boolean = false
 
     @JvmField
     @set:JvmSynthetic
@@ -2542,6 +2560,11 @@ class Balloon private constructor(
     /** dismisses when the overlay popup is clicked. */
     fun setDismissWhenOverlayClicked(value: Boolean): Builder = apply {
       this.dismissWhenOverlayClicked = value
+    }
+
+    /** pass touch events through the overlay to the anchor. */
+    fun setShouldPassTouchEventToAnchor(value: Boolean) = apply {
+      this.passTouchEventToAnchor = value
     }
 
     /** dismisses automatically some milliseconds later when the popup is shown. */
