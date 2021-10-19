@@ -191,6 +191,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public field paddingLeft I
 	public field paddingRight I
 	public field paddingTop I
+	public field passTouchEventToAnchor Z
 	public field preferenceName Ljava/lang/String;
 	public field runIfReachedShowCounts Lkotlin/jvm/functions/Function0;
 	public field showTimes I
@@ -341,6 +342,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun setPaddingVertical (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setPaddingVerticalResource (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setPreferenceName (Ljava/lang/String;)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setShouldPassTouchEventToAnchor (Z)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setShowCounts (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setSize (II)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setSizeResource (II)Lcom/skydoves/balloon/Balloon$Builder;
