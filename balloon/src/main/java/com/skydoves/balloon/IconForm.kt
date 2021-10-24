@@ -69,36 +69,29 @@ class IconForm private constructor(
   /** Builder class for [IconForm]. */
   @IconFormDsl
   class Builder(val context: Context) {
-    @JvmField
     @set:JvmSynthetic
     var drawable: Drawable? = null
 
-    @JvmField
     @DrawableRes
     @set:JvmSynthetic
     var drawableRes: Int? = null
 
-    @JvmField
     @set:JvmSynthetic
     var iconGravity = IconGravity.START
 
     @Px
-    @JvmField
     @set:JvmSynthetic
     var iconWidth: Int = 28.dp
 
     @Px
-    @JvmField
     @set:JvmSynthetic
     var iconHeight: Int = 28.dp
 
     @Px
-    @JvmField
     @set:JvmSynthetic
     var iconSpace: Int = 8.dp
 
     @ColorInt
-    @JvmField
     @set:JvmSynthetic
     var iconColor: Int = Color.WHITE
 
