@@ -53,5 +53,6 @@ internal class ActivityBalloonLazy<out T : Balloon.Factory>(
 
   override fun isInitialized(): Boolean = cached !== null
 
-  override fun toString(): String = if (isInitialized()) value.toString() else "Lazy value not initialized yet."
+  override fun toString(): String =
+    if (isInitialized()) value.toString() else "Lazy value not initialized yet."
 }

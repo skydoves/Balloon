@@ -68,10 +68,8 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.ViewCompat
 import androidx.core.view.forEach
 import androidx.core.widget.ImageViewCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.OnLifecycleEvent
 import com.skydoves.balloon.animations.BalloonRotateAnimation
 import com.skydoves.balloon.annotations.Dp
 import com.skydoves.balloon.annotations.Sp
@@ -131,7 +129,7 @@ inline fun createBalloon(context: Context, crossinline block: Balloon.Builder.()
 class Balloon private constructor(
   private val context: Context,
   private val builder: Builder
-) : LifecycleObserver {
+) : DefaultLifecycleObserver {
 
   /** A main content view of the popup. */
   private val binding: LayoutBalloonLibrarySkydovesBinding =
@@ -1387,16 +1385,16 @@ class Balloon private constructor(
   }
 
   /** dismiss when the [LifecycleOwner] be on paused. */
-  @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-  fun onPause() {
+  override fun onPause(owner: LifecycleOwner) {
+    super.onPause(owner)
     if (builder.dismissWhenLifecycleOnPause) {
       dismiss()
     }
   }
 
   /** dismiss automatically when lifecycle owner is destroyed. */
-  @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-  fun onDestroy() {
+  override fun onDestroy(owner: LifecycleOwner) {
+    super.onDestroy(owner)
     this.destroyed = true
     this.overlayWindow.dismiss()
     this.bodyWindow.dismiss()
