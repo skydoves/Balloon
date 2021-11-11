@@ -69,6 +69,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.forEach
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.skydoves.balloon.animations.BalloonRotateAnimation
 import com.skydoves.balloon.annotations.Dp
@@ -198,9 +199,9 @@ class Balloon private constructor(
 
     if (builder.lifecycleOwner == null && context is LifecycleOwner) {
       builder.setLifecycleOwner(context)
-      context.lifecycle.addObserver(this@Balloon)
+      context.lifecycle.addObserver(builder.lifecycleObserver ?: this@Balloon)
     } else {
-      builder.lifecycleOwner?.lifecycle?.addObserver(this@Balloon)
+      builder.lifecycleOwner?.lifecycle?.addObserver(builder.lifecycleObserver ?: this@Balloon)
     }
   }
 
@@ -1664,6 +1665,9 @@ class Balloon private constructor(
     @set:JvmSynthetic
     var lifecycleOwner: LifecycleOwner? = null
 
+    @set:JvmSynthetic
+    var lifecycleObserver: LifecycleObserver? = null
+
     @StyleRes
     @set:JvmSynthetic
     var balloonAnimationStyle: Int = NO_INT_VALUE
@@ -2317,6 +2321,12 @@ class Balloon private constructor(
      * It will prevents memory leak : [Avoid Memory Leak](https://github.com/skydoves/balloon#avoid-memory-leak)
      */
     fun setLifecycleOwner(value: LifecycleOwner?): Builder = apply { this.lifecycleOwner = value }
+
+    /**
+     * sets the [LifecycleObserver] for observing the the [lifecycleOwner]'s lifecycle states.
+     */
+    fun setLifecycleObserver(value: LifecycleObserver): Builder =
+      apply { this.lifecycleObserver = value }
 
     /** sets the balloon showing animation using [BalloonAnimation]. */
     fun setBalloonAnimation(value: BalloonAnimation): Builder = apply {
