@@ -21,7 +21,7 @@ public final class com/skydoves/balloon/ArrowPositionRules : java/lang/Enum {
 	public static fun values ()[Lcom/skydoves/balloon/ArrowPositionRules;
 }
 
-public final class com/skydoves/balloon/Balloon : androidx/lifecycle/LifecycleObserver {
+public final class com/skydoves/balloon/Balloon : androidx/lifecycle/DefaultLifecycleObserver {
 	public field onBalloonInitializedListener Lcom/skydoves/balloon/OnBalloonInitializedListener;
 	public synthetic fun <init> (Landroid/content/Context;Lcom/skydoves/balloon/Balloon$Builder;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun clearAllPreferences ()V
@@ -34,8 +34,8 @@ public final class com/skydoves/balloon/Balloon : androidx/lifecycle/LifecycleOb
 	public final fun getMeasuredWidth ()I
 	public final fun getOverlayWindow ()Landroid/widget/PopupWindow;
 	public final fun isShowing ()Z
-	public final fun onDestroy ()V
-	public final fun onPause ()V
+	public fun onDestroy (Landroidx/lifecycle/LifecycleOwner;)V
+	public fun onPause (Landroidx/lifecycle/LifecycleOwner;)V
 	public final fun relayShow (Lcom/skydoves/balloon/Balloon;Landroid/view/View;)Lcom/skydoves/balloon/Balloon;
 	public final fun relayShow (Lcom/skydoves/balloon/Balloon;Landroid/view/View;I)Lcom/skydoves/balloon/Balloon;
 	public final fun relayShow (Lcom/skydoves/balloon/Balloon;Landroid/view/View;II)Lcom/skydoves/balloon/Balloon;
@@ -162,6 +162,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun getIconWidth ()I
 	public final fun getLayout ()Landroid/view/View;
 	public final fun getLayoutRes ()Ljava/lang/Integer;
+	public final fun getLifecycleObserver ()Landroidx/lifecycle/LifecycleObserver;
 	public final fun getLifecycleOwner ()Landroidx/lifecycle/LifecycleOwner;
 	public final fun getMarginBottom ()I
 	public final fun getMarginLeft ()I
@@ -332,6 +333,8 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun setLayout (Landroid/view/View;)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setLayout (Landroid/view/View;)V
 	public final synthetic fun setLayoutRes (Ljava/lang/Integer;)V
+	public final fun setLifecycleObserver (Landroidx/lifecycle/LifecycleObserver;)Lcom/skydoves/balloon/Balloon$Builder;
+	public final synthetic fun setLifecycleObserver (Landroidx/lifecycle/LifecycleObserver;)V
 	public final fun setLifecycleOwner (Landroidx/lifecycle/LifecycleOwner;)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setLifecycleOwner (Landroidx/lifecycle/LifecycleOwner;)V
 	public final fun setMargin (I)Lcom/skydoves/balloon/Balloon$Builder;

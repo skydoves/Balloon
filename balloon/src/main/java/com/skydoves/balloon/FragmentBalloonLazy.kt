@@ -61,5 +61,6 @@ internal class FragmentBalloonLazy<out T : Balloon.Factory>(
 
   override fun isInitialized() = cached !== null
 
-  override fun toString(): String = if (isInitialized()) value.toString() else "Lazy value not initialized yet."
+  override fun toString(): String =
+    if (isInitialized()) value.toString() else "Lazy value not initialized yet."
 }
