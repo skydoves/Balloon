@@ -17,6 +17,7 @@
 package com.skydoves.balloon.extensions
 
 import android.os.Build
+import androidx.annotation.ChecksSdkIntAtLeast
 
 /**
  * Runs a [block] lambda when the device's SDK level is 21 or higher.
@@ -25,6 +26,7 @@ import android.os.Build
  */
 @JvmSynthetic
 @PublishedApi
+@ChecksSdkIntAtLeast(api = Build.VERSION_CODES.LOLLIPOP, lambda = 0)
 internal inline fun runOnAfterSDK21(block: () -> Unit) {
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
     block()
@@ -38,6 +40,7 @@ internal inline fun runOnAfterSDK21(block: () -> Unit) {
  */
 @JvmSynthetic
 @PublishedApi
+@ChecksSdkIntAtLeast(api = Build.VERSION_CODES.LOLLIPOP_MR1, lambda = 0)
 internal inline fun runOnAfterSDK22(block: () -> Unit) {
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
     block()
