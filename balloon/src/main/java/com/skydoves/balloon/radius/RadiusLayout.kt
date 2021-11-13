@@ -27,7 +27,7 @@ import androidx.annotation.Px
 /**
  * RadiusLayout clips four directions of inner layouts depending on the radius size.
  */
-class RadiusLayout @JvmOverloads constructor(
+public class RadiusLayout @JvmOverloads constructor(
   context: Context,
   attr: AttributeSet? = null,
   defStyle: Int = 0
@@ -37,8 +37,9 @@ class RadiusLayout @JvmOverloads constructor(
   private val path = Path()
 
   /** corner radius for the clipping corners. */
-  @Px private var _radius: Float = 0f
-  var radius: Float
+  @Px
+  private var _radius: Float = 0f
+  public var radius: Float
     @Px get() = _radius
     set(@Px value) {
       _radius = value

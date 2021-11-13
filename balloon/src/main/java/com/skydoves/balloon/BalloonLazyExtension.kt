@@ -37,7 +37,7 @@ import kotlin.reflect.KClass
 @MainThread
 @JvmSynthetic
 @BalloonInlineDsl
-inline fun <reified T : Balloon.Factory> ComponentActivity.balloon(
+public inline fun <reified T : Balloon.Factory> ComponentActivity.balloon(
   factory: KClass<T>
 ): Lazy<Balloon> {
   return ActivityBalloonLazy(this, this, factory)
@@ -52,7 +52,7 @@ inline fun <reified T : Balloon.Factory> ComponentActivity.balloon(
 @MainThread
 @JvmSynthetic
 @BalloonInlineDsl
-inline fun <reified T : Balloon.Factory> ComponentActivity.balloon(): Lazy<Balloon> {
+public inline fun <reified T : Balloon.Factory> ComponentActivity.balloon(): Lazy<Balloon> {
   return ActivityBalloonLazy(context = this, lifecycleOwner = this, factory = T::class)
 }
 
@@ -71,7 +71,7 @@ inline fun <reified T : Balloon.Factory> ComponentActivity.balloon(): Lazy<Ballo
 @MainThread
 @JvmSynthetic
 @BalloonInlineDsl
-inline fun <reified T : Balloon.Factory> Fragment.balloon(
+public inline fun <reified T : Balloon.Factory> Fragment.balloon(
   factory: KClass<T>
 ): Lazy<Balloon> {
   return FragmentBalloonLazy(this, factory)
@@ -86,7 +86,7 @@ inline fun <reified T : Balloon.Factory> Fragment.balloon(
 @MainThread
 @JvmSynthetic
 @BalloonInlineDsl
-inline fun <reified T : Balloon.Factory> Fragment.balloon(): Lazy<Balloon> {
+public inline fun <reified T : Balloon.Factory> Fragment.balloon(): Lazy<Balloon> {
   return FragmentBalloonLazy(fragment = this, factory = T::class)
 }
 
@@ -105,7 +105,7 @@ inline fun <reified T : Balloon.Factory> Fragment.balloon(): Lazy<Balloon> {
 @MainThread
 @JvmSynthetic
 @BalloonInlineDsl
-inline fun <reified T : Balloon.Factory> View.balloon(
+public inline fun <reified T : Balloon.Factory> View.balloon(
   factory: KClass<T>
 ): Lazy<Balloon> {
   return ViewBalloonLazy(this, factory)
@@ -120,6 +120,6 @@ inline fun <reified T : Balloon.Factory> View.balloon(
 @MainThread
 @JvmSynthetic
 @BalloonInlineDsl
-inline fun <reified T : Balloon.Factory> View.balloon(): Lazy<Balloon> {
+public inline fun <reified T : Balloon.Factory> View.balloon(): Lazy<Balloon> {
   return ViewBalloonLazy(this, T::class)
 }

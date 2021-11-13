@@ -20,8 +20,8 @@ package com.skydoves.balloon
  * A specification interface for determining sizes of the Balloon materials.
  * We can wrap some materials depending on their size of content using this interface.
  */
-object BalloonSizeSpec {
+public object BalloonSizeSpec {
 
   /** Wraps the material depending on the size of the content.  */
-  const val WRAP: Int = NO_INT_VALUE
+  public const val WRAP: Int = NO_INT_VALUE
 }

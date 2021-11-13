@@ -30,12 +30,12 @@ import androidx.annotation.MainThread
   ),
 )
 @JvmSynthetic
-fun View.showBalloon(balloon: Balloon) = showAtCenter(balloon)
+public fun View.showBalloon(balloon: Balloon): Unit = showAtCenter(balloon)
 
 /** shows the balloon on the center of an anchor view. */
 @JvmOverloads
 @JvmSynthetic
-fun View.showAtCenter(
+public fun View.showAtCenter(
   balloon: Balloon,
   xOff: Int = 0,
   yOff: Int = 0,
@@ -53,41 +53,41 @@ fun View.showAtCenter(
   ),
 )
 @JvmSynthetic
-fun View.showBalloon(balloon: Balloon, xOff: Int, yOff: Int) =
+public fun View.showBalloon(balloon: Balloon, xOff: Int, yOff: Int): Unit =
   showAsDropDown(balloon, xOff, yOff)
 
 /** shows the balloon on an anchor view as drop down with x-off and y-off. */
 @JvmOverloads
 @JvmSynthetic
-fun View.showAsDropDown(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
+public fun View.showAsDropDown(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
   balloon { balloon.showAsDropDown(this, xOff, yOff) }
 }
 
 @JvmOverloads
 @JvmSynthetic
 /** shows the balloon on an anchor view as the top alignment with x-off and y-off. */
-fun View.showAlignTop(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
+public fun View.showAlignTop(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
   balloon { balloon.showAlignTop(this, xOff, yOff) }
 }
 
 /** shows the balloon on an anchor view as the bottom alignment with x-off and y-off. */
 @JvmOverloads
 @JvmSynthetic
-fun View.showAlignBottom(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
+public fun View.showAlignBottom(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
   balloon { balloon.showAlignBottom(this, xOff, yOff) }
 }
 
 /** shows the balloon on an anchor view as the right alignment with x-off and y-off. */
 @JvmOverloads
 @JvmSynthetic
-fun View.showAlignRight(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
+public fun View.showAlignRight(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
   balloon { balloon.showAlignRight(this, xOff, yOff) }
 }
 
 /** shows the balloon on an anchor view as the left alignment with x-off and y-off.. */
 @JvmOverloads
 @JvmSynthetic
-fun View.showAlignLeft(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
+public fun View.showAlignLeft(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
   balloon { balloon.showAlignLeft(this, xOff, yOff) }
 }
 

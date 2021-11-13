@@ -25,12 +25,12 @@ import com.skydoves.balloon.extensions.applyDrawable
 import com.skydoves.balloon.takeIfNotNoIntValue
 
 /** VectorTextView is a customizable textView having a vector icon.  */
-class VectorTextView @JvmOverloads constructor(
+public class VectorTextView @JvmOverloads constructor(
   context: Context,
   attrs: AttributeSet? = null
 ) : AppCompatTextView(context, attrs) {
 
-  var drawableTextViewParams: VectorTextViewParams? = null
+  public var drawableTextViewParams: VectorTextViewParams? = null
     set(value) {
       field = value?.also { applyDrawable(it) }
     }
@@ -84,7 +84,7 @@ class VectorTextView @JvmOverloads constructor(
     }
   }
 
-  fun isRtlSupport(rtlLayout: Boolean) {
+  public fun isRtlSupport(rtlLayout: Boolean) {
     drawableTextViewParams?.apply {
       isRtlLayout = rtlLayout
       applyDrawable(this)

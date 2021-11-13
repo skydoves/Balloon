@@ -27,7 +27,7 @@ import kotlin.reflect.KClass
  * An implementation of [Lazy] for creating an instance of the [Balloon] lazily in Activities.
  * Tied to the given Activity's lifecycleOwner, [factory].
  *
- * @param context A context for creating resources of the [Balloon] lazily.
+ * @param view A view for creating resources of the [Balloon] lazily.
  * This will prevents memory leak: [Avoid Memory Leak](https://github.com/skydoves/balloon#avoid-memory-leak).
  * @param factory A [Balloon.Factory] kotlin class for creating a new instance of the Balloon.
  */
@@ -78,5 +78,6 @@ internal class ViewBalloonLazy<out T : Balloon.Factory>(
 
   override fun isInitialized(): Boolean = cached !== null
 
-  override fun toString(): String = if (isInitialized()) value.toString() else "Lazy value not initialized yet."
+  override fun toString(): String =
+    if (isInitialized()) value.toString() else "Lazy value not initialized yet."
 }

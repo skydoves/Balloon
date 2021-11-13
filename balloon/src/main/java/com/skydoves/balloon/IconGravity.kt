@@ -17,7 +17,7 @@
 package com.skydoves.balloon
 
 /** IconGravity determines the orientation of the icon. */
-enum class IconGravity {
+public enum class IconGravity {
   @Deprecated(
     message = "IconGravity.LEFT is deprecated. Use IconGravity.START instead.",
     replaceWith = ReplaceWith(

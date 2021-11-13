@@ -20,7 +20,7 @@ package com.skydoves.balloon.animations
  * BalloonRotateDirection decides the direction of the balloon rotation animation.
  * This class can be used with the [BalloonRotateAnimation].
  */
-enum class BalloonRotateDirection(val value: Int) {
+public enum class BalloonRotateDirection(public val value: Int) {
   /** Rotate in the right direction. */
   RIGHT(1),
 

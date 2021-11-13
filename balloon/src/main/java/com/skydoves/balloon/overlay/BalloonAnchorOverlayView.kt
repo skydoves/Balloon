@@ -37,7 +37,7 @@ import com.skydoves.balloon.extensions.dimen
  * BalloonAnchorOverlayView is an overlay view for highlighting an anchor
  * by overlaying specific shapes on the anchor.
  */
-class BalloonAnchorOverlayView @JvmOverloads constructor(
+public class BalloonAnchorOverlayView @JvmOverloads constructor(
   context: Context,
   attr: AttributeSet? = null,
   defStyle: Int = 0
@@ -45,7 +45,7 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
 
   /** target view for highlighting. */
   private var _anchorView: View? = null
-  var anchorView: View?
+  public var anchorView: View?
     get() = _anchorView
     set(value) {
       _anchorView = value
@@ -53,8 +53,9 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
     }
 
   /** background color of the overlay. */
-  @ColorInt private var _overlayColor: Int = Color.TRANSPARENT
-  var overlayColor: Int
+  @ColorInt
+  private var _overlayColor: Int = Color.TRANSPARENT
+  public var overlayColor: Int
     @ColorInt get() = _overlayColor
     set(@ColorInt value) {
       _overlayColor = value
@@ -62,8 +63,9 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
     }
 
   /** padding color of the overlay shape. */
-  @ColorInt private var _overlayPaddingColor: Int = Color.TRANSPARENT
-  var overlayPaddingColor: Int
+  @ColorInt
+  private var _overlayPaddingColor: Int = Color.TRANSPARENT
+  public var overlayPaddingColor: Int
     @ColorInt get() = _overlayPaddingColor
     set(@ColorInt value) {
       _overlayPaddingColor = value
@@ -71,8 +73,9 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
     }
 
   /** padding value of the internal overlay shape. */
-  @Px private var _overlayPadding: Float = 0f
-  var overlayPadding: Float
+  @Px
+  private var _overlayPadding: Float = 0f
+  public var overlayPadding: Float
     @Px get() = _overlayPadding
     set(@Px value) {
       _overlayPadding = value
@@ -81,7 +84,7 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
 
   /** specific position of the overlay shape. */
   private var _overlayPosition: Point? = null
-  var overlayPosition: Point?
+  public var overlayPosition: Point?
     get() = _overlayPosition
     set(value) {
       _overlayPosition = value
@@ -90,7 +93,7 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
 
   /** shape of the overlay over the anchor view. */
   private var _balloonOverlayShape: BalloonOverlayShape = BalloonOverlayOval
-  var balloonOverlayShape: BalloonOverlayShape
+  public var balloonOverlayShape: BalloonOverlayShape
     get() = _balloonOverlayShape
     set(value) {
       _balloonOverlayShape = value
@@ -115,7 +118,7 @@ class BalloonAnchorOverlayView @JvmOverloads constructor(
     }
   }
 
-  fun forceInvalidate() {
+  public fun forceInvalidate() {
     invalidated = true
     invalidate()
   }
