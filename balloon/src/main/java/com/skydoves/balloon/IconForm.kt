@@ -36,105 +36,108 @@ internal annotation class IconFormDsl
 @MainThread
 @IconFormDsl
 @JvmSynthetic
-inline fun iconForm(context: Context, crossinline block: IconForm.Builder.() -> Unit): IconForm =
+public inline fun iconForm(
+  context: Context,
+  crossinline block: IconForm.Builder.() -> Unit
+): IconForm =
   IconForm.Builder(context).apply(block).build()
 
 /**
  * IconForm is an attribute class which has TextView attributes
  * for customizing popup icons easily.
  */
-class IconForm private constructor(
+public class IconForm private constructor(
   builder: Builder
 ) {
 
-  val drawable = builder.drawable
+  public val drawable: Drawable? = builder.drawable
 
   @DrawableRes
-  var drawableRes = builder.drawableRes
+  public var drawableRes: Int? = builder.drawableRes
 
-  val iconGravity = builder.iconGravity
-
-  @Px
-  val iconWidth = builder.iconWidth
+  public val iconGravity: IconGravity = builder.iconGravity
 
   @Px
-  val iconHeight = builder.iconHeight
+  public val iconWidth: Int = builder.iconWidth
 
   @Px
-  val iconSpace = builder.iconSpace
+  public val iconHeight: Int = builder.iconHeight
+
+  @Px
+  public val iconSpace: Int = builder.iconSpace
 
   @ColorInt
-  val iconColor = builder.iconColor
+  public val iconColor: Int = builder.iconColor
 
   /** Builder class for [IconForm]. */
   @IconFormDsl
-  class Builder(val context: Context) {
+  public class Builder(public val context: Context) {
     @set:JvmSynthetic
-    var drawable: Drawable? = null
+    public var drawable: Drawable? = null
 
     @DrawableRes
     @set:JvmSynthetic
-    var drawableRes: Int? = null
+    public var drawableRes: Int? = null
 
     @set:JvmSynthetic
-    var iconGravity = IconGravity.START
-
-    @Px
-    @set:JvmSynthetic
-    var iconWidth: Int = 28.dp
+    public var iconGravity: IconGravity = IconGravity.START
 
     @Px
     @set:JvmSynthetic
-    var iconHeight: Int = 28.dp
+    public var iconWidth: Int = 28.dp
 
     @Px
     @set:JvmSynthetic
-    var iconSpace: Int = 8.dp
+    public var iconHeight: Int = 28.dp
+
+    @Px
+    @set:JvmSynthetic
+    public var iconSpace: Int = 8.dp
 
     @ColorInt
     @set:JvmSynthetic
-    var iconColor: Int = Color.WHITE
+    public var iconColor: Int = Color.WHITE
 
     /** sets the [Drawable] of the icon. */
-    fun setDrawable(value: Drawable?): Builder = apply { this.drawable = value }
+    public fun setDrawable(value: Drawable?): Builder = apply { this.drawable = value }
 
     /** sets the [Drawable] of the icon using resource. */
-    fun setDrawableResource(@DrawableRes value: Int): Builder = apply {
+    public fun setDrawableResource(@DrawableRes value: Int): Builder = apply {
       this.drawableRes = value
     }
 
     /** sets gravity of the [Drawable] of the icon using resource. */
-    fun setDrawableGravity(value: IconGravity): Builder = apply {
+    public fun setDrawableGravity(value: IconGravity): Builder = apply {
       this.iconGravity = value
     }
 
     /** sets the width size of the icon. */
-    fun setIconWidth(@Px value: Int): Builder = apply {
+    public fun setIconWidth(@Px value: Int): Builder = apply {
       this.iconWidth = value
     }
 
     /** sets the height size of the icon. */
-    fun setIconHeight(@Px value: Int): Builder = apply {
+    public fun setIconHeight(@Px value: Int): Builder = apply {
       this.iconHeight = value
     }
 
     /** sets the size of the icon. */
-    fun setIconSize(@Px value: Int): Builder = apply {
+    public fun setIconSize(@Px value: Int): Builder = apply {
       setIconWidth(value)
       setIconHeight(value)
     }
 
     /** sets the space between the icon and the main text content. */
-    fun setIconSpace(@Px value: Int): Builder = apply { this.iconSpace = value }
+    public fun setIconSpace(@Px value: Int): Builder = apply { this.iconSpace = value }
 
     /** sets the color of the icon. */
-    fun setIconColor(@ColorInt value: Int): Builder = apply { this.iconColor = value }
+    public fun setIconColor(@ColorInt value: Int): Builder = apply { this.iconColor = value }
 
     /** sets the color of the icon using resource */
-    fun setIconColorResource(@ColorRes value: Int): Builder = apply {
+    public fun setIconColorResource(@ColorRes value: Int): Builder = apply {
       this.iconColor = context.contextColor(value)
     }
 
-    fun build() = IconForm(this)
+    public fun build(): IconForm = IconForm(this)
   }
 }

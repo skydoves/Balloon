@@ -17,7 +17,7 @@
 package com.skydoves.balloon
 
 /** ArrowOrientation determines the orientation of the arrow. */
-enum class ArrowOrientation {
+public enum class ArrowOrientation {
   BOTTOM,
   TOP,
   LEFT,

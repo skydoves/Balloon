@@ -21,20 +21,20 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 
 /** BalloonPreferenceManager helps to persist showing counts. */
-class BalloonPersistence private constructor() {
+public class BalloonPersistence private constructor() {
 
   /** should show or not the popup. */
-  fun shouldShowUp(name: String, counts: Int): Boolean {
+  public fun shouldShowUp(name: String, counts: Int): Boolean {
     return getPersistedCounts(name) < counts
   }
 
   /** puts a incremented show-up counts to the preference. */
-  fun putIncrementedCounts(name: String) {
+  public fun putIncrementedCounts(name: String) {
     putCounts(name, getPersistedCounts(name) + 1)
   }
 
   /** clears all persisted preferences. */
-  fun clearAllPreferences() {
+  public fun clearAllPreferences() {
     sharedPreferenceManager.edit { clear() }
   }
 
@@ -48,14 +48,14 @@ class BalloonPersistence private constructor() {
     sharedPreferenceManager.edit { putInt(getPersistName(name), counts) }
   }
 
-  companion object {
+  public companion object {
     @Volatile
     private var instance: BalloonPersistence? = null
     private lateinit var sharedPreferenceManager: SharedPreferences
     private const val SHOWED_UP = "SHOWED_UP"
 
     @JvmStatic
-    fun getInstance(context: Context): BalloonPersistence =
+    public fun getInstance(context: Context): BalloonPersistence =
       instance ?: synchronized(this) {
         instance ?: BalloonPersistence().also {
           instance = it
@@ -65,6 +65,6 @@ class BalloonPersistence private constructor() {
       }
 
     @JvmStatic
-    fun getPersistName(name: String) = SHOWED_UP + name
+    public fun getPersistName(name: String): String = SHOWED_UP + name
   }
 }

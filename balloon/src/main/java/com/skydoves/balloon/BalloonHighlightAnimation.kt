@@ -26,7 +26,7 @@ import com.skydoves.balloon.animations.BalloonRotateAnimation
  * .setBalloonHighlightAnimation(BalloonHighlightAnimation.SHAKE)
  * ```
  */
-enum class BalloonHighlightAnimation {
+public enum class BalloonHighlightAnimation {
   /** Default, no animation. */
   NONE,
 

@@ -22,7 +22,7 @@ package com.skydoves.balloon
  * [ArrowPositionRules.ALIGN_BALLOON]: Align the arrow position depending on the balloon popup body.
  * [ArrowPositionRules.ALIGN_ANCHOR]: Align the arrow position depending on an anchor.
  */
-enum class ArrowPositionRules {
+public enum class ArrowPositionRules {
   /**
    * Align the arrow position depending on the balloon popup body.
    *

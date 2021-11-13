@@ -40,107 +40,111 @@ internal annotation class TextFormDsl
 @MainThread
 @TextFormDsl
 @JvmSynthetic
-inline fun textForm(context: Context, crossinline block: TextForm.Builder.() -> Unit): TextForm =
+public inline fun textForm(
+  context: Context,
+  crossinline block: TextForm.Builder.() -> Unit
+): TextForm =
   TextForm.Builder(context).apply(block).build()
 
 /**
  * TextFrom is an attribute class what has some attributes about TextView
  * for customizing popup texts easily.
  */
-class TextForm private constructor(
+public class TextForm private constructor(
   builder: Builder
 ) {
 
-  val text: CharSequence = builder.text
+  public val text: CharSequence = builder.text
 
   @Sp
-  val textSize: Float = builder.textSize
+  public val textSize: Float = builder.textSize
 
   @ColorInt
-  val textColor: Int = builder.textColor
+  public val textColor: Int = builder.textColor
 
-  val textIsHtml: Boolean = builder.textIsHtml
+  public val textIsHtml: Boolean = builder.textIsHtml
 
-  val movementMethod: MovementMethod? = builder.movementMethod
+  public val movementMethod: MovementMethod? = builder.movementMethod
 
-  val textStyle: Int = builder.textTypeface
+  public val textStyle: Int = builder.textTypeface
 
-  val textTypeface: Typeface? = builder.textTypefaceObject
+  public val textTypeface: Typeface? = builder.textTypefaceObject
 
-  val textGravity: Int = builder.textGravity
+  public val textGravity: Int = builder.textGravity
 
   /** Builder class for [TextForm]. */
   @TextFormDsl
-  class Builder(val context: Context) {
+  public class Builder(public val context: Context) {
     @set:JvmSynthetic
-    var text: CharSequence = ""
+    public var text: CharSequence = ""
 
     @Sp
     @set:JvmSynthetic
-    var textSize: Float = 12f
+    public var textSize: Float = 12f
 
     @ColorInt
     @set:JvmSynthetic
-    var textColor = Color.WHITE
+    public var textColor: Int = Color.WHITE
 
     @set:JvmSynthetic
-    var textIsHtml: Boolean = false
+    public var textIsHtml: Boolean = false
 
     @set:JvmSynthetic
-    var movementMethod: MovementMethod? = null
+    public var movementMethod: MovementMethod? = null
 
     @set:JvmSynthetic
-    var textTypeface = Typeface.NORMAL
+    public var textTypeface: Int = Typeface.NORMAL
 
     @set:JvmSynthetic
-    var textTypefaceObject: Typeface? = null
+    public var textTypefaceObject: Typeface? = null
 
     @set:JvmSynthetic
-    var textGravity: Int = Gravity.CENTER
+    public var textGravity: Int = Gravity.CENTER
 
     /** sets the content text of the form. */
-    fun setText(value: CharSequence): Builder = apply { this.text = value }
+    public fun setText(value: CharSequence): Builder = apply { this.text = value }
 
     /** sets the content text of the form using string resource. */
-    fun setTextResource(@StringRes value: Int): Builder = apply {
+    public fun setTextResource(@StringRes value: Int): Builder = apply {
       this.text = context.getString(value)
     }
 
     /** sets the size of the text. */
-    fun setTextSize(@Sp value: Float): Builder = apply { this.textSize = value }
+    public fun setTextSize(@Sp value: Float): Builder = apply { this.textSize = value }
 
     /** sets the size of the main text content using dimension resource. */
-    fun setTextSizeResource(@DimenRes value: Int): Builder = apply {
+    public fun setTextSizeResource(@DimenRes value: Int): Builder = apply {
       this.textSize = context.px2Sp(context.dimen(value))
     }
 
     /** sets the color of the text. */
-    fun setTextColor(@ColorInt value: Int): Builder = apply { this.textColor = value }
+    public fun setTextColor(@ColorInt value: Int): Builder = apply { this.textColor = value }
 
     /** sets whether the text will be parsed as HTML (using Html.fromHtml(..)) */
-    fun setTextIsHtml(value: Boolean): Builder = apply { this.textIsHtml = value }
+    public fun setTextIsHtml(value: Boolean): Builder = apply { this.textIsHtml = value }
 
     /** sets the movement method for TextView. */
-    fun setMovementMethod(value: MovementMethod): Builder = apply {
+    public fun setMovementMethod(value: MovementMethod): Builder = apply {
       this.movementMethod = value
     }
 
     /** sets the color of the text using resource. */
-    fun setTextColorResource(@ColorRes value: Int): Builder = apply {
+    public fun setTextColorResource(@ColorRes value: Int): Builder = apply {
       this.textColor = context.contextColor(value)
     }
 
     /** sets the [Typeface] of the text. */
-    fun setTextTypeface(value: Int): Builder = apply { this.textTypeface = value }
+    public fun setTextTypeface(value: Int): Builder = apply { this.textTypeface = value }
 
     /** sets the [Typeface] of the text. */
-    fun setTextTypeface(value: Typeface?): Builder = apply { this.textTypefaceObject = value }
+    public fun setTextTypeface(value: Typeface?): Builder =
+      apply { this.textTypefaceObject = value }
 
     /** sets gravity of the text. */
-    fun setTextGravity(value: Int): Builder = apply {
+    public fun setTextGravity(value: Int): Builder = apply {
       this.textGravity = value
     }
 
-    fun build() = TextForm(this)
+    public fun build(): TextForm = TextForm(this)
   }
 }

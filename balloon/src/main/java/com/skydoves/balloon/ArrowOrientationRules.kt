@@ -22,7 +22,7 @@ package com.skydoves.balloon
  * [ArrowOrientationRules.ALIGN_ANCHOR]: Align depending on the position of an anchor.
  * [ArrowOrientationRules.ALIGN_FIXED]: Align to fixed [ArrowOrientation].
  */
-enum class ArrowOrientationRules {
+public enum class ArrowOrientationRules {
   /**
    * Align depending on the position of an anchor.
    *

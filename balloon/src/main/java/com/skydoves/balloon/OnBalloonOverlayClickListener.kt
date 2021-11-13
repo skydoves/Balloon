@@ -17,8 +17,8 @@
 package com.skydoves.balloon
 
 /** Interface definition for a callback to be invoked when a balloon overlay view is clicked. */
-fun interface OnBalloonOverlayClickListener {
+public fun interface OnBalloonOverlayClickListener {
 
   /** invoked when the balloon overlay is clicked. */
-  fun onBalloonOverlayClick()
+  public fun onBalloonOverlayClick()
 }

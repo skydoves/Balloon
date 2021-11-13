@@ -115,7 +115,10 @@ internal annotation class BalloonInlineDsl
 @MainThread
 @JvmSynthetic
 @BalloonInlineDsl
-inline fun createBalloon(context: Context, crossinline block: Balloon.Builder.() -> Unit): Balloon =
+public inline fun createBalloon(
+  context: Context,
+  crossinline block: Balloon.Builder.() -> Unit
+): Balloon =
   Balloon.Builder(context).apply(block).build()
 
 /**
@@ -127,7 +130,7 @@ inline fun createBalloon(context: Context, crossinline block: Balloon.Builder.()
  * @param builder A [Balloon.Builder] for creating an instance of the [Balloon].
  */
 @Suppress("MemberVisibilityCanBePrivate")
-class Balloon private constructor(
+public class Balloon private constructor(
   private val context: Context,
   private val builder: Builder
 ) : DefaultLifecycleObserver {
@@ -141,21 +144,21 @@ class Balloon private constructor(
     LayoutBalloonOverlayLibrarySkydovesBinding.inflate(LayoutInflater.from(context), null, false)
 
   /** A main content window of the popup. */
-  val bodyWindow: PopupWindow = PopupWindow(
+  public val bodyWindow: PopupWindow = PopupWindow(
     binding.root,
     FrameLayout.LayoutParams.WRAP_CONTENT,
     FrameLayout.LayoutParams.WRAP_CONTENT
   )
 
   /** An overlay window of the background popup. */
-  val overlayWindow: PopupWindow = PopupWindow(
+  public val overlayWindow: PopupWindow = PopupWindow(
     overlayBinding.root,
     ViewGroup.LayoutParams.MATCH_PARENT,
     ViewGroup.LayoutParams.MATCH_PARENT
   )
 
   /** Denotes the popup is showing or not. */
-  var isShowing = false
+  public var isShowing: Boolean = false
     private set
 
   /** Denotes the popup is already destroyed internally. */
@@ -164,7 +167,7 @@ class Balloon private constructor(
   /** Interface definition for a callback to be invoked when a balloon view is initialized. */
   @JvmField
   @set:JvmSynthetic
-  var onBalloonInitializedListener: OnBalloonInitializedListener? =
+  public var onBalloonInitializedListener: OnBalloonInitializedListener? =
     builder.onBalloonInitializedListener
 
   /** A handler for running [autoDismissRunnable]. */
@@ -693,7 +696,7 @@ class Balloon private constructor(
   /**
    * Checks if the balloon should show up.
    */
-  fun shouldShowUp(): Boolean {
+  public fun shouldShowUp(): Boolean {
     return this.builder.preferenceName?.let {
       this.balloonPersistence.shouldShowUp(it, builder.showTimes)
     } ?: true
@@ -798,7 +801,7 @@ class Balloon private constructor(
       imports = ["com.skydoves.balloon.Balloon.showAtCenter"]
     ),
   )
-  fun show(anchor: View) {
+  public fun show(anchor: View) {
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
@@ -819,7 +822,7 @@ class Balloon private constructor(
    * @param centerAlign A rule for deciding the alignment of the balloon.
    */
   @JvmOverloads
-  fun showAtCenter(
+  public fun showAtCenter(
     anchor: View,
     xOff: Int = 0,
     yOff: Int = 0,
@@ -874,13 +877,13 @@ class Balloon private constructor(
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
   @JvmOverloads
-  fun relayShowAtCenter(
+  public fun relayShowAtCenter(
     balloon: Balloon,
     anchor: View,
     xOff: Int = 0,
     yOff: Int = 0,
     centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP
-  ) = relay(balloon) { it.showAtCenter(anchor, xOff, yOff, centerAlign) }
+  ): Balloon = relay(balloon) { it.showAtCenter(anchor, xOff, yOff, centerAlign) }
 
   /**
    * Shows the balloon on the center of an anchor view.
@@ -896,7 +899,7 @@ class Balloon private constructor(
       imports = ["com.skydoves.balloon.Balloon.showAsDropDown"]
     ),
   )
-  fun show(anchor: View, xOff: Int, yOff: Int) {
+  public fun show(anchor: View, xOff: Int, yOff: Int) {
     show(anchor) { bodyWindow.showAsDropDown(anchor, xOff, yOff) }
   }
 
@@ -921,7 +924,7 @@ class Balloon private constructor(
     ),
   )
   @JvmOverloads
-  fun relayShow(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) =
+  public fun relayShow(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0): Balloon =
     relayShowAsDropDown(balloon, anchor, xOff, yOff)
 
   /**
@@ -932,7 +935,7 @@ class Balloon private constructor(
    * @param yOff A vertical offset from the anchor in pixels.
    */
   @JvmOverloads
-  fun showAsDropDown(anchor: View, xOff: Int = 0, yOff: Int = 0) {
+  public fun showAsDropDown(anchor: View, xOff: Int = 0, yOff: Int = 0) {
     show(anchor) { bodyWindow.showAsDropDown(anchor, xOff, yOff) }
   }
 
@@ -950,7 +953,12 @@ class Balloon private constructor(
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
   @JvmOverloads
-  fun relayShowAsDropDown(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) =
+  public fun relayShowAsDropDown(
+    balloon: Balloon,
+    anchor: View,
+    xOff: Int = 0,
+    yOff: Int = 0
+  ): Balloon =
     relay(balloon) { it.showAsDropDown(anchor, xOff, yOff) }
 
   /**
@@ -961,7 +969,7 @@ class Balloon private constructor(
    * @param yOff A vertical offset from the anchor in pixels.
    */
   @JvmOverloads
-  fun showAlignTop(anchor: View, xOff: Int = 0, yOff: Int = 0) {
+  public fun showAlignTop(anchor: View, xOff: Int = 0, yOff: Int = 0) {
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
@@ -985,7 +993,12 @@ class Balloon private constructor(
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
   @JvmOverloads
-  fun relayShowAlignTop(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) =
+  public fun relayShowAlignTop(
+    balloon: Balloon,
+    anchor: View,
+    xOff: Int = 0,
+    yOff: Int = 0
+  ): Balloon =
     relay(balloon) { it.showAlignTop(anchor, xOff, yOff) }
 
   /**
@@ -996,7 +1009,7 @@ class Balloon private constructor(
    * @param yOff A vertical offset from the anchor in pixels.
    */
   @JvmOverloads
-  fun showAlignBottom(anchor: View, xOff: Int = 0, yOff: Int = 0) {
+  public fun showAlignBottom(anchor: View, xOff: Int = 0, yOff: Int = 0) {
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
@@ -1021,7 +1034,12 @@ class Balloon private constructor(
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
   @JvmOverloads
-  fun relayShowAlignBottom(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) =
+  public fun relayShowAlignBottom(
+    balloon: Balloon,
+    anchor: View,
+    xOff: Int = 0,
+    yOff: Int = 0
+  ): Balloon =
     relay(balloon) { it.showAlignBottom(anchor, xOff, yOff) }
 
   /**
@@ -1032,7 +1050,7 @@ class Balloon private constructor(
    * @param yOff A vertical offset from the anchor in pixels.
    */
   @JvmOverloads
-  fun showAlignRight(anchor: View, xOff: Int = 0, yOff: Int = 0) {
+  public fun showAlignRight(anchor: View, xOff: Int = 0, yOff: Int = 0) {
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
@@ -1057,7 +1075,12 @@ class Balloon private constructor(
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
   @JvmOverloads
-  fun relayShowAlignRight(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) = relay(
+  public fun relayShowAlignRight(
+    balloon: Balloon,
+    anchor: View,
+    xOff: Int = 0,
+    yOff: Int = 0
+  ): Balloon = relay(
     balloon
   ) {
     it.showAlignRight(anchor, xOff, yOff)
@@ -1071,7 +1094,7 @@ class Balloon private constructor(
    * @param yOff A vertical offset from the anchor in pixels.
    */
   @JvmOverloads
-  fun showAlignLeft(anchor: View, xOff: Int = 0, yOff: Int = 0) {
+  public fun showAlignLeft(anchor: View, xOff: Int = 0, yOff: Int = 0) {
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
@@ -1096,7 +1119,12 @@ class Balloon private constructor(
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
   @JvmOverloads
-  fun relayShowAlignLeft(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0) =
+  public fun relayShowAlignLeft(
+    balloon: Balloon,
+    anchor: View,
+    xOff: Int = 0,
+    yOff: Int = 0
+  ): Balloon =
     relay(balloon) { it.showAlignLeft(anchor, xOff, yOff) }
 
   /**
@@ -1108,7 +1136,7 @@ class Balloon private constructor(
    * @param yOff A vertical offset from the anchor in pixels.
    */
   @JvmOverloads
-  fun update(anchor: View, xOff: Int = 0, yOff: Int = 0) {
+  public fun update(anchor: View, xOff: Int = 0, yOff: Int = 0) {
     update(anchor = anchor) {
       this.bodyWindow.update(anchor, xOff, yOff, getMeasuredWidth(), getMeasuredHeight())
       if (builder.isVisibleOverlay) {
@@ -1127,7 +1155,7 @@ class Balloon private constructor(
   }
 
   /** dismiss the popup menu. */
-  fun dismiss() {
+  public fun dismiss() {
     if (this.isShowing) {
       val dismissWindow: () -> Unit = {
         this.isShowing = false
@@ -1146,11 +1174,11 @@ class Balloon private constructor(
   }
 
   /** dismiss the popup menu with milliseconds delay. */
-  fun dismissWithDelay(delay: Long) =
+  public fun dismissWithDelay(delay: Long): Boolean =
     handler.postDelayed(autoDismissRunnable, delay)
 
   /** sets a [OnBalloonClickListener] to the popup. */
-  fun setOnBalloonClickListener(onBalloonClickListener: OnBalloonClickListener?) {
+  public fun setOnBalloonClickListener(onBalloonClickListener: OnBalloonClickListener?) {
     this.binding.balloonWrapper.setOnClickListener {
       onBalloonClickListener?.onBalloonClick(it)
       if (builder.dismissWhenClicked) dismiss()
@@ -1158,13 +1186,13 @@ class Balloon private constructor(
   }
 
   /** clears all persisted preferences. */
-  fun clearAllPreferences() {
+  public fun clearAllPreferences() {
     this.balloonPersistence.clearAllPreferences()
   }
 
   /** sets a [OnBalloonClickListener] to the popup using lambda. */
   @JvmSynthetic
-  fun setOnBalloonClickListener(block: (View) -> Unit) {
+  public fun setOnBalloonClickListener(block: (View) -> Unit) {
     setOnBalloonClickListener(OnBalloonClickListener(block))
   }
 
@@ -1173,7 +1201,7 @@ class Balloon private constructor(
    * The [OnBalloonInitializedListener.onBalloonInitialized] will be invoked when inflating the
    * body content of the balloon is finished.
    */
-  fun setOnBalloonInitializedListener(onBalloonInitializedListener: OnBalloonInitializedListener?) {
+  public fun setOnBalloonInitializedListener(onBalloonInitializedListener: OnBalloonInitializedListener?) {
     this.onBalloonInitializedListener = onBalloonInitializedListener
   }
 
@@ -1183,12 +1211,12 @@ class Balloon private constructor(
    * body content of the balloon is finished.
    */
   @JvmSynthetic
-  fun setOnBalloonInitializedListener(block: (View) -> Unit) {
+  public fun setOnBalloonInitializedListener(block: (View) -> Unit) {
     setOnBalloonInitializedListener(OnBalloonInitializedListener(block))
   }
 
   /** sets a [OnBalloonDismissListener] to the popup. */
-  fun setOnBalloonDismissListener(onBalloonDismissListener: OnBalloonDismissListener?) {
+  public fun setOnBalloonDismissListener(onBalloonDismissListener: OnBalloonDismissListener?) {
     this.bodyWindow.setOnDismissListener {
       stopBalloonHighlightAnimation()
       this@Balloon.dismiss()
@@ -1198,12 +1226,12 @@ class Balloon private constructor(
 
   /** sets a [OnBalloonDismissListener] to the popup using lambda. */
   @JvmSynthetic
-  fun setOnBalloonDismissListener(block: () -> Unit) {
+  public fun setOnBalloonDismissListener(block: () -> Unit) {
     setOnBalloonDismissListener(OnBalloonDismissListener(block))
   }
 
   /** sets a [OnBalloonOutsideTouchListener] to the popup. */
-  fun setOnBalloonOutsideTouchListener(onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener?) {
+  public fun setOnBalloonOutsideTouchListener(onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener?) {
     this.bodyWindow.setTouchInterceptor(
       object : View.OnTouchListener {
         @SuppressLint("ClickableViewAccessibility")
@@ -1223,28 +1251,28 @@ class Balloon private constructor(
 
   /** sets a [OnBalloonOutsideTouchListener] to the popup using lambda. */
   @JvmSynthetic
-  fun setOnBalloonOutsideTouchListener(block: (View, MotionEvent) -> Unit) {
+  public fun setOnBalloonOutsideTouchListener(block: (View, MotionEvent) -> Unit) {
     setOnBalloonOutsideTouchListener(
       OnBalloonOutsideTouchListener(block)
     )
   }
 
   /** sets a [View.OnTouchListener] to the popup. */
-  fun setOnBalloonTouchListener(onTouchListener: View.OnTouchListener?) {
+  public fun setOnBalloonTouchListener(onTouchListener: View.OnTouchListener?) {
     if (onTouchListener != null) {
       this.bodyWindow.setTouchInterceptor(onTouchListener)
     }
   }
 
   /** sets a [View.OnTouchListener] to the overlay popup */
-  fun setOnBalloonOverlayTouchListener(onTouchListener: View.OnTouchListener?) {
+  public fun setOnBalloonOverlayTouchListener(onTouchListener: View.OnTouchListener?) {
     if (onTouchListener != null) {
       this.overlayWindow.setTouchInterceptor(onTouchListener)
     }
   }
 
   /** sets a [View.OnTouchListener] to the overlay popup using lambda. */
-  fun setOnBalloonOverlayTouchListener(block: (View, MotionEvent) -> Boolean) {
+  public fun setOnBalloonOverlayTouchListener(block: (View, MotionEvent) -> Boolean) {
     setOnBalloonOverlayTouchListener(
       View.OnTouchListener(block)
     )
@@ -1264,7 +1292,7 @@ class Balloon private constructor(
   }
 
   /** sets a [OnBalloonOverlayClickListener] to the overlay popup. */
-  fun setOnBalloonOverlayClickListener(onBalloonOverlayClickListener: OnBalloonOverlayClickListener?) {
+  public fun setOnBalloonOverlayClickListener(onBalloonOverlayClickListener: OnBalloonOverlayClickListener?) {
     this.overlayBinding.root.setOnClickListener {
       onBalloonOverlayClickListener?.onBalloonOverlayClick()
       if (builder.dismissWhenOverlayClicked) dismiss()
@@ -1273,7 +1301,7 @@ class Balloon private constructor(
 
   /** sets a [OnBalloonOverlayClickListener] to the overlay popup using lambda. */
   @JvmSynthetic
-  fun setOnBalloonOverlayClickListener(block: () -> Unit) {
+  public fun setOnBalloonOverlayClickListener(block: () -> Unit) {
     setOnBalloonOverlayClickListener(
       OnBalloonOverlayClickListener(block)
     )
@@ -1283,14 +1311,14 @@ class Balloon private constructor(
    * sets whether the popup window will be attached in the decor frame of its parent window.
    * If you want to show up balloon on your DialogFragment, it's recommended to use with true. (#131)
    */
-  fun setIsAttachedInDecor(value: Boolean) = apply {
+  public fun setIsAttachedInDecor(value: Boolean): Balloon = apply {
     runOnAfterSDK22 {
       this.bodyWindow.isAttachedInDecor = value
     }
   }
 
   /** gets measured width size of the balloon popup. */
-  fun getMeasuredWidth(): Int {
+  public fun getMeasuredWidth(): Int {
     val displayWidth = displaySize.x
     return when {
       builder.widthRatio != NO_Float_VALUE ->
@@ -1368,7 +1396,7 @@ class Balloon private constructor(
   }
 
   /** gets measured height size of the balloon popup. */
-  fun getMeasuredHeight(): Int {
+  public fun getMeasuredHeight(): Int {
     if (builder.height != BalloonSizeSpec.WRAP) {
       return builder.height
     }
@@ -1376,12 +1404,12 @@ class Balloon private constructor(
   }
 
   /** gets a content view of the balloon popup window. */
-  fun getContentView(): ViewGroup {
+  public fun getContentView(): ViewGroup {
     return binding.balloonCard
   }
 
   /** gets a arrow view of the balloon popup window. */
-  fun getBalloonArrowView(): View {
+  public fun getBalloonArrowView(): View {
     return binding.balloonArrow
   }
 
@@ -1403,328 +1431,328 @@ class Balloon private constructor(
 
   /** Builder class for creating [Balloon]. */
   @BalloonInlineDsl
-  class Builder(private val context: Context) {
+  public class Builder(private val context: Context) {
     @Px
     @set:JvmSynthetic
-    var width: Int = BalloonSizeSpec.WRAP
+    public var width: Int = BalloonSizeSpec.WRAP
 
     @Px
     @set:JvmSynthetic
-    var minWidth: Int = 0
+    public var minWidth: Int = 0
 
     @Px
     @set:JvmSynthetic
-    var maxWidth: Int = displaySize.x
+    public var maxWidth: Int = displaySize.x
 
     @FloatRange(from = 0.0, to = 1.0)
     @set:JvmSynthetic
-    var widthRatio: Float = NO_Float_VALUE
+    public var widthRatio: Float = NO_Float_VALUE
 
     @FloatRange(from = 0.0, to = 1.0)
     @set:JvmSynthetic
-    var minWidthRatio: Float = NO_Float_VALUE
+    public var minWidthRatio: Float = NO_Float_VALUE
 
     @FloatRange(from = 0.0, to = 1.0)
     @set:JvmSynthetic
-    var maxWidthRatio: Float = NO_Float_VALUE
+    public var maxWidthRatio: Float = NO_Float_VALUE
 
     @Px
     @set:JvmSynthetic
-    var height: Int = BalloonSizeSpec.WRAP
+    public var height: Int = BalloonSizeSpec.WRAP
 
     @Px
     @set:JvmSynthetic
-    var paddingLeft: Int = 0
+    public var paddingLeft: Int = 0
 
     @Px
     @set:JvmSynthetic
-    var paddingTop: Int = 0
+    public var paddingTop: Int = 0
 
     @Px
     @set:JvmSynthetic
-    var paddingRight: Int = 0
+    public var paddingRight: Int = 0
 
     @Px
     @set:JvmSynthetic
-    var paddingBottom: Int = 0
+    public var paddingBottom: Int = 0
 
     @Px
     @set:JvmSynthetic
-    var marginRight: Int = 0
+    public var marginRight: Int = 0
 
     @Px
     @set:JvmSynthetic
-    var marginLeft: Int = 0
+    public var marginLeft: Int = 0
 
     @Px
     @set:JvmSynthetic
-    var marginTop: Int = 0
+    public var marginTop: Int = 0
 
     @Px
     @set:JvmSynthetic
-    var marginBottom: Int = 0
+    public var marginBottom: Int = 0
 
     @set:JvmSynthetic
-    var isVisibleArrow: Boolean = true
+    public var isVisibleArrow: Boolean = true
 
     @ColorInt
     @set:JvmSynthetic
-    var arrowColor: Int = NO_INT_VALUE
+    public var arrowColor: Int = NO_INT_VALUE
 
     @set:JvmSynthetic
-    var arrowColorMatchBalloon: Boolean = false
+    public var arrowColorMatchBalloon: Boolean = false
 
     @Px
     @set:JvmSynthetic
-    var arrowSize: Int = 12.dp
+    public var arrowSize: Int = 12.dp
 
-    val arrowHalfSize: Float
+    public val arrowHalfSize: Float
       @JvmSynthetic @Px
       inline get() = arrowSize * 0.5f
 
     @FloatRange(from = 0.0, to = 1.0)
     @set:JvmSynthetic
-    var arrowPosition: Float = 0.5f
+    public var arrowPosition: Float = 0.5f
 
     @set:JvmSynthetic
-    var arrowPositionRules: ArrowPositionRules = ArrowPositionRules.ALIGN_BALLOON
+    public var arrowPositionRules: ArrowPositionRules = ArrowPositionRules.ALIGN_BALLOON
 
     @set:JvmSynthetic
-    var arrowOrientationRules: ArrowOrientationRules =
+    public var arrowOrientationRules: ArrowOrientationRules =
       ArrowOrientationRules.ALIGN_ANCHOR
 
     @set:JvmSynthetic
-    var arrowOrientation: ArrowOrientation = ArrowOrientation.BOTTOM
+    public var arrowOrientation: ArrowOrientation = ArrowOrientation.BOTTOM
 
     @set:JvmSynthetic
-    var arrowDrawable: Drawable? = null
+    public var arrowDrawable: Drawable? = null
 
     @set:JvmSynthetic
-    var arrowLeftPadding: Int = 0
+    public var arrowLeftPadding: Int = 0
 
     @set:JvmSynthetic
-    var arrowRightPadding: Int = 0
+    public var arrowRightPadding: Int = 0
 
     @set:JvmSynthetic
-    var arrowTopPadding: Int = 0
+    public var arrowTopPadding: Int = 0
 
     @set:JvmSynthetic
-    var arrowBottomPadding: Int = 0
+    public var arrowBottomPadding: Int = 0
 
     @set:JvmSynthetic
-    var arrowAlignAnchorPadding: Int = 0
+    public var arrowAlignAnchorPadding: Int = 0
 
     @set:JvmSynthetic
-    var arrowAlignAnchorPaddingRatio: Float = 2.5f
+    public var arrowAlignAnchorPaddingRatio: Float = 2.5f
 
     @set:JvmSynthetic
-    var arrowElevation: Float = 0f
+    public var arrowElevation: Float = 0f
 
     @ColorInt
     @set:JvmSynthetic
-    var backgroundColor: Int = Color.BLACK
+    public var backgroundColor: Int = Color.BLACK
 
     @set:JvmSynthetic
-    var backgroundDrawable: Drawable? = null
+    public var backgroundDrawable: Drawable? = null
 
     @Px
     @set:JvmSynthetic
-    var cornerRadius: Float = 5f.dp
+    public var cornerRadius: Float = 5f.dp
 
     @set:JvmSynthetic
-    var text: CharSequence = ""
+    public var text: CharSequence = ""
 
     @ColorInt
     @set:JvmSynthetic
-    var textColor: Int = Color.WHITE
+    public var textColor: Int = Color.WHITE
 
     @set:JvmSynthetic
-    var textIsHtml: Boolean = false
+    public var textIsHtml: Boolean = false
 
     @set:JvmSynthetic
-    var movementMethod: MovementMethod? = null
+    public var movementMethod: MovementMethod? = null
 
     @Sp
     @set:JvmSynthetic
-    var textSize: Float = 12f
+    public var textSize: Float = 12f
 
     @set:JvmSynthetic
-    var textTypeface: Int = Typeface.NORMAL
+    public var textTypeface: Int = Typeface.NORMAL
 
     @set:JvmSynthetic
-    var textTypefaceObject: Typeface? = null
+    public var textTypefaceObject: Typeface? = null
 
     @set:JvmSynthetic
-    var textGravity: Int = Gravity.CENTER
+    public var textGravity: Int = Gravity.CENTER
 
     @set:JvmSynthetic
-    var textForm: TextForm? = null
+    public var textForm: TextForm? = null
 
     @set:JvmSynthetic
-    var iconDrawable: Drawable? = null
+    public var iconDrawable: Drawable? = null
 
     @set:JvmSynthetic
-    var iconGravity = IconGravity.START
-
-    @Px
-    @set:JvmSynthetic
-    var iconWidth: Int = 28.dp
+    public var iconGravity: IconGravity = IconGravity.START
 
     @Px
     @set:JvmSynthetic
-    var iconHeight: Int = 28.dp
+    public var iconWidth: Int = 28.dp
 
     @Px
     @set:JvmSynthetic
-    var iconSpace: Int = 8.dp
+    public var iconHeight: Int = 28.dp
+
+    @Px
+    @set:JvmSynthetic
+    public var iconSpace: Int = 8.dp
 
     @ColorInt
     @set:JvmSynthetic
-    var iconColor: Int = NO_INT_VALUE
+    public var iconColor: Int = NO_INT_VALUE
 
     @set:JvmSynthetic
-    var iconForm: IconForm? = null
+    public var iconForm: IconForm? = null
 
     @FloatRange(from = 0.0, to = 1.0)
     @set:JvmSynthetic
-    var alpha: Float = 1f
+    public var alpha: Float = 1f
 
     @set:JvmSynthetic
-    var elevation: Float = 2f.dp
+    public var elevation: Float = 2f.dp
 
     @set:JvmSynthetic
-    var layout: View? = null
+    public var layout: View? = null
 
     @LayoutRes
     @set:JvmSynthetic
-    var layoutRes: Int? = null
+    public var layoutRes: Int? = null
 
     @set:JvmSynthetic
-    var isVisibleOverlay: Boolean = false
+    public var isVisibleOverlay: Boolean = false
 
     @ColorInt
     @set:JvmSynthetic
-    var overlayColor: Int = Color.TRANSPARENT
+    public var overlayColor: Int = Color.TRANSPARENT
 
     @Px
     @set:JvmSynthetic
-    var overlayPadding: Float = 0f
+    public var overlayPadding: Float = 0f
 
     @ColorInt
     @set:JvmSynthetic
-    var overlayPaddingColor: Int = Color.TRANSPARENT
+    public var overlayPaddingColor: Int = Color.TRANSPARENT
 
     @set:JvmSynthetic
-    var overlayPosition: Point? = null
+    public var overlayPosition: Point? = null
 
     @set:JvmSynthetic
-    var overlayShape: BalloonOverlayShape = BalloonOverlayOval
+    public var overlayShape: BalloonOverlayShape = BalloonOverlayOval
 
     @set:JvmSynthetic
-    var onBalloonClickListener: OnBalloonClickListener? = null
+    public var onBalloonClickListener: OnBalloonClickListener? = null
 
     @set:JvmSynthetic
-    var onBalloonDismissListener: OnBalloonDismissListener? = null
+    public var onBalloonDismissListener: OnBalloonDismissListener? = null
 
     @set:JvmSynthetic
-    var onBalloonInitializedListener: OnBalloonInitializedListener? = null
+    public var onBalloonInitializedListener: OnBalloonInitializedListener? = null
 
     @set:JvmSynthetic
-    var onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener? = null
+    public var onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener? = null
 
     @set:JvmSynthetic
-    var onBalloonTouchListener: View.OnTouchListener? = null
+    public var onBalloonTouchListener: View.OnTouchListener? = null
 
     @set:JvmSynthetic
-    var onBalloonOverlayTouchListener: View.OnTouchListener? = null
+    public var onBalloonOverlayTouchListener: View.OnTouchListener? = null
 
     @set:JvmSynthetic
-    var onBalloonOverlayClickListener: OnBalloonOverlayClickListener? = null
+    public var onBalloonOverlayClickListener: OnBalloonOverlayClickListener? = null
 
     @set:JvmSynthetic
-    var dismissWhenTouchOutside: Boolean = true
+    public var dismissWhenTouchOutside: Boolean = true
 
     @set:JvmSynthetic
-    var dismissWhenShowAgain: Boolean = false
+    public var dismissWhenShowAgain: Boolean = false
 
     @set:JvmSynthetic
-    var dismissWhenClicked: Boolean = false
+    public var dismissWhenClicked: Boolean = false
 
     @set:JvmSynthetic
-    var dismissWhenOverlayClicked: Boolean = true
+    public var dismissWhenOverlayClicked: Boolean = true
 
     @set:JvmSynthetic
-    var dismissWhenLifecycleOnPause: Boolean = false
+    public var dismissWhenLifecycleOnPause: Boolean = false
 
     @set:JvmSynthetic
-    var passTouchEventToAnchor: Boolean = false
+    public var passTouchEventToAnchor: Boolean = false
 
     @set:JvmSynthetic
-    var autoDismissDuration: Long = NO_LONG_VALUE
+    public var autoDismissDuration: Long = NO_LONG_VALUE
 
     @set:JvmSynthetic
-    var lifecycleOwner: LifecycleOwner? = null
+    public var lifecycleOwner: LifecycleOwner? = null
 
     @set:JvmSynthetic
-    var lifecycleObserver: LifecycleObserver? = null
-
-    @StyleRes
-    @set:JvmSynthetic
-    var balloonAnimationStyle: Int = NO_INT_VALUE
+    public var lifecycleObserver: LifecycleObserver? = null
 
     @StyleRes
     @set:JvmSynthetic
-    var balloonOverlayAnimationStyle: Int = NO_INT_VALUE
-
-    @set:JvmSynthetic
-    var balloonAnimation: BalloonAnimation = BalloonAnimation.FADE
-
-    @set:JvmSynthetic
-    var balloonOverlayAnimation: BalloonOverlayAnimation = BalloonOverlayAnimation.FADE
-
-    @set:JvmSynthetic
-    var circularDuration: Long = 500L
-
-    @set:JvmSynthetic
-    var balloonHighlightAnimation: BalloonHighlightAnimation = BalloonHighlightAnimation.NONE
+    public var balloonAnimationStyle: Int = NO_INT_VALUE
 
     @StyleRes
     @set:JvmSynthetic
-    var balloonHighlightAnimationStyle: Int = NO_INT_VALUE
+    public var balloonOverlayAnimationStyle: Int = NO_INT_VALUE
 
     @set:JvmSynthetic
-    var balloonHighlightAnimationStartDelay: Long = 0L
+    public var balloonAnimation: BalloonAnimation = BalloonAnimation.FADE
 
     @set:JvmSynthetic
-    var balloonRotateAnimation: BalloonRotateAnimation? = null
+    public var balloonOverlayAnimation: BalloonOverlayAnimation = BalloonOverlayAnimation.FADE
 
     @set:JvmSynthetic
-    var preferenceName: String? = null
+    public var circularDuration: Long = 500L
 
     @set:JvmSynthetic
-    var showTimes: Int = 1
+    public var balloonHighlightAnimation: BalloonHighlightAnimation = BalloonHighlightAnimation.NONE
+
+    @StyleRes
+    @set:JvmSynthetic
+    public var balloonHighlightAnimationStyle: Int = NO_INT_VALUE
 
     @set:JvmSynthetic
-    var runIfReachedShowCounts: (() -> Unit)? = null
+    public var balloonHighlightAnimationStartDelay: Long = 0L
 
     @set:JvmSynthetic
-    var isRtlLayout: Boolean =
+    public var balloonRotateAnimation: BalloonRotateAnimation? = null
+
+    @set:JvmSynthetic
+    public var preferenceName: String? = null
+
+    @set:JvmSynthetic
+    public var showTimes: Int = 1
+
+    @set:JvmSynthetic
+    public var runIfReachedShowCounts: (() -> Unit)? = null
+
+    @set:JvmSynthetic
+    public var isRtlLayout: Boolean =
       context.resources.configuration.layoutDirection == LayoutDirection.RTL
 
     @set:JvmSynthetic
-    var supportRtlLayoutFactor: Int = LTR.unaryMinus(isRtlLayout)
+    public var supportRtlLayoutFactor: Int = LTR.unaryMinus(isRtlLayout)
 
     @set:JvmSynthetic
-    var isFocusable: Boolean = true
+    public var isFocusable: Boolean = true
 
     @set:JvmSynthetic
-    var isStatusBarVisible: Boolean = true
+    public var isStatusBarVisible: Boolean = true
 
     @set:JvmSynthetic
-    var isAttachedInDecor: Boolean = true
+    public var isAttachedInDecor: Boolean = true
 
     /** sets the width size. */
-    fun setWidth(@Dp value: Int): Builder = apply {
+    public fun setWidth(@Dp value: Int): Builder = apply {
       require(
         value > 0 || value == BalloonSizeSpec.WRAP
       ) { "The width of the balloon must bigger than zero." }
@@ -1732,7 +1760,7 @@ class Balloon private constructor(
     }
 
     /** sets the width size using a dimension resource. */
-    fun setWidthResource(@DimenRes value: Int): Builder = apply {
+    public fun setWidthResource(@DimenRes value: Int): Builder = apply {
       this.width = context.dimenPixel(value)
     }
 
@@ -1740,7 +1768,7 @@ class Balloon private constructor(
      * sets the minimum size of the width.
      * this functionality works only with the [BalloonSizeSpec.WRAP].
      */
-    fun setMinWidth(@Dp value: Int): Builder = apply {
+    public fun setMinWidth(@Dp value: Int): Builder = apply {
       this.minWidth = value.dp
     }
 
@@ -1748,7 +1776,7 @@ class Balloon private constructor(
      * sets the minimum size of the width using a dimension resource.
      * this functionality works only with the [BalloonSizeSpec.WRAP].
      */
-    fun setMinWidthResource(@DimenRes value: Int): Builder = apply {
+    public fun setMinWidthResource(@DimenRes value: Int): Builder = apply {
       this.minWidth = context.dimenPixel(value)
     }
 
@@ -1756,7 +1784,7 @@ class Balloon private constructor(
      * sets the maximum size of the width.
      * this functionality works only with the [BalloonSizeSpec.WRAP].
      */
-    fun setMaxWidth(@Dp value: Int): Builder = apply {
+    public fun setMaxWidth(@Dp value: Int): Builder = apply {
       this.maxWidth = value.dp
     }
 
@@ -1764,27 +1792,27 @@ class Balloon private constructor(
      * sets the maximum size of the width using a dimension resource.
      * this functionality works only with the [BalloonSizeSpec.WRAP].
      */
-    fun setMaxWidthResource(@DimenRes value: Int): Builder = apply {
+    public fun setMaxWidthResource(@DimenRes value: Int): Builder = apply {
       this.maxWidth = context.dimenPixel(value)
     }
 
     /** sets the width size by the display screen size ratio. */
-    fun setWidthRatio(
+    public fun setWidthRatio(
       @FloatRange(from = 0.0, to = 1.0) value: Float
     ): Builder = apply { this.widthRatio = value }
 
     /** sets the minimum width size by the display screen size ratio. */
-    fun setMinWidthRatio(
+    public fun setMinWidthRatio(
       @FloatRange(from = 0.0, to = 1.0) value: Float
     ): Builder = apply { this.minWidthRatio = value }
 
     /** sets the maximum width size by the display screen size ratio. */
-    fun setMaxWidthRatio(
+    public fun setMaxWidthRatio(
       @FloatRange(from = 0.0, to = 1.0) value: Float
     ): Builder = apply { this.maxWidthRatio = value }
 
     /** sets the height size. */
-    fun setHeight(@Dp value: Int): Builder = apply {
+    public fun setHeight(@Dp value: Int): Builder = apply {
       require(
         value > 0 || value == BalloonSizeSpec.WRAP
       ) { "The height of the balloon must bigger than zero." }
@@ -1792,24 +1820,24 @@ class Balloon private constructor(
     }
 
     /** sets the height size using a dimension resource. */
-    fun setHeightResource(@DimenRes value: Int): Builder = apply {
+    public fun setHeightResource(@DimenRes value: Int): Builder = apply {
       this.height = context.dimenPixel(value)
     }
 
     /** sets the width and height sizes of the balloon. */
-    fun setSize(@Dp width: Int, @Dp height: Int): Builder = apply {
+    public fun setSize(@Dp width: Int, @Dp height: Int): Builder = apply {
       setWidth(width)
       setHeight(height)
     }
 
     /** sets the width and height sizes of the balloon using a dimension resource. */
-    fun setSizeResource(@DimenRes width: Int, @DimenRes height: Int): Builder = apply {
+    public fun setSizeResource(@DimenRes width: Int, @DimenRes height: Int): Builder = apply {
       setWidthResource(width)
       setHeightResource(height)
     }
 
     /** sets the padding on the balloon content all directions. */
-    fun setPadding(@Dp value: Int): Builder = apply {
+    public fun setPadding(@Dp value: Int): Builder = apply {
       setPaddingLeft(value)
       setPaddingTop(value)
       setPaddingRight(value)
@@ -1817,7 +1845,7 @@ class Balloon private constructor(
     }
 
     /** sets the padding on the balloon content all directions using dimension resource. */
-    fun setPaddingResource(@DimenRes value: Int): Builder = apply {
+    public fun setPaddingResource(@DimenRes value: Int): Builder = apply {
       val padding = context.dimenPixel(value)
       this.paddingLeft = padding
       this.paddingTop = padding
@@ -1826,67 +1854,67 @@ class Balloon private constructor(
     }
 
     /** sets the horizontal (right and left) padding on the balloon content. */
-    fun setPaddingHorizontal(@Dp value: Int): Builder = apply {
+    public fun setPaddingHorizontal(@Dp value: Int): Builder = apply {
       setPaddingLeft(value)
       setPaddingRight(value)
     }
 
     /** sets the horizontal (right and left) padding on the balloon content using dimension resource. */
-    fun setPaddingHorizontalResource(@DimenRes value: Int): Builder = apply {
+    public fun setPaddingHorizontalResource(@DimenRes value: Int): Builder = apply {
       setPaddingLeftResource(value)
       setPaddingRightResource(value)
     }
 
     /** sets the vertical (top and bottom) padding on the balloon content. */
-    fun setPaddingVertical(@Dp value: Int): Builder = apply {
+    public fun setPaddingVertical(@Dp value: Int): Builder = apply {
       setPaddingTop(value)
       setPaddingBottom(value)
     }
 
     /** sets the vertical (top and bottom) padding on the balloon content using dimension resource. */
-    fun setPaddingVerticalResource(@DimenRes value: Int): Builder = apply {
+    public fun setPaddingVerticalResource(@DimenRes value: Int): Builder = apply {
       setPaddingTopResource(value)
       setPaddingBottomResource(value)
     }
 
     /** sets the left padding on the balloon content. */
-    fun setPaddingLeft(@Dp value: Int): Builder = apply { this.paddingLeft = value.dp }
+    public fun setPaddingLeft(@Dp value: Int): Builder = apply { this.paddingLeft = value.dp }
 
     /** sets the left padding on the balloon content using dimension resource. */
-    fun setPaddingLeftResource(@DimenRes value: Int): Builder = apply {
+    public fun setPaddingLeftResource(@DimenRes value: Int): Builder = apply {
       this.paddingLeft = context.dimenPixel(value)
     }
 
     /** sets the top padding on the balloon content. */
-    fun setPaddingTop(@Dp value: Int): Builder = apply { this.paddingTop = value.dp }
+    public fun setPaddingTop(@Dp value: Int): Builder = apply { this.paddingTop = value.dp }
 
     /** sets the top padding on the balloon content using dimension resource. */
-    fun setPaddingTopResource(@DimenRes value: Int): Builder = apply {
+    public fun setPaddingTopResource(@DimenRes value: Int): Builder = apply {
       this.paddingTop = context.dimenPixel(value)
     }
 
     /** sets the right padding on the balloon content. */
-    fun setPaddingRight(@Dp value: Int): Builder = apply {
+    public fun setPaddingRight(@Dp value: Int): Builder = apply {
       this.paddingRight = value.dp
     }
 
     /** sets the right padding on the balloon content using dimension resource. */
-    fun setPaddingRightResource(@DimenRes value: Int): Builder = apply {
+    public fun setPaddingRightResource(@DimenRes value: Int): Builder = apply {
       this.paddingRight = context.dimenPixel(value)
     }
 
     /** sets the bottom padding on the balloon content. */
-    fun setPaddingBottom(@Dp value: Int): Builder = apply {
+    public fun setPaddingBottom(@Dp value: Int): Builder = apply {
       this.paddingBottom = value.dp
     }
 
     /** sets the bottom padding on the balloon content using dimension resource. */
-    fun setPaddingBottomResource(@DimenRes value: Int): Builder = apply {
+    public fun setPaddingBottomResource(@DimenRes value: Int): Builder = apply {
       this.paddingBottom = context.dimenPixel(value)
     }
 
     /** sets the margin on the balloon all directions. */
-    fun setMargin(@Dp value: Int): Builder = apply {
+    public fun setMargin(@Dp value: Int): Builder = apply {
       setMarginLeft(value)
       setMarginTop(value)
       setMarginRight(value)
@@ -1894,7 +1922,7 @@ class Balloon private constructor(
     }
 
     /** sets the margin on the balloon all directions using a dimension resource. */
-    fun setMarginResource(@DimenRes value: Int): Builder = apply {
+    public fun setMarginResource(@DimenRes value: Int): Builder = apply {
       val margin = context.dimenPixel(value)
       this.marginLeft = margin
       this.marginTop = margin
@@ -1903,90 +1931,90 @@ class Balloon private constructor(
     }
 
     /** sets the horizontal (left and right) margins on the balloon. */
-    fun setMarginHorizontal(@Dp value: Int): Builder = apply {
+    public fun setMarginHorizontal(@Dp value: Int): Builder = apply {
       setMarginLeft(value)
       setMarginRight(value)
     }
 
     /** sets the horizontal (left and right) margins on the balloon using a dimension resource. */
-    fun setMarginHorizontalResource(@DimenRes value: Int): Builder = apply {
+    public fun setMarginHorizontalResource(@DimenRes value: Int): Builder = apply {
       setMarginLeftResource(value)
       setMarginRightResource(value)
     }
 
     /** sets the vertical (top and bottom) margins on the balloon. */
-    fun setMarginVertical(@Dp value: Int): Builder = apply {
+    public fun setMarginVertical(@Dp value: Int): Builder = apply {
       setMarginTop(value)
       setMarginBottom(value)
     }
 
     /** sets the vertical (top and bottom) margins on the balloon using a dimension resource. */
-    fun setMarginVerticalResource(@DimenRes value: Int): Builder = apply {
+    public fun setMarginVerticalResource(@DimenRes value: Int): Builder = apply {
       setMarginTopResource(value)
       setMarginBottomResource(value)
     }
 
     /** sets the left margin on the balloon. */
-    fun setMarginLeft(@Dp value: Int): Builder = apply {
+    public fun setMarginLeft(@Dp value: Int): Builder = apply {
       this.marginLeft = value.dp
     }
 
     /** sets the left margin on the balloon using dimension resource. */
-    fun setMarginLeftResource(@DimenRes value: Int): Builder = apply {
+    public fun setMarginLeftResource(@DimenRes value: Int): Builder = apply {
       this.marginLeft = context.dimenPixel(value)
     }
 
     /** sets the top margin on the balloon. */
-    fun setMarginTop(@Dp value: Int): Builder = apply {
+    public fun setMarginTop(@Dp value: Int): Builder = apply {
       this.marginTop = value.dp
     }
 
     /** sets the top margin on the balloon using dimension resource. */
-    fun setMarginTopResource(@DimenRes value: Int): Builder = apply {
+    public fun setMarginTopResource(@DimenRes value: Int): Builder = apply {
       this.marginTop = context.dimenPixel(value)
     }
 
     /** sets the right margin on the balloon. */
-    fun setMarginRight(@Dp value: Int): Builder = apply {
+    public fun setMarginRight(@Dp value: Int): Builder = apply {
       this.marginRight = value.dp
     }
 
     /** sets the right margin on the balloon using dimension resource. */
-    fun setMarginRightResource(@DimenRes value: Int): Builder = apply {
+    public fun setMarginRightResource(@DimenRes value: Int): Builder = apply {
       this.marginRight = context.dimenPixel(value)
     }
 
     /** sets the bottom margin on the balloon. */
-    fun setMarginBottom(@Dp value: Int): Builder = apply {
+    public fun setMarginBottom(@Dp value: Int): Builder = apply {
       this.marginBottom = value.dp
     }
 
     /** sets the bottom margin on the balloon using dimension resource. */
-    fun setMarginBottomResource(@DimenRes value: Int): Builder = apply {
+    public fun setMarginBottomResource(@DimenRes value: Int): Builder = apply {
       this.marginBottom = context.dimenPixel(value)
     }
 
     /** sets the visibility of the arrow. */
-    fun setIsVisibleArrow(value: Boolean): Builder = apply { this.isVisibleArrow = value }
+    public fun setIsVisibleArrow(value: Boolean): Builder = apply { this.isVisibleArrow = value }
 
     /** sets a color of the arrow. */
-    fun setArrowColor(@ColorInt value: Int): Builder = apply { this.arrowColor = value }
+    public fun setArrowColor(@ColorInt value: Int): Builder = apply { this.arrowColor = value }
 
     /**
      * sets if arrow color should match the color of the balloon card.
      * Overrides [arrowColor]. Does not work with custom arrows.
      */
-    fun setArrowColorMatchBalloon(value: Boolean): Builder = apply {
+    public fun setArrowColorMatchBalloon(value: Boolean): Builder = apply {
       this.arrowColorMatchBalloon = value
     }
 
     /** sets a color of the arrow using a resource. */
-    fun setArrowColorResource(@ColorRes value: Int): Builder = apply {
+    public fun setArrowColorResource(@ColorRes value: Int): Builder = apply {
       this.arrowColor = context.contextColor(value)
     }
 
     /** sets the size of the arrow. */
-    fun setArrowSize(@Dp value: Int): Builder = apply {
+    public fun setArrowSize(@Dp value: Int): Builder = apply {
       this.arrowSize =
         if (value == BalloonSizeSpec.WRAP) {
           BalloonSizeSpec.WRAP
@@ -1996,12 +2024,12 @@ class Balloon private constructor(
     }
 
     /** sets the size of the arrow using dimension resource. */
-    fun setArrowSizeResource(@DimenRes value: Int): Builder = apply {
+    public fun setArrowSizeResource(@DimenRes value: Int): Builder = apply {
       this.arrowSize = context.dimenPixel(value)
     }
 
     /** sets the arrow position by popup size ration. The popup size depends on [arrowOrientation]. */
-    fun setArrowPosition(
+    public fun setArrowPosition(
       @FloatRange(from = 0.0, to = 1.0) value: Float
     ): Builder = apply { this.arrowPosition = value }
 
@@ -2011,10 +2039,11 @@ class Balloon private constructor(
      * [ArrowPositionRules.ALIGN_BALLOON]: Align the arrow position depending on the balloon popup body.
      * [ArrowPositionRules.ALIGN_ANCHOR]: Align the arrow position depending on an anchor.
      */
-    fun setArrowPositionRules(value: ArrowPositionRules) = apply { this.arrowPositionRules = value }
+    public fun setArrowPositionRules(value: ArrowPositionRules): Builder =
+      apply { this.arrowPositionRules = value }
 
     /** sets the arrow orientation using [ArrowOrientation]. */
-    fun setArrowOrientation(value: ArrowOrientation): Builder = apply {
+    public fun setArrowOrientation(value: ArrowOrientation): Builder = apply {
       this.arrowOrientation = value
     }
 
@@ -2024,12 +2053,12 @@ class Balloon private constructor(
      * [ArrowOrientationRules.ALIGN_ANCHOR]: Align depending on the position of an anchor.
      * [ArrowOrientationRules.ALIGN_FIXED]: Align to fixed [ArrowOrientation].
      */
-    fun setArrowOrientationRules(value: ArrowOrientationRules) = apply {
+    public fun setArrowOrientationRules(value: ArrowOrientationRules): Builder = apply {
       this.arrowOrientationRules = value
     }
 
     /** sets a custom drawable of the arrow. */
-    fun setArrowDrawable(value: Drawable?): Builder = apply {
+    public fun setArrowDrawable(value: Drawable?): Builder = apply {
       this.arrowDrawable = value?.mutate()
       if (value != null && arrowSize == BalloonSizeSpec.WRAP) {
         arrowSize = max(value.intrinsicWidth, value.intrinsicHeight)
@@ -2037,274 +2066,281 @@ class Balloon private constructor(
     }
 
     /** sets a custom drawable of the arrow using the resource. */
-    fun setArrowDrawableResource(@DrawableRes value: Int): Builder = apply {
+    public fun setArrowDrawableResource(@DrawableRes value: Int): Builder = apply {
       setArrowDrawable(context.contextDrawable(value))
     }
 
     /** sets the left padding of the arrow. */
-    fun setArrowLeftPadding(@Dp value: Int): Builder = apply {
+    public fun setArrowLeftPadding(@Dp value: Int): Builder = apply {
       this.arrowLeftPadding = value.dp
     }
 
     /** sets the left padding of the arrow using the resource. */
-    fun setArrowLeftPaddingResource(@DimenRes value: Int): Builder = apply {
+    public fun setArrowLeftPaddingResource(@DimenRes value: Int): Builder = apply {
       this.arrowLeftPadding = context.dimenPixel(value)
     }
 
     /** sets the right padding of the arrow. */
-    fun setArrowRightPadding(@Dp value: Int): Builder = apply {
+    public fun setArrowRightPadding(@Dp value: Int): Builder = apply {
       this.arrowRightPadding = value.dp
     }
 
     /** sets the right padding of the arrow using the resource. */
-    fun setArrowRightPaddingResource(@DimenRes value: Int): Builder = apply {
+    public fun setArrowRightPaddingResource(@DimenRes value: Int): Builder = apply {
       this.arrowRightPadding = context.dimenPixel(value)
     }
 
     /** sets the top padding of the arrow. */
-    fun setArrowTopPadding(@Dp value: Int): Builder = apply {
+    public fun setArrowTopPadding(@Dp value: Int): Builder = apply {
       this.arrowTopPadding = value.dp
     }
 
     /** sets the top padding of the arrow using the resource. */
-    fun setArrowTopPaddingResource(@DimenRes value: Int): Builder = apply {
+    public fun setArrowTopPaddingResource(@DimenRes value: Int): Builder = apply {
       this.arrowTopPadding = context.dimenPixel(value)
     }
 
     /** sets the bottom padding of the arrow. */
-    fun setArrowBottomPadding(@Dp value: Int): Builder = apply {
+    public fun setArrowBottomPadding(@Dp value: Int): Builder = apply {
       this.arrowBottomPadding = value.dp
     }
 
     /** sets the bottom padding of the arrow using the resource. */
-    fun setArrowBottomPaddingResource(@DimenRes value: Int): Builder = apply {
+    public fun setArrowBottomPaddingResource(@DimenRes value: Int): Builder = apply {
       this.arrowBottomPadding = context.dimenPixel(value)
     }
 
     /** sets the padding of the arrow when aligning anchor using with [ArrowPositionRules.ALIGN_ANCHOR]. */
-    fun setArrowAlignAnchorPadding(@Dp value: Int): Builder = apply {
+    public fun setArrowAlignAnchorPadding(@Dp value: Int): Builder = apply {
       this.arrowAlignAnchorPadding = value.dp
     }
 
     /** sets the padding of the arrow the resource when aligning anchor using with [ArrowPositionRules.ALIGN_ANCHOR]. */
-    fun setArrowAlignAnchorPaddingResource(@DimenRes value: Int): Builder = apply {
+    public fun setArrowAlignAnchorPaddingResource(@DimenRes value: Int): Builder = apply {
       this.arrowAlignAnchorPadding = context.dimenPixel(value)
     }
 
     /** sets the padding ratio of the arrow when aligning anchor using with [ArrowPositionRules.ALIGN_ANCHOR]. */
-    fun setArrowAlignAnchorPaddingRatio(value: Float): Builder = apply {
+    public fun setArrowAlignAnchorPaddingRatio(value: Float): Builder = apply {
       this.arrowAlignAnchorPaddingRatio = value
     }
 
     /** sets the elevation of the arrow. */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    fun setArrowElevation(@Dp value: Int): Builder = apply {
+    public fun setArrowElevation(@Dp value: Int): Builder = apply {
       this.arrowElevation = value.dp.toFloat()
     }
 
     /** sets the elevation of the arrow using dimension resource. */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    fun setArrowElevationResource(@DimenRes value: Int): Builder = apply {
+    public fun setArrowElevationResource(@DimenRes value: Int): Builder = apply {
       this.arrowElevation = context.dimen(value)
     }
 
     /** sets the background color of the arrow and popup. */
-    fun setBackgroundColor(@ColorInt value: Int): Builder = apply { this.backgroundColor = value }
+    public fun setBackgroundColor(@ColorInt value: Int): Builder =
+      apply { this.backgroundColor = value }
 
     /** sets the background color of the arrow and popup using the resource color. */
-    fun setBackgroundColorResource(@ColorRes value: Int): Builder = apply {
+    public fun setBackgroundColorResource(@ColorRes value: Int): Builder = apply {
       this.backgroundColor = context.contextColor(value)
     }
 
     /** sets the background drawable of the popup. */
-    fun setBackgroundDrawable(value: Drawable?): Builder = apply {
+    public fun setBackgroundDrawable(value: Drawable?): Builder = apply {
       this.backgroundDrawable = value?.mutate()
     }
 
     /** sets the background drawable of the popup by the resource. */
-    fun setBackgroundDrawableResource(@DrawableRes value: Int): Builder = apply {
+    public fun setBackgroundDrawableResource(@DrawableRes value: Int): Builder = apply {
       this.backgroundDrawable = context.contextDrawable(value)?.mutate()
     }
 
     /** sets the corner radius of the popup. */
-    fun setCornerRadius(@Dp value: Float): Builder = apply {
+    public fun setCornerRadius(@Dp value: Float): Builder = apply {
       this.cornerRadius = value.dp
     }
 
     /** sets the corner radius of the popup using dimension resource. */
-    fun setCornerRadiusResource(@DimenRes value: Int): Builder = apply {
+    public fun setCornerRadiusResource(@DimenRes value: Int): Builder = apply {
       this.cornerRadius = context.dimen(value)
     }
 
     /** sets the main text content of the popup. */
-    fun setText(value: CharSequence): Builder = apply { this.text = value }
+    public fun setText(value: CharSequence): Builder = apply { this.text = value }
 
     /** sets the main text content of the popup using resource. */
-    fun setTextResource(@StringRes value: Int): Builder = apply {
+    public fun setTextResource(@StringRes value: Int): Builder = apply {
       this.text = context.getString(value)
     }
 
     /** sets the color of the main text content. */
-    fun setTextColor(@ColorInt value: Int): Builder = apply { this.textColor = value }
+    public fun setTextColor(@ColorInt value: Int): Builder = apply { this.textColor = value }
 
     /** sets the color of the main text content using the resource color. */
-    fun setTextColorResource(@ColorRes value: Int): Builder = apply {
+    public fun setTextColorResource(@ColorRes value: Int): Builder = apply {
       this.textColor = context.contextColor(value)
     }
 
     /** sets whether the text will be parsed as HTML (using Html.fromHtml(..)) */
-    fun setTextIsHtml(value: Boolean): Builder = apply { this.textIsHtml = value }
+    public fun setTextIsHtml(value: Boolean): Builder = apply { this.textIsHtml = value }
 
     /** sets the movement method for TextView. */
-    fun setMovementMethod(value: MovementMethod): Builder = apply { this.movementMethod = value }
+    public fun setMovementMethod(value: MovementMethod): Builder =
+      apply { this.movementMethod = value }
 
     /** sets the size of the main text content. */
-    fun setTextSize(@Sp value: Float): Builder = apply { this.textSize = value }
+    public fun setTextSize(@Sp value: Float): Builder = apply { this.textSize = value }
 
     /** sets the size of the main text content using dimension resource. */
-    fun setTextSizeResource(@DimenRes value: Int) = apply {
+    public fun setTextSizeResource(@DimenRes value: Int): Builder = apply {
       this.textSize = context.px2Sp(context.dimen(value))
     }
 
     /** sets the typeface of the main text content. */
-    fun setTextTypeface(value: Int): Builder = apply { this.textTypeface = value }
+    public fun setTextTypeface(value: Int): Builder = apply { this.textTypeface = value }
 
     /** sets the typeface of the main text content. */
-    fun setTextTypeface(value: Typeface): Builder = apply { this.textTypefaceObject = value }
+    public fun setTextTypeface(value: Typeface): Builder = apply { this.textTypefaceObject = value }
 
     /**
      * sets gravity of the text.
      * this only works when the width or setWidthRatio set explicitly.
      */
-    fun setTextGravity(value: Int): Builder = apply {
+    public fun setTextGravity(value: Int): Builder = apply {
       this.textGravity = value
     }
 
     /** applies [TextForm] attributes to the main text content. */
-    fun setTextForm(value: TextForm): Builder = apply { this.textForm = value }
+    public fun setTextForm(value: TextForm): Builder = apply { this.textForm = value }
 
     /** sets the icon drawable of the popup. */
-    fun setIconDrawable(value: Drawable?): Builder = apply { this.iconDrawable = value?.mutate() }
+    public fun setIconDrawable(value: Drawable?): Builder =
+      apply { this.iconDrawable = value?.mutate() }
 
     /** sets the icon drawable of the popup using the resource. */
-    fun setIconDrawableResource(@DrawableRes value: Int) = apply {
+    public fun setIconDrawableResource(@DrawableRes value: Int): Builder = apply {
       this.iconDrawable = context.contextDrawable(value)?.mutate()
     }
 
     /** sets the icon gravity of the popup using the resource. */
-    fun setIconGravity(value: IconGravity) = apply {
+    public fun setIconGravity(value: IconGravity): Builder = apply {
       this.iconGravity = value
     }
 
     /** sets the width size of the icon drawable. */
-    fun setIconWidth(@Dp value: Int): Builder = apply {
+    public fun setIconWidth(@Dp value: Int): Builder = apply {
       this.iconWidth = value.dp
     }
 
     /** sets the width size of the icon drawable using the dimension resource. */
-    fun setIconWidthResource(@DimenRes value: Int): Builder = apply {
+    public fun setIconWidthResource(@DimenRes value: Int): Builder = apply {
       this.iconWidth = context.dimenPixel(value)
     }
 
     /** sets the height size of the icon drawable. */
-    fun setIconHeight(@Dp value: Int): Builder = apply {
+    public fun setIconHeight(@Dp value: Int): Builder = apply {
       this.iconHeight = value.dp
     }
 
     /** sets the height size of the icon drawable using the dimension resource. */
-    fun setIconHeightResource(@DimenRes value: Int): Builder = apply {
+    public fun setIconHeightResource(@DimenRes value: Int): Builder = apply {
       this.iconHeight = context.dimenPixel(value)
     }
 
     /** sets the size of the icon drawable. */
-    fun setIconSize(@Dp value: Int): Builder = apply {
+    public fun setIconSize(@Dp value: Int): Builder = apply {
       setIconWidth(value)
       setIconHeight(value)
     }
 
     /** sets the size of the icon drawable using the dimension resource. */
-    fun setIconSizeResource(@DimenRes value: Int): Builder = apply {
+    public fun setIconSizeResource(@DimenRes value: Int): Builder = apply {
       setIconWidthResource(value)
       setIconHeightResource(value)
     }
 
     /** sets the color of the icon drawable. */
-    fun setIconColor(@ColorInt value: Int): Builder = apply { this.iconColor = value }
+    public fun setIconColor(@ColorInt value: Int): Builder = apply { this.iconColor = value }
 
     /** sets the color of the icon drawable using the resource color. */
-    fun setIconColorResource(@ColorRes value: Int): Builder = apply {
+    public fun setIconColorResource(@ColorRes value: Int): Builder = apply {
       this.iconColor = context.contextColor(value)
     }
 
     /** sets the space between the icon and the main text content. */
-    fun setIconSpace(@Dp value: Int): Builder = apply { this.iconSpace = value.dp }
+    public fun setIconSpace(@Dp value: Int): Builder = apply { this.iconSpace = value.dp }
 
     /** sets the space between the icon and the main text content using dimension resource. */
-    fun setIconSpaceResource(@DimenRes value: Int): Builder = apply {
+    public fun setIconSpaceResource(@DimenRes value: Int): Builder = apply {
       this.iconSpace = context.dimenPixel(value)
     }
 
     /** applies [IconForm] attributes to the icon. */
-    fun setIconForm(value: IconForm): Builder = apply { this.iconForm = value }
+    public fun setIconForm(value: IconForm): Builder = apply { this.iconForm = value }
 
     /** sets the alpha value to the popup. */
-    fun setAlpha(@FloatRange(from = 0.0, to = 1.0) value: Float): Builder = apply {
+    public fun setAlpha(@FloatRange(from = 0.0, to = 1.0) value: Float): Builder = apply {
       this.alpha = value
     }
 
     /** sets the elevation to the popup. */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    fun setElevation(@Dp value: Int): Builder = apply {
+    public fun setElevation(@Dp value: Int): Builder = apply {
       this.elevation = value.dp.toFloat()
     }
 
     /** sets the elevation to the popup using dimension resource. */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    fun setElevationResource(@DimenRes value: Int): Builder = apply {
+    public fun setElevationResource(@DimenRes value: Int): Builder = apply {
       this.elevation = context.dimen(value)
     }
 
     /** sets the custom layout resource to the popup content. */
-    fun setLayout(@LayoutRes layoutRes: Int): Builder = apply { this.layoutRes = layoutRes }
+    public fun setLayout(@LayoutRes layoutRes: Int): Builder = apply { this.layoutRes = layoutRes }
 
     /** sets the custom layout view to the popup content. */
-    fun setLayout(layout: View): Builder = apply { this.layout = layout }
+    public fun setLayout(layout: View): Builder = apply { this.layout = layout }
 
     /** sets the visibility of the overlay for highlighting an anchor. */
-    fun setIsVisibleOverlay(value: Boolean) = apply { this.isVisibleOverlay = value }
+    public fun setIsVisibleOverlay(value: Boolean): Builder =
+      apply { this.isVisibleOverlay = value }
 
     /** background color of the overlay. */
-    fun setOverlayColor(@ColorInt value: Int) = apply { this.overlayColor = value }
+    public fun setOverlayColor(@ColorInt value: Int): Builder = apply { this.overlayColor = value }
 
     /** background color of the overlay using a color resource. */
-    fun setOverlayColorResource(@ColorRes value: Int) = apply {
+    public fun setOverlayColorResource(@ColorRes value: Int): Builder = apply {
       this.overlayColor = context.contextColor(value)
     }
 
     /** sets a padding value of the overlay shape internally. */
-    fun setOverlayPadding(@Dp value: Float) = apply { this.overlayPadding = value.dp }
+    public fun setOverlayPadding(@Dp value: Float): Builder =
+      apply { this.overlayPadding = value.dp }
 
     /** sets a padding value of the overlay shape internally using dimension resource.. */
-    fun setOverlayPaddingResource(@DimenRes value: Int) = apply {
+    public fun setOverlayPaddingResource(@DimenRes value: Int): Builder = apply {
       this.overlayPadding = context.dimen(value)
     }
 
     /** sets color of the overlay padding. */
-    fun setOverlayPaddingColor(@ColorInt value: Int) = apply { this.overlayPaddingColor = value }
+    public fun setOverlayPaddingColor(@ColorInt value: Int): Builder =
+      apply { this.overlayPaddingColor = value }
 
     /** sets color of the overlay padding using a color resource. */
-    fun setOverlayPaddingColorResource(@ColorRes value: Int) = apply {
+    public fun setOverlayPaddingColorResource(@ColorRes value: Int): Builder = apply {
       this.overlayPaddingColor = context.contextColor(value)
     }
 
     /** sets a specific position of the overlay shape. */
-    fun setOverlayPosition(value: Point) = apply { this.overlayPosition = value }
+    public fun setOverlayPosition(value: Point): Builder = apply { this.overlayPosition = value }
 
     /** sets a shape of the overlay over the anchor view. */
-    fun setOverlayShape(value: BalloonOverlayShape) = apply { this.overlayShape = value }
+    public fun setOverlayShape(value: BalloonOverlayShape): Builder =
+      apply { this.overlayShape = value }
 
     /** sets is status bar is visible or not in your screen. */
-    fun setIsStatusBarVisible(value: Boolean) = apply {
+    public fun setIsStatusBarVisible(value: Boolean): Builder = apply {
       this.isStatusBarVisible = value
     }
 
@@ -2312,7 +2348,7 @@ class Balloon private constructor(
      * sets whether the popup window will be attached in the decor frame of its parent window.
      * If you want to show up balloon on your DialogFragment, it's recommended to use with true. (#131)
      */
-    fun setIsAttachedInDecor(value: Boolean) = apply {
+    public fun setIsAttachedInDecor(value: Boolean): Builder = apply {
       this.isAttachedInDecor = value
     }
 
@@ -2320,16 +2356,17 @@ class Balloon private constructor(
      * sets the [LifecycleOwner] for dismissing automatically when the [LifecycleOwner] is destroyed.
      * It will prevents memory leak : [Avoid Memory Leak](https://github.com/skydoves/balloon#avoid-memory-leak)
      */
-    fun setLifecycleOwner(value: LifecycleOwner?): Builder = apply { this.lifecycleOwner = value }
+    public fun setLifecycleOwner(value: LifecycleOwner?): Builder =
+      apply { this.lifecycleOwner = value }
 
     /**
      * sets the [LifecycleObserver] for observing the the [lifecycleOwner]'s lifecycle states.
      */
-    fun setLifecycleObserver(value: LifecycleObserver): Builder =
+    public fun setLifecycleObserver(value: LifecycleObserver): Builder =
       apply { this.lifecycleObserver = value }
 
     /** sets the balloon showing animation using [BalloonAnimation]. */
-    fun setBalloonAnimation(value: BalloonAnimation): Builder = apply {
+    public fun setBalloonAnimation(value: BalloonAnimation): Builder = apply {
       this.balloonAnimation = value
       if (value == BalloonAnimation.CIRCULAR) {
         setFocusable(false)
@@ -2337,17 +2374,17 @@ class Balloon private constructor(
     }
 
     /** sets the balloon showing animation using custom xml animation style. */
-    fun setBalloonAnimationStyle(@StyleRes value: Int): Builder = apply {
+    public fun setBalloonAnimationStyle(@StyleRes value: Int): Builder = apply {
       this.balloonAnimationStyle = value
     }
 
     /** sets the balloon overlay showing animation using [BalloonAnimation]. */
-    fun setBalloonOverlayAnimation(value: BalloonOverlayAnimation): Builder = apply {
+    public fun setBalloonOverlayAnimation(value: BalloonOverlayAnimation): Builder = apply {
       this.balloonOverlayAnimation = value
     }
 
     /** sets the balloon overlay showing animation using custom xml animation style. */
-    fun setBalloonOverlayAnimationStyle(@StyleRes value: Int): Builder = apply {
+    public fun setBalloonOverlayAnimationStyle(@StyleRes value: Int): Builder = apply {
       this.balloonOverlayAnimationStyle = value
     }
 
@@ -2355,13 +2392,13 @@ class Balloon private constructor(
      * sets the duration of the circular animation.
      * this option only works with [BalloonAnimation.CIRCULAR] value in [setBalloonAnimation].
      */
-    fun setCircularDuration(value: Long): Builder = apply {
+    public fun setCircularDuration(value: Long): Builder = apply {
       this.circularDuration = value
     }
 
     /** sets the balloon highlight animation using [BalloonHighlightAnimation]. */
     @JvmOverloads
-    fun setBalloonHighlightAnimation(
+    public fun setBalloonHighlightAnimation(
       value: BalloonHighlightAnimation,
       startDelay: Long = 0L
     ): Builder = apply {
@@ -2371,7 +2408,7 @@ class Balloon private constructor(
 
     /** sets the balloon highlight animation using custom xml animation resource file. */
     @JvmOverloads
-    fun setBalloonHighlightAnimationResource(
+    public fun setBalloonHighlightAnimationResource(
       @AnimRes value: Int,
       startDelay: Long = 0L
     ): Builder = apply {
@@ -2380,74 +2417,78 @@ class Balloon private constructor(
     }
 
     /** sets a [BalloonRotateAnimation] to give highlight animation. */
-    fun setBalloonRotationAnimation(
+    public fun setBalloonRotationAnimation(
       balloonRotateAnimation: BalloonRotateAnimation
     ): Builder = apply {
       this.balloonRotateAnimation = balloonRotateAnimation
     }
 
     /** sets a [OnBalloonClickListener] to the popup. */
-    fun setOnBalloonClickListener(value: OnBalloonClickListener): Builder = apply {
+    public fun setOnBalloonClickListener(value: OnBalloonClickListener): Builder = apply {
       this.onBalloonClickListener = value
     }
 
     /** sets a [OnBalloonDismissListener] to the popup. */
-    fun setOnBalloonDismissListener(value: OnBalloonDismissListener): Builder = apply {
+    public fun setOnBalloonDismissListener(value: OnBalloonDismissListener): Builder = apply {
       this.onBalloonDismissListener = value
     }
 
     /** sets a [OnBalloonInitializedListener] to the popup. */
-    fun setOnBalloonInitializedListener(value: OnBalloonInitializedListener): Builder = apply {
-      this.onBalloonInitializedListener = value
-    }
+    public fun setOnBalloonInitializedListener(value: OnBalloonInitializedListener): Builder =
+      apply {
+        this.onBalloonInitializedListener = value
+      }
 
     /** sets a [OnBalloonOutsideTouchListener] to the popup. */
-    fun setOnBalloonOutsideTouchListener(value: OnBalloonOutsideTouchListener): Builder = apply {
-      this.onBalloonOutsideTouchListener = value
-    }
+    public fun setOnBalloonOutsideTouchListener(value: OnBalloonOutsideTouchListener): Builder =
+      apply {
+        this.onBalloonOutsideTouchListener = value
+      }
 
     /** sets a [View.OnTouchListener] to the popup. */
-    fun setOnBalloonTouchListener(value: View.OnTouchListener): Builder = apply {
+    public fun setOnBalloonTouchListener(value: View.OnTouchListener): Builder = apply {
       this.onBalloonTouchListener = value
     }
 
     /** sets a [OnBalloonOverlayClickListener] to the overlay popup. */
-    fun setOnBalloonOverlayClickListener(value: OnBalloonOverlayClickListener): Builder = apply {
-      this.onBalloonOverlayClickListener = value
-    }
+    public fun setOnBalloonOverlayClickListener(value: OnBalloonOverlayClickListener): Builder =
+      apply {
+        this.onBalloonOverlayClickListener = value
+      }
 
     /** sets a [OnBalloonClickListener] to the popup using lambda. */
     @JvmSynthetic
-    fun setOnBalloonClickListener(block: (View) -> Unit): Builder = apply {
+    public fun setOnBalloonClickListener(block: (View) -> Unit): Builder = apply {
       this.onBalloonClickListener = OnBalloonClickListener(block)
     }
 
     /** sets a [OnBalloonDismissListener] to the popup using lambda. */
     @JvmSynthetic
-    fun setOnBalloonDismissListener(block: () -> Unit): Builder = apply {
+    public fun setOnBalloonDismissListener(block: () -> Unit): Builder = apply {
       this.onBalloonDismissListener = OnBalloonDismissListener(block)
     }
 
     /** sets a [OnBalloonInitializedListener] to the popup using lambda. */
     @JvmSynthetic
-    fun setOnBalloonInitializedListener(block: (View) -> Unit): Builder = apply {
+    public fun setOnBalloonInitializedListener(block: (View) -> Unit): Builder = apply {
       this.onBalloonInitializedListener = OnBalloonInitializedListener(block)
     }
 
     /** sets a [OnBalloonOutsideTouchListener] to the popup using lambda. */
     @JvmSynthetic
-    fun setOnBalloonOutsideTouchListener(block: (View, MotionEvent) -> Unit): Builder = apply {
-      this.onBalloonOutsideTouchListener = OnBalloonOutsideTouchListener(block)
-      setDismissWhenTouchOutside(false)
-    }
+    public fun setOnBalloonOutsideTouchListener(block: (View, MotionEvent) -> Unit): Builder =
+      apply {
+        this.onBalloonOutsideTouchListener = OnBalloonOutsideTouchListener(block)
+        setDismissWhenTouchOutside(false)
+      }
 
     /** sets a [OnBalloonOverlayClickListener] to the overlay popup using lambda. */
-    fun setOnBalloonOverlayClickListener(block: () -> Unit): Builder = apply {
+    public fun setOnBalloonOverlayClickListener(block: () -> Unit): Builder = apply {
       this.onBalloonOverlayClickListener = OnBalloonOverlayClickListener(block)
     }
 
     /** dismisses when touch outside. */
-    fun setDismissWhenTouchOutside(value: Boolean): Builder = apply {
+    public fun setDismissWhenTouchOutside(value: Boolean): Builder = apply {
       this.dismissWhenTouchOutside = value
       if (!value) {
         setFocusable(value)
@@ -2455,36 +2496,38 @@ class Balloon private constructor(
     }
 
     /** sets a [View.OnTouchListener] to the overlay popup. */
-    fun setOnBalloonOverlayTouchListener(value: View.OnTouchListener): Builder = apply {
+    public fun setOnBalloonOverlayTouchListener(value: View.OnTouchListener): Builder = apply {
       this.onBalloonOverlayTouchListener = value
       setDismissWhenOverlayClicked(false)
     }
 
     /** dismisses when invoked show function again. */
-    fun setDismissWhenShowAgain(value: Boolean): Builder = apply {
+    public fun setDismissWhenShowAgain(value: Boolean): Builder = apply {
       this.dismissWhenShowAgain = value
     }
 
     /** dismisses when the popup clicked. */
-    fun setDismissWhenClicked(value: Boolean): Builder = apply { this.dismissWhenClicked = value }
+    public fun setDismissWhenClicked(value: Boolean): Builder =
+      apply { this.dismissWhenClicked = value }
 
     /** dismisses when the [LifecycleOwner] be on paused. */
-    fun setDismissWhenLifecycleOnPause(value: Boolean): Builder = apply {
+    public fun setDismissWhenLifecycleOnPause(value: Boolean): Builder = apply {
       this.dismissWhenLifecycleOnPause = value
     }
 
     /** dismisses when the overlay popup is clicked. */
-    fun setDismissWhenOverlayClicked(value: Boolean): Builder = apply {
+    public fun setDismissWhenOverlayClicked(value: Boolean): Builder = apply {
       this.dismissWhenOverlayClicked = value
     }
 
     /** pass touch events through the overlay to the anchor. */
-    fun setShouldPassTouchEventToAnchor(value: Boolean) = apply {
+    public fun setShouldPassTouchEventToAnchor(value: Boolean): Builder = apply {
       this.passTouchEventToAnchor = value
     }
 
     /** dismisses automatically some milliseconds later when the popup is shown. */
-    fun setAutoDismissDuration(value: Long): Builder = apply { this.autoDismissDuration = value }
+    public fun setAutoDismissDuration(value: Long): Builder =
+      apply { this.autoDismissDuration = value }
 
     /**
      * sets the preference name for persisting showing counts.
@@ -2492,7 +2535,7 @@ class Balloon private constructor(
      *
      * @see (https://github.com/skydoves/balloon#persistence)
      */
-    fun setPreferenceName(value: String): Builder = apply { this.preferenceName = value }
+    public fun setPreferenceName(value: String): Builder = apply { this.preferenceName = value }
 
     /**
      * sets showing counts which how many times the Balloon popup will be shown up.
@@ -2500,7 +2543,7 @@ class Balloon private constructor(
      *
      * @see (https://github.com/skydoves/balloon#persistence)
      */
-    fun setShowCounts(value: Int): Builder = apply { this.showTimes = value }
+    public fun setShowCounts(value: Int): Builder = apply { this.showTimes = value }
 
     /**
      * sets a lambda for invoking after the preference showing counts is reached the goal.
@@ -2510,7 +2553,7 @@ class Balloon private constructor(
      *
      * @param block A lambda for invoking after the preference showing counts is reached the goal.
      */
-    fun runIfReachedShowCounts(block: () -> Unit): Builder = apply {
+    public fun runIfReachedShowCounts(block: () -> Unit): Builder = apply {
       runIfReachedShowCounts = block
     }
 
@@ -2522,7 +2565,7 @@ class Balloon private constructor(
      *
      * @param runnable A [Runnable] for invoking after the preference showing counts is reached the goal.
      */
-    fun runIfReachedShowCounts(runnable: Runnable): Builder = apply {
+    public fun runIfReachedShowCounts(runnable: Runnable): Builder = apply {
       runIfReachedShowCounts { runnable.run() }
     }
 
@@ -2531,14 +2574,14 @@ class Balloon private constructor(
      * if true when the balloon is showing, can not touch other views and
      * onBackPressed will be fired to the balloon.
      * */
-    fun setFocusable(value: Boolean): Builder = apply { this.isFocusable = value }
+    public fun setFocusable(value: Boolean): Builder = apply { this.isFocusable = value }
 
     /**
      * Create a new instance of the [Balloon] which includes customized attributes.
      *
      * @return A new created instance of the [Balloon].
      */
-    fun build(): Balloon = Balloon(
+    public fun build(): Balloon = Balloon(
       context = context,
       builder = this@Builder
     )
@@ -2551,13 +2594,13 @@ class Balloon private constructor(
    *
    * @see [Lazy Initialization](https://github.com/skydoves/Balloon#lazy-initialization)
    */
-  abstract class Factory {
+  public abstract class Factory {
 
     /**
      * Creates a new instance of [Balloon].
      *
      * @return A new created instance of the [Balloon].
      */
-    abstract fun create(context: Context, lifecycle: LifecycleOwner?): Balloon
+    public abstract fun create(context: Context, lifecycle: LifecycleOwner?): Balloon
   }
 }

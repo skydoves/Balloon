@@ -17,7 +17,7 @@
 package com.skydoves.balloon.overlay
 
 /** BalloonOverlayAnimation is the collection of the popup overlay animations. */
-enum class BalloonOverlayAnimation {
+public enum class BalloonOverlayAnimation {
   NONE,
   FADE,
 }

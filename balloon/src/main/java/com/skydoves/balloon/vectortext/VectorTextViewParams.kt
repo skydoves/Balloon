@@ -22,22 +22,22 @@ import androidx.annotation.DimenRes
 import androidx.annotation.Px
 
 /** VectorTextViewParams is a collection of [VectorTextView]'s parameters. */
-data class VectorTextViewParams(
-  var drawableStartRes: Int? = null,
-  var drawableEndRes: Int? = null,
-  var drawableBottomRes: Int? = null,
-  var drawableTopRes: Int? = null,
-  var drawableStart: Drawable? = null,
-  var drawableEnd: Drawable? = null,
-  var drawableBottom: Drawable? = null,
-  var drawableTop: Drawable? = null,
-  var isRtlLayout: Boolean = false,
-  @Px val compoundDrawablePadding: Int? = null,
-  @Px val iconWidth: Int? = null,
-  @Px val iconHeight: Int? = null,
-  @DimenRes var compoundDrawablePaddingRes: Int? = null,
-  @ColorInt var tintColor: Int? = null,
-  @DimenRes var widthRes: Int? = null,
-  @DimenRes var heightRes: Int? = null,
-  @DimenRes var squareSizeRes: Int? = null
+public data class VectorTextViewParams(
+  public var drawableStartRes: Int? = null,
+  public var drawableEndRes: Int? = null,
+  public var drawableBottomRes: Int? = null,
+  public var drawableTopRes: Int? = null,
+  public var drawableStart: Drawable? = null,
+  public var drawableEnd: Drawable? = null,
+  public var drawableBottom: Drawable? = null,
+  public var drawableTop: Drawable? = null,
+  public var isRtlLayout: Boolean = false,
+  @Px public val compoundDrawablePadding: Int? = null,
+  @Px public val iconWidth: Int? = null,
+  @Px public val iconHeight: Int? = null,
+  @DimenRes public var compoundDrawablePaddingRes: Int? = null,
+  @ColorInt public var tintColor: Int? = null,
+  @DimenRes public var widthRes: Int? = null,
+  @DimenRes public var heightRes: Int? = null,
+  @DimenRes public var squareSizeRes: Int? = null
 )

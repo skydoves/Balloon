@@ -26,7 +26,7 @@ import android.view.animation.Transformation
  * BalloonRotateAnimation gives rotation animation to the balloon.
  * This class can be created by [BalloonRotateAnimation.Builder].
  */
-class BalloonRotateAnimation private constructor(
+public class BalloonRotateAnimation private constructor(
   builder: Builder,
 ) : Animation() {
 
@@ -72,52 +72,52 @@ class BalloonRotateAnimation private constructor(
   }
 
   /** Builder class to create [BalloonRotateAnimation]. */
-  class Builder {
+  public class Builder {
     @JvmField
     @set:JvmSynthetic
-    var direction: BalloonRotateDirection = BalloonRotateDirection.RIGHT
+    public var direction: BalloonRotateDirection = BalloonRotateDirection.RIGHT
 
     @JvmField
     @set:JvmSynthetic
-    var turns: Int = 1
+    public var turns: Int = 1
 
     @JvmField
     @set:JvmSynthetic
-    var loops: Int = INFINITE
+    public var loops: Int = INFINITE
 
     @JvmField
     @set:JvmSynthetic
-    var speeds: Int = 2500
+    public var speeds: Int = 2500
 
     @JvmField
     @set:JvmSynthetic
-    var degreeX: Int = 0
+    public var degreeX: Int = 0
 
     @JvmField
     @set:JvmSynthetic
-    var degreeZ: Int = 0
+    public var degreeZ: Int = 0
 
     /** sets the direction of the rotation animation. */
-    fun setDirection(rotateDirection: BalloonRotateDirection) = apply {
+    public fun setDirection(rotateDirection: BalloonRotateDirection): Builder = apply {
       this.direction = rotateDirection
     }
 
     /** sets the turning count of the rotation animation. */
-    fun setTurns(turn: Int): Builder = apply { this.turns = turn }
+    public fun setTurns(turn: Int): Builder = apply { this.turns = turn }
 
     /** sets the iteration of the rotation animation. */
-    fun setLoops(loop: Int): Builder = apply { this.loops = loop }
+    public fun setLoops(loop: Int): Builder = apply { this.loops = loop }
 
     /** sets the speed of the rotation animation. */
-    fun setSpeeds(speed: Int): Builder = apply { this.speeds = speed }
+    public fun setSpeeds(speed: Int): Builder = apply { this.speeds = speed }
 
     /** sets the degree X of the rotation animation. */
-    fun setDegreeX(degreeX: Int): Builder = apply { this.degreeX = degreeX }
+    public fun setDegreeX(degreeX: Int): Builder = apply { this.degreeX = degreeX }
 
     /** sets the degree Y of the rotation animation. */
-    fun setDegreeZ(degreeZ: Int): Builder = apply { this.degreeZ = degreeZ }
+    public fun setDegreeZ(degreeZ: Int): Builder = apply { this.degreeZ = degreeZ }
 
     /** Build the [BalloonRotateAnimation]. */
-    fun build(): BalloonRotateAnimation = BalloonRotateAnimation(this)
+    public fun build(): BalloonRotateAnimation = BalloonRotateAnimation(this)
   }
 }

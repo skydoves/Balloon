@@ -19,28 +19,31 @@ package com.skydoves.balloon.overlay
 import androidx.annotation.DimenRes
 
 /** BalloonOverlay is a sealed interface for composing balloon overlay types. */
-sealed class BalloonOverlayShape
+public sealed class BalloonOverlayShape
 
 /** draw a Rect for overlaying over an anchor. */
-object BalloonOverlayRect : BalloonOverlayShape()
+public object BalloonOverlayRect : BalloonOverlayShape()
 
 /** draw an Oval for overlaying over an anchor. */
-object BalloonOverlayOval : BalloonOverlayShape()
+public object BalloonOverlayOval : BalloonOverlayShape()
 
 /** draw an rounded Rect for overlaying over an anchor. */
-class BalloonOverlayRoundRect private constructor(
-  val radiusPair: Pair<Float, Float>? = null,
-  val radiusResPair: Pair<Int, Int>? = null
+public class BalloonOverlayRoundRect private constructor(
+  public val radiusPair: Pair<Float, Float>? = null,
+  public val radiusResPair: Pair<Int, Int>? = null
 ) : BalloonOverlayShape() {
-  constructor(radiusX: Float, radiusY: Float) : this(radiusPair = Pair(radiusX, radiusY))
-  constructor(@DimenRes radiusXRes: Int, @DimenRes radiusYRes: Int) : this(radiusResPair = Pair(radiusXRes, radiusYRes))
+  public constructor(radiusX: Float, radiusY: Float) : this(radiusPair = Pair(radiusX, radiusY))
+  public constructor(
+    @DimenRes radiusXRes: Int,
+    @DimenRes radiusYRes: Int
+  ) : this(radiusResPair = Pair(radiusXRes, radiusYRes))
 }
 
 /** draw a Circle for overlaying over an anchor. */
-class BalloonOverlayCircle private constructor(
-  val radius: Float? = null,
-  val radiusRes: Int? = null
+public class BalloonOverlayCircle private constructor(
+  public val radius: Float? = null,
+  public val radiusRes: Int? = null
 ) : BalloonOverlayShape() {
-  constructor(radius: Float) : this(radius, null)
-  constructor(@DimenRes radiusRes: Int) : this(null, radiusRes)
+  public constructor(radius: Float) : this(radius, null)
+  public constructor(@DimenRes radiusRes: Int) : this(null, radiusRes)
 }

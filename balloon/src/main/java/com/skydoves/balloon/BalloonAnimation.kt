@@ -17,7 +17,7 @@
 package com.skydoves.balloon
 
 /** BalloonAnimation is the collection of the popup animations. */
-enum class BalloonAnimation {
+public enum class BalloonAnimation {
   NONE,
   ELASTIC,
   FADE,
