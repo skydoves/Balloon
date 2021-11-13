@@ -43,8 +43,8 @@ android {
     }
 }
 
-kotlin {
-    explicitApi()
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions.freeCompilerArgs += ["-Xexplicit-api=strict"]
 }
 
 apiValidation {
