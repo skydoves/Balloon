@@ -29,6 +29,7 @@ ext.versions = [
     androidxAppcompat: '1.2.0',
     androidxFragment : '1.3.3',
     lifecycle        : '2.4.0',
+    annotation       : '1.3.0',
 
     // for demo
     constraintVersion: '2.0.4',

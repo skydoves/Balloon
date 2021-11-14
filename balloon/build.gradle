@@ -60,6 +60,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$versions.androidxAppcompat"
     implementation "androidx.fragment:fragment-ktx:$versions.androidxFragment"
     implementation "androidx.lifecycle:lifecycle-common-java8:$versions.lifecycle"
+    implementation "androidx.annotation:annotation:$versions.annotation"
 }
 
 dokkaHtml.configure {
