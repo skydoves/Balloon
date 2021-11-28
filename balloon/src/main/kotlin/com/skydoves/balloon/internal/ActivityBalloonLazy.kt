@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package com.skydoves.balloon
+package com.skydoves.balloon.internal
 
 import android.content.Context
 import androidx.lifecycle.LifecycleOwner
+import com.skydoves.balloon.Balloon
 import java.io.Serializable
 import kotlin.reflect.KClass
 

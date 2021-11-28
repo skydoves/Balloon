@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package com.skydoves.balloon
+package com.skydoves.balloon.internal
 
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.findFragment
 import androidx.lifecycle.LifecycleOwner
+import com.skydoves.balloon.Balloon
 import java.io.Serializable
 import kotlin.reflect.KClass
 

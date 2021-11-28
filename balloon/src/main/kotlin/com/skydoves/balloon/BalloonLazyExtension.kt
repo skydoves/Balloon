@@ -20,6 +20,9 @@ import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
+import com.skydoves.balloon.internal.ActivityBalloonLazy
+import com.skydoves.balloon.internal.FragmentBalloonLazy
+import com.skydoves.balloon.internal.ViewBalloonLazy
 import kotlin.reflect.KClass
 
 /**

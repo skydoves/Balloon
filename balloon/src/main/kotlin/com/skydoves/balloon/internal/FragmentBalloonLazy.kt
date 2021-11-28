@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package com.skydoves.balloon
+package com.skydoves.balloon.internal
 
 import androidx.fragment.app.Fragment
+import com.skydoves.balloon.Balloon
 import java.io.Serializable
 import kotlin.reflect.KClass
 
