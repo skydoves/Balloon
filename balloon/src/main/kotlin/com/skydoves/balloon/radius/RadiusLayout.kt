@@ -23,6 +23,7 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.annotation.Px
+import com.skydoves.balloon.internal.viewProperty
 
 /**
  * RadiusLayout clips four directions of inner layouts depending on the radius size.
@@ -37,14 +38,8 @@ public class RadiusLayout @JvmOverloads constructor(
   private val path = Path()
 
   /** corner radius for the clipping corners. */
-  @Px
-  private var _radius: Float = 0f
-  public var radius: Float
-    @Px get() = _radius
-    set(@Px value) {
-      _radius = value
-      invalidate()
-    }
+  @get:Px
+  public var radius: Float by viewProperty(0f)
 
   override fun onSizeChanged(
     w: Int,
