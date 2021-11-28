@@ -32,6 +32,7 @@ import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
 import com.skydoves.balloon.extensions.dimen
+import com.skydoves.balloon.internal.viewProperty
 
 /**
  * BalloonAnchorOverlayView is an overlay view for highlighting an anchor
@@ -44,61 +45,25 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
 ) : View(context, attr, defStyle) {
 
   /** target view for highlighting. */
-  private var _anchorView: View? = null
-  public var anchorView: View?
-    get() = _anchorView
-    set(value) {
-      _anchorView = value
-      invalidate()
-    }
+  public var anchorView: View? by viewProperty(null)
 
   /** background color of the overlay. */
-  @ColorInt
-  private var _overlayColor: Int = Color.TRANSPARENT
-  public var overlayColor: Int
-    @ColorInt get() = _overlayColor
-    set(@ColorInt value) {
-      _overlayColor = value
-      invalidate()
-    }
+  @get:ColorInt
+  public var overlayColor: Int by viewProperty(Color.TRANSPARENT)
 
   /** padding color of the overlay shape. */
-  @ColorInt
-  private var _overlayPaddingColor: Int = Color.TRANSPARENT
-  public var overlayPaddingColor: Int
-    @ColorInt get() = _overlayPaddingColor
-    set(@ColorInt value) {
-      _overlayPaddingColor = value
-      invalidate()
-    }
+  @get:ColorInt
+  public var overlayPaddingColor: Int by viewProperty(Color.TRANSPARENT)
 
   /** padding value of the internal overlay shape. */
-  @Px
-  private var _overlayPadding: Float = 0f
-  public var overlayPadding: Float
-    @Px get() = _overlayPadding
-    set(@Px value) {
-      _overlayPadding = value
-      invalidate()
-    }
+  @get:Px
+  public var overlayPadding: Float by viewProperty(0f)
 
   /** specific position of the overlay shape. */
-  private var _overlayPosition: Point? = null
-  public var overlayPosition: Point?
-    get() = _overlayPosition
-    set(value) {
-      _overlayPosition = value
-      invalidate()
-    }
+  public var overlayPosition: Point? by viewProperty(null)
 
   /** shape of the overlay over the anchor view. */
-  private var _balloonOverlayShape: BalloonOverlayShape = BalloonOverlayOval
-  public var balloonOverlayShape: BalloonOverlayShape
-    get() = _balloonOverlayShape
-    set(value) {
-      _balloonOverlayShape = value
-      invalidate()
-    }
+  public var balloonOverlayShape: BalloonOverlayShape by viewProperty(BalloonOverlayOval)
 
   private var bitmap: Bitmap? = null
   private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
