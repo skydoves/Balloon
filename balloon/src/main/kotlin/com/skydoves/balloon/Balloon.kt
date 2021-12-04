@@ -592,6 +592,8 @@ public class Balloon private constructor(
     val layout = builder.layoutRes?.let {
       LayoutInflater.from(context).inflate(it, binding.balloonCard, false)
     } ?: builder.layout ?: throw IllegalArgumentException("The custom layout is null.")
+    val parentView = layout.parent as? ViewGroup
+    parentView?.removeView(layout)
     binding.balloonCard.removeAllViews()
     binding.balloonCard.addView(layout)
     traverseAndMeasureTextWidth(binding.balloonCard)
