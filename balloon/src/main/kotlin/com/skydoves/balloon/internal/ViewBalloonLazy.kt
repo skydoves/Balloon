@@ -20,6 +20,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.findFragment
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import com.skydoves.balloon.Balloon
 import java.io.Serializable
 import kotlin.reflect.KClass
@@ -45,31 +46,38 @@ internal class ViewBalloonLazy<out T : Balloon.Factory>(
       var instance = cached
       if (instance === null) {
         val context = view.context
-        if (context is LifecycleOwner) {
-          val factory = factory::java.get().newInstance()
-          instance = factory.create(context, context)
-          cached = instance
-        } else {
-          try {
-            val fragment = view.findFragment<Fragment>()
-            if (fragment.context != null) {
-              val factory = factory::java.get().newInstance()
-              val lifecycle = if (fragment.view !== null) {
-                fragment.viewLifecycleOwner
+        val factory = factory::java.get().newInstance()
+        val viewTreeLifecycle = view.findViewTreeLifecycleOwner()
+        when {
+          viewTreeLifecycle != null -> {
+            instance = factory.create(context, viewTreeLifecycle)
+            cached = instance
+          }
+          context is LifecycleOwner -> {
+            instance = factory.create(context, context)
+            cached = instance
+          }
+          else -> {
+            try {
+              val fragment = view.findFragment<Fragment>()
+              if (fragment.context != null) {
+                val lifecycle = if (fragment.view !== null) {
+                  fragment.viewLifecycleOwner
+                } else {
+                  fragment
+                }
+                instance = factory.create(fragment.requireActivity(), lifecycle)
+                cached = instance
               } else {
-                fragment
+                throw IllegalArgumentException(
+                  "Balloon can not be initialized. The passed fragment's context is null."
+                )
               }
-              instance = factory.create(fragment.requireActivity(), lifecycle)
-              cached = instance
-            } else {
+            } catch (e: Exception) {
               throw IllegalArgumentException(
-                "Balloon can not be initialized. The passed fragment's context is null."
+                "Balloon can not be initialized. The passed context is not an instance of the LifecycleOwner."
               )
             }
-          } catch (e: Exception) {
-            throw IllegalArgumentException(
-              "Balloon can not be initialized. The passed context is not an instance of the LifecycleOwner."
-            )
           }
         }
       }
