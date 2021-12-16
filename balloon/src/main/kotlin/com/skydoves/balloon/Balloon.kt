@@ -713,20 +713,11 @@ public class Balloon private constructor(
    */
   @MainThread
   private inline fun show(anchor: View, crossinline block: () -> Unit) {
-    if (!isShowing &&
-      // If the balloon is already destroyed depending on the lifecycle,
-      // We should not allow showing the popupWindow, it's related to `relay()` method. (#46)
-      !destroyed &&
-      // We should check the current Activity is running.
-      // If the Activity is finishing, we can't attach the popupWindow to the Activity's window. (#92)
-      !context.isFinishing &&
-      // We should check the contentView is already attached to the decorView or backgroundView in the popupWindow.
-      // Sometimes there is a concurrency issue between show and dismiss the popupWindow. (#149)
-      bodyWindow.contentView.parent == null &&
-      // we should check the anchor view is attached to the parent's window.
-      ViewCompat.isAttachedToWindow(anchor)
-    ) {
+    if (canShowBalloonWindow(anchor)) {
+
       anchor.post {
+        canShowBalloonWindow(anchor).takeIf { it } ?: return@post
+
         this.builder.preferenceName?.let {
           if (balloonPersistence.shouldShowUp(it, builder.showTimes)) {
             balloonPersistence.putIncrementedCounts(it)
@@ -769,6 +760,21 @@ public class Balloon private constructor(
     } else if (builder.dismissWhenShowAgain) {
       dismiss()
     }
+  }
+
+  private fun canShowBalloonWindow(anchor: View): Boolean {
+    return !isShowing &&
+      // If the balloon is already destroyed depending on the lifecycle,
+      // We should not allow showing the popupWindow, it's related to `relay()` method. (#46)
+      !destroyed &&
+      // We should check the current Activity is running.
+      // If the Activity is finishing, we can't attach the popupWindow to the Activity's window. (#92)
+      !context.isFinishing &&
+      // We should check the contentView is already attached to the decorView or backgroundView in the popupWindow.
+      // Sometimes there is a concurrency issue between show and dismiss the popupWindow. (#149)
+      bodyWindow.contentView.parent == null &&
+      // we should check the anchor view is attached to the parent's window.
+      ViewCompat.isAttachedToWindow(anchor)
   }
 
   private fun showOverlayWindow(anchor: View) {
