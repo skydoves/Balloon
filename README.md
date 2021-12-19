@@ -1,7 +1,7 @@
 <h1 align="center">Balloon</h1></br>
 
 <p align="center">
-:balloon: A lightweight popup like tooltips, fully customizable with arrow and animations.
+:balloon: Modernized and sophisticated tooltips, fully customizable with an arrow and animations on Android.
 </p>
 </br>
 <p align="center">
@@ -36,7 +36,7 @@ allprojects {
 And add a dependency code to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:balloon:1.4.0"
+    implementation "com.github.skydoves:balloon:1.4.1"
 }
 ```
 ## SNAPSHOT 
