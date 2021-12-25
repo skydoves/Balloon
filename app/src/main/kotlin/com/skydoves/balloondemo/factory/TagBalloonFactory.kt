@@ -38,7 +38,7 @@ class TagBalloonFactory : Balloon.Factory() {
       setArrowPosition(0.5f)
       setPadding(4)
       setCornerRadius(4f)
-      setBalloonAnimationStyle(R.style.Fade_Balloon_Library)
+      setBalloonAnimationStyle(R.style.Balloon_Fade_Anim)
       setBackgroundColorResource(R.color.white_93)
       setBalloonHighlightAnimation(BalloonHighlightAnimation.ROTATE)
       setBalloonRotationAnimation(BalloonRotateAnimation.Builder().build())

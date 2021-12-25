@@ -60,7 +60,7 @@
       android:layout_height="10dp"
       android:rotation="180"
       android:scaleType="fitXY"
-      android:src="@drawable/arrow_balloon_library_skydoves"
+      android:src="@drawable/balloon_arrow_drawable"
       android:tint="@android:color/black"
       android:visibility="invisible" />
 

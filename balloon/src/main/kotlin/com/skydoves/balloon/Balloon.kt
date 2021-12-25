@@ -74,8 +74,8 @@ import androidx.lifecycle.LifecycleOwner
 import com.skydoves.balloon.animations.BalloonRotateAnimation
 import com.skydoves.balloon.annotations.Dp
 import com.skydoves.balloon.annotations.Sp
-import com.skydoves.balloon.databinding.LayoutBalloonLibrarySkydovesBinding
-import com.skydoves.balloon.databinding.LayoutBalloonOverlayLibrarySkydovesBinding
+import com.skydoves.balloon.databinding.BalloonLayoutBodyBinding
+import com.skydoves.balloon.databinding.BalloonLayoutOverlayBinding
 import com.skydoves.balloon.extensions.applyIconForm
 import com.skydoves.balloon.extensions.applyTextForm
 import com.skydoves.balloon.extensions.circularRevealed
@@ -136,12 +136,12 @@ public class Balloon private constructor(
 ) : DefaultLifecycleObserver {
 
   /** A main content view of the popup. */
-  private val binding: LayoutBalloonLibrarySkydovesBinding =
-    LayoutBalloonLibrarySkydovesBinding.inflate(LayoutInflater.from(context), null, false)
+  private val binding: BalloonLayoutBodyBinding =
+    BalloonLayoutBodyBinding.inflate(LayoutInflater.from(context), null, false)
 
   /** An overlay view of the background for highlighting the popup and an anchor. */
-  private val overlayBinding: LayoutBalloonOverlayLibrarySkydovesBinding =
-    LayoutBalloonOverlayLibrarySkydovesBinding.inflate(LayoutInflater.from(context), null, false)
+  private val overlayBinding: BalloonLayoutOverlayBinding =
+    BalloonLayoutOverlayBinding.inflate(LayoutInflater.from(context), null, false)
 
   /** A main content window of the popup. */
   public val bodyWindow: PopupWindow = PopupWindow(
@@ -613,14 +613,14 @@ public class Balloon private constructor(
   private fun applyBalloonAnimation() {
     if (builder.balloonAnimationStyle == NO_INT_VALUE) {
       when (builder.balloonAnimation) {
-        BalloonAnimation.ELASTIC -> bodyWindow.animationStyle = R.style.Elastic_Balloon_Library
+        BalloonAnimation.ELASTIC -> bodyWindow.animationStyle = R.style.Balloon_Elastic_Anim
         BalloonAnimation.CIRCULAR -> {
           bodyWindow.contentView.circularRevealed(builder.circularDuration)
-          bodyWindow.animationStyle = R.style.NormalDispose_Balloon_Library
+          bodyWindow.animationStyle = R.style.Balloon_Normal_Dispose_Anim
         }
-        BalloonAnimation.FADE -> bodyWindow.animationStyle = R.style.Fade_Balloon_Library
-        BalloonAnimation.OVERSHOOT -> bodyWindow.animationStyle = R.style.Overshoot_Balloon_Library
-        BalloonAnimation.NONE -> bodyWindow.animationStyle = R.style.Normal_Balloon_Library
+        BalloonAnimation.FADE -> bodyWindow.animationStyle = R.style.Balloon_Fade_Anim
+        BalloonAnimation.OVERSHOOT -> bodyWindow.animationStyle = R.style.Balloon_Overshoot_Anim
+        BalloonAnimation.NONE -> bodyWindow.animationStyle = R.style.Balloon_Normal_Anim
       }
     } else {
       bodyWindow.animationStyle = builder.balloonAnimationStyle
@@ -630,8 +630,8 @@ public class Balloon private constructor(
   private fun applyBalloonOverlayAnimation() {
     if (builder.balloonOverlayAnimationStyle == NO_INT_VALUE) {
       when (builder.balloonOverlayAnimation) {
-        BalloonOverlayAnimation.FADE -> overlayWindow.animationStyle = R.style.Fade_Balloon_Library
-        else -> overlayWindow.animationStyle = R.style.Normal_Balloon_Library
+        BalloonOverlayAnimation.FADE -> overlayWindow.animationStyle = R.style.Balloon_Fade_Anim
+        else -> overlayWindow.animationStyle = R.style.Balloon_Normal_Anim
       }
     } else {
       overlayWindow.animationStyle = builder.balloonAnimationStyle
@@ -644,24 +644,24 @@ public class Balloon private constructor(
         BalloonHighlightAnimation.HEARTBEAT -> {
           if (builder.isVisibleArrow) {
             when (builder.arrowOrientation) {
-              ArrowOrientation.TOP -> R.anim.heartbeat_bottom_balloon_library
-              ArrowOrientation.BOTTOM -> R.anim.heartbeat_top_balloon_library
-              ArrowOrientation.LEFT -> R.anim.heartbeat_right_balloon_library
-              ArrowOrientation.RIGHT -> R.anim.heartbeat_left_balloon_library
+              ArrowOrientation.TOP -> R.anim.balloon_heartbeat_bottom
+              ArrowOrientation.BOTTOM -> R.anim.balloon_heartbeat_top
+              ArrowOrientation.LEFT -> R.anim.balloon_heartbeat_right
+              ArrowOrientation.RIGHT -> R.anim.balloon_heartbeat_left
             }
           } else {
-            R.anim.heartbeat_center_balloon_library
+            R.anim.balloon_heartbeat_center
           }
         }
         BalloonHighlightAnimation.SHAKE -> {
           when (builder.arrowOrientation) {
-            ArrowOrientation.TOP -> R.anim.shake_bottom_balloon_library
-            ArrowOrientation.BOTTOM -> R.anim.shake_top_balloon_library
-            ArrowOrientation.LEFT -> R.anim.shake_right_balloon_library
-            ArrowOrientation.RIGHT -> R.anim.shake_left_balloon_library
+            ArrowOrientation.TOP -> R.anim.balloon_shake_bottom
+            ArrowOrientation.BOTTOM -> R.anim.balloon_shake_top
+            ArrowOrientation.LEFT -> R.anim.balloon_shake_right
+            ArrowOrientation.RIGHT -> R.anim.balloon_shake_left
           }
         }
-        BalloonHighlightAnimation.BREATH -> R.anim.fade_balloon_library
+        BalloonHighlightAnimation.BREATH -> R.anim.balloon_fade
         BalloonHighlightAnimation.ROTATE -> return builder.balloonRotateAnimation
         else -> return null
       }

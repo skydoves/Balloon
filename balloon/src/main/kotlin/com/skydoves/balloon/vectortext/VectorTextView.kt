@@ -44,39 +44,39 @@ public class VectorTextView @JvmOverloads constructor(
       val attributeArray = context.obtainStyledAttributes(attrs, R.styleable.VectorTextView)
       drawableTextViewParams = VectorTextViewParams(
         drawableStartRes = attributeArray.getResourceId(
-          R.styleable.VectorTextView_drawableStart,
+          R.styleable.VectorTextView_balloon_drawableStart,
           NO_INT_VALUE
         ).takeIfNotNoIntValue(),
         drawableEndRes = attributeArray.getResourceId(
-          R.styleable.VectorTextView_drawableEnd,
+          R.styleable.VectorTextView_balloon_drawableEnd,
           NO_INT_VALUE
         ).takeIfNotNoIntValue(),
         drawableBottomRes = attributeArray.getResourceId(
-          R.styleable.VectorTextView_drawableBottom,
+          R.styleable.VectorTextView_balloon_drawableBottom,
           NO_INT_VALUE
         ).takeIfNotNoIntValue(),
         drawableTopRes = attributeArray.getResourceId(
-          R.styleable.VectorTextView_drawableTop,
+          R.styleable.VectorTextView_balloon_drawableTop,
           NO_INT_VALUE
         ).takeIfNotNoIntValue(),
         compoundDrawablePaddingRes = attributeArray.getResourceId(
-          R.styleable.VectorTextView_drawablePadding,
+          R.styleable.VectorTextView_balloon_drawablePadding,
           NO_INT_VALUE
         ).takeIfNotNoIntValue(),
         tintColor = attributeArray.getResourceId(
-          R.styleable.VectorTextView_drawableTintColor,
+          R.styleable.VectorTextView_balloon_drawableTintColor,
           NO_INT_VALUE
         ).takeIfNotNoIntValue(),
         widthRes = attributeArray.getResourceId(
-          R.styleable.VectorTextView_drawableWidth,
+          R.styleable.VectorTextView_balloon_drawableWidth,
           NO_INT_VALUE
         ).takeIfNotNoIntValue(),
         heightRes = attributeArray.getResourceId(
-          R.styleable.VectorTextView_drawableHeight,
+          R.styleable.VectorTextView_balloon_drawableHeight,
           NO_INT_VALUE
         ).takeIfNotNoIntValue(),
         squareSizeRes = attributeArray.getResourceId(
-          R.styleable.VectorTextView_drawableSquareSize,
+          R.styleable.VectorTextView_balloon_drawableSquareSize,
           NO_INT_VALUE
         ).takeIfNotNoIntValue()
       )

@@ -15,27 +15,27 @@
 -->
 <resources>
 
-  <style name="Normal_Balloon_Library">
-    <item name="android:windowEnterAnimation">@anim/show_up_center_balloon_library</item>
-    <item name="android:windowExitAnimation">@anim/show_down_center_balloon_library</item>
+  <style name="Balloon_Normal_Anim">
+    <item name="android:windowEnterAnimation">@anim/balloon_show_up_center</item>
+    <item name="android:windowExitAnimation">@anim/balloon_show_down_center</item>
   </style>
 
-  <style name="NormalDispose_Balloon_Library">
-    <item name="android:windowExitAnimation">@anim/show_down_center_balloon_library</item>
+  <style name="Balloon_Normal_Dispose_Anim">
+    <item name="android:windowExitAnimation">@anim/balloon_show_down_center</item>
   </style>
 
-  <style name="Elastic_Balloon_Library">
-    <item name="android:windowEnterAnimation">@anim/elastic_center_balloon_library</item>
-    <item name="android:windowExitAnimation">@anim/dispose_center_balloon_library</item>
+  <style name="Balloon_Elastic_Anim">
+    <item name="android:windowEnterAnimation">@anim/balloon_elastic_center</item>
+    <item name="android:windowExitAnimation">@anim/balloon_dispose_center</item>
   </style>
 
-  <style name="Fade_Balloon_Library">
-    <item name="android:windowEnterAnimation">@anim/fade_in_balloon_library</item>
-    <item name="android:windowExitAnimation">@anim/fade_out_balloon_library</item>
+  <style name="Balloon_Fade_Anim">
+    <item name="android:windowEnterAnimation">@anim/balloon_fade_in</item>
+    <item name="android:windowExitAnimation">@anim/balloon_fade_out</item>
   </style>
 
-  <style name="Overshoot_Balloon_Library">
-    <item name="android:windowEnterAnimation">@anim/overshoot_center_balloon_library</item>
-    <item name="android:windowExitAnimation">@anim/dispose_center_balloon_library</item>
+  <style name="Balloon_Overshoot_Anim">
+    <item name="android:windowEnterAnimation">@anim/balloon_overshoot_center</item>
+    <item name="android:windowExitAnimation">@anim/balloon_dispose_center</item>
   </style>
 </resources>
