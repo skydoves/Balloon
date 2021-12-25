@@ -19,7 +19,7 @@ ext.versions = [
     versionName      : '1.4.1',
 
     gradleBuildTool  : '7.0.2',
-    spotlessGradle   : '5.15.0',
+    spotlessGradle   : '6.1.0',
     kotlin           : '1.4.31',
     ktlintGradle     : '0.41.0',
     dokkaGradle      : '1.4.32',
