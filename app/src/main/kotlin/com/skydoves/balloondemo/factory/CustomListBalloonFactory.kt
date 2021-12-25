@@ -17,28 +17,17 @@
 package com.skydoves.balloondemo.factory
 
 import android.content.Context
-import android.view.Gravity
 import androidx.lifecycle.LifecycleOwner
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
-import com.skydoves.balloon.IconForm
-import com.skydoves.balloon.TextForm
 import com.skydoves.balloondemo.R
 
 class CustomListBalloonFactory : Balloon.Factory() {
 
   override fun create(context: Context, lifecycle: LifecycleOwner?): Balloon {
-
-    val iconForm = IconForm.Builder(context)
-      .setDrawable(ContextCompat.getDrawable(context, R.drawable.arrow))
-      .setIconColor(ContextCompat.getColor(context, R.color.skyblue))
-      .setIconSize(20)
-      .setIconSize(12)
-      .build()
-
     return Balloon.Builder(context)
       .setLayout(R.layout.layout_custom_list)
       .setWidth(BalloonSizeSpec.WRAP)
@@ -50,8 +39,6 @@ class CustomListBalloonFactory : Balloon.Factory() {
       .setTextSize(12f)
       .setCornerRadius(6f)
       .setMarginRight(12)
-      .setTextColorResource(R.color.colorAccent)
-      .setTextGravity(Gravity.END)
       .setElevation(6)
       .setBackgroundColorResource(R.color.background800)
       .setBalloonAnimation(BalloonAnimation.FADE)
