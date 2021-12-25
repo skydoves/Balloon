@@ -71,6 +71,7 @@ import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.viewbinding.ViewBinding
 import com.skydoves.balloon.animations.BalloonRotateAnimation
 import com.skydoves.balloon.annotations.Dp
 import com.skydoves.balloon.annotations.Sp
@@ -2304,11 +2305,16 @@ public class Balloon private constructor(
       this.elevation = context.dimen(value)
     }
 
-    /** sets the custom layout resource to the popup content. */
+    /** sets a custom layout resource to the popup content. */
     public fun setLayout(@LayoutRes layoutRes: Int): Builder = apply { this.layoutRes = layoutRes }
 
-    /** sets the custom layout view to the popup content. */
+    /** sets a custom layout view to the popup content. */
     public fun setLayout(layout: View): Builder = apply { this.layout = layout }
+
+    /** sets a [ViewBinding] to the popup content. */
+    public fun <T : ViewBinding> setLayout(binding: T): Builder = apply {
+      this.layout = binding.root
+    }
 
     /** sets the visibility of the overlay for highlighting an anchor. */
     public fun setIsVisibleOverlay(value: Boolean): Builder =
