@@ -181,7 +181,7 @@ balloon.dismiss()
 balloon.dismissWithDelay(1000L) // dismisses 1000 milliseconds later when the popup is shown
 ```
 
-We can dismiss automatically with delay after the Balloon is showing up with the `setAutoDismissDuration` method.`.
+We can dismiss automatically with delay after the Balloon is showing up with the `setAutoDismissDuration` method..
 
 ```kotlin
 Balloon.Builder(context)
