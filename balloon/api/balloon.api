@@ -332,6 +332,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun setLayout (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setLayout (Landroid/view/View;)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setLayout (Landroid/view/View;)V
+	public final fun setLayout (Landroidx/viewbinding/ViewBinding;)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setLayoutRes (Ljava/lang/Integer;)V
 	public final fun setLifecycleObserver (Landroidx/lifecycle/LifecycleObserver;)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setLifecycleObserver (Landroidx/lifecycle/LifecycleObserver;)V
