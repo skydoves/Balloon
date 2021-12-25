@@ -66,7 +66,7 @@ dependencies {
 
 </details>
 
-## How to use
+## How to Use
 Balloon supports both Kotlin and Java projects, so you can reference it by your language.
 
 ### Create Balloon with Kotlin
