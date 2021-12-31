@@ -52,6 +52,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import android.widget.PopupWindow
+import android.widget.Toast
 import androidx.annotation.AnimRes
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
@@ -763,6 +764,57 @@ public class Balloon private constructor(
     }
   }
 
+  @MainThread
+  private inline fun show(mainAnchor: View, anchorList: List<View>, crossinline block: () -> Unit) {
+    if (canShowBalloonWindow(mainAnchor)) {
+
+      mainAnchor.post {
+        canShowBalloonWindow(mainAnchor).takeIf { it } ?: return@post
+
+        this.builder.preferenceName?.let {
+          if (balloonPersistence.shouldShowUp(it, builder.showTimes)) {
+            balloonPersistence.putIncrementedCounts(it)
+          } else {
+            this.builder.runIfReachedShowCounts?.invoke()
+            return@post
+          }
+        }
+
+        this.isShowing = true
+
+        val dismissDelay = this.builder.autoDismissDuration
+        if (dismissDelay != NO_LONG_VALUE) {
+          dismissWithDelay(dismissDelay)
+        }
+
+        if (hasCustomLayout()) {
+          traverseAndMeasureTextWidth(binding.balloonCard)
+        } else {
+          measureTextWidth(binding.balloonText, binding.balloonCard)
+        }
+        this.binding.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        this.bodyWindow.width = getMeasuredWidth()
+        this.bodyWindow.height = getMeasuredHeight()
+        this.binding.balloonText.layoutParams = FrameLayout.LayoutParams(
+          FrameLayout.LayoutParams.MATCH_PARENT,
+          FrameLayout.LayoutParams.MATCH_PARENT
+        )
+        initializeArrow(mainAnchor)
+        initializeBalloonContent()
+
+        applyBalloonOverlayAnimation()
+        showOverlayWindow(anchorList,mainAnchor)
+        passTouchEventToAnchor(mainAnchor)
+
+        applyBalloonAnimation()
+        startBalloonHighlightAnimation()
+        block()
+      }
+    } else if (builder.dismissWhenShowAgain) {
+      dismiss()
+    }
+  }
+
   private fun canShowBalloonWindow(anchor: View): Boolean {
     return !isShowing &&
       // If the balloon is already destroyed depending on the lifecycle,
@@ -782,6 +834,13 @@ public class Balloon private constructor(
     if (builder.isVisibleOverlay) {
       overlayBinding.balloonOverlayView.anchorView = anchor
       overlayWindow.showAtLocation(anchor, Gravity.CENTER, 0, 0)
+    }
+  }
+
+  private fun showOverlayWindow(anchor: List<View>, mainView: View) {
+    if (builder.isVisibleOverlay) {
+      overlayBinding.balloonOverlayView.anchorViewList = anchor
+      overlayWindow.showAtLocation(mainView, Gravity.CENTER, 0, 0)
     }
   }
 
@@ -987,6 +1046,26 @@ public class Balloon private constructor(
       )
     }
   }
+
+  /**
+   * Shows the balloon on an anchor view as the top alignment with x-off and y-off.
+   *
+   * @param mainAnchor A target view which popup will be shown to.
+   * @param anchorList A views want to focus on without shows the balloon on it
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  @JvmOverloads
+  public fun show(anchorList: List<View>, mainAnchor: View, xOff: Int = 0, yOff: Int = 0) {
+    show(mainAnchor,anchorList) {
+      bodyWindow.showAsDropDown(
+        mainAnchor,
+        builder.supportRtlLayoutFactor * ((mainAnchor.measuredWidth / 2) - (getMeasuredWidth() / 2) + xOff),
+        -getMeasuredHeight() - mainAnchor.measuredHeight + yOff
+      )
+    }
+  }
+
 
   /**
    * Shows the balloon on an anchor view as the top alignment with x-off and y-off and shows the next balloon sequentially.
