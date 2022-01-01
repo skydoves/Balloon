@@ -525,7 +525,7 @@ balloon.clearAllPreferences()
 ```
 
 ### Avoid Memory leak
-Dialog, PopupWindow and etc, canhave memory leak issue if not dismissed before the activity or fragment are destroyed.<br>
+Dialog, PopupWindow etc, can have memory leak issues if not dismissed before the activity or fragment is destroyed.<br>
 But Lifecycles are now integrated with the Support Library since Architecture Components 1.0 Stable was released.<br>
 So we can solve the memory leak issue very easily like the below.<br>
 
@@ -642,7 +642,7 @@ BalloonHighlightAnimation.ROTATE
 .setBalloonHighlightAnimation(BalloonHighlightAnimation.SHAKE)
 ```
 
-We can implement  rotate animation like the example below:
+We can implement the rotate animation like the example below:
 
 ```kotlin
 .setBalloonHighlightAnimation(BalloonHighlightAnimation.ROTATE)
