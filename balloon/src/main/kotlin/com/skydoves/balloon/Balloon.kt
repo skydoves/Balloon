@@ -52,7 +52,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import android.widget.PopupWindow
-import android.widget.Toast
 import androidx.annotation.AnimRes
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
@@ -803,7 +802,7 @@ public class Balloon private constructor(
         initializeBalloonContent()
 
         applyBalloonOverlayAnimation()
-        showOverlayWindow(anchorList,mainAnchor)
+        showOverlayWindow(anchorList, mainAnchor)
         passTouchEventToAnchor(mainAnchor)
 
         applyBalloonAnimation()
@@ -1057,7 +1056,7 @@ public class Balloon private constructor(
    */
   @JvmOverloads
   public fun show(anchorList: List<View>, mainAnchor: View, xOff: Int = 0, yOff: Int = 0) {
-    show(mainAnchor,anchorList) {
+    show(mainAnchor, anchorList) {
       bodyWindow.showAsDropDown(
         mainAnchor,
         builder.supportRtlLayoutFactor * ((mainAnchor.measuredWidth / 2) - (getMeasuredWidth() / 2) + xOff),
@@ -1065,7 +1064,6 @@ public class Balloon private constructor(
       )
     }
   }
-
 
   /**
    * Shows the balloon on an anchor view as the top alignment with x-off and y-off and shows the next balloon sequentially.

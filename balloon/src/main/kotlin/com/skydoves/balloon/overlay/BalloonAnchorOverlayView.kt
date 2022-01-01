@@ -47,6 +47,7 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
   /** target view for highlighting. */
   public var anchorView: View? by viewProperty(null)
 
+  /** target views for highlighting. */
   public var anchorViewList: List<View>? = null
 
   /** background color of the overlay. */
@@ -131,18 +132,18 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
       strokeWidth = overlayPadding
     }
 
-    if (anchorViewList.isNullOrEmpty()){
-      addFocusViewInOverlay(anchorView,canvas)
-    }else{
+    if (anchorViewList.isNullOrEmpty()) {
+      addFocusViewInOverlay(anchorView, canvas)
+    } else {
       anchorViewList?.forEach { view ->
-        addFocusViewInOverlay(view,canvas)
+        addFocusViewInOverlay(view, canvas)
       }
     }
 
     invalidated = false
   }
 
-  private fun addFocusViewInOverlay(view: View?,canvas: Canvas) {
+  private fun addFocusViewInOverlay(view: View?, canvas: Canvas) {
     view?.let { anchor ->
       val rect = Rect()
       anchor.getGlobalVisibleRect(rect)
@@ -218,7 +219,7 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
           }
         }
       }
-      }
+    }
   }
 
   private fun getStatusBarHeight(): Int {
