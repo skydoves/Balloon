@@ -525,8 +525,8 @@ balloon.clearAllPreferences()
 ```
 
 ### Avoid Memory leak
-Dialog, PopupWindow and etc, have memory leak issue if not dismissed before activity or fragment are destroyed.<br>
-But Lifecycles are now integrated with the Support Library since Architecture Components 1.0 Stable released.<br>
+Dialog, PopupWindow etc, can have memory leak issues if not dismissed before the activity or fragment is destroyed.<br>
+But Lifecycles are now integrated with the Support Library since Architecture Components 1.0 Stable was released.<br>
 So we can solve the memory leak issue very easily like the below.<br>
 
 Just use `setLifecycleOwner` method. Then the `dismiss()` method will be called automatically before your activity or fragment would be destroyed.
@@ -626,7 +626,7 @@ FADE | OVERSHOOT | ELASTIC | CIRCULAR |
 | <img src="https://user-images.githubusercontent.com/24237865/74601168-6115c580-50de-11ea-817b-a334f33b6f96.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/74601171-6410b600-50de-11ea-9ba0-5634e11f148a.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/74601170-63781f80-50de-11ea-8db4-93f1dd1291fc.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/74607359-b6bc9300-511b-11ea-978b-23bcc4399dce.gif" align="center" width="100%"/> |
 
 ### BalloonHighlightAnimation
-We can give repeated dynamic animations to the Balloon while it's showing up. The animation would work differently by the position of the arrow.
+We can give a repeated dynamic animations to the Balloon while it's showing up. The animation would work differently by the position of the arrow.
 
 HEARTBEAT | SHAKE | BREATH | ROTATE |
 | :---------------: | :---------------: | :---------------: | :---------------: |
@@ -642,7 +642,7 @@ BalloonHighlightAnimation.ROTATE
 .setBalloonHighlightAnimation(BalloonHighlightAnimation.SHAKE)
 ```
 
-We can implement the rotate animation like below the example:
+We can implement the rotate animation like the example below:
 
 ```kotlin
 .setBalloonHighlightAnimation(BalloonHighlightAnimation.ROTATE)
