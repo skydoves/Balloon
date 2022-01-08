@@ -799,28 +799,6 @@ public class Balloon private constructor(
   }
 
   /**
-   * Shows the balloon on the center of an anchor view.
-   *
-   * @param anchor A target view which popup will be shown to.
-   */
-  @Deprecated(
-    message = "show() method will be deprecated since `1.3.8`. Use showAtCenter() instead.",
-    replaceWith = ReplaceWith(
-      "showAtCenter(anchor)",
-      imports = ["com.skydoves.balloon.Balloon.showAtCenter"]
-    ),
-  )
-  public fun show(anchor: View) {
-    show(anchor) {
-      bodyWindow.showAsDropDown(
-        anchor,
-        builder.supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasuredWidth() / 2)),
-        -getMeasuredHeight() - (anchor.measuredHeight / 2)
-      )
-    }
-  }
-
-  /**
    * Shows the balloon over the anchor view (overlap) as the center aligns.
    * Even if you use with the [ArrowOrientationRules.ALIGN_ANCHOR], the alignment will not be guaranteed.
    * So if you use the function, use with [ArrowOrientationRules.ALIGN_FIXED] and fixed [ArrowOrientation].
@@ -893,48 +871,6 @@ public class Balloon private constructor(
     yOff: Int = 0,
     centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP
   ): Balloon = relay(balloon) { it.showAtCenter(anchor, xOff, yOff, centerAlign) }
-
-  /**
-   * Shows the balloon on the center of an anchor view.
-   *
-   * @param anchor A target view which popup will be shown to.
-   * @param xOff A horizontal offset from the anchor in pixels.
-   * @param yOff A vertical offset from the anchor in pixels.
-   */
-  @Deprecated(
-    message = "show() method will be deprecated since `1.3.8`. Use showAsDropDown() instead.",
-    replaceWith = ReplaceWith(
-      "showAsDropDown(anchor, xOff, yOff)",
-      imports = ["com.skydoves.balloon.Balloon.showAsDropDown"]
-    ),
-  )
-  public fun show(anchor: View, xOff: Int, yOff: Int) {
-    show(anchor) { bodyWindow.showAsDropDown(anchor, xOff, yOff) }
-  }
-
-  /**
-   * Shows the balloon on the center of an anchor view and shows the next balloon sequentially.
-   * This function returns the next balloon.
-   *
-   * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
-   * @param anchor A target view which popup will be shown to.
-   * @param xOff A horizontal offset from the anchor in pixels.
-   * @param yOff A vertical offset from the anchor in pixels.
-   *
-   * @return A next [balloon].
-   *
-   * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
-   */
-  @Deprecated(
-    message = "relayShow() method will be deprecated since `1.3.8`. Use relayShowAsDropDown() instead.",
-    replaceWith = ReplaceWith(
-      "relayShowAsDropDown(anchor, xOff, yOff)",
-      imports = ["com.skydoves.balloon.Balloon.relayShowAsDropDown"]
-    ),
-  )
-  @JvmOverloads
-  public fun relayShow(balloon: Balloon, anchor: View, xOff: Int = 0, yOff: Int = 0): Balloon =
-    relayShowAsDropDown(balloon, anchor, xOff, yOff)
 
   /**
    * Shows the balloon on an anchor view as drop down with x-off and y-off.
