@@ -20,6 +20,7 @@ import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
+import androidx.viewbinding.ViewBinding
 import com.skydoves.balloon.internal.ActivityBalloonLazy
 import com.skydoves.balloon.internal.FragmentBalloonLazy
 import com.skydoves.balloon.internal.ViewBalloonLazy
@@ -61,4 +62,17 @@ public inline fun <reified T : Balloon.Factory> Fragment.balloon(): Lazy<Balloon
 @BalloonInlineDsl
 public inline fun <reified T : Balloon.Factory> View.balloon(): Lazy<Balloon> {
   return ViewBalloonLazy(this, T::class)
+}
+
+/**
+ * Returns a [Lazy] delegate to access the custom [ViewBinding]'s Balloon property.
+ * The balloon property will be initialized lazily.
+ *
+ * @see [Lazy Initialization](https://github.com/skydoves/Balloon#lazy-initialization)
+ */
+@MainThread
+@JvmSynthetic
+@BalloonInlineDsl
+public inline fun <reified T : Balloon.Factory> ViewBinding.balloon(): Lazy<Balloon> {
+  return ViewBalloonLazy(root, T::class)
 }
