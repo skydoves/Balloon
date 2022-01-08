@@ -18,24 +18,6 @@ package com.skydoves.balloon
 
 /** IconGravity determines the orientation of the icon. */
 public enum class IconGravity {
-  @Deprecated(
-    message = "IconGravity.LEFT is deprecated. Use IconGravity.START instead.",
-    replaceWith = ReplaceWith(
-      "IconGravity.START",
-      imports = ["com.skydoves.balloon"]
-    )
-  )
-  LEFT,
-
-  @Deprecated(
-    message = "IconGravity.LEFT is deprecated. Use IconGravity.END instead.",
-    replaceWith = ReplaceWith(
-      "IconGravity.END",
-      imports = ["com.skydoves.balloon"]
-    )
-  )
-  RIGHT,
-
   START,
   END,
   TOP,

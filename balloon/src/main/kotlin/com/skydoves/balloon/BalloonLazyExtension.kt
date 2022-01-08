@@ -23,28 +23,6 @@ import androidx.fragment.app.Fragment
 import com.skydoves.balloon.internal.ActivityBalloonLazy
 import com.skydoves.balloon.internal.FragmentBalloonLazy
 import com.skydoves.balloon.internal.ViewBalloonLazy
-import kotlin.reflect.KClass
-
-/**
- * Returns a [Lazy] delegate to access the [ComponentActivity]'s Balloon property.
- *
- * @param factory A [Balloon.Factory] kotlin class for creating a new instance of the Balloon.
- */
-@Deprecated(
-  message = "Use balloon<T>() instead",
-  replaceWith = ReplaceWith(
-    "balloon<T>()",
-    imports = ["com.skydoves.balloon"]
-  )
-)
-@MainThread
-@JvmSynthetic
-@BalloonInlineDsl
-public inline fun <reified T : Balloon.Factory> ComponentActivity.balloon(
-  factory: KClass<T>
-): Lazy<Balloon> {
-  return ActivityBalloonLazy(this, this, factory)
-}
 
 /**
  * Returns a [Lazy] delegate to access the [ComponentActivity]'s Balloon property.
@@ -61,27 +39,6 @@ public inline fun <reified T : Balloon.Factory> ComponentActivity.balloon(): Laz
 
 /**
  * Returns a [Lazy] delegate to access the [Fragment]'s Balloon property.
- *
- * @param factory A [Balloon.Factory] kotlin class for creating a new instance of the Balloon.
- */
-@Deprecated(
-  message = "Use balloon<T>() instead",
-  replaceWith = ReplaceWith(
-    "balloon<T>()",
-    imports = ["com.skydoves.balloon"]
-  )
-)
-@MainThread
-@JvmSynthetic
-@BalloonInlineDsl
-public inline fun <reified T : Balloon.Factory> Fragment.balloon(
-  factory: KClass<T>
-): Lazy<Balloon> {
-  return FragmentBalloonLazy(this, factory)
-}
-
-/**
- * Returns a [Lazy] delegate to access the [Fragment]'s Balloon property.
  * The balloon property will be initialized lazily.
  *
  * @see [Lazy Initialization](https://github.com/skydoves/Balloon#lazy-initialization)
@@ -91,27 +48,6 @@ public inline fun <reified T : Balloon.Factory> Fragment.balloon(
 @BalloonInlineDsl
 public inline fun <reified T : Balloon.Factory> Fragment.balloon(): Lazy<Balloon> {
   return FragmentBalloonLazy(fragment = this, factory = T::class)
-}
-
-/**
- * Returns a [Lazy] delegate to access the custom [View]'s Balloon property.
- *
- * @param factory A [Balloon.Factory] kotlin class for creating a new instance of the Balloon.
- */
-@Deprecated(
-  message = "Use balloon<T>() instead",
-  replaceWith = ReplaceWith(
-    "balloon<T>()",
-    imports = ["com.skydoves.balloon"]
-  )
-)
-@MainThread
-@JvmSynthetic
-@BalloonInlineDsl
-public inline fun <reified T : Balloon.Factory> View.balloon(
-  factory: KClass<T>
-): Lazy<Balloon> {
-  return ViewBalloonLazy(this, factory)
 }
 
 /**
