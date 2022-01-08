@@ -55,7 +55,6 @@ private fun fromHtml(text: String): Spanned? {
 
 /** applies icon form attributes to a ImageView instance. */
 @JvmSynthetic
-@Suppress("DEPRECATION")
 internal fun VectorTextView.applyIconForm(iconForm: IconForm) {
   iconForm.drawable?.let {
     drawableTextViewParams = VectorTextViewParams(
@@ -65,7 +64,7 @@ internal fun VectorTextView.applyIconForm(iconForm: IconForm) {
       tintColor = iconForm.iconColor.takeIf { it != NO_INT_VALUE }
     ).apply {
       when (iconForm.iconGravity) {
-        IconGravity.LEFT, IconGravity.START -> {
+        IconGravity.START -> {
           drawableStart = iconForm.drawable
           drawableStartRes = iconForm.drawableRes
         }
@@ -77,7 +76,7 @@ internal fun VectorTextView.applyIconForm(iconForm: IconForm) {
           drawableBottom = iconForm.drawable
           drawableBottomRes = iconForm.drawableRes
         }
-        IconGravity.RIGHT, IconGravity.END -> {
+        IconGravity.END -> {
           drawableEnd = iconForm.drawable
           drawableEndRes = iconForm.drawableRes
         }
