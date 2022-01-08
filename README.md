@@ -5,13 +5,15 @@
 </p>
 </br>
 <p align="center">
-  <a href="https://devlibrary.withgoogle.com/products/android/repos/skydoves-Balloon"><img alt="Google" src="https://skydoves.github.io/badges/google-devlib.svg"/></a><br>
+  <a href="https://devlibrary.withgoogle.com/products/android/repos/skydoves-Balloon"><img alt="Google" src="https://skydoves.github.io/badges/google-devlib.svg"/></a>
+  <a href="https://twitter.com/googledevs/status/1476223093773418502"><img alt="Twitter" src="https://skydoves.github.io/badges/twitter-developers.svg"/></a>
+  <a href="https://www.linkedin.com/feed/update/urn:li:activity:6881990083344519168/"><img alt="LinkedIn" src="https://skydoves.github.io/badges/linkedin-developers.svg"/></a><br>
   <a href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"/></a>
   <a href="https://android-arsenal.com/api?level=17"><img alt="API" src="https://img.shields.io/badge/API-17%2B-brightgreen.svg?style=flat"/></a>
   <a href="https://github.com/skydoves/Balloon/actions"><img alt="Build Status" src="https://github.com/skydoves/Balloon/workflows/Android%20CI/badge.svg"/></a> 
   <a href="https://medium.com/swlh/a-lightweight-tooltip-popup-for-android-ef9484a992d7"><img alt="Medium" src="https://skydoves.github.io/badges/Story-Medium.svg"/></a>
   <a href="https://github.com/skydoves"><img alt="Profile" src="https://skydoves.github.io/badges/skydoves.svg"/></a>
-  <a href="https://skydoves.github.io/libraries/balloon/html/balloon/com.skydoves.balloon/index.html"><img alt="Javadoc" src="https://skydoves.github.io/badges/javadoc-balloon.svg"/></a>
+  <a href="https://skydoves.github.io/libraries/balloon/html/balloon/com.skydoves.balloon/index.html"><img alt="Dokka" src="https://skydoves.github.io/badges/dokka-balloon.svg"/></a>
 </p> <br>
 
 <p align="center">
@@ -523,8 +525,8 @@ balloon.clearAllPreferences()
 ```
 
 ### Avoid Memory leak
-Dialog, PopupWindow and etc, have memory leak issue if not dismissed before activity or fragment are destroyed.<br>
-But Lifecycles are now integrated with the Support Library since Architecture Components 1.0 Stable released.<br>
+Dialog, PopupWindow etc, can have memory leak issues if not dismissed before the activity or fragment is destroyed.<br>
+But Lifecycles are now integrated with the Support Library since Architecture Components 1.0 Stable was released.<br>
 So we can solve the memory leak issue very easily like the below.<br>
 
 Just use `setLifecycleOwner` method. Then the `dismiss()` method will be called automatically before your activity or fragment would be destroyed.
@@ -624,7 +626,7 @@ FADE | OVERSHOOT | ELASTIC | CIRCULAR |
 | <img src="https://user-images.githubusercontent.com/24237865/74601168-6115c580-50de-11ea-817b-a334f33b6f96.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/74601171-6410b600-50de-11ea-9ba0-5634e11f148a.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/74601170-63781f80-50de-11ea-8db4-93f1dd1291fc.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/74607359-b6bc9300-511b-11ea-978b-23bcc4399dce.gif" align="center" width="100%"/> |
 
 ### BalloonHighlightAnimation
-We can give repeated dynamic animations to the Balloon while it's showing up. The animation would work differently by the position of the arrow.
+We can give a repeated dynamic animations to the Balloon while it's showing up. The animation would work differently by the position of the arrow.
 
 HEARTBEAT | SHAKE | BREATH | ROTATE |
 | :---------------: | :---------------: | :---------------: | :---------------: |
@@ -640,7 +642,7 @@ BalloonHighlightAnimation.ROTATE
 .setBalloonHighlightAnimation(BalloonHighlightAnimation.SHAKE)
 ```
 
-We can implement the rotate animation like below the example:
+We can implement the rotate animation like the example below:
 
 ```kotlin
 .setBalloonHighlightAnimation(BalloonHighlightAnimation.ROTATE)
