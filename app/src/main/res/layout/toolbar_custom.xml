@@ -21,7 +21,6 @@
     android:layout_height="32dp"
     android:layout_gravity="end"
     android:layout_marginEnd="12dp"
-    android:layout_marginRight="12dp"
     android:src="@drawable/ic_list_white_24dp" />
 
 </androidx.appcompat.widget.Toolbar>
