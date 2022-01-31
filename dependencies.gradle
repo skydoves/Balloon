@@ -20,9 +20,9 @@ ext.versions = [
 
     gradleBuildTool  : '7.0.2',
     spotlessGradle   : '6.1.0',
-    kotlin           : '1.4.31',
-    ktlintGradle     : '0.41.0',
-    dokkaGradle      : '1.4.32',
+    kotlin           : '1.5.31',
+    ktlintGradle     : '0.43.2',
+    dokkaGradle      : '1.5.31',
     binaryValidator  : '0.8.0',
     mavenPublish     : '0.18.0',
 

@@ -28,7 +28,7 @@
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/balloon.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22balloon%22)
 
 ### Gradle 
-Add the below codes to your **root** `build.gradle` file (not your module build.gradle file).
+Add the code below to your **root** `build.gradle` file:
 ```Gradle
 allprojects {
     repositories {
@@ -36,7 +36,7 @@ allprojects {
     }
 }
 ```
-Next, add the below dependency to your **module**'s `build.gradle` file.
+Next, add the dependency below to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
     implementation "com.github.skydoves:balloon:1.4.1"

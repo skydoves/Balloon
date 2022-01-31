@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="wrap_content"
+  android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:background="?android:selectableItemBackground">
 
@@ -27,6 +27,7 @@
     android:textColor="@color/white_87"
     android:textSize="15sp"
     android:textStyle="bold"
+    app:layout_constraintHorizontal_bias="0.0"
     app:layout_constraintBottom_toBottomOf="@id/item_custom_icon"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toEndOf="@id/item_custom_icon"
