@@ -18,8 +18,8 @@ ext.versions = [
     versionCode      : 42,
     versionName      : '1.4.1',
 
-    gradleBuildTool  : '7.0.2',
-    spotlessGradle   : '6.1.0',
+    gradleBuildTool  : '7.1.0',
+    spotlessGradle   : '6.2.1',
     kotlin           : '1.5.31',
     ktlintGradle     : '0.43.2',
     dokkaGradle      : '1.5.31',
@@ -28,7 +28,7 @@ ext.versions = [
 
     androidxAppcompat: '1.4.0',
     androidxFragment : '1.3.3',
-    lifecycle        : '2.4.0',
+    lifecycle        : '2.4.1',
     annotation       : '1.3.0',
 
     // for demo
