@@ -66,7 +66,7 @@ dependencies {
 Balloon supports both Kotlin and Java projects, so you can reference it by your language.
 
 ### Create Balloon with Kotlin
-We can create an instace of the Balloon with the `Balloon.Builder` class.
+We can create an instance of the Balloon with the `Balloon.Builder` class.
 
 ```kotlin
 val balloon = Balloon.Builder(context)
