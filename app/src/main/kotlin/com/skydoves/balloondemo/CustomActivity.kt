@@ -65,7 +65,7 @@ class CustomActivity : AppCompatActivity(), CustomAdapter.CustomViewHolder.Deleg
       }
 
       edit.setOnClickListener {
-        editBalloon.showAlign(mainAnchor = circleImageView, anchorList = listOf(it))
+        editBalloon.showAlign(mainAnchor = circleImageView, subAnchorList = listOf(it))
       }
 
       circleImageView.setOnClickListener {

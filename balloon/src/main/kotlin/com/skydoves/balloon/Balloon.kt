@@ -1084,7 +1084,7 @@ public class Balloon private constructor(
    * Shows the balloon on an anchor view depending on the [align] alignment with x-off and y-off.
    *
    * @param mainAnchor A target view which popup will be displayed.
-   * @param anchorList A list of anchors to display multiple overlay.
+   * @param subAnchorList A list of anchors to display focuses on the overlay view.
    * @param align Decides where the balloon should be placed.
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
@@ -1092,12 +1092,12 @@ public class Balloon private constructor(
   @JvmOverloads
   public fun showAlign(
     mainAnchor: View,
-    anchorList: List<View>,
+    subAnchorList: List<View> = listOf(),
     align: BalloonAlign,
     xOff: Int = 0,
     yOff: Int = 0
   ) {
-    val anchors = listOf(mainAnchor) + anchorList
+    val anchors = listOf(mainAnchor) + subAnchorList
     show(*anchors.toTypedArray()) {
       when (align.getRTLSupportAlign(builder.isRtlLayout)) {
         BalloonAlign.TOP -> bodyWindow.showAsDropDown(
