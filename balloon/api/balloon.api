@@ -76,6 +76,10 @@ public final class com/skydoves/balloon/Balloon : androidx/lifecycle/DefaultLife
 	public final fun setOnBalloonOverlayTouchListener (Lkotlin/jvm/functions/Function2;)V
 	public final fun setOnBalloonTouchListener (Landroid/view/View$OnTouchListener;)V
 	public final fun shouldShowUp ()Z
+	public final fun showAlign (Landroid/view/View;Ljava/util/List;)V
+	public final fun showAlign (Landroid/view/View;Ljava/util/List;I)V
+	public final fun showAlign (Landroid/view/View;Ljava/util/List;II)V
+	public static synthetic fun showAlign$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;Ljava/util/List;IIILjava/lang/Object;)V
 	public final fun showAlignBottom (Landroid/view/View;)V
 	public final fun showAlignBottom (Landroid/view/View;I)V
 	public final fun showAlignBottom (Landroid/view/View;II)V
@@ -743,12 +747,14 @@ public final class com/skydoves/balloon/overlay/BalloonAnchorOverlayView : andro
 	public synthetic fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun forceInvalidate ()V
 	public final fun getAnchorView ()Landroid/view/View;
+	public final fun getAnchorViewList ()Ljava/util/List;
 	public final fun getBalloonOverlayShape ()Lcom/skydoves/balloon/overlay/BalloonOverlayShape;
 	public final fun getOverlayColor ()I
 	public final fun getOverlayPadding ()F
 	public final fun getOverlayPaddingColor ()I
 	public final fun getOverlayPosition ()Landroid/graphics/Point;
 	public final fun setAnchorView (Landroid/view/View;)V
+	public final fun setAnchorViewList (Ljava/util/List;)V
 	public final fun setBalloonOverlayShape (Lcom/skydoves/balloon/overlay/BalloonOverlayShape;)V
 	public final fun setOverlayColor (I)V
 	public final fun setOverlayPadding (F)V

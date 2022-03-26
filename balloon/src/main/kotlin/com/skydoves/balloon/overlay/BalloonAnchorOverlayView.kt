@@ -47,6 +47,9 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
   /** target view for highlighting. */
   public var anchorView: View? by viewProperty(null)
 
+  /** target views for highlighting. */
+  public var anchorViewList: List<View>? by viewProperty(null)
+
   /** background color of the overlay. */
   @get:ColorInt
   public var overlayColor: Int by viewProperty(Color.TRANSPARENT)
@@ -129,7 +132,19 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
       strokeWidth = overlayPadding
     }
 
-    anchorView?.let { anchor ->
+    if (anchorViewList.isNullOrEmpty()) {
+      addFocusViewInOverlay(anchorView, canvas)
+    } else {
+      anchorViewList?.forEach { view ->
+        addFocusViewInOverlay(view, canvas)
+      }
+    }
+
+    invalidated = false
+  }
+
+  private fun addFocusViewInOverlay(view: View?, canvas: Canvas) {
+    view?.let { anchor ->
       val rect = Rect()
       anchor.getGlobalVisibleRect(rect)
       val anchorRect = overlayPosition?.let { position ->
@@ -205,8 +220,6 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
         }
       }
     }
-
-    invalidated = false
   }
 
   private fun getStatusBarHeight(): Int {
