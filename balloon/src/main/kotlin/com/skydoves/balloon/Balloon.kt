@@ -72,6 +72,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
+import com.skydoves.balloon.BalloonAlign.Companion.getRTLSupportAlign
 import com.skydoves.balloon.BalloonCenterAlign.Companion.getRTLSupportAlign
 import com.skydoves.balloon.animations.BalloonRotateAnimation
 import com.skydoves.balloon.annotations.Dp
@@ -1080,22 +1081,46 @@ public class Balloon private constructor(
     relay(balloon) { it.showAlignLeft(anchor, xOff, yOff) }
 
   /**
-   * Shows the balloon on an anchor view as the top alignment with x-off and y-off.
+   * Shows the balloon on an anchor view depending on the [align] alignment with x-off and y-off.
    *
    * @param mainAnchor A target view which popup will be displayed.
    * @param anchorList A list of anchors to display multiple overlay.
+   * @param align Decides where the balloon should be placed.
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    */
   @JvmOverloads
-  public fun showAlign(mainAnchor: View, anchorList: List<View>, xOff: Int = 0, yOff: Int = 0) {
+  public fun showAlign(
+    mainAnchor: View,
+    anchorList: List<View>,
+    align: BalloonAlign,
+    xOff: Int = 0,
+    yOff: Int = 0
+  ) {
     val anchors = listOf(mainAnchor) + anchorList
     show(*anchors.toTypedArray()) {
-      bodyWindow.showAsDropDown(
-        mainAnchor,
-        builder.supportRtlLayoutFactor * ((mainAnchor.measuredWidth / 2) - (getMeasuredWidth() / 2) + xOff),
-        -getMeasuredHeight() - mainAnchor.measuredHeight + yOff
-      )
+      when (align.getRTLSupportAlign(builder.isRtlLayout)) {
+        BalloonAlign.TOP -> bodyWindow.showAsDropDown(
+          mainAnchor,
+          builder.supportRtlLayoutFactor * ((mainAnchor.measuredWidth / 2) - (getMeasuredWidth() / 2) + xOff),
+          -getMeasuredHeight() - mainAnchor.measuredHeight + yOff
+        )
+        BalloonAlign.BOTTOM -> bodyWindow.showAsDropDown(
+          mainAnchor,
+          builder.supportRtlLayoutFactor * ((mainAnchor.measuredWidth / 2) - (getMeasuredWidth() / 2) + xOff),
+          yOff
+        )
+        BalloonAlign.END -> bodyWindow.showAsDropDown(
+          mainAnchor,
+          mainAnchor.measuredWidth + xOff,
+          -(getMeasuredHeight() / 2) - (mainAnchor.measuredHeight / 2) + yOff
+        )
+        BalloonAlign.START -> bodyWindow.showAsDropDown(
+          mainAnchor,
+          -(getMeasuredWidth()) + xOff,
+          -(getMeasuredHeight() / 2) - (mainAnchor.measuredHeight / 2) + yOff
+        )
+      }
     }
   }
 
