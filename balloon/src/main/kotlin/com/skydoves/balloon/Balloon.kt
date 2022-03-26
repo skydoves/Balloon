@@ -2547,6 +2547,16 @@ public class Balloon private constructor(
     }
 
     /**
+     * sets the balloon should support the RTL layout.
+     * The RTL layout is enabled by default, but you can disable this by passing false to the [isRtlSupport].
+     *
+     * @param isRtlSupport Decides the balloon should support RTL layout.
+     */
+    public fun setRtlSupports(isRtlSupport: Boolean): Builder = apply {
+      this.isRtlLayout = isRtlSupport
+    }
+
+    /**
      * sets isFocusable option to the body window.
      * if true when the balloon is showing, can not touch other views and
      * onBackPressed will be fired to the balloon.
