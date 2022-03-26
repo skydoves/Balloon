@@ -1125,6 +1125,38 @@ public class Balloon private constructor(
   }
 
   /**
+   * Shows the balloon on an anchor view depending on the [align] alignment with x-off and y-off
+   * and shows the next balloon sequentially.
+   * This function returns the next balloon.
+   *
+   * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   *
+   * @return A next [balloon].
+   *
+   * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
+   */
+  @JvmOverloads
+  public fun relayShowAlign(
+    align: BalloonAlign,
+    balloon: Balloon,
+    anchor: View,
+    xOff: Int = 0,
+    yOff: Int = 0
+  ): Balloon {
+    return relay(balloon) {
+      when (align.getRTLSupportAlign(builder.isRtlLayout)) {
+        BalloonAlign.TOP -> it.showAlignTop(anchor, xOff, yOff)
+        BalloonAlign.BOTTOM -> it.showAlignBottom(anchor, xOff, yOff)
+        BalloonAlign.END -> it.showAlignRight(anchor, xOff, yOff)
+        BalloonAlign.START -> it.showAlignLeft(anchor, xOff, yOff)
+      }
+    }
+  }
+
+  /**
    * updates popup and arrow position of the popup based on
    * a new target anchor view with additional x-off and y-off.
    *
