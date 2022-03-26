@@ -48,7 +48,7 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
   public var anchorView: View? by viewProperty(null)
 
   /** target views for highlighting. */
-  public var anchorViewList: List<View>? = null
+  public var anchorViewList: List<View>? by viewProperty(null)
 
   /** background color of the overlay. */
   @get:ColorInt

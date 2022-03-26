@@ -76,12 +76,10 @@ public final class com/skydoves/balloon/Balloon : androidx/lifecycle/DefaultLife
 	public final fun setOnBalloonOverlayTouchListener (Lkotlin/jvm/functions/Function2;)V
 	public final fun setOnBalloonTouchListener (Landroid/view/View$OnTouchListener;)V
 	public final fun shouldShowUp ()Z
-	public final fun show (Landroid/view/View;)V
-	public final fun show (Landroid/view/View;II)V
-	public final fun show (Ljava/util/List;Landroid/view/View;)V
-	public final fun show (Ljava/util/List;Landroid/view/View;I)V
-	public final fun show (Ljava/util/List;Landroid/view/View;II)V
-	public static synthetic fun show$default (Lcom/skydoves/balloon/Balloon;Ljava/util/List;Landroid/view/View;IIILjava/lang/Object;)V
+	public final fun showAlign (Landroid/view/View;Ljava/util/List;)V
+	public final fun showAlign (Landroid/view/View;Ljava/util/List;I)V
+	public final fun showAlign (Landroid/view/View;Ljava/util/List;II)V
+	public static synthetic fun showAlign$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;Ljava/util/List;IIILjava/lang/Object;)V
 	public final fun showAlignBottom (Landroid/view/View;)V
 	public final fun showAlignBottom (Landroid/view/View;I)V
 	public final fun showAlignBottom (Landroid/view/View;II)V

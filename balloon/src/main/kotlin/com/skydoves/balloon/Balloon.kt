@@ -706,67 +706,16 @@ public class Balloon private constructor(
   }
 
   /**
-   * Shows [Balloon] tooltips on the [anchor] with some initializations related to arrow, content, and overlay.
+   * Shows [Balloon] tooltips on the [anchors] with some initializations related to arrow, content, and overlay.
    * The balloon will be shown with the [overlayWindow] if the anchorView's parent window is in a valid state.
    * The size of the content will be measured internally, and it will affect calculating the popup size.
    *
    * @param block A lambda block for showing the [bodyWindow].
    */
   @MainThread
-  private inline fun show(anchor: View, crossinline block: () -> Unit) {
-    if (canShowBalloonWindow(anchor)) {
-
-      anchor.post {
-        canShowBalloonWindow(anchor).takeIf { it } ?: return@post
-
-        this.builder.preferenceName?.let {
-          if (balloonPersistence.shouldShowUp(it, builder.showTimes)) {
-            balloonPersistence.putIncrementedCounts(it)
-          } else {
-            this.builder.runIfReachedShowCounts?.invoke()
-            return@post
-          }
-        }
-
-        this.isShowing = true
-
-        val dismissDelay = this.builder.autoDismissDuration
-        if (dismissDelay != NO_LONG_VALUE) {
-          dismissWithDelay(dismissDelay)
-        }
-
-        if (hasCustomLayout()) {
-          traverseAndMeasureTextWidth(binding.balloonCard)
-        } else {
-          measureTextWidth(binding.balloonText, binding.balloonCard)
-        }
-        this.binding.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-        this.bodyWindow.width = getMeasuredWidth()
-        this.bodyWindow.height = getMeasuredHeight()
-        this.binding.balloonText.layoutParams = FrameLayout.LayoutParams(
-          FrameLayout.LayoutParams.MATCH_PARENT,
-          FrameLayout.LayoutParams.MATCH_PARENT
-        )
-        initializeArrow(anchor)
-        initializeBalloonContent()
-
-        applyBalloonOverlayAnimation()
-        showOverlayWindow(anchor)
-        passTouchEventToAnchor(anchor)
-
-        applyBalloonAnimation()
-        startBalloonHighlightAnimation()
-        block()
-      }
-    } else if (builder.dismissWhenShowAgain) {
-      dismiss()
-    }
-  }
-
-  @MainThread
-  private inline fun show(mainAnchor: View, anchorList: List<View>, crossinline block: () -> Unit) {
+  private inline fun show(vararg anchors: View, crossinline block: () -> Unit) {
+    val mainAnchor = anchors[0]
     if (canShowBalloonWindow(mainAnchor)) {
-
       mainAnchor.post {
         canShowBalloonWindow(mainAnchor).takeIf { it } ?: return@post
 
@@ -802,7 +751,7 @@ public class Balloon private constructor(
         initializeBalloonContent()
 
         applyBalloonOverlayAnimation()
-        showOverlayWindow(anchorList, mainAnchor)
+        showOverlayWindow(*anchors)
         passTouchEventToAnchor(mainAnchor)
 
         applyBalloonAnimation()
@@ -829,17 +778,15 @@ public class Balloon private constructor(
       ViewCompat.isAttachedToWindow(anchor)
   }
 
-  private fun showOverlayWindow(anchor: View) {
+  private fun showOverlayWindow(vararg anchors: View) {
     if (builder.isVisibleOverlay) {
-      overlayBinding.balloonOverlayView.anchorView = anchor
-      overlayWindow.showAtLocation(anchor, Gravity.CENTER, 0, 0)
-    }
-  }
-
-  private fun showOverlayWindow(anchor: List<View>, mainView: View) {
-    if (builder.isVisibleOverlay) {
-      overlayBinding.balloonOverlayView.anchorViewList = anchor
-      overlayWindow.showAtLocation(mainView, Gravity.CENTER, 0, 0)
+      val mainAnchor = anchors[0]
+      if (anchors.size == 1) {
+        overlayBinding.balloonOverlayView.anchorView = mainAnchor
+      } else {
+        overlayBinding.balloonOverlayView.anchorViewList = anchors.toList()
+      }
+      overlayWindow.showAtLocation(mainAnchor, Gravity.CENTER, 0, 0)
     }
   }
 
@@ -978,25 +925,6 @@ public class Balloon private constructor(
         anchor,
         builder.supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasuredWidth() / 2) + xOff),
         -getMeasuredHeight() - anchor.measuredHeight + yOff
-      )
-    }
-  }
-
-  /**
-   * Shows the balloon on an anchor view as the top alignment with x-off and y-off.
-   *
-   * @param mainAnchor A target view which popup will be shown to.
-   * @param anchorList A views want to focus on without shows the balloon on it
-   * @param xOff A horizontal offset from the anchor in pixels.
-   * @param yOff A vertical offset from the anchor in pixels.
-   */
-  @JvmOverloads
-  public fun show(anchorList: List<View>, mainAnchor: View, xOff: Int = 0, yOff: Int = 0) {
-    show(mainAnchor, anchorList) {
-      bodyWindow.showAsDropDown(
-        mainAnchor,
-        builder.supportRtlLayoutFactor * ((mainAnchor.measuredWidth / 2) - (getMeasuredWidth() / 2) + xOff),
-        -getMeasuredHeight() - mainAnchor.measuredHeight + yOff
       )
     }
   }
@@ -1148,6 +1076,26 @@ public class Balloon private constructor(
     yOff: Int = 0
   ): Balloon =
     relay(balloon) { it.showAlignLeft(anchor, xOff, yOff) }
+
+  /**
+   * Shows the balloon on an anchor view as the top alignment with x-off and y-off.
+   *
+   * @param mainAnchor A target view which popup will be displayed.
+   * @param anchorList A list of anchors to display multiple overlay.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  @JvmOverloads
+  public fun showAlign(mainAnchor: View, anchorList: List<View>, xOff: Int = 0, yOff: Int = 0) {
+    val anchors = listOf(mainAnchor) + anchorList
+    show(*anchors.toTypedArray()) {
+      bodyWindow.showAsDropDown(
+        mainAnchor,
+        builder.supportRtlLayoutFactor * ((mainAnchor.measuredWidth / 2) - (getMeasuredWidth() / 2) + xOff),
+        -getMeasuredHeight() - mainAnchor.measuredHeight + yOff
+      )
+    }
+  }
 
   /**
    * updates popup and arrow position of the popup based on
