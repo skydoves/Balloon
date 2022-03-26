@@ -72,6 +72,8 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
+import com.skydoves.balloon.BalloonAlign.Companion.getRTLSupportAlign
+import com.skydoves.balloon.BalloonCenterAlign.Companion.getRTLSupportAlign
 import com.skydoves.balloon.animations.BalloonRotateAnimation
 import com.skydoves.balloon.annotations.Dp
 import com.skydoves.balloon.annotations.Sp
@@ -824,8 +826,9 @@ public class Balloon private constructor(
     val halfAnchorHeight = (anchor.measuredHeight * 0.5f).roundToInt()
     val halfBalloonWidth = (getMeasuredWidth() * 0.5f).roundToInt()
     val halfBalloonHeight = (getMeasuredHeight() * 0.5f).roundToInt()
+    val rtlAlign = centerAlign.getRTLSupportAlign(builder.isRtlLayout)
     show(anchor) {
-      when (centerAlign) {
+      when (rtlAlign) {
         BalloonCenterAlign.TOP ->
           bodyWindow.showAsDropDown(
             anchor,
@@ -1078,22 +1081,78 @@ public class Balloon private constructor(
     relay(balloon) { it.showAlignLeft(anchor, xOff, yOff) }
 
   /**
-   * Shows the balloon on an anchor view as the top alignment with x-off and y-off.
+   * Shows the balloon on an anchor view depending on the [align] alignment with x-off and y-off.
    *
+   * @param align Decides where the balloon should be placed.
    * @param mainAnchor A target view which popup will be displayed.
-   * @param anchorList A list of anchors to display multiple overlay.
+   * @param subAnchorList A list of anchors to display focuses on the overlay view.
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    */
   @JvmOverloads
-  public fun showAlign(mainAnchor: View, anchorList: List<View>, xOff: Int = 0, yOff: Int = 0) {
-    val anchors = listOf(mainAnchor) + anchorList
+  public fun showAlign(
+    align: BalloonAlign,
+    mainAnchor: View,
+    subAnchorList: List<View> = listOf(),
+    xOff: Int = 0,
+    yOff: Int = 0
+  ) {
+    val anchors = listOf(mainAnchor) + subAnchorList
     show(*anchors.toTypedArray()) {
-      bodyWindow.showAsDropDown(
-        mainAnchor,
-        builder.supportRtlLayoutFactor * ((mainAnchor.measuredWidth / 2) - (getMeasuredWidth() / 2) + xOff),
-        -getMeasuredHeight() - mainAnchor.measuredHeight + yOff
-      )
+      when (align.getRTLSupportAlign(builder.isRtlLayout)) {
+        BalloonAlign.TOP -> bodyWindow.showAsDropDown(
+          mainAnchor,
+          builder.supportRtlLayoutFactor * ((mainAnchor.measuredWidth / 2) - (getMeasuredWidth() / 2) + xOff),
+          -getMeasuredHeight() - mainAnchor.measuredHeight + yOff
+        )
+        BalloonAlign.BOTTOM -> bodyWindow.showAsDropDown(
+          mainAnchor,
+          builder.supportRtlLayoutFactor * ((mainAnchor.measuredWidth / 2) - (getMeasuredWidth() / 2) + xOff),
+          yOff
+        )
+        BalloonAlign.END -> bodyWindow.showAsDropDown(
+          mainAnchor,
+          mainAnchor.measuredWidth + xOff,
+          -(getMeasuredHeight() / 2) - (mainAnchor.measuredHeight / 2) + yOff
+        )
+        BalloonAlign.START -> bodyWindow.showAsDropDown(
+          mainAnchor,
+          -(getMeasuredWidth()) + xOff,
+          -(getMeasuredHeight() / 2) - (mainAnchor.measuredHeight / 2) + yOff
+        )
+      }
+    }
+  }
+
+  /**
+   * Shows the balloon on an anchor view depending on the [align] alignment with x-off and y-off
+   * and shows the next balloon sequentially.
+   * This function returns the next balloon.
+   *
+   * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   *
+   * @return A next [balloon].
+   *
+   * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
+   */
+  @JvmOverloads
+  public fun relayShowAlign(
+    align: BalloonAlign,
+    balloon: Balloon,
+    anchor: View,
+    xOff: Int = 0,
+    yOff: Int = 0
+  ): Balloon {
+    return relay(balloon) {
+      when (align.getRTLSupportAlign(builder.isRtlLayout)) {
+        BalloonAlign.TOP -> it.showAlignTop(anchor, xOff, yOff)
+        BalloonAlign.BOTTOM -> it.showAlignBottom(anchor, xOff, yOff)
+        BalloonAlign.END -> it.showAlignRight(anchor, xOff, yOff)
+        BalloonAlign.START -> it.showAlignLeft(anchor, xOff, yOff)
+      }
     }
   }
 
@@ -2542,6 +2601,16 @@ public class Balloon private constructor(
      */
     public fun runIfReachedShowCounts(runnable: Runnable): Builder = apply {
       runIfReachedShowCounts { runnable.run() }
+    }
+
+    /**
+     * sets the balloon should support the RTL layout.
+     * The RTL layout is enabled by default, but you can disable this by passing false to the [isRtlSupport].
+     *
+     * @param isRtlSupport Decides the balloon should support RTL layout.
+     */
+    public fun setRtlSupports(isRtlSupport: Boolean): Builder = apply {
+      this.isRtlLayout = isRtlSupport
     }
 
     /**

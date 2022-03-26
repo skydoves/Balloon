@@ -21,6 +21,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.skydoves.balloon.BalloonAlign
 import com.skydoves.balloon.balloon
 import com.skydoves.balloondemo.databinding.ActivityCustomBinding
 import com.skydoves.balloondemo.factory.CustomListBalloonFactory
@@ -65,7 +66,11 @@ class CustomActivity : AppCompatActivity(), CustomAdapter.CustomViewHolder.Deleg
       }
 
       edit.setOnClickListener {
-        editBalloon.showAlign(mainAnchor = circleImageView, anchorList = listOf(it))
+        editBalloon.showAlign(
+          align = BalloonAlign.BOTTOM,
+          mainAnchor = circleImageView,
+          subAnchorList = listOf(it),
+        )
       }
 
       circleImageView.setOnClickListener {

@@ -16,8 +16,8 @@
 
 package com.skydoves.balloon
 
-/** BalloonCenterAlign is an aligning rule for the [Balloon.showAtCenter]. */
-public enum class BalloonCenterAlign {
+/** BalloonAlign decides where the balloon should be placed. */
+public enum class BalloonAlign {
   START,
   END,
   TOP,
@@ -25,8 +25,8 @@ public enum class BalloonCenterAlign {
 
   internal companion object {
 
-    /** Return [BalloonCenterAlign] depending on the [isRtlLayout].] */
-    internal fun BalloonCenterAlign.getRTLSupportAlign(isRtlLayout: Boolean): BalloonCenterAlign {
+    /** Return [BalloonAlign] depending on the [isRtlLayout].] */
+    internal fun BalloonAlign.getRTLSupportAlign(isRtlLayout: Boolean): BalloonAlign {
       return if (!isRtlLayout) {
         this
       } else {
