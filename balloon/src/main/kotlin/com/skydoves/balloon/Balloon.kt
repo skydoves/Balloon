@@ -72,6 +72,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
+import com.skydoves.balloon.BalloonCenterAlign.Companion.getRTLSupportAlign
 import com.skydoves.balloon.animations.BalloonRotateAnimation
 import com.skydoves.balloon.annotations.Dp
 import com.skydoves.balloon.annotations.Sp
@@ -824,8 +825,9 @@ public class Balloon private constructor(
     val halfAnchorHeight = (anchor.measuredHeight * 0.5f).roundToInt()
     val halfBalloonWidth = (getMeasuredWidth() * 0.5f).roundToInt()
     val halfBalloonHeight = (getMeasuredHeight() * 0.5f).roundToInt()
+    val rtlAlign = centerAlign.getRTLSupportAlign(builder.isRtlLayout)
     show(anchor) {
-      when (centerAlign) {
+      when (rtlAlign) {
         BalloonCenterAlign.TOP ->
           bodyWindow.showAsDropDown(
             anchor,
