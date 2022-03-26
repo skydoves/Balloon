@@ -73,8 +73,8 @@ public fun View.showAlignLeft(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
 @JvmSynthetic
 public fun View.showAlign(
   balloon: Balloon,
-  subAnchorList: List<View> = listOf(),
   align: BalloonAlign,
+  subAnchorList: List<View> = listOf(),
   xOff: Int = 0,
   yOff: Int = 0
 ) {

@@ -1083,17 +1083,17 @@ public class Balloon private constructor(
   /**
    * Shows the balloon on an anchor view depending on the [align] alignment with x-off and y-off.
    *
+   * @param align Decides where the balloon should be placed.
    * @param mainAnchor A target view which popup will be displayed.
    * @param subAnchorList A list of anchors to display focuses on the overlay view.
-   * @param align Decides where the balloon should be placed.
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    */
   @JvmOverloads
   public fun showAlign(
+    align: BalloonAlign,
     mainAnchor: View,
     subAnchorList: List<View> = listOf(),
-    align: BalloonAlign,
     xOff: Int = 0,
     yOff: Int = 0
   ) {
