@@ -20,6 +20,35 @@ package com.skydoves.balloon
 public enum class ArrowOrientation {
   BOTTOM,
   TOP,
+  START,
+  END,
+
+  @Deprecated(
+    message = "LEFT will be deprecated for supporting the RTL layout. Use START instead.",
+    replaceWith = ReplaceWith("START"),
+    level = DeprecationLevel.WARNING
+  )
   LEFT,
-  RIGHT
+
+  @Deprecated(
+    message = "RIGHT will be deprecated for supporting the RTL layout. Use END instead.",
+    replaceWith = ReplaceWith("END"),
+    level = DeprecationLevel.WARNING
+  )
+  RIGHT;
+
+  internal companion object {
+    /** Return [ArrowOrientation] depending on the [isRtlLayout].] */
+    internal fun ArrowOrientation.getRTLSupportOrientation(isRtlLayout: Boolean): ArrowOrientation {
+      return if (!isRtlLayout) {
+        this
+      } else {
+        when (this) {
+          START, LEFT -> END
+          END, RIGHT -> START
+          else -> this
+        }
+      }
+    }
+  }
 }
