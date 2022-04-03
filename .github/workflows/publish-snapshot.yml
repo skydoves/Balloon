@@ -1,0 +1,33 @@
+name: Publish Snapshot builds
+
+on:
+  push:
+    branches:
+      - main
+  
+jobs:
+  publish:
+    name: Snapshot build and publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          distribution: adopt
+          java-version: 11
+      - name: Release build
+        run: ./gradlew assemble --scan
+      - name: Source jar and dokka
+        run: ./gradlew androidSourcesJar javadocJar --scan
+      - name: Publish to MavenCentral
+        run: ./gradlew publishReleasePublicationToSonatypeRepository --scan
+        env:
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          SONATYPE_STAGING_PROFILE_ID: ${{ secrets.SONATYPE_STAGING_PROFILE_ID }}
+          SNAPSHOT: true

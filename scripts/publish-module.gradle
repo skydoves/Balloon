@@ -3,83 +3,85 @@ apply plugin: 'signing'
 apply plugin: 'org.jetbrains.dokka'
 
 task androidSourcesJar(type: Jar) {
-    archiveClassifier.set('sources')
-    if (project.plugins.findPlugin("com.android.library")) {
-        from android.sourceSets.main.java.srcDirs
-        from android.sourceSets.main.kotlin.srcDirs
-    } else {
-        from sourceSets.main.java.srcDirs
-        from sourceSets.main.kotlin.srcDirs
-    }
+  archiveClassifier.set('sources')
+  if (project.plugins.findPlugin("com.android.library")) {
+    from android.sourceSets.main.java.srcDirs
+    from android.sourceSets.main.kotlin.srcDirs
+  } else {
+    from sourceSets.main.java.srcDirs
+    from sourceSets.main.kotlin.srcDirs
+  }
 }
 
 tasks.withType(dokkaHtmlPartial.getClass()).configureEach {
-    pluginsMapConfiguration.set(
-            ["org.jetbrains.dokka.base.DokkaBase": """{ "separateInheritedMembers": true}"""]
-    )
+  pluginsMapConfiguration.set(
+    ["org.jetbrains.dokka.base.DokkaBase": """{ "separateInheritedMembers": true}"""]
+  )
 }
 
 task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
-    archiveClassifier.set('javadoc')
-    from dokkaJavadoc.outputDirectory
+  archiveClassifier.set('javadoc')
+  from dokkaJavadoc.outputDirectory
 }
 
 artifacts {
-    archives androidSourcesJar
-    archives javadocJar
+  archives androidSourcesJar
+  archives javadocJar
 }
 
 group = PUBLISH_GROUP_ID
 version = PUBLISH_VERSION
 
 afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-                groupId PUBLISH_GROUP_ID
-                artifactId PUBLISH_ARTIFACT_ID
-                version PUBLISH_VERSION
-                if (project.plugins.findPlugin("com.android.library")) {
-                    from components.release
-                } else {
-                    from components.java
-                }
-
-                artifact androidSourcesJar
-                artifact javadocJar
-
-                pom {
-                    name = PUBLISH_ARTIFACT_ID
-                    description = 'Modernized and sophisticated tooltips, fully customizable with an arrow and animations for Android.'
-                    url = 'https://github.com/skydoves/balloon'
-                    licenses {
-                        license {
-                            name = 'The Apache Software License, Version 2.0'
-                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                        }
-                    }
-                    developers {
-                        developer {
-                            id = 'skydoves'
-                            name = 'Jaewoong Eum'
-                        }
-                    }
-                    scm {
-                        connection = 'scm:git:github.com/skydoves/balloon.git'
-                        developerConnection = 'scm:git:ssh://github.com/skydoves/balloon.git'
-                        url = 'https://github.com/skydoves/balloon/tree/main'
-                    }
-                }
-            }
+  publishing {
+    publications {
+      release(MavenPublication) {
+        groupId PUBLISH_GROUP_ID
+        artifactId PUBLISH_ARTIFACT_ID
+        version PUBLISH_VERSION
+        if (project.plugins.findPlugin("com.android.library")) {
+          from components.release
+        } else {
+          from components.java
         }
+
+        artifact androidSourcesJar
+        artifact javadocJar
+
+        pom {
+          name = PUBLISH_ARTIFACT_ID
+          description = 'Modernized and sophisticated tooltips, fully customizable with an arrow and animations for Android.'
+          url = 'https://github.com/skydoves/balloon'
+          licenses {
+            license {
+              name = 'The Apache Software License, Version 2.0'
+              url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            }
+          }
+          developers {
+            developer {
+              id = 'skydoves'
+              name = 'Jaewoong Eum'
+              email = "skydoves2@gmail.com"
+              url = "https://github.com/skydoves"
+            }
+          }
+          scm {
+            connection = 'scm:git:github.com/skydoves/balloon.git'
+            developerConnection = 'scm:git:ssh://github.com/skydoves/balloon.git'
+            url = 'https://github.com/skydoves/balloon/tree/main'
+          }
+        }
+      }
     }
+  }
 }
 
 signing {
-    useInMemoryPgpKeys(
-            rootProject.ext["signing.keyId"],
-            rootProject.ext["signing.key"],
-            rootProject.ext["signing.password"],
-    )
-    sign publishing.publications
+  useInMemoryPgpKeys(
+    rootProject.ext["signing.keyId"],
+    rootProject.ext["signing.key"],
+    rootProject.ext["signing.password"],
+  )
+  sign publishing.publications
 }
