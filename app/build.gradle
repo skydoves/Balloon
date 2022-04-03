@@ -12,38 +12,45 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply from: "$rootDir/dependencies.gradle"
+import com.github.skydoves.balloon.Configuration
+import com.github.skydoves.balloon.Dependencies
+
+plugins {
+  id 'com.android.application'
+  id 'org.jetbrains.kotlin.android'
+}
 
 android {
-    compileSdkVersion versions.compileSdk
-    defaultConfig {
-        applicationId "com.skydoves.balloondemo"
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.compileSdk
-        versionCode versions.versionCode
-        versionName versions.versionName
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-    buildFeatures {
-        viewBinding true
-    }
-    lintOptions {
-        abortOnError false
-    }
+  compileSdkVersion Configuration.compileSdk
+  defaultConfig {
+    applicationId "com.skydoves.balloondemo"
+    minSdkVersion Configuration.minSdk
+    targetSdkVersion Configuration.targetSdk
+    versionCode Configuration.versionCode
+    versionName Configuration.versionName
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_11
+    targetCompatibility JavaVersion.VERSION_11
+  }
+
+  kotlinOptions {
+    jvmTarget = "11"
+  }
+
+  buildFeatures {
+    viewBinding true
+  }
+
+  lintOptions {
+    abortOnError false
+  }
 }
 
 dependencies {
-    implementation "com.google.android.material:material:$versions.googleMaterial"
-    implementation "androidx.constraintlayout:constraintlayout:$versions.constraintVersion"
-    implementation project(":balloon")
+  implementation Dependencies.material
+  implementation project(":balloon")
 }
 
 apply from: "$rootDir/spotless.gradle"

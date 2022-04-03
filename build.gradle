@@ -12,30 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import com.github.skydoves.balloon.Dependencies
+
+apply plugin: 'io.github.gradle-nexus.publish-plugin'
+apply plugin: 'org.jetbrains.dokka'
+
 buildscript {
-    apply from: "$rootDir/dependencies.gradle"
-
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath "com.android.tools.build:gradle:$versions.gradleBuildTool"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
-        classpath "com.diffplug.spotless:spotless-plugin-gradle:$versions.spotlessGradle"
-        classpath "com.vanniktech:gradle-maven-publish-plugin:$versions.mavenPublish"
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$versions.dokkaGradle"
-        classpath "org.jetbrains.kotlinx:binary-compatibility-validator:$versions.binaryValidator"
-    }
-}
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
+  repositories {
+    google()
+    mavenCentral()
+    maven { url "https://plugins.gradle.org/m2/" }
+  }
+  dependencies {
+    classpath Dependencies.androidGradlePlugin
+    classpath Dependencies.kotlinGradlePlugin
+    classpath Dependencies.spotlessGradlePlugin
+    classpath Dependencies.gradleNexusPublishPlugin
+    classpath Dependencies.dokka
+    classpath Dependencies.kotlinBinaryValidator
+  }
 }
 
 task clean(type: Delete) {
-    delete rootProject.buildDir
+  delete rootProject.buildDir
 }
+
+apply from: "${rootDir}/scripts/publish-root.gradle"
