@@ -544,46 +544,6 @@ public final class com/skydoves/balloon/BalloonKt {
 	public static final synthetic fun createBalloon (Landroid/content/Context;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/balloon/Balloon;
 }
 
-public final class com/skydoves/balloon/BalloonKt$sam$i$com_skydoves_balloon_OnBalloonClickListener$0 : com/skydoves/balloon/OnBalloonClickListener, kotlin/jvm/internal/FunctionAdapter {
-	public fun <init> (Lkotlin/jvm/functions/Function1;)V
-	public final fun equals (Ljava/lang/Object;)Z
-	public final fun getFunctionDelegate ()Lkotlin/Function;
-	public final fun hashCode ()I
-	public final synthetic fun onBalloonClick (Landroid/view/View;)V
-}
-
-public final class com/skydoves/balloon/BalloonKt$sam$i$com_skydoves_balloon_OnBalloonDismissListener$0 : com/skydoves/balloon/OnBalloonDismissListener, kotlin/jvm/internal/FunctionAdapter {
-	public fun <init> (Lkotlin/jvm/functions/Function0;)V
-	public final fun equals (Ljava/lang/Object;)Z
-	public final fun getFunctionDelegate ()Lkotlin/Function;
-	public final fun hashCode ()I
-	public final synthetic fun onBalloonDismiss ()V
-}
-
-public final class com/skydoves/balloon/BalloonKt$sam$i$com_skydoves_balloon_OnBalloonInitializedListener$0 : com/skydoves/balloon/OnBalloonInitializedListener, kotlin/jvm/internal/FunctionAdapter {
-	public fun <init> (Lkotlin/jvm/functions/Function1;)V
-	public final fun equals (Ljava/lang/Object;)Z
-	public final fun getFunctionDelegate ()Lkotlin/Function;
-	public final fun hashCode ()I
-	public final synthetic fun onBalloonInitialized (Landroid/view/View;)V
-}
-
-public final class com/skydoves/balloon/BalloonKt$sam$i$com_skydoves_balloon_OnBalloonOutsideTouchListener$0 : com/skydoves/balloon/OnBalloonOutsideTouchListener, kotlin/jvm/internal/FunctionAdapter {
-	public fun <init> (Lkotlin/jvm/functions/Function2;)V
-	public final fun equals (Ljava/lang/Object;)Z
-	public final fun getFunctionDelegate ()Lkotlin/Function;
-	public final fun hashCode ()I
-	public final synthetic fun onBalloonOutsideTouch (Landroid/view/View;Landroid/view/MotionEvent;)V
-}
-
-public final class com/skydoves/balloon/BalloonKt$sam$i$com_skydoves_balloon_OnBalloonOverlayClickListener$0 : com/skydoves/balloon/OnBalloonOverlayClickListener, kotlin/jvm/internal/FunctionAdapter {
-	public fun <init> (Lkotlin/jvm/functions/Function0;)V
-	public final fun equals (Ljava/lang/Object;)Z
-	public final fun getFunctionDelegate ()Lkotlin/Function;
-	public final fun hashCode ()I
-	public final synthetic fun onBalloonOverlayClick ()V
-}
-
 public final class com/skydoves/balloon/BalloonPersistence {
 	public static final field Companion Lcom/skydoves/balloon/BalloonPersistence$Companion;
 	public final fun clearAllPreferences ()V
