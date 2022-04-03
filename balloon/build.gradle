@@ -12,69 +12,80 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'org.jetbrains.dokka'
-apply plugin: 'binary-compatibility-validator'
+import com.github.skydoves.balloon.Configuration
+import com.github.skydoves.balloon.Dependencies
 
-apply from: "$rootDir/dependencies.gradle"
+plugins {
+  id 'com.android.library'
+  id 'org.jetbrains.kotlin.android'
+  id 'org.jetbrains.dokka'
+  id 'binary-compatibility-validator'
+}
+
+ext {
+  PUBLISH_GROUP_ID = org.gradle.api.artifacts.Configuration.artifactGroup
+  PUBLISH_ARTIFACT_ID = 'colorpicker-compose'
+  PUBLISH_VERSION = rootVersionName
+}
+
+apply from: "${rootDir}/scripts/publish-module.gradle"
 
 android {
-    compileSdkVersion versions.compileSdk
-    defaultConfig {
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.compileSdk
-        versionCode versions.versionCode
-        versionName versions.versionName
-    }
+  compileSdkVersion Configuration.compileSdk
+  defaultConfig {
+    minSdkVersion Configuration.minSdk
+    targetSdkVersion Configuration.targetSdk
+    versionCode Configuration.versionCode
+    versionName Configuration.versionName
+  }
 
-    resourcePrefix 'balloon'
+  resourcePrefix 'balloon'
 
-    buildFeatures {
-        buildConfig false
-        viewBinding true
-    }
+  buildFeatures {
+    buildConfig false
+    viewBinding true
+  }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
 
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
 
-    lintOptions {
-        abortOnError false
-    }
+  lintOptions {
+    abortOnError false
+  }
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    kotlinOptions.freeCompilerArgs += ["-Xexplicit-api=strict"]
+  kotlinOptions.freeCompilerArgs += ["-Xexplicit-api=strict"]
 }
 
 apiValidation {
-    ignoredPackages += [
-        "com/skydoves/balloon/databinding",
-    ]
-    nonPublicMarkers += [
-        "kotlin.PublishedApi",
-    ]
+  ignoredPackages += [
+    "com/skydoves/balloon/databinding",
+  ]
+  nonPublicMarkers += [
+    "kotlin.PublishedApi",
+  ]
 }
 
 dependencies {
-    implementation "androidx.appcompat:appcompat:$versions.androidxAppcompat"
-    implementation "androidx.fragment:fragment-ktx:$versions.androidxFragment"
-    implementation "androidx.lifecycle:lifecycle-common-java8:$versions.lifecycle"
-    implementation "androidx.annotation:annotation:$versions.annotation"
+  implementation Dependencies.appcompat
+  implementation Dependencies.fragmentKtx
+  implementation Dependencies.lifecycle
+  implementation Dependencies.annotation
 }
 
 dokkaHtml.configure {
-    dokkaSourceSets {
-        named("main") {
-            noAndroidSdkLink.set(false)
-        }
+  dokkaSourceSets {
+    named("main") {
+      noAndroidSdkLink.set(false)
     }
+  }
 }
 
 apply plugin: "com.vanniktech.maven.publish"
