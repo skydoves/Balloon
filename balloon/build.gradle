@@ -23,8 +23,8 @@ plugins {
 }
 
 ext {
-  PUBLISH_GROUP_ID = org.gradle.api.artifacts.Configuration.artifactGroup
-  PUBLISH_ARTIFACT_ID = 'colorpicker-compose'
+  PUBLISH_GROUP_ID = Configuration.artifactGroup
+  PUBLISH_ARTIFACT_ID = 'balloon'
   PUBLISH_VERSION = rootVersionName
 }
 
@@ -73,13 +73,6 @@ apiValidation {
   ]
 }
 
-dependencies {
-  implementation Dependencies.appcompat
-  implementation Dependencies.fragmentKtx
-  implementation Dependencies.lifecycle
-  implementation Dependencies.annotation
-}
-
 dokkaHtml.configure {
   dokkaSourceSets {
     named("main") {
@@ -88,5 +81,11 @@ dokkaHtml.configure {
   }
 }
 
-apply plugin: "com.vanniktech.maven.publish"
+dependencies {
+  implementation Dependencies.appcompat
+  implementation Dependencies.fragmentKtx
+  implementation Dependencies.lifecycle
+  implementation Dependencies.annotation
+}
+
 apply from: "$rootDir/spotless.gradle"
