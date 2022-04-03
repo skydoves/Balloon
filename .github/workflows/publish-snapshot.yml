@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - main
-  
+  workflow_dispatch:
+
 jobs:
   publish:
     name: Snapshot build and publish
