@@ -33,7 +33,7 @@ Add the dependency below to your **module**'s `build.gradle` file:
 
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:balloon:1.4.3"
+    implementation "com.github.skydoves:balloon:1.4.4"
 }
 ```
 
@@ -56,7 +56,7 @@ repositories {
 Next, add the below dependency to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:balloon:1.4.4-SNAPSHOT"
+    implementation "com.github.skydoves:balloon:1.4.5-SNAPSHOT"
 }
 ```
 
