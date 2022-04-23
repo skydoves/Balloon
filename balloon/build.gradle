@@ -42,7 +42,6 @@ android {
   resourcePrefix 'balloon'
 
   buildFeatures {
-    buildConfig false
     viewBinding true
   }
 
