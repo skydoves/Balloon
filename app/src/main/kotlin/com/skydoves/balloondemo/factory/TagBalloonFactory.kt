@@ -25,6 +25,7 @@ import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.animations.BalloonRotateAnimation
 import com.skydoves.balloon.createBalloon
 import com.skydoves.balloondemo.R
+import com.skydoves.balloon.R as BalloonR
 
 class TagBalloonFactory : Balloon.Factory() {
 
@@ -38,7 +39,7 @@ class TagBalloonFactory : Balloon.Factory() {
       setArrowPosition(0.5f)
       setPadding(4)
       setCornerRadius(4f)
-      setBalloonAnimationStyle(R.style.Balloon_Fade_Anim)
+      setBalloonAnimationStyle(BalloonR.style.Balloon_Fade_Anim)
       setBackgroundColorResource(R.color.white_93)
       setBalloonHighlightAnimation(BalloonHighlightAnimation.ROTATE)
       setBalloonRotationAnimation(BalloonRotateAnimation.Builder().build())
