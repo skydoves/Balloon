@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <!-- Definitions of layouts to be exposed as public -->
   <public name="balloon_layout_body" type="layout" />
   <public name="balloon_layout_overlay" type="layout" />
+
+  <!-- Definitions of attributes to be exposed as public -->
+  <public name="balloon_drawableStart" type="attr" />
+  <public name="balloon_drawableEnd" type="attr" />
+  <public name="balloon_drawableTop" type="attr" />
+  <public name="balloon_drawableBottom" type="attr" />
+  <public name="balloon_drawablePadding" type="attr" />
+  <public name="balloon_drawableTintColor" type="attr" />
+  <public name="balloon_drawableWidth" type="attr" />
+  <public name="balloon_drawableHeight" type="attr" />
+  <public name="balloon_drawableSquareSize" type="attr" />
+
+  <!-- Definitions of styles to be exposed as public -->
+  <public name="VectorTextView" type="style" tools:ignore="ResourceName" />
 </resources>
