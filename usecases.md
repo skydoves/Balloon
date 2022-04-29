@@ -8,6 +8,10 @@ If your project uses Balloon, let me know by creating a new issue or PR! 🤗
 <img width="33%" src="https://user-images.githubusercontent.com/24237865/148674038-62fbbe7f-13a8-41e6-97a5-922d4e1749f2.png" />
 </p>
 
+## [PayPal](https://play.google.com/store/apps/details?id=com.paypal.android.p2pmobile)
+
+<img src="https://user-images.githubusercontent.com/24237865/165956608-a9d610b4-fa62-4533-b013-e9a774808565.png" width="40%">
+
 ## [Wikipedia](https://play.google.com/store/apps/details?id=org.wikipedia)
 
 <img src="https://user-images.githubusercontent.com/24237865/134317020-d66fb939-09de-4580-8625-9c3d85f7f102.png" width="60%">
@@ -15,6 +19,10 @@ If your project uses Balloon, let me know by creating a new issue or PR! 🤗
 ## [WazirX](https://play.google.com/store/apps/details?id=com.wrx.wazirx&hl=ko&gl=US)
 
 <img src="https://user-images.githubusercontent.com/24237865/148674103-d19bd9de-5e95-4990-9a6f-d926dbb4434c.png" width="27%">
+
+## [PeduliLindungi](https://play.google.com/store/apps/details?id=com.telkom.tracencare)
+
+<img src="https://user-images.githubusercontent.com/24237865/165956788-11d17ccd-bb81-445a-aab4-108d5e7b7916.png" width="47%">
 
 ## [Alarmy](https://play.google.com/store/apps/details?id=droom.sleepIfUCan&hl=ko)
 
@@ -27,6 +35,10 @@ If your project uses Balloon, let me know by creating a new issue or PR! 🤗
 ## [INDmoney](https://play.google.com/store/apps/details?id=in.indwealth&hl=ko&gl=US)
 
 <img src="https://user-images.githubusercontent.com/24237865/148674155-7583307b-8c0b-4cdd-83e0-2c45548a0a76.png" width="32%">
+
+## [c6Bank](https://play.google.com/store/apps/details?id=com.c6bank.app)
+
+<img src="https://user-images.githubusercontent.com/24237865/165957064-7ea8f095-00f9-410d-8a3a-47aed7669590.png" width="33%">
 
 ## [muzmatch](https://play.google.com/store/apps/details?id=com.muzmatch.muzmatchapp&hl=ko&gl=US)
 
