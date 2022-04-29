@@ -39,13 +39,6 @@ android {
     versionName Configuration.versionName
   }
 
-  publishing {
-    singleVariant("release") {
-      withSourcesJar()
-      withJavadocJar()
-    }
-  }
-
   resourcePrefix 'balloon'
 
   buildFeatures {
