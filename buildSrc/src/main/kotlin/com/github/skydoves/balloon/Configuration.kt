@@ -22,9 +22,9 @@ object Configuration {
   const val minSdk = 17
   const val majorVersion = 1
   const val minorVersion = 4
-  const val patchVersion = 4
+  const val patchVersion = 5
   const val versionName = "$majorVersion.$minorVersion.$patchVersion"
-  const val versionCode = 45
+  const val versionCode = 46
   const val snapshotVersionName = "$majorVersion.$minorVersion.${patchVersion + 1}-SNAPSHOT"
   const val artifactGroup = "com.github.skydoves"
 }
