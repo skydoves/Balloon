@@ -1,4 +1,4 @@
-import com.github.skydoves.balloon.Configuration
+import com.skydoves.balloon.Configuration
 
 // Create variables with empty default values
 ext["ossrhUsername"] = ''
