@@ -19,10 +19,10 @@ package com.skydoves.balloon.vectortext
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
-import com.skydoves.balloon.NO_INT_VALUE
 import com.skydoves.balloon.R
 import com.skydoves.balloon.extensions.applyDrawable
-import com.skydoves.balloon.takeIfNotNoIntValue
+import com.skydoves.balloon.internals.NO_INT_VALUE
+import com.skydoves.balloon.internals.takeIfNotNoIntValue
 
 /** VectorTextView is a customizable textView having a vector icon.  */
 public class VectorTextView @JvmOverloads constructor(

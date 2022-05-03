@@ -23,7 +23,7 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.annotation.Px
-import com.skydoves.balloon.internal.viewProperty
+import com.skydoves.balloon.internals.viewProperty
 
 /**
  * RadiusLayout clips four directions of inner layouts depending on the radius size.

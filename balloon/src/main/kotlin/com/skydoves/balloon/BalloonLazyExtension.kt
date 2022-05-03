@@ -21,9 +21,9 @@ import androidx.activity.ComponentActivity
 import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import com.skydoves.balloon.internal.ActivityBalloonLazy
-import com.skydoves.balloon.internal.FragmentBalloonLazy
-import com.skydoves.balloon.internal.ViewBalloonLazy
+import com.skydoves.balloon.internals.ActivityBalloonLazy
+import com.skydoves.balloon.internals.FragmentBalloonLazy
+import com.skydoves.balloon.internals.ViewBalloonLazy
 
 /**
  * Returns a [Lazy] delegate to access the [ComponentActivity]'s Balloon property.

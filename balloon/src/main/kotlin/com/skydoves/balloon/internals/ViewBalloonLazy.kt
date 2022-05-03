@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.skydoves.balloon.internal
+package com.skydoves.balloon.internals
 
 import android.view.View
 import androidx.fragment.app.Fragment

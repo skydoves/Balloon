@@ -101,6 +101,12 @@ import com.skydoves.balloon.extensions.runOnAfterSDK21
 import com.skydoves.balloon.extensions.runOnAfterSDK22
 import com.skydoves.balloon.extensions.sumOfCompoundPadding
 import com.skydoves.balloon.extensions.visible
+import com.skydoves.balloon.internals.LTR
+import com.skydoves.balloon.internals.NO_Float_VALUE
+import com.skydoves.balloon.internals.NO_INT_VALUE
+import com.skydoves.balloon.internals.NO_LONG_VALUE
+import com.skydoves.balloon.internals.SIZE_ARROW_BOUNDARY
+import com.skydoves.balloon.internals.unaryMinus
 import com.skydoves.balloon.overlay.BalloonOverlayAnimation
 import com.skydoves.balloon.overlay.BalloonOverlayOval
 import com.skydoves.balloon.overlay.BalloonOverlayShape

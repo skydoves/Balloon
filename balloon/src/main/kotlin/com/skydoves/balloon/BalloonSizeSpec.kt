@@ -16,6 +16,8 @@
 
 package com.skydoves.balloon
 
+import com.skydoves.balloon.internals.NO_INT_VALUE
+
 /**
  * A specification interface for determining sizes of the Balloon materials.
  * We can wrap some materials depending on their size of content using this interface.
