@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.skydoves.balloon
+package com.skydoves.balloon
 
 object Configuration {
   const val compileSdk = 31

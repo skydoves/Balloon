@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import com.github.skydoves.balloon.Configuration
-import com.github.skydoves.balloon.Dependencies
+import com.skydoves.balloon.Configuration
+import com.skydoves.balloon.Dependencies
 
 plugins {
   id 'com.android.application'

@@ -1,4 +1,4 @@
-package com.github.skydoves.balloon
+package com.skydoves.balloon
 
 object Versions {
   internal const val ANDROID_GRADLE_PLUGIN = "7.1.2"
