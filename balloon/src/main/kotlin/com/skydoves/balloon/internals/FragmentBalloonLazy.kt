@@ -14,27 +14,24 @@
  * limitations under the License.
  */
 
-package com.skydoves.balloon.internal
+package com.skydoves.balloon.internals
 
-import android.content.Context
-import androidx.lifecycle.LifecycleOwner
+import androidx.fragment.app.Fragment
 import com.skydoves.balloon.Balloon
 import java.io.Serializable
 import kotlin.reflect.KClass
 
 /**
- * An implementation of [Lazy] for creating an instance of the [Balloon] lazily in Activities.
- * Tied to the given [lifecycleOwner], [factory].
+ * An implementation of [Lazy] for creating an instance of the [Balloon] in Fragments.
+ * Tied to the given fragment's lifecycle and, [factory].
  *
- * @param context A context for creating resources of the [Balloon] lazily.
- * @param lifecycleOwner A [LifecycleOwner] for dismissing automatically when the [LifecycleOwner] is being destroyed.
+ * @param fragment An instance of the [Balloon] will be created in this Fragment lazily.
  * This will prevents memory leak: [Avoid Memory Leak](https://github.com/skydoves/balloon#avoid-memory-leak).
  * @param factory A [Balloon.Factory] kotlin class for creating a new instance of the Balloon.
  */
 @PublishedApi
-internal class ActivityBalloonLazy<out T : Balloon.Factory>(
-  private val context: Context,
-  private val lifecycleOwner: LifecycleOwner,
+internal class FragmentBalloonLazy<out T : Balloon.Factory>(
+  private val fragment: Fragment,
   private val factory: KClass<T>
 ) : Lazy<Balloon>, Serializable {
 
@@ -44,15 +41,26 @@ internal class ActivityBalloonLazy<out T : Balloon.Factory>(
     get() {
       var instance = cached
       if (instance === null) {
-        val factory = factory::java.get().newInstance()
-        instance = factory.create(context, lifecycleOwner)
-        cached = instance
+        if (fragment.context != null) {
+          val factory = factory::java.get().newInstance()
+          val lifecycle = if (fragment.view !== null) {
+            fragment.viewLifecycleOwner
+          } else {
+            fragment
+          }
+          instance = factory.create(fragment.requireActivity(), lifecycle)
+          cached = instance
+        } else {
+          throw IllegalArgumentException(
+            "Balloon can not be initialized. The passed fragment's context is null."
+          )
+        }
       }
 
       return instance
     }
 
-  override fun isInitialized(): Boolean = cached !== null
+  override fun isInitialized() = cached !== null
 
   override fun toString(): String =
     if (isInitialized()) value.toString() else "Lazy value not initialized yet."

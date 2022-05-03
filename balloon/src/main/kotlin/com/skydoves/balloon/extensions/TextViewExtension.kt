@@ -26,7 +26,7 @@ import androidx.core.text.HtmlCompat
 import com.skydoves.balloon.IconForm
 import com.skydoves.balloon.IconGravity
 import com.skydoves.balloon.TextForm
-import com.skydoves.balloon.internal.NO_INT_VALUE
+import com.skydoves.balloon.internals.NO_INT_VALUE
 import com.skydoves.balloon.vectortext.VectorTextView
 import com.skydoves.balloon.vectortext.VectorTextViewParams
 

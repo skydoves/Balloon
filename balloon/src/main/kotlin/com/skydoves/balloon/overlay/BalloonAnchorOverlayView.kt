@@ -32,7 +32,7 @@ import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
 import com.skydoves.balloon.extensions.dimen
-import com.skydoves.balloon.internal.viewProperty
+import com.skydoves.balloon.internals.viewProperty
 
 /**
  * BalloonAnchorOverlayView is an overlay view for highlighting an anchor

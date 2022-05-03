@@ -16,7 +16,7 @@
 
 package com.skydoves.balloon
 
-import com.skydoves.balloon.internal.NO_INT_VALUE
+import com.skydoves.balloon.internals.NO_INT_VALUE
 
 /**
  * A specification interface for determining sizes of the Balloon materials.
