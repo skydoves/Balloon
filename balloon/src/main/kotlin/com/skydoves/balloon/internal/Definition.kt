@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.skydoves.balloon
+package com.skydoves.balloon.internal
 
 /** definition of the non-value of Int type. */
 @get:JvmSynthetic
