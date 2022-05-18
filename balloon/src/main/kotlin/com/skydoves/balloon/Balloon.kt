@@ -1463,6 +1463,7 @@ public class Balloon private constructor(
     this.destroyed = true
     this.overlayWindow.dismiss()
     this.bodyWindow.dismiss()
+    this.builder.lifecycleOwner?.lifecycle?.removeObserver(this)
   }
 
   /** Builder class for creating [Balloon]. */
