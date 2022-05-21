@@ -21,21 +21,7 @@ public enum class ArrowOrientation {
   BOTTOM,
   TOP,
   START,
-  END,
-
-  @Deprecated(
-    message = "LEFT will be deprecated for supporting the RTL layout. Use START instead.",
-    replaceWith = ReplaceWith("START"),
-    level = DeprecationLevel.WARNING
-  )
-  LEFT,
-
-  @Deprecated(
-    message = "RIGHT will be deprecated for supporting the RTL layout. Use END instead.",
-    replaceWith = ReplaceWith("END"),
-    level = DeprecationLevel.WARNING
-  )
-  RIGHT;
+  END;
 
   internal companion object {
     /** Return [ArrowOrientation] depending on the [isRtlLayout].] */
@@ -44,8 +30,8 @@ public enum class ArrowOrientation {
         this
       } else {
         when (this) {
-          START, LEFT -> END
-          END, RIGHT -> START
+          START -> END
+          END -> START
           else -> this
         }
       }

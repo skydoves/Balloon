@@ -287,7 +287,7 @@ public class Balloon private constructor(
                 BitmapDrawable(resources, adjustArrowColorByMatchingCardBackground(this, x, 0f))
             }
           }
-          ArrowOrientation.START, ArrowOrientation.LEFT -> {
+          ArrowOrientation.START -> {
             rotation = -90f
             x = binding.balloonCard.x - builder.arrowSize + SIZE_ARROW_BOUNDARY
             y = getArrowConstraintPositionY(anchor)
@@ -296,7 +296,7 @@ public class Balloon private constructor(
                 BitmapDrawable(resources, adjustArrowColorByMatchingCardBackground(this, 0f, y))
             }
           }
-          ArrowOrientation.END, ArrowOrientation.RIGHT -> {
+          ArrowOrientation.END -> {
             rotation = 90f
             x = binding.balloonCard.x + binding.balloonCard.width - SIZE_ARROW_BOUNDARY
             y = getArrowConstraintPositionY(anchor)
@@ -353,13 +353,13 @@ public class Balloon private constructor(
     canvas.drawBitmap(oldBitmap, 0f, 0f, null)
     val paint = Paint()
     val shader: LinearGradient = when (builder.arrowOrientation) {
-      ArrowOrientation.BOTTOM, ArrowOrientation.START, ArrowOrientation.LEFT -> {
+      ArrowOrientation.BOTTOM, ArrowOrientation.START -> {
         LinearGradient(
           oldBitmap.width.toFloat() / 2 - builder.arrowHalfSize, 0f,
           oldBitmap.width.toFloat(), 0f, startColor, endColor, Shader.TileMode.CLAMP
         )
       }
-      ArrowOrientation.END, ArrowOrientation.RIGHT, ArrowOrientation.TOP -> {
+      ArrowOrientation.END, ArrowOrientation.TOP -> {
         LinearGradient(
           oldBitmap.width.toFloat() / 2 + builder.arrowHalfSize, 0f, 0f, 0f,
           startColor, endColor, Shader.TileMode.CLAMP
@@ -385,7 +385,7 @@ public class Balloon private constructor(
         startColor = bitmap.getPixel((x + builder.arrowHalfSize).toInt(), y.toInt())
         endColor = bitmap.getPixel((x - builder.arrowHalfSize).toInt(), y.toInt())
       }
-      ArrowOrientation.START, ArrowOrientation.END, ArrowOrientation.LEFT, ArrowOrientation.RIGHT -> {
+      ArrowOrientation.START, ArrowOrientation.END -> {
         startColor = bitmap.getPixel(x.toInt(), (y + builder.arrowHalfSize).toInt())
         endColor = bitmap.getPixel(x.toInt(), (y - builder.arrowHalfSize).toInt())
       }
@@ -535,8 +535,8 @@ public class Balloon private constructor(
     val elevation = builder.elevation.toInt()
     with(binding.balloonContent) {
       when (builder.arrowOrientation) {
-        ArrowOrientation.LEFT -> setPadding(paddingSize, elevation, paddingSize, elevation)
-        ArrowOrientation.RIGHT -> setPadding(paddingSize, elevation, paddingSize, elevation)
+        ArrowOrientation.START -> setPadding(paddingSize, elevation, paddingSize, elevation)
+        ArrowOrientation.END -> setPadding(paddingSize, elevation, paddingSize, elevation)
         ArrowOrientation.TOP ->
           setPadding(elevation, paddingSize, elevation, paddingSize.coerceAtLeast(elevation))
         ArrowOrientation.BOTTOM ->
@@ -656,8 +656,8 @@ public class Balloon private constructor(
             when (builder.arrowOrientation) {
               ArrowOrientation.TOP -> R.anim.balloon_heartbeat_bottom
               ArrowOrientation.BOTTOM -> R.anim.balloon_heartbeat_top
-              ArrowOrientation.START, ArrowOrientation.LEFT -> R.anim.balloon_heartbeat_right
-              ArrowOrientation.END, ArrowOrientation.RIGHT -> R.anim.balloon_heartbeat_left
+              ArrowOrientation.START -> R.anim.balloon_heartbeat_right
+              ArrowOrientation.END -> R.anim.balloon_heartbeat_left
             }
           } else {
             R.anim.balloon_heartbeat_center
@@ -667,8 +667,8 @@ public class Balloon private constructor(
           when (builder.arrowOrientation) {
             ArrowOrientation.TOP -> R.anim.balloon_shake_bottom
             ArrowOrientation.BOTTOM -> R.anim.balloon_shake_top
-            ArrowOrientation.START, ArrowOrientation.LEFT -> R.anim.balloon_shake_right
-            ArrowOrientation.END, ArrowOrientation.RIGHT -> R.anim.balloon_shake_left
+            ArrowOrientation.START -> R.anim.balloon_shake_right
+            ArrowOrientation.END -> R.anim.balloon_shake_left
           }
         }
         BalloonHighlightAnimation.BREATH -> R.anim.balloon_fade

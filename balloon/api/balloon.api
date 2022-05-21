@@ -1,8 +1,6 @@
 public final class com/skydoves/balloon/ArrowOrientation : java/lang/Enum {
 	public static final field BOTTOM Lcom/skydoves/balloon/ArrowOrientation;
 	public static final field END Lcom/skydoves/balloon/ArrowOrientation;
-	public static final field LEFT Lcom/skydoves/balloon/ArrowOrientation;
-	public static final field RIGHT Lcom/skydoves/balloon/ArrowOrientation;
 	public static final field START Lcom/skydoves/balloon/ArrowOrientation;
 	public static final field TOP Lcom/skydoves/balloon/ArrowOrientation;
 	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/ArrowOrientation;
