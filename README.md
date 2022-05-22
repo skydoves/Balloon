@@ -17,9 +17,9 @@
 </p> <br>
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/24237865/61194943-f9d70380-a6ff-11e9-807f-ba1ca8126f8a.gif" width="320"/>
-<img src="https://user-images.githubusercontent.com/24237865/61225579-d346b600-a75b-11e9-84f8-3c06047b5003.gif" width="320"/>
-<img src="https://user-images.githubusercontent.com/24237865/148673977-dba2e44c-c2fb-4fb4-a648-e26e8541e865.png" width="28.4%"/>
+<img src="https://user-images.githubusercontent.com/24237865/61194943-f9d70380-a6ff-11e9-807f-ba1ca8126f8a.gif" width="300"/>
+<img src="https://user-images.githubusercontent.com/24237865/61225579-d346b600-a75b-11e9-84f8-3c06047b5003.gif" width="300"/>
+<img src="https://user-images.githubusercontent.com/24237865/148673977-dba2e44c-c2fb-4fb4-a648-e26e8541e865.png" width="270"/>
 </p>
 
 ## Who's using Balloon?
