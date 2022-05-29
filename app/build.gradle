@@ -53,4 +53,4 @@ dependencies {
   implementation project(":balloon")
 }
 
-apply from: "$rootDir/spotless.gradle"
+apply from: "$rootDir/spotless/spotless.gradle"
