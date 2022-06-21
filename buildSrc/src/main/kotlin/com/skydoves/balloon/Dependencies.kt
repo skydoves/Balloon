@@ -5,7 +5,7 @@ object Versions {
   internal const val ANDROID_GRADLE_SPOTLESS = "6.3.0"
   internal const val GRADLE_NEXUS_PUBLISH_PLUGIN = "1.1.0"
   internal const val KOTLIN = "1.6.21"
-  internal const val KOTLIN_GRADLE_DOKKA = "1.6.21"
+  internal const val KOTLIN_GRADLE_DOKKA = "1.6.10"
   internal const val KOTLIN_BINARY_VALIDATOR = "0.8.0"
 
   internal const val APPCOMPAT = "1.4.0"

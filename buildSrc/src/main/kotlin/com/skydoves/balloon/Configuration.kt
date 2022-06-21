@@ -17,8 +17,8 @@
 package com.skydoves.balloon
 
 object Configuration {
-  const val compileSdk = 31
-  const val targetSdk = 31
+  const val compileSdk = 32
+  const val targetSdk = 32
   const val minSdk = 17
   const val majorVersion = 1
   const val minorVersion = 4
