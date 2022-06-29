@@ -27,5 +27,7 @@ dependencyResolutionManagement {
   }
 }
 
-include ':app', ':balloon'
+include ':app'
+include ':balloon'
+include ':benchmark'
 include ':benchmark-app'

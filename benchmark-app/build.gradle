@@ -23,7 +23,7 @@ plugins {
 android {
   compileSdkVersion Configuration.compileSdk
   defaultConfig {
-    applicationId "com.skydoves.benchmark.app"
+    applicationId "com.skydoves.balloon.benchmark.app"
     minSdkVersion Configuration.minSdk
     targetSdkVersion Configuration.targetSdk
     versionCode Configuration.versionCode
@@ -45,6 +45,14 @@ android {
 
   lintOptions {
     abortOnError false
+  }
+
+  buildTypes {
+    benchmark {
+      signingConfig signingConfigs.debug
+      matchingFallbacks = ['release']
+      debuggable false
+    }
   }
 }
 
