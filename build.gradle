@@ -30,6 +30,7 @@ buildscript {
     classpath Dependencies.gradleNexusPublishPlugin
     classpath Dependencies.dokka
     classpath Dependencies.kotlinBinaryValidator
+      classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.0'
   }
 }
 

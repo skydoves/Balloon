@@ -13,6 +13,11 @@ object Versions {
   internal const val FRAGMENT_KTX = "1.4.0"
   internal const val LIFECYCLE = "2.4.1"
   internal const val ANNOTATION = "1.3.0"
+
+  internal const val ANDROIDX_TEST_VERSION = "1.4.0"
+  internal const val BASE_PROFILE_VERSION = "1.2.0-beta01"
+  internal const val MACRO_BENCHMARK_VERSION = "1.1.0-rc01"
+  internal const val ANDROIDX_UI_AUTOMATOR_VERSION = "2.2.0"
 }
 
 object Dependencies {
@@ -32,4 +37,12 @@ object Dependencies {
   const val fragmentKtx = "androidx.fragment:fragment-ktx:${Versions.FRAGMENT_KTX}"
   const val lifecycle = "androidx.lifecycle:lifecycle-common-java8:${Versions.LIFECYCLE}"
   const val annotation = "androidx.annotation:annotation:${Versions.ANNOTATION}"
+
+  const val BASE_PROFILE =
+    "androidx.profileinstaller:profileinstaller:${Versions.BASE_PROFILE_VERSION}"
+  const val MACRO_BENCHMARK =
+    "androidx.benchmark:benchmark-macro-junit4:${Versions.MACRO_BENCHMARK_VERSION}"
+  const val ANDROIDX_UI_AUTOMATOR =
+    "androidx.test.uiautomator:uiautomator:${Versions.ANDROIDX_UI_AUTOMATOR_VERSION}"
+  const val ANDROIDX_TEST_RUNNER = "androidx.test:runner:${Versions.ANDROIDX_TEST_VERSION}"
 }
