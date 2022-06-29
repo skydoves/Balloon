@@ -756,6 +756,10 @@ public final class com/skydoves/balloon/overlay/BalloonOverlayCircle : com/skydo
 	public final fun getRadiusRes ()Ljava/lang/Integer;
 }
 
+public final class com/skydoves/balloon/overlay/BalloonOverlayEmpty : com/skydoves/balloon/overlay/BalloonOverlayShape {
+	public static final field INSTANCE Lcom/skydoves/balloon/overlay/BalloonOverlayEmpty;
+}
+
 public final class com/skydoves/balloon/overlay/BalloonOverlayOval : com/skydoves/balloon/overlay/BalloonOverlayShape {
 	public static final field INSTANCE Lcom/skydoves/balloon/overlay/BalloonOverlayOval;
 }
