@@ -21,6 +21,9 @@ import androidx.annotation.DimenRes
 /** BalloonOverlay is a sealed interface for composing balloon overlay types. */
 public sealed class BalloonOverlayShape
 
+/** draw nothing over an anchor. */
+public object BalloonOverlayEmpty : BalloonOverlayShape()
+
 /** draw a Rect for overlaying over an anchor. */
 public object BalloonOverlayRect : BalloonOverlayShape()
 
