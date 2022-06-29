@@ -57,7 +57,9 @@ android {
 }
 
 dependencies {
-  implementation Dependencies.material
+  implementation Dependencies.appcompat
+  implementation Dependencies.fragmentKtx
+  implementation Dependencies.lifecycle
   implementation project(":balloon")
 }
 
