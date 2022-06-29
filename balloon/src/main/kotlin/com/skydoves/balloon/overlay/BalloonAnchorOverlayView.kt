@@ -167,6 +167,7 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
       }
 
       when (val overlay = balloonOverlayShape) {
+        is BalloonOverlayEmpty -> Unit
         is BalloonOverlayRect -> {
           canvas.drawRect(anchorRect, paint)
           canvas.drawRect(anchorPaddingRect, paddingColorPaint)
