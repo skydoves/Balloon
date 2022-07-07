@@ -25,6 +25,9 @@
 ## Who's using Balloon?
 **👉 [Check out who's using Balloon](/usecases.md)**
 
+## Balloon for Jetpack Compose
+If you want to use Balloon in your Jetpack Compose project, check out the **[Orchestra's Balloon](https://github.com/skydoves/Orchestra#balloon)**.
+
 ## Including in your project
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/balloon.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22balloon%22)
 
