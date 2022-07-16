@@ -272,7 +272,8 @@ public class Balloon private constructor(
               foreground = BitmapDrawable(
                 resources,
                 adjustArrowColorByMatchingCardBackground(
-                  this, x,
+                  this,
+                  x,
                   binding.balloonCard.height.toFloat()
                 )
               )
@@ -304,7 +305,8 @@ public class Balloon private constructor(
               foreground = BitmapDrawable(
                 resources,
                 adjustArrowColorByMatchingCardBackground(
-                  this, binding.balloonCard.width.toFloat(),
+                  this,
+                  binding.balloonCard.width.toFloat(),
                   y
                 )
               )
@@ -333,7 +335,8 @@ public class Balloon private constructor(
   ): Bitmap {
     imageView.setColorFilter(builder.backgroundColor, PorterDuff.Mode.SRC_IN)
     val oldBitmap = drawableToBitmap(
-      imageView.drawable, imageView.drawable.intrinsicWidth,
+      imageView.drawable,
+      imageView.drawable.intrinsicWidth,
       imageView.drawable.intrinsicHeight
     )
     val colors: Pair<Int, Int>
@@ -355,14 +358,24 @@ public class Balloon private constructor(
     val shader: LinearGradient = when (builder.arrowOrientation) {
       ArrowOrientation.BOTTOM, ArrowOrientation.START -> {
         LinearGradient(
-          oldBitmap.width.toFloat() / 2 - builder.arrowHalfSize, 0f,
-          oldBitmap.width.toFloat(), 0f, startColor, endColor, Shader.TileMode.CLAMP
+          oldBitmap.width.toFloat() / 2 - builder.arrowHalfSize,
+          0f,
+          oldBitmap.width.toFloat(),
+          0f,
+          startColor,
+          endColor,
+          Shader.TileMode.CLAMP
         )
       }
       ArrowOrientation.END, ArrowOrientation.TOP -> {
         LinearGradient(
-          oldBitmap.width.toFloat() / 2 + builder.arrowHalfSize, 0f, 0f, 0f,
-          startColor, endColor, Shader.TileMode.CLAMP
+          oldBitmap.width.toFloat() / 2 + builder.arrowHalfSize,
+          0f,
+          0f,
+          0f,
+          startColor,
+          endColor,
+          Shader.TileMode.CLAMP
         )
       }
     }
@@ -375,7 +388,8 @@ public class Balloon private constructor(
 
   private fun getColorsFromBalloonCard(x: Float, y: Float): Pair<Int, Int> {
     val bitmap = drawableToBitmap(
-      binding.balloonCard.background, binding.balloonCard.width + 1,
+      binding.balloonCard.background,
+      binding.balloonCard.width + 1,
       binding.balloonCard.height + 1
     )
     val startColor: Int

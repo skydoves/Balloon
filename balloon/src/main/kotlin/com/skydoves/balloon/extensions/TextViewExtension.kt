@@ -125,11 +125,17 @@ internal fun TextView.applyDrawable(vectorTextViewParams: VectorTextViewParams) 
 
   if (vectorTextViewParams.isRtlLayout) {
     setCompoundDrawablesWithIntrinsicBounds(
-      drawableEnd, drawableTop, drawableStart, drawableBottom
+      drawableEnd,
+      drawableTop,
+      drawableStart,
+      drawableBottom
     )
   } else {
     setCompoundDrawablesWithIntrinsicBounds(
-      drawableStart, drawableTop, drawableEnd, drawableBottom
+      drawableStart,
+      drawableTop,
+      drawableEnd,
+      drawableBottom
     )
   }
 

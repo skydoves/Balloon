@@ -18,7 +18,7 @@ spotless {
   kotlin {
     target "**/*.kt"
     targetExclude "**/build/**/*.kt"
-    ktlint().userData(['indent_size': '2', 'continuation_indent_size': '2'])
+    ktlint().setUseExperimental(true).editorConfigOverride(['indent_size': '2', 'continuation_indent_size': '2'])
     licenseHeaderFile "$rootDir/spotless/spotless.license.kt"
     trimTrailingWhitespace()
     endWithNewline()
