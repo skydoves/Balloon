@@ -795,7 +795,7 @@ public class Balloon private constructor(
       } else {
         overlayBinding.balloonOverlayView.anchorViewList = anchors.toList()
       }
-      overlayWindow.showAtLocation(mainAnchor, Gravity.CENTER, 0, 0)
+      overlayWindow.showAtLocation(mainAnchor, builder.overlayGravity, 0, 0)
     }
   }
 
@@ -1686,6 +1686,9 @@ public class Balloon private constructor(
     public var overlayShape: BalloonOverlayShape = BalloonOverlayOval
 
     @set:JvmSynthetic
+    public var overlayGravity: Int = Gravity.CENTER
+
+    @set:JvmSynthetic
     public var onBalloonClickListener: OnBalloonClickListener? = null
 
     @set:JvmSynthetic
@@ -2380,6 +2383,11 @@ public class Balloon private constructor(
     /** sets a shape of the overlay over the anchor view. */
     public fun setOverlayShape(value: BalloonOverlayShape): Builder =
       apply { this.overlayShape = value }
+
+    /** sets the balloon overlay gravity. */
+    public fun setOverlayGravity(gravity: Int): Builder = apply {
+      this.overlayGravity = gravity
+    }
 
     /** sets is status bar is visible or not in your screen. */
     public fun setIsStatusBarVisible(value: Boolean): Builder = apply {
