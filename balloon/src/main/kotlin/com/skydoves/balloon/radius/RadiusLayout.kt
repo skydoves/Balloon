@@ -51,7 +51,8 @@ public class RadiusLayout @JvmOverloads constructor(
     path.apply {
       addRoundRect(
         RectF(0f, 0f, w.toFloat(), h.toFloat()),
-        radius, radius,
+        radius,
+        radius,
         Path.Direction.CW
       )
     }
