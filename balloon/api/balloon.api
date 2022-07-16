@@ -184,6 +184,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun getOnBalloonOverlayTouchListener ()Landroid/view/View$OnTouchListener;
 	public final fun getOnBalloonTouchListener ()Landroid/view/View$OnTouchListener;
 	public final fun getOverlayColor ()I
+	public final fun getOverlayGravity ()I
 	public final fun getOverlayPadding ()F
 	public final fun getOverlayPaddingColor ()I
 	public final fun getOverlayPosition ()Landroid/graphics/Point;
@@ -393,6 +394,8 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun setOverlayColor (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setOverlayColor (I)V
 	public final fun setOverlayColorResource (I)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setOverlayGravity (I)Lcom/skydoves/balloon/Balloon$Builder;
+	public final synthetic fun setOverlayGravity (I)V
 	public final fun setOverlayPadding (F)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setOverlayPadding (F)V
 	public final fun setOverlayPaddingColor (I)Lcom/skydoves/balloon/Balloon$Builder;
