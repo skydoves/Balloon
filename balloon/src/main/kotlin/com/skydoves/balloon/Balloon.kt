@@ -94,6 +94,7 @@ import com.skydoves.balloon.extensions.getIntrinsicHeight
 import com.skydoves.balloon.extensions.getStatusBarHeight
 import com.skydoves.balloon.extensions.getSumOfIntrinsicWidth
 import com.skydoves.balloon.extensions.getViewPointOnScreen
+import com.skydoves.balloon.extensions.isAPILevelHigherThan23
 import com.skydoves.balloon.extensions.isExistHorizontalDrawable
 import com.skydoves.balloon.extensions.isFinishing
 import com.skydoves.balloon.extensions.px2Sp
@@ -261,14 +262,13 @@ public class Balloon private constructor(
 
         adjustArrowOrientationByRules(anchor)
 
-        @SuppressLint("NewApi")
         when (builder.arrowOrientation.getRTLSupportOrientation(builder.isRtlLayout)) {
           ArrowOrientation.BOTTOM -> {
             rotation = 180f
             x = getArrowConstraintPositionX(anchor)
             y = binding.balloonCard.y + binding.balloonCard.height - SIZE_ARROW_BOUNDARY
             ViewCompat.setElevation(this, builder.arrowElevation)
-            if (builder.arrowColorMatchBalloon) {
+            if (builder.arrowColorMatchBalloon && isAPILevelHigherThan23()) {
               foreground = BitmapDrawable(
                 resources,
                 adjustArrowColorByMatchingCardBackground(
@@ -283,7 +283,7 @@ public class Balloon private constructor(
             rotation = 0f
             x = getArrowConstraintPositionX(anchor)
             y = binding.balloonCard.y - builder.arrowSize + SIZE_ARROW_BOUNDARY
-            if (builder.arrowColorMatchBalloon) {
+            if (builder.arrowColorMatchBalloon && isAPILevelHigherThan23()) {
               foreground =
                 BitmapDrawable(resources, adjustArrowColorByMatchingCardBackground(this, x, 0f))
             }
@@ -292,7 +292,7 @@ public class Balloon private constructor(
             rotation = -90f
             x = binding.balloonCard.x - builder.arrowSize + SIZE_ARROW_BOUNDARY
             y = getArrowConstraintPositionY(anchor)
-            if (builder.arrowColorMatchBalloon) {
+            if (builder.arrowColorMatchBalloon && isAPILevelHigherThan23()) {
               foreground =
                 BitmapDrawable(resources, adjustArrowColorByMatchingCardBackground(this, 0f, y))
             }
@@ -301,7 +301,7 @@ public class Balloon private constructor(
             rotation = 90f
             x = binding.balloonCard.x + binding.balloonCard.width - SIZE_ARROW_BOUNDARY
             y = getArrowConstraintPositionY(anchor)
-            if (builder.arrowColorMatchBalloon) {
+            if (builder.arrowColorMatchBalloon && isAPILevelHigherThan23()) {
               foreground = BitmapDrawable(
                 resources,
                 adjustArrowColorByMatchingCardBackground(
