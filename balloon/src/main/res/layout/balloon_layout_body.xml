@@ -56,16 +56,15 @@
 
     </FrameLayout>
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
       android:id="@+id/balloon_arrow"
       android:layout_width="15dp"
       android:layout_height="10dp"
       android:rotation="180"
       android:scaleType="fitXY"
+      android:tint="@android:color/black"
       android:visibility="invisible"
-      app:srcCompat="@drawable/balloon_arrow_drawable"
-      app:tint="@android:color/black"
-      tools:ignore="ContentDescription" />
+      app:srcCompat="@drawable/balloon_arrow_drawable" />
 
   </FrameLayout>
 
