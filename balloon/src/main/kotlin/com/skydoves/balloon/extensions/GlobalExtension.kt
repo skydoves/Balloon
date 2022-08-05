@@ -46,3 +46,11 @@ internal inline fun runOnAfterSDK22(block: () -> Unit) {
     block()
   }
 }
+
+/**
+ * Checks if the current device's API level is higher than 23 (M).
+ */
+@JvmSynthetic
+internal fun isAPILevelHigherThan23(): Boolean {
+  return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+}
