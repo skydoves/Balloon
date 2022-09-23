@@ -31,6 +31,7 @@
     android:layout_height="55dp"
     android:layout_gravity="center_vertical"
     app:shapeAppearanceOverlay="@style/CircleImageStyle"
+    app:strokeColor="@null"
     tools:src="@tools:sample/avatars" />
 
   <LinearLayout

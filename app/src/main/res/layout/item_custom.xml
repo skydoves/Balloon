@@ -31,6 +31,7 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     app:shapeAppearanceOverlay="@style/CircleImageStyle"
+    app:strokeColor="@null"
     tools:src="@tools:sample/avatars" />
 
   <TextView
@@ -42,9 +43,9 @@
     android:textColor="@color/white_87"
     android:textSize="15sp"
     android:textStyle="bold"
-    app:layout_constraintHorizontal_bias="0.0"
     app:layout_constraintBottom_toBottomOf="@id/item_custom_icon"
     app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.0"
     app:layout_constraintStart_toEndOf="@id/item_custom_icon"
     app:layout_constraintTop_toTopOf="@id/item_custom_icon"
     tools:text="@tools:sample/full_names" />

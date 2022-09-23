@@ -46,7 +46,8 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/appBarLayout"
-    app:shapeAppearanceOverlay="@style/CircleImageStyle" />
+    app:shapeAppearanceOverlay="@style/CircleImageStyle"
+    app:strokeColor="@null" />
 
   <TextView
     android:id="@+id/name"
