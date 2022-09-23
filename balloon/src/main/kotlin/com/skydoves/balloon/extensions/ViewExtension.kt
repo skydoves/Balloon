@@ -105,7 +105,7 @@ internal inline fun View.circularUnRevealed(
           start()
         }.addListener(
           object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator?) {
+            override fun onAnimationEnd(animation: Animator) {
               super.onAnimationEnd(animation)
               doAfterFinish()
             }
