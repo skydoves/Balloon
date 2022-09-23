@@ -5,7 +5,7 @@ Describe the big picture of your changes here to communicate to the maintainers 
 Describe the implementation details for this Pull Request.
 
 ### ✍️ Explain examples
-Explain examples with code for this updates.
+Explain examples with code for these updates.
 
 ### Preparing a pull request for review
 Ensure your change is properly formatted by running:
@@ -14,7 +14,7 @@ Ensure your change is properly formatted by running:
 $ ./gradlew spotlessApply
 ```
 
-Then dump binary API of this library that is public in sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that make this change binary incompatible.
+Then dump binary APIs of this library that is public in sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
 
 ```bash
 ./gradlew apiDump
