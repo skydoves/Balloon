@@ -268,54 +268,40 @@ public class Balloon private constructor(
             x = getArrowConstraintPositionX(anchor)
             y = binding.balloonCard.y + binding.balloonCard.height - SIZE_ARROW_BOUNDARY
             ViewCompat.setElevation(this, builder.arrowElevation)
-            if (builder.arrowColorMatchBalloon && isAPILevelHigherThan23()) {
-              foreground = BitmapDrawable(
-                resources,
-                adjustArrowColorByMatchingCardBackground(
-                  this,
-                  x,
-                  binding.balloonCard.height.toFloat()
-                )
-              )
-            }
+            foreground = getArrowForeground(x, binding.balloonCard.height.toFloat())
           }
           ArrowOrientation.TOP -> {
             rotation = 0f
             x = getArrowConstraintPositionX(anchor)
             y = binding.balloonCard.y - builder.arrowSize + SIZE_ARROW_BOUNDARY
-            if (builder.arrowColorMatchBalloon && isAPILevelHigherThan23()) {
-              foreground =
-                BitmapDrawable(resources, adjustArrowColorByMatchingCardBackground(this, x, 0f))
-            }
+            foreground = getArrowForeground(x, 0f)
           }
           ArrowOrientation.START -> {
             rotation = -90f
             x = binding.balloonCard.x - builder.arrowSize + SIZE_ARROW_BOUNDARY
             y = getArrowConstraintPositionY(anchor)
-            if (builder.arrowColorMatchBalloon && isAPILevelHigherThan23()) {
-              foreground =
-                BitmapDrawable(resources, adjustArrowColorByMatchingCardBackground(this, 0f, y))
-            }
+            foreground = getArrowForeground(0f, y)
           }
           ArrowOrientation.END -> {
             rotation = 90f
             x = binding.balloonCard.x + binding.balloonCard.width - SIZE_ARROW_BOUNDARY
             y = getArrowConstraintPositionY(anchor)
-            if (builder.arrowColorMatchBalloon && isAPILevelHigherThan23()) {
-              foreground = BitmapDrawable(
-                resources,
-                adjustArrowColorByMatchingCardBackground(
-                  this,
-                  binding.balloonCard.width.toFloat(),
-                  y
-                )
-              )
-            }
+            foreground = getArrowForeground(binding.balloonCard.width.toFloat(), y)
           }
         }
         visible(builder.isVisibleArrow)
       }
     }
+  }
+
+  /** Returns [BitmapDrawable] that will be used for the foreground of the arrow. */
+  private fun ImageView.getArrowForeground(x: Float, y: Float): BitmapDrawable? {
+    return if (builder.arrowColorMatchBalloon && isAPILevelHigherThan23()) {
+      BitmapDrawable(
+        resources,
+        adjustArrowColorByMatchingCardBackground(this, x, y)
+      )
+    } else null
   }
 
   /**
