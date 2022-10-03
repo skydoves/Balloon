@@ -83,7 +83,7 @@ class CustomActivity : AppCompatActivity(), CustomAdapter.CustomViewHolder.Deleg
         Toast.makeText(applicationContext, "Edit", Toast.LENGTH_SHORT).show()
       }
 
-      bottomNavigationView.setOnNavigationItemSelectedListener {
+      bottomNavigationView.setOnItemSelectedListener {
         customTagBalloon.showAlignTop(bottomNavigationView, 130, 0)
         true
       }
