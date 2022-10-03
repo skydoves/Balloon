@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity(), OnBalloonClickListener {
         }
       }
 
-      bottomNavigationView.setOnNavigationItemSelectedListener {
+      bottomNavigationView.setOnItemSelectedListener {
         if (navigationBalloon.isShowing) {
           navigationBalloon.dismiss()
         } else {
