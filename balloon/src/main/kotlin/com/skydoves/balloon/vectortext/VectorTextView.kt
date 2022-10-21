@@ -63,7 +63,7 @@ public class VectorTextView @JvmOverloads constructor(
           R.styleable.VectorTextView_balloon_drawablePadding,
           NO_INT_VALUE
         ).takeIfNotNoIntValue(),
-        tintColor = attributeArray.getResourceId(
+        tintColor = attributeArray.getColor(
           R.styleable.VectorTextView_balloon_drawableTintColor,
           NO_INT_VALUE
         ).takeIfNotNoIntValue(),
