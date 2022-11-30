@@ -806,6 +806,7 @@ public class Balloon private constructor(
   ): Balloon {
     this.setOnBalloonDismissListener {
       if (!destroyed) {
+        builder.onBalloonDismissListener?.onBalloonDismiss()
         block(balloon)
       }
     }
