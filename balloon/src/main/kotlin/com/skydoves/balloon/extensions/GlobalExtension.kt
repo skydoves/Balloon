@@ -48,9 +48,24 @@ internal inline fun runOnAfterSDK22(block: () -> Unit) {
 }
 
 /**
+ * Runs a [block] lambda when the device's SDK level is 23 or higher.
+ *
+ * @param block A lambda that should be run when the device's SDK level is 23 or higher.
+ */
+@JvmSynthetic
+@PublishedApi
+@ChecksSdkIntAtLeast(api = Build.VERSION_CODES.M, lambda = 0)
+internal inline fun runOnAfterSDK23(block: () -> Unit) {
+  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+    block()
+  }
+}
+
+/**
  * Checks if the current device's API level is higher than 23 (M).
  */
 @JvmSynthetic
+@ChecksSdkIntAtLeast(api = Build.VERSION_CODES.M)
 internal fun isAPILevelHigherThan23(): Boolean {
   return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
 }
