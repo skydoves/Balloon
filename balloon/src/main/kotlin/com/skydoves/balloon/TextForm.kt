@@ -30,6 +30,7 @@ import androidx.annotation.MainThread
 import androidx.annotation.StringRes
 import com.skydoves.balloon.annotations.Dp
 import com.skydoves.balloon.annotations.Sp
+import com.skydoves.balloon.extensions.Empty
 import com.skydoves.balloon.extensions.contextColor
 import com.skydoves.balloon.extensions.dimen
 import com.skydoves.balloon.extensions.px2Sp
@@ -79,7 +80,7 @@ public class TextForm private constructor(
   @TextFormDsl
   public class Builder(public val context: Context) {
     @set:JvmSynthetic
-    public var text: CharSequence = ""
+    public var text: CharSequence = String.Empty
 
     @Sp
     @set:JvmSynthetic
@@ -144,7 +145,7 @@ public class TextForm private constructor(
       apply { this.textLineSpacing = value }
 
     /** sets the line spacing value resource of the text. */
-    public fun setTextLineSpacingRes(@DimenRes value: Int): Builder = apply {
+    public fun setTextLineSpacingResource(@DimenRes value: Int): Builder = apply {
       this.textLineSpacing = context.dimen(value)
     }
 

@@ -20,9 +20,10 @@ import android.graphics.drawable.Drawable
 import androidx.annotation.ColorInt
 import androidx.annotation.DimenRes
 import androidx.annotation.Px
+import com.skydoves.balloon.extensions.Empty
 
 /** VectorTextViewParams is a collection of [VectorTextView]'s parameters. */
-public data class VectorTextViewParams(
+public data class VectorTextViewParams @JvmOverloads constructor(
   public var drawableStartRes: Int? = null,
   public var drawableEndRes: Int? = null,
   public var drawableBottomRes: Int? = null,
@@ -32,6 +33,7 @@ public data class VectorTextViewParams(
   public var drawableBottom: Drawable? = null,
   public var drawableTop: Drawable? = null,
   public var isRtlLayout: Boolean = false,
+  public var contentDescription: String = String.Empty,
   @Px public val compoundDrawablePadding: Int? = null,
   @Px public val iconWidth: Int? = null,
   @Px public val iconHeight: Int? = null,

@@ -80,6 +80,7 @@ import com.skydoves.balloon.annotations.Dp
 import com.skydoves.balloon.annotations.Sp
 import com.skydoves.balloon.databinding.BalloonLayoutBodyBinding
 import com.skydoves.balloon.databinding.BalloonLayoutOverlayBinding
+import com.skydoves.balloon.extensions.Empty
 import com.skydoves.balloon.extensions.applyIconForm
 import com.skydoves.balloon.extensions.applyTextForm
 import com.skydoves.balloon.extensions.circularRevealed
@@ -1603,7 +1604,7 @@ public class Balloon private constructor(
     public var cornerRadius: Float = 5f.dp
 
     @set:JvmSynthetic
-    public var text: CharSequence = ""
+    public var text: CharSequence = String.Empty
 
     @ColorInt
     @set:JvmSynthetic
@@ -1658,6 +1659,9 @@ public class Balloon private constructor(
 
     @set:JvmSynthetic
     public var iconForm: IconForm? = null
+
+    @set:JvmSynthetic
+    public var iconContentDescription: String = String.Empty
 
     @FloatRange(from = 0.0, to = 1.0)
     @set:JvmSynthetic
@@ -2257,7 +2261,7 @@ public class Balloon private constructor(
       apply { this.textLineSpacing = value }
 
     /** sets the line spacing value resource of the text. */
-    public fun setTextLineSpacingRes(@DimenRes value: Int): Builder = apply {
+    public fun setTextLineSpacingResource(@DimenRes value: Int): Builder = apply {
       this.textLineSpacing = context.dimen(value)
     }
 
@@ -2332,6 +2336,16 @@ public class Balloon private constructor(
     /** sets the space between the icon and the main text content using dimension resource. */
     public fun setIconSpaceResource(@DimenRes value: Int): Builder = apply {
       this.iconSpace = context.dimenPixel(value)
+    }
+
+    /** sets the content description accessibility. */
+    public fun setIconContentDescription(value: String): Builder = apply {
+      this.iconContentDescription = value
+    }
+
+    /** sets the content description accessibility using resource. */
+    public fun setIconContentDescriptionResource(@StringRes value: Int): Builder = apply {
+      this.iconContentDescription = context.getString(value)
     }
 
     /** applies [IconForm] attributes to the icon. */
