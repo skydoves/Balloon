@@ -50,7 +50,7 @@ internal inline fun runOnAfterSDK22(block: () -> Unit) {
 /**
  * Runs a [block] lambda when the device's SDK level is 23 or higher.
  *
- * @param block A lambda that should be run when the device's SDK level is 22 or higher.
+ * @param block A lambda that should be run when the device's SDK level is 23 or higher.
  */
 @JvmSynthetic
 @PublishedApi
