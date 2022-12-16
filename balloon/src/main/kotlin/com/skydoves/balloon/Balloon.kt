@@ -1660,6 +1660,9 @@ public class Balloon private constructor(
     @set:JvmSynthetic
     public var iconForm: IconForm? = null
 
+    @set:JvmSynthetic
+    public var iconContentDescription: String = String.Empty
+
     @FloatRange(from = 0.0, to = 1.0)
     @set:JvmSynthetic
     public var alpha: Float = 1f
@@ -2333,6 +2336,16 @@ public class Balloon private constructor(
     /** sets the space between the icon and the main text content using dimension resource. */
     public fun setIconSpaceResource(@DimenRes value: Int): Builder = apply {
       this.iconSpace = context.dimenPixel(value)
+    }
+
+    /** sets the content description accessibility. */
+    public fun setIconContentDescription(value: String): Builder = apply {
+      this.iconContentDescription = value
+    }
+
+    /** sets the content description accessibility using resource. */
+    public fun setIconContentDescriptionResource(@StringRes value: Int): Builder = apply {
+      this.iconContentDescription = context.getString(value)
     }
 
     /** applies [IconForm] attributes to the icon. */

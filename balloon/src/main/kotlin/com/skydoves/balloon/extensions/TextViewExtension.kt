@@ -62,6 +62,7 @@ internal fun VectorTextView.applyIconForm(iconForm: IconForm) {
       iconWidth = iconForm.iconWidth,
       iconHeight = iconForm.iconHeight,
       compoundDrawablePadding = iconForm.iconSpace,
+      contentDescription = iconForm.iconContentDescription,
       tintColor = iconForm.iconColor.takeIf { it != NO_INT_VALUE }
     ).apply {
       when (iconForm.iconGravity) {
@@ -144,6 +145,8 @@ internal fun TextView.applyDrawable(vectorTextViewParams: VectorTextViewParams) 
     ?: vectorTextViewParams.compoundDrawablePaddingRes?.let {
       compoundDrawablePadding = context.resources.getDimensionPixelSize(it)
     }
+
+  contentDescription = vectorTextViewParams.contentDescription
 }
 
 /** returns sum of the compound padding (start and end). */
