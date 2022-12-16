@@ -28,6 +28,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.MainThread
 import androidx.annotation.StringRes
+import com.skydoves.balloon.annotations.Dp
 import com.skydoves.balloon.annotations.Sp
 import com.skydoves.balloon.extensions.contextColor
 import com.skydoves.balloon.extensions.dimen
@@ -70,6 +71,8 @@ public class TextForm private constructor(
 
   public val textTypeface: Typeface? = builder.textTypefaceObject
 
+  public val textLineSpacing: Float? = builder.textLineSpacing
+
   public val textGravity: Int = builder.textGravity
 
   /** Builder class for [TextForm]. */
@@ -97,6 +100,9 @@ public class TextForm private constructor(
 
     @set:JvmSynthetic
     public var textTypefaceObject: Typeface? = null
+
+    @set:JvmSynthetic
+    public var textLineSpacing: Float? = null
 
     @set:JvmSynthetic
     public var textGravity: Int = Gravity.CENTER
@@ -131,6 +137,15 @@ public class TextForm private constructor(
     /** sets the color of the text using resource. */
     public fun setTextColorResource(@ColorRes value: Int): Builder = apply {
       this.textColor = context.contextColor(value)
+    }
+
+    /** sets the line spacing value of the text. */
+    public fun setTextLineSpacing(@Dp value: Float?): Builder =
+      apply { this.textLineSpacing = value }
+
+    /** sets the line spacing value resource of the text. */
+    public fun setTextLineSpacingRes(@DimenRes value: Int): Builder = apply {
+      this.textLineSpacing = context.dimen(value)
     }
 
     /** sets the [Typeface] of the text. */

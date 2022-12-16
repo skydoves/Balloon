@@ -203,6 +203,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun getTextForm ()Lcom/skydoves/balloon/TextForm;
 	public final fun getTextGravity ()I
 	public final fun getTextIsHtml ()Z
+	public final fun getTextLineSpacing ()Ljava/lang/Float;
 	public final fun getTextSize ()F
 	public final fun getTextTypeface ()I
 	public final fun getTextTypefaceObject ()Landroid/graphics/Typeface;
@@ -448,6 +449,9 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final synthetic fun setTextGravity (I)V
 	public final fun setTextIsHtml (Z)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setTextIsHtml (Z)V
+	public final fun setTextLineSpacing (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final synthetic fun setTextLineSpacing (Ljava/lang/Float;)V
+	public final fun setTextLineSpacingRes (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setTextResource (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setTextSize (F)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setTextSize (F)V
@@ -645,6 +649,7 @@ public final class com/skydoves/balloon/TextForm {
 	public final fun getTextColor ()I
 	public final fun getTextGravity ()I
 	public final fun getTextIsHtml ()Z
+	public final fun getTextLineSpacing ()Ljava/lang/Float;
 	public final fun getTextSize ()F
 	public final fun getTextStyle ()I
 	public final fun getTextTypeface ()Landroid/graphics/Typeface;
@@ -659,6 +664,7 @@ public final class com/skydoves/balloon/TextForm$Builder {
 	public final fun getTextColor ()I
 	public final fun getTextGravity ()I
 	public final fun getTextIsHtml ()Z
+	public final fun getTextLineSpacing ()Ljava/lang/Float;
 	public final fun getTextSize ()F
 	public final fun getTextTypeface ()I
 	public final fun getTextTypefaceObject ()Landroid/graphics/Typeface;
@@ -673,6 +679,9 @@ public final class com/skydoves/balloon/TextForm$Builder {
 	public final synthetic fun setTextGravity (I)V
 	public final fun setTextIsHtml (Z)Lcom/skydoves/balloon/TextForm$Builder;
 	public final synthetic fun setTextIsHtml (Z)V
+	public final fun setTextLineSpacing (Ljava/lang/Float;)Lcom/skydoves/balloon/TextForm$Builder;
+	public final synthetic fun setTextLineSpacing (Ljava/lang/Float;)V
+	public final fun setTextLineSpacingRes (I)Lcom/skydoves/balloon/TextForm$Builder;
 	public final fun setTextResource (I)Lcom/skydoves/balloon/TextForm$Builder;
 	public final fun setTextSize (F)Lcom/skydoves/balloon/TextForm$Builder;
 	public final synthetic fun setTextSize (F)V
