@@ -140,7 +140,7 @@ public class TextForm private constructor(
     }
 
     /** sets the line spacing value of the text. */
-    public fun setTextLineSpacing(@Dp value: Float): Builder =
+    public fun setTextLineSpacing(@Dp value: Float?): Builder =
       apply { this.textLineSpacing = value }
 
     /** sets the line spacing value resource of the text. */
