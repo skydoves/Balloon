@@ -100,6 +100,7 @@ import com.skydoves.balloon.extensions.isFinishing
 import com.skydoves.balloon.extensions.px2Sp
 import com.skydoves.balloon.extensions.runOnAfterSDK21
 import com.skydoves.balloon.extensions.runOnAfterSDK22
+import com.skydoves.balloon.extensions.runOnAfterSDK23
 import com.skydoves.balloon.extensions.sumOfCompoundPadding
 import com.skydoves.balloon.extensions.visible
 import com.skydoves.balloon.internals.LTR
@@ -268,25 +269,29 @@ public class Balloon private constructor(
             x = getArrowConstraintPositionX(anchor)
             y = binding.balloonCard.y + binding.balloonCard.height - SIZE_ARROW_BOUNDARY
             ViewCompat.setElevation(this, builder.arrowElevation)
-            foreground = getArrowForeground(x, binding.balloonCard.height.toFloat())
+            runOnAfterSDK23 {
+              foreground = getArrowForeground(x, binding.balloonCard.height.toFloat())
+            }
           }
           ArrowOrientation.TOP -> {
             rotation = 0f
             x = getArrowConstraintPositionX(anchor)
             y = binding.balloonCard.y - builder.arrowSize + SIZE_ARROW_BOUNDARY
-            foreground = getArrowForeground(x, 0f)
+            runOnAfterSDK23 { foreground = getArrowForeground(x, 0f) }
           }
           ArrowOrientation.START -> {
             rotation = -90f
             x = binding.balloonCard.x - builder.arrowSize + SIZE_ARROW_BOUNDARY
             y = getArrowConstraintPositionY(anchor)
-            foreground = getArrowForeground(0f, y)
+            runOnAfterSDK23 { foreground = getArrowForeground(0f, y) }
           }
           ArrowOrientation.END -> {
             rotation = 90f
             x = binding.balloonCard.x + binding.balloonCard.width - SIZE_ARROW_BOUNDARY
             y = getArrowConstraintPositionY(anchor)
-            foreground = getArrowForeground(binding.balloonCard.width.toFloat(), y)
+            runOnAfterSDK23 {
+              foreground = getArrowForeground(binding.balloonCard.width.toFloat(), y)
+            }
           }
         }
         visible(builder.isVisibleArrow)
@@ -649,7 +654,7 @@ public class Balloon private constructor(
   }
 
   private fun getBalloonHighlightAnimation(): Animation? {
-    val animRes = if (builder.balloonHighlightAnimationStyle == NO_INT_VALUE) {
+    val animRes: Int = if (builder.balloonHighlightAnimationStyle == NO_INT_VALUE) {
       when (builder.balloonHighlightAnimation) {
         BalloonHighlightAnimation.HEARTBEAT -> {
           if (builder.isVisibleArrow) {
@@ -1756,7 +1761,7 @@ public class Balloon private constructor(
     @set:JvmSynthetic
     public var balloonHighlightAnimation: BalloonHighlightAnimation = BalloonHighlightAnimation.NONE
 
-    @StyleRes
+    @AnimRes
     @set:JvmSynthetic
     public var balloonHighlightAnimationStyle: Int = NO_INT_VALUE
 
