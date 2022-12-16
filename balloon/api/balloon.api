@@ -451,7 +451,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final synthetic fun setTextIsHtml (Z)V
 	public final fun setTextLineSpacing (F)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setTextLineSpacing (Ljava/lang/Float;)V
-	public final fun setTextLineSpacingRes (I)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setTextLineSpacingResource (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setTextResource (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setTextSize (F)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setTextSize (F)V
@@ -573,6 +573,7 @@ public final class com/skydoves/balloon/IconForm {
 	public final fun getDrawable ()Landroid/graphics/drawable/Drawable;
 	public final fun getDrawableRes ()Ljava/lang/Integer;
 	public final fun getIconColor ()I
+	public final fun getIconContentDescription ()Ljava/lang/String;
 	public final fun getIconGravity ()Lcom/skydoves/balloon/IconGravity;
 	public final fun getIconHeight ()I
 	public final fun getIconSpace ()I
@@ -587,6 +588,7 @@ public final class com/skydoves/balloon/IconForm$Builder {
 	public final fun getDrawable ()Landroid/graphics/drawable/Drawable;
 	public final fun getDrawableRes ()Ljava/lang/Integer;
 	public final fun getIconColor ()I
+	public final fun getIconContentDescription ()Ljava/lang/String;
 	public final fun getIconGravity ()Lcom/skydoves/balloon/IconGravity;
 	public final fun getIconHeight ()I
 	public final fun getIconSpace ()I
@@ -599,6 +601,9 @@ public final class com/skydoves/balloon/IconForm$Builder {
 	public final fun setIconColor (I)Lcom/skydoves/balloon/IconForm$Builder;
 	public final synthetic fun setIconColor (I)V
 	public final fun setIconColorResource (I)Lcom/skydoves/balloon/IconForm$Builder;
+	public final fun setIconContentDescription (Ljava/lang/String;)Lcom/skydoves/balloon/IconForm$Builder;
+	public final synthetic fun setIconContentDescription (Ljava/lang/String;)V
+	public final fun setIconContentDescriptionResource (I)Lcom/skydoves/balloon/IconForm$Builder;
 	public final synthetic fun setIconGravity (Lcom/skydoves/balloon/IconGravity;)V
 	public final fun setIconHeight (I)Lcom/skydoves/balloon/IconForm$Builder;
 	public final synthetic fun setIconHeight (I)V
@@ -681,7 +686,7 @@ public final class com/skydoves/balloon/TextForm$Builder {
 	public final synthetic fun setTextIsHtml (Z)V
 	public final fun setTextLineSpacing (Ljava/lang/Float;)Lcom/skydoves/balloon/TextForm$Builder;
 	public final synthetic fun setTextLineSpacing (Ljava/lang/Float;)V
-	public final fun setTextLineSpacingRes (I)Lcom/skydoves/balloon/TextForm$Builder;
+	public final fun setTextLineSpacingResource (I)Lcom/skydoves/balloon/TextForm$Builder;
 	public final fun setTextResource (I)Lcom/skydoves/balloon/TextForm$Builder;
 	public final fun setTextSize (F)Lcom/skydoves/balloon/TextForm$Builder;
 	public final synthetic fun setTextSize (F)V

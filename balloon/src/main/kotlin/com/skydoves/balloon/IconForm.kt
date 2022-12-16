@@ -26,6 +26,8 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.MainThread
 import androidx.annotation.Px
+import androidx.annotation.StringRes
+import com.skydoves.balloon.extensions.Empty
 import com.skydoves.balloon.extensions.contextColor
 import com.skydoves.balloon.extensions.dp
 
@@ -69,6 +71,8 @@ public class IconForm private constructor(
   @ColorInt
   public val iconColor: Int = builder.iconColor
 
+  public val iconContentDescription: String = builder.iconContentDescription
+
   /** Builder class for [IconForm]. */
   @IconFormDsl
   public class Builder(public val context: Context) {
@@ -98,6 +102,9 @@ public class IconForm private constructor(
     @set:JvmSynthetic
     public var iconColor: Int = Color.WHITE
 
+    @set:JvmSynthetic
+    public var iconContentDescription: String = String.Empty
+
     /** sets the [Drawable] of the icon. */
     public fun setDrawable(value: Drawable?): Builder = apply { this.drawable = value }
 
@@ -125,6 +132,16 @@ public class IconForm private constructor(
     public fun setIconSize(@Px value: Int): Builder = apply {
       setIconWidth(value)
       setIconHeight(value)
+    }
+
+    /** sets the content description accessibility. */
+    public fun setIconContentDescription(value: String): Builder = apply {
+      this.iconContentDescription = value
+    }
+
+    /** sets the content description accessibility using resource. */
+    public fun setIconContentDescriptionResource(@StringRes value: Int): Builder = apply {
+      this.iconContentDescription = context.getString(value)
     }
 
     /** sets the space between the icon and the main text content. */

@@ -80,6 +80,7 @@ import com.skydoves.balloon.annotations.Dp
 import com.skydoves.balloon.annotations.Sp
 import com.skydoves.balloon.databinding.BalloonLayoutBodyBinding
 import com.skydoves.balloon.databinding.BalloonLayoutOverlayBinding
+import com.skydoves.balloon.extensions.Empty
 import com.skydoves.balloon.extensions.applyIconForm
 import com.skydoves.balloon.extensions.applyTextForm
 import com.skydoves.balloon.extensions.circularRevealed
@@ -1603,7 +1604,7 @@ public class Balloon private constructor(
     public var cornerRadius: Float = 5f.dp
 
     @set:JvmSynthetic
-    public var text: CharSequence = ""
+    public var text: CharSequence = String.Empty
 
     @ColorInt
     @set:JvmSynthetic
@@ -2257,7 +2258,7 @@ public class Balloon private constructor(
       apply { this.textLineSpacing = value }
 
     /** sets the line spacing value resource of the text. */
-    public fun setTextLineSpacingRes(@DimenRes value: Int): Builder = apply {
+    public fun setTextLineSpacingResource(@DimenRes value: Int): Builder = apply {
       this.textLineSpacing = context.dimen(value)
     }
 
