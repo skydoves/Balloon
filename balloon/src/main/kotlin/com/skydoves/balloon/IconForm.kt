@@ -71,7 +71,7 @@ public class IconForm private constructor(
   @ColorInt
   public val iconColor: Int = builder.iconColor
 
-  public val iconContentDescription: String = builder.iconContentDescription
+  public val iconContentDescription: CharSequence = builder.iconContentDescription
 
   /** Builder class for [IconForm]. */
   @IconFormDsl
@@ -103,7 +103,7 @@ public class IconForm private constructor(
     public var iconColor: Int = Color.WHITE
 
     @set:JvmSynthetic
-    public var iconContentDescription: String = String.Empty
+    public var iconContentDescription: CharSequence = String.Empty
 
     /** sets the [Drawable] of the icon. */
     public fun setDrawable(value: Drawable?): Builder = apply { this.drawable = value }
@@ -135,7 +135,7 @@ public class IconForm private constructor(
     }
 
     /** sets the content description accessibility. */
-    public fun setIconContentDescription(value: String): Builder = apply {
+    public fun setIconContentDescription(value: CharSequence): Builder = apply {
       this.iconContentDescription = value
     }
 

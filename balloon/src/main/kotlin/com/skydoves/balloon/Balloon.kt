@@ -1661,7 +1661,7 @@ public class Balloon private constructor(
     public var iconForm: IconForm? = null
 
     @set:JvmSynthetic
-    public var iconContentDescription: String = String.Empty
+    public var iconContentDescription: CharSequence = String.Empty
 
     @FloatRange(from = 0.0, to = 1.0)
     @set:JvmSynthetic
@@ -2339,7 +2339,7 @@ public class Balloon private constructor(
     }
 
     /** sets the content description accessibility. */
-    public fun setIconContentDescription(value: String): Builder = apply {
+    public fun setIconContentDescription(value: CharSequence): Builder = apply {
       this.iconContentDescription = value
     }
 
