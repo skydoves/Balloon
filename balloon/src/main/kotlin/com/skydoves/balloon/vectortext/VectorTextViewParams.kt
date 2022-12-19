@@ -33,7 +33,7 @@ public data class VectorTextViewParams @JvmOverloads constructor(
   public var drawableBottom: Drawable? = null,
   public var drawableTop: Drawable? = null,
   public var isRtlLayout: Boolean = false,
-  public var contentDescription: String = String.Empty,
+  public var contentDescription: CharSequence = String.Empty,
   @Px public val compoundDrawablePadding: Int? = null,
   @Px public val iconWidth: Int? = null,
   @Px public val iconHeight: Int? = null,
