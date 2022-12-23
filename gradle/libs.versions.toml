@@ -1,0 +1,43 @@
+[versions]
+agp = "7.3.1"
+dokka = "1.7.20"
+nexusPlugin = "1.1.0"
+kotlin = "1.7.21"
+kotlinBinaryCompatibility = "0.12.1"
+javaRelease = "8"
+jvmTarget = "1.8"
+androidxMaterial = "1.6.1"
+androidxAppcompat = "1.5.1"
+androidxFragment = "1.5.3"
+androidxLifecycle = "2.5.1"
+androidxAnnotation = "1.5.0"
+androidxTest = "1.4.0"
+baselineProfiles = "1.2.0"
+macroBenchmark = "1.1.0"
+uiAutomator = "2.2.0"
+spotless = "6.7.2"
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+android-test = { id = "com.android.test", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+nexus-plugin = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexusPlugin" }
+kotlin-binary-compatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinBinaryCompatibility" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+
+[libraries]
+agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
+androidx-material = { module = "com.google.android.material:material", version.ref = "androidxMaterial" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppcompat" }
+androidx-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "androidxFragment" }
+androidx-lifecycle = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
+
+# unit test
+android-test-runner = { module = "com.android.support.test:runner", version.ref = "androidxTest" }
+profileinstaller = { module = "androidx.profileinstaller:profileinstaller", version.ref = "baselineProfiles" }
+macrobenchmark = { module = "androidx.benchmark:benchmark-macro-junit4", version.ref = "macroBenchmark" }
+uiautomator = { module = "androidx.test.uiautomator:uiautomator", version.ref = "uiAutomator" }

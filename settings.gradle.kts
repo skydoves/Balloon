@@ -12,20 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-apply plugin: "com.diffplug.spotless"
-
-spotless {
-  kotlin {
-    target "**/*.kt"
-    targetExclude "**/build/**/*.kt"
-    ktlint().setUseExperimental(true).editorConfigOverride(['indent_size': '2', 'continuation_indent_size': '2'])
-    licenseHeaderFile "$rootDir/spotless/spotless.license.kt"
-    trimTrailingWhitespace()
-    endWithNewline()
-  }
-  format "xml", {
-    target "**/*.xml"
-    targetExclude "**/build/**/*.xml", "**/detekt-baseline.xml"
-    licenseHeaderFile "$rootDir/spotless/spotless.license.xml", "(<[^!?])"
+pluginManagement {
+  repositories {
+    gradlePluginPortal()
+    google()
+    mavenCentral()
   }
 }
+dependencyResolutionManagement {
+  repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+  repositories {
+    google()
+    mavenCentral()
+  }
+}
+
+include(":app")
+include(":balloon")
+include(":benchmark")
+include(":benchmark-app")

@@ -15,42 +15,41 @@
 import com.skydoves.balloon.Configuration
 import com.skydoves.balloon.Dependencies
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-  id 'com.android.application'
-  id 'org.jetbrains.kotlin.android'
+  id(libs.plugins.android.application.get().pluginId)
+  id(libs.plugins.kotlin.android.get().pluginId)
 }
 
 android {
-  compileSdkVersion Configuration.compileSdk
+  compileSdk = Configuration.compileSdk
   defaultConfig {
-    applicationId "com.skydoves.balloondemo"
-    minSdkVersion Configuration.minSdk
-    targetSdkVersion Configuration.targetSdk
-    versionCode Configuration.versionCode
-    versionName Configuration.versionName
+    applicationId = "com.skydoves.balloondemo"
+    minSdk = Configuration.minSdk
+    targetSdk = Configuration.targetSdk
+    versionCode = Configuration.versionCode
+    versionName = Configuration.versionName
   }
 
   compileOptions {
-    sourceCompatibility JavaVersion.VERSION_11
-    targetCompatibility JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
   }
 
   kotlinOptions {
-    jvmTarget = "11"
+    jvmTarget = libs.versions.jvmTarget.get()
   }
 
   buildFeatures {
-    viewBinding true
+    viewBinding = true
   }
 
-  lintOptions {
-    abortOnError false
+  lint {
+    abortOnError = false
   }
 }
 
 dependencies {
-  implementation Dependencies.material
-  implementation project(":balloon")
+  implementation(Dependencies.material)
+  implementation(project(":balloon"))
 }
-
-apply from: "$rootDir/spotless/spotless.gradle"
