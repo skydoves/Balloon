@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import com.skydoves.balloon.Configuration
-import com.skydoves.balloon.Dependencies
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -50,6 +49,15 @@ android {
 }
 
 dependencies {
-  implementation(Dependencies.material)
   implementation(project(":balloon"))
+  implementation(project(":balloon-compose"))
+
+  implementation(libs.androidx.material)
+  implementation(libs.androidx.activity.compose)
+  implementation(libs.androidx.compose.ui)
+  implementation(libs.androidx.compose.ui.tooling)
+  implementation(libs.androidx.compose.material)
+  implementation(libs.androidx.compose.foundation)
+  implementation(libs.androidx.compose.runtime)
+  implementation(libs.androidx.compose.constraintlayout)
 }

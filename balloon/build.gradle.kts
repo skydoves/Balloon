@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import com.skydoves.balloon.Configuration
-import com.skydoves.balloon.Dependencies
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -63,8 +62,8 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 }
 
 dependencies {
-  implementation(Dependencies.appcompat)
-  implementation(Dependencies.fragmentKtx)
-  implementation(Dependencies.lifecycle)
-  implementation(Dependencies.annotation)
+  implementation(libs.androidx.appcompat)
+  implementation(libs.androidx.fragment)
+  implementation(libs.androidx.lifecycle)
+  implementation(libs.androidx.annotation)
 }

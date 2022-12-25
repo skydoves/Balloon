@@ -1,5 +1,4 @@
 import com.skydoves.balloon.Configuration
-import com.skydoves.balloon.Dependencies
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -48,7 +47,17 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 }
 
 dependencies {
+  api(project(":balloon"))
+
   implementation(libs.androidx.compose.ui)
   implementation(libs.androidx.compose.material)
   implementation(libs.androidx.compose.runtime)
+
+  implementation(libs.androidx.activity.compose)
+  implementation(libs.androidx.compose.ui)
+  implementation(libs.androidx.compose.ui.tooling)
+  implementation(libs.androidx.compose.material)
+  implementation(libs.androidx.compose.foundation)
+  implementation(libs.androidx.compose.runtime)
+  implementation(libs.androidx.compose.constraintlayout)
 }
