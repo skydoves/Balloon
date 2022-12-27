@@ -2,7 +2,7 @@
 agp = "7.3.1"
 dokka = "1.7.20"
 nexusPlugin = "1.1.0"
-kotlin = "1.7.21"
+kotlin = "1.7.20"
 kotlinBinaryCompatibility = "0.12.1"
 javaRelease = "8"
 jvmTarget = "1.8"
@@ -38,7 +38,7 @@ kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-pl
 androidx-material = { module = "com.google.android.material:material", version.ref = "androidxMaterial" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppcompat" }
 androidx-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "androidxFragment" }
-androidx-lifecycle = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
+androidx-lifecycle = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidxAnnotation" }
 
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "androidxCompose" }

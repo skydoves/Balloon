@@ -17,7 +17,7 @@ apply(from ="${rootDir}/scripts/publish-module.gradle")
 android {
   compileSdk = Configuration.compileSdk
   defaultConfig {
-    minSdk = Configuration.minSdk
+    minSdk = Configuration.minSdkCompose
     targetSdk = Configuration.targetSdk
   }
 
@@ -52,12 +52,6 @@ dependencies {
   implementation(libs.androidx.compose.ui)
   implementation(libs.androidx.compose.material)
   implementation(libs.androidx.compose.runtime)
-
   implementation(libs.androidx.activity.compose)
-  implementation(libs.androidx.compose.ui)
-  implementation(libs.androidx.compose.ui.tooling)
-  implementation(libs.androidx.compose.material)
-  implementation(libs.androidx.compose.foundation)
-  implementation(libs.androidx.compose.runtime)
-  implementation(libs.androidx.compose.constraintlayout)
+  implementation(libs.androidx.lifecycle)
 }

@@ -14,18 +14,11 @@
  * limitations under the License.
  */
 
-package com.skydoves.balloon
+package com.skydoves.balloon.compose
 
-object Configuration {
-  const val compileSdk = 33
-  const val targetSdk = 33
-  const val minSdk = 17
-  const val minSdkCompose = 21
-  const val majorVersion = 1
-  const val minorVersion = 4
-  const val patchVersion = 8
-  const val versionName = "$majorVersion.$minorVersion.$patchVersion"
-  const val versionCode = 49
-  const val snapshotVersionName = "$majorVersion.$minorVersion.${patchVersion + 1}-SNAPSHOT"
-  const val artifactGroup = "com.github.skydoves"
-}
+public data class LayoutInfo constructor(
+  public val x: Float,
+  public val y: Float,
+  public val width: Int,
+  public val height: Int
+)

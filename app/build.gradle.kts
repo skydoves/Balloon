@@ -24,7 +24,7 @@ android {
   compileSdk = Configuration.compileSdk
   defaultConfig {
     applicationId = "com.skydoves.balloondemo"
-    minSdk = Configuration.minSdk
+    minSdk = Configuration.minSdkCompose
     targetSdk = Configuration.targetSdk
     versionCode = Configuration.versionCode
     versionName = Configuration.versionName
@@ -41,6 +41,11 @@ android {
 
   buildFeatures {
     viewBinding = true
+    compose = true
+  }
+
+  composeOptions {
+    kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
   }
 
   lint {
