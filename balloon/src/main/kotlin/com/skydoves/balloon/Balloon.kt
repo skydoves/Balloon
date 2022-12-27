@@ -758,7 +758,9 @@ public class Balloon private constructor(
         }
         this.binding.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         this.bodyWindow.width = getMeasuredWidth()
-        this.bodyWindow.height = getMeasuredHeight()
+        if (!builder.isComposableContent) {
+          this.bodyWindow.height = getMeasuredHeight()
+        }
         this.binding.balloonText.layoutParams = FrameLayout.LayoutParams(
           FrameLayout.LayoutParams.MATCH_PARENT,
           FrameLayout.LayoutParams.MATCH_PARENT
@@ -1804,6 +1806,9 @@ public class Balloon private constructor(
     @set:JvmSynthetic
     public var isAttachedInDecor: Boolean = true
 
+    @set:JvmSynthetic
+    public var isComposableContent: Boolean = false
+
     /** sets the width size. */
     public fun setWidth(@Dp value: Int): Builder = apply {
       require(
@@ -2667,6 +2672,14 @@ public class Balloon private constructor(
      * onBackPressed will be fired to the balloon.
      * */
     public fun setFocusable(value: Boolean): Builder = apply { this.isFocusable = value }
+
+    /**
+     * sets isComposableContent to the balloon content.
+     * isComposableContent indicates if the custom layout content is composed of Jetpack Compose
+     * Composable function.
+     */
+    public fun setIsComposableContent(value: Boolean): Builder =
+      apply { this.isComposableContent = value }
 
     /**
      * Create a new instance of the [Balloon] which includes customized attributes.

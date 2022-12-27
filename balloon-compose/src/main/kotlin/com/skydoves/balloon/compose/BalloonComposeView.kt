@@ -23,6 +23,8 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionContext
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -45,9 +47,16 @@ public class BalloonComposeView constructor(
   balloonID: UUID
 ) : AbstractComposeView(anchorView.context) {
 
-  private val balloon: Balloon = builder.setLayout(this).build()
+  private val balloon: Balloon = builder
+    .setIsComposableContent(true)
+    .setLayout(this)
+    .build()
 
   private var content: @Composable (BalloonComposeView) -> Unit by mutableStateOf({})
+
+  private var _balloonLayoutInfo: MutableState<BalloonLayoutInfo?> = mutableStateOf(null)
+  public val balloonLayoutInfo: State<BalloonLayoutInfo?> = _balloonLayoutInfo
+
   override var shouldCreateCompositionOnAttachedToWindow: Boolean = false
     private set
 
@@ -64,7 +73,7 @@ public class BalloonComposeView constructor(
       modifier = Modifier
         .wrapContentSize()
         .onGloballyPositioned { coordinates ->
-          val layoutInfo = LayoutInfo(
+          _balloonLayoutInfo.value = BalloonLayoutInfo(
             x = coordinates.positionInWindow().x,
             y = coordinates.positionInWindow().y,
             width = coordinates.size.width,
@@ -85,8 +94,11 @@ public class BalloonComposeView constructor(
     content: @Composable (BalloonComposeView) -> Unit
   ) {
     setParentCompositionContext(compositionContext)
-    this.content = content
     shouldCreateCompositionOnAttachedToWindow = true
+    this.content = content
+    if (isAttachedToWindow) {
+      createComposition()
+    }
   }
 
   public fun showAtCenter() {
@@ -98,5 +110,9 @@ public class BalloonComposeView constructor(
     setViewTreeSavedStateRegistryOwner(null)
     ViewTreeLifecycleOwner.set(this@BalloonComposeView, null)
     ViewTreeViewModelStoreOwner.set(this@BalloonComposeView, null)
+  }
+
+  override fun getAccessibilityClassName(): CharSequence {
+    return javaClass.name
   }
 }

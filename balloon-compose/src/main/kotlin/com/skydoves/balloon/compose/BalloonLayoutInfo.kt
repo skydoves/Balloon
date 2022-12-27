@@ -16,7 +16,7 @@
 
 package com.skydoves.balloon.compose
 
-public data class LayoutInfo constructor(
+public data class BalloonLayoutInfo constructor(
   public val x: Float,
   public val y: Float,
   public val width: Int,
