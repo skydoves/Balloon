@@ -26,21 +26,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCompositionContext
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
-import com.skydoves.balloon.compose.BalloonComposeView
-import java.util.UUID
+import com.skydoves.balloon.compose.BalloonCompose
 
 class ComposeActivity : ComponentActivity() {
 
@@ -67,33 +62,22 @@ class ComposeActivity : ComponentActivity() {
         }
         .setBalloonAnimation(BalloonAnimation.ELASTIC)
 
-      val view = LocalView.current
-      val compositionContext = rememberCompositionContext()
-      val id = rememberSaveable { UUID.randomUUID() }
-      val balloonComposeView = remember {
-        BalloonComposeView(
-          anchorView = view,
-          builder = balloon,
-          balloonID = id
-        ).apply {
-          setContent(compositionContext) {
-            Text(
-              modifier = Modifier.padding(12.dp),
-              text = "Helloooooooooo!",
-              color = Color.White
-            )
+      BalloonCompose(builder = balloon, balloonContent = {
+        Text(
+          modifier = Modifier.padding(12.dp),
+          text = "Helloooooooooo!",
+          color = Color.White
+        )
+      }) {
+        Box(modifier = Modifier.fillMaxSize()) {
+          Button(
+            modifier = Modifier
+              .size(120.dp, 75.dp)
+              .align(Alignment.Center),
+            onClick = { it?.showAtCenter() }
+          ) {
+            Text(text = "click")
           }
-        }
-      }
-
-      Box(modifier = Modifier.fillMaxSize()) {
-        Button(
-          modifier = Modifier
-            .size(120.dp, 75.dp)
-            .align(Alignment.Center),
-          onClick = { balloonComposeView.showAtCenter() }
-        ) {
-          Text(text = "click")
         }
       }
     }
