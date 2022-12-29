@@ -114,6 +114,7 @@ public final class com/skydoves/balloon/Balloon : androidx/lifecycle/DefaultLife
 	public final fun update (Landroid/view/View;I)V
 	public final fun update (Landroid/view/View;II)V
 	public static synthetic fun update$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public final fun updateHeightOfBalloonCard (I)V
 }
 
 public final class com/skydoves/balloon/Balloon$Builder {
@@ -211,6 +212,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun getWidth ()I
 	public final fun getWidthRatio ()F
 	public final fun isAttachedInDecor ()Z
+	public final fun isComposableContent ()Z
 	public final fun isFocusable ()Z
 	public final fun isRtlLayout ()Z
 	public final fun isStatusBarVisible ()Z
@@ -289,6 +291,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun setBalloonRotationAnimation (Lcom/skydoves/balloon/animations/BalloonRotateAnimation;)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setCircularDuration (J)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setCircularDuration (J)V
+	public final synthetic fun setComposableContent (Z)V
 	public final fun setCornerRadius (F)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setCornerRadius (F)V
 	public final fun setCornerRadiusResource (I)Lcom/skydoves/balloon/Balloon$Builder;
@@ -335,6 +338,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final synthetic fun setIconWidth (I)V
 	public final fun setIconWidthResource (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setIsAttachedInDecor (Z)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setIsComposableContent (Z)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setIsStatusBarVisible (Z)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setIsVisibleArrow (Z)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setIsVisibleOverlay (Z)Lcom/skydoves/balloon/Balloon$Builder;
@@ -733,6 +737,9 @@ public final class com/skydoves/balloon/animations/BalloonRotateDirection : java
 	public final fun getValue ()I
 	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/animations/BalloonRotateDirection;
 	public static fun values ()[Lcom/skydoves/balloon/animations/BalloonRotateDirection;
+}
+
+public abstract interface annotation class com/skydoves/balloon/animations/InternalBalloonApi : java/lang/annotation/Annotation {
 }
 
 public final class com/skydoves/balloon/extensions/GlobalExtensionKt {
