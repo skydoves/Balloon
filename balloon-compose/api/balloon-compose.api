@@ -1,3 +1,12 @@
+public final class com/skydoves/balloon/compose/BalloonComposeExtensionKt {
+	public static final fun setArrowColor-4WTKRHQ (Lcom/skydoves/balloon/Balloon$Builder;J)Lcom/skydoves/balloon/Balloon$Builder;
+	public static final fun setBackgroundColor-4WTKRHQ (Lcom/skydoves/balloon/Balloon$Builder;J)Lcom/skydoves/balloon/Balloon$Builder;
+	public static final fun setIconColor-4WTKRHQ (Lcom/skydoves/balloon/Balloon$Builder;J)Lcom/skydoves/balloon/Balloon$Builder;
+	public static final fun setOverlayColor-4WTKRHQ (Lcom/skydoves/balloon/Balloon$Builder;J)Lcom/skydoves/balloon/Balloon$Builder;
+	public static final fun setOverlayPaddingColor-4WTKRHQ (Lcom/skydoves/balloon/Balloon$Builder;J)Lcom/skydoves/balloon/Balloon$Builder;
+	public static final fun setTextColor-4WTKRHQ (Lcom/skydoves/balloon/Balloon$Builder;J)Lcom/skydoves/balloon/Balloon$Builder;
+}
+
 public final class com/skydoves/balloon/compose/BalloonComposeView : androidx/compose/ui/platform/AbstractComposeView, com/skydoves/balloon/compose/BalloonWindow {
 	public static final field $stable I
 	public fun <init> (Landroid/view/View;ZLcom/skydoves/balloon/Balloon$Builder;Ljava/util/UUID;)V

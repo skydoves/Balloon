@@ -32,20 +32,20 @@ public fun Balloon.Builder.setBackgroundColor(color: Color): Balloon.Builder = a
 
 /** sets the color of the main text content. */
 public fun Balloon.Builder.setTextColor(color: Color): Balloon.Builder = apply {
-  setBackgroundColor(color.toArgb())
+  setTextColor(color.toArgb())
 }
 
 /** sets the color of the icon drawable. */
 public fun Balloon.Builder.setIconColor(color: Color): Balloon.Builder = apply {
-  setBackgroundColor(color.toArgb())
+  setIconColor(color.toArgb())
 }
 
 /** background color of the overlay. */
 public fun Balloon.Builder.setOverlayColor(color: Color): Balloon.Builder = apply {
-  setBackgroundColor(color.toArgb())
+  setOverlayColor(color.toArgb())
 }
 
 /** sets color of the overlay padding. */
 public fun Balloon.Builder.setOverlayPaddingColor(color: Color): Balloon.Builder = apply {
-  setBackgroundColor(color.toArgb())
+  setOverlayPaddingColor(color.toArgb())
 }
