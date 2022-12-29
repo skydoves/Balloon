@@ -16,17 +16,27 @@
 
 package com.skydoves.balloon.compose
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCompositionContext
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.ViewTreeLifecycleOwner
+import androidx.lifecycle.ViewTreeViewModelStoreOwner
+import androidx.savedstate.findViewTreeSavedStateRegistryOwner
+import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.skydoves.balloon.Balloon
 import java.lang.Integer.max
 import java.util.UUID
@@ -38,7 +48,15 @@ public fun BalloonCompose(
   balloonContent: @Composable () -> Unit,
   content: @Composable (BalloonComposeView) -> Unit
 ) {
-  val anchorView = LocalView.current
+  val current = LocalContext.current
+  val view = LocalView.current
+  val anchorView = remember {
+    ComposeView(current).also {
+      ViewTreeLifecycleOwner.set(it, ViewTreeLifecycleOwner.get(view))
+      ViewTreeViewModelStoreOwner.set(it, ViewTreeViewModelStoreOwner.get(view))
+      it.setViewTreeSavedStateRegistryOwner(view.findViewTreeSavedStateRegistryOwner())
+    }
+  }
   val compositionContext = rememberCompositionContext()
   val currentContent by rememberUpdatedState(balloonContent)
   val id = rememberSaveable { UUID.randomUUID() }
@@ -59,7 +77,24 @@ public fun BalloonCompose(
   }
 
   Box(modifier = modifier) {
+    AndroidView(
+      modifier = Modifier
+        .matchParentSize()
+        .background(Color.Red),
+      factory = { anchorView }
+    )
+
     content.invoke(balloonComposeView)
+  }
+
+  DisposableEffect(key1 = Unit) {
+    onDispose {
+      anchorView.apply {
+        setViewTreeSavedStateRegistryOwner(null)
+        ViewTreeLifecycleOwner.set(this, null)
+        ViewTreeViewModelStoreOwner.set(this, null)
+      }
+    }
   }
 }
 

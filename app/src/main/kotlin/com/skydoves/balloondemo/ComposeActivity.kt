@@ -26,6 +26,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.Text
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -62,19 +64,23 @@ class ComposeActivity : ComponentActivity() {
         }
         .setBalloonAnimation(BalloonAnimation.ELASTIC)
 
-      BalloonCompose(builder = balloon, balloonContent = {
-        Text(
-          modifier = Modifier.padding(12.dp),
-          text = "Helloooooooooo!",
-          color = Color.White
-        )
-      }) {
-        Box(modifier = Modifier.fillMaxSize()) {
+      Box(modifier = Modifier.fillMaxSize()) {
+        BalloonCompose(
+          modifier = Modifier.align(Alignment.Center),
+          builder = balloon,
+          balloonContent = {
+            Text(
+              modifier = Modifier.padding(12.dp),
+              text = "Helloooooooooo!",
+              color = Color.White
+            )
+          }
+        ) {
           Button(
-            modifier = Modifier
-              .size(120.dp, 75.dp)
-              .align(Alignment.Center),
-            onClick = { it?.showAtCenter() }
+            modifier = Modifier.size(120.dp, 75.dp),
+            onClick = {
+              it.showAtCenter()
+            }
           ) {
             Text(text = "click")
           }
