@@ -46,6 +46,7 @@ import java.util.UUID
 public fun BalloonCompose(
   modifier: Modifier = Modifier,
   builder: Balloon.Builder,
+  key: Any? = null,
   balloonContent: @Composable () -> Unit,
   content: @Composable (BalloonComposeView) -> Unit
 ) {
@@ -61,7 +62,7 @@ public fun BalloonCompose(
   val compositionContext = rememberCompositionContext()
   val currentContent by rememberUpdatedState(balloonContent)
   val id = rememberSaveable { UUID.randomUUID() }
-  val balloonComposeView = remember {
+  val balloonComposeView = remember(key) {
     BalloonComposeView(
       anchorView = anchorView,
       builder = builder,
