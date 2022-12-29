@@ -20,7 +20,6 @@ import android.annotation.SuppressLint
 import android.view.View
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionContext
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -45,7 +44,7 @@ public class BalloonComposeView constructor(
 
   private val lifecycleOwner = ViewTreeLifecycleOwner.get(anchorView)
 
-  private val balloon: Balloon = builder
+  public val balloon: Balloon = builder
     .setLifecycleOwner(lifecycleOwner)
     .setIsComposableContent(true)
     .setLayout(this)
@@ -69,10 +68,6 @@ public class BalloonComposeView constructor(
   @Composable
   override fun Content() {
     content.invoke(this@BalloonComposeView)
-
-    DisposableEffect(key1 = Unit) {
-      onDispose { dispose() }
-    }
   }
 
   public fun setContent(
@@ -95,7 +90,7 @@ public class BalloonComposeView constructor(
     balloon.updateHeightOfBalloonCard(height = size.height)
   }
 
-  private fun dispose() {
+  internal fun dispose() {
     balloon.dismiss()
     setViewTreeSavedStateRegistryOwner(null)
     ViewTreeLifecycleOwner.set(this@BalloonComposeView, null)

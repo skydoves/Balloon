@@ -22,16 +22,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.Balloon
@@ -70,8 +70,11 @@ class ComposeActivity : ComponentActivity() {
           builder = balloon,
           balloonContent = {
             Text(
-              modifier = Modifier.padding(12.dp),
-              text = "Helloooooooooo!\nnice to meet youuuuu\nqweqweqweqwe",
+              modifier = Modifier
+                .padding(12.dp)
+                .fillMaxWidth(),
+              text = "Helloooooooooo!\nNice to meet youuuuu\nskydoves",
+              textAlign = TextAlign.Center,
               color = Color.White
             )
           }

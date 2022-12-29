@@ -106,8 +106,11 @@ public fun BalloonCompose(
     content.invoke(balloonComposeView)
   }
 
-  DisposableEffect(key1 = Unit) {
+  DisposableEffect(key1 = key) {
     onDispose {
+      // dispose ComposeView and balloon whenever the balloon content should be recomposed.
+      balloonComposeView.dispose()
+      // clear anchor view's lifecycle.
       anchorView.apply {
         setViewTreeSavedStateRegistryOwner(null)
         ViewTreeLifecycleOwner.set(this, null)
@@ -130,7 +133,7 @@ private fun BalloonLayout(
     val placeables = measurables.map { it.measure(contentConstraints) }
     val maxWidth: Int = max(placeables.maxOf { it.width }, constraints.minWidth)
     val maxHeight = max(placeables.maxOf { it.height }, constraints.minHeight)
-    // Position the children.
+    // position the children.
     layout(maxWidth, maxHeight) {
       placeables.forEach {
         it.place(0, 0)
