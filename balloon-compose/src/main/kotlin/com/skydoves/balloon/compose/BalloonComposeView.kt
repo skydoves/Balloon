@@ -38,6 +38,7 @@ import java.util.UUID
 @SuppressLint("ViewConstructor")
 public class BalloonComposeView constructor(
   private val anchorView: View,
+  isComposableContent: Boolean,
   builder: Balloon.Builder,
   balloonID: UUID
 ) : AbstractComposeView(anchorView.context) {
@@ -46,8 +47,12 @@ public class BalloonComposeView constructor(
 
   public val balloon: Balloon = builder
     .setLifecycleOwner(lifecycleOwner)
-    .setIsComposableContent(true)
-    .setLayout(this)
+    .setIsComposableContent(isComposableContent)
+    .apply {
+      if (isComposableContent) {
+        setLayout(this@BalloonComposeView)
+      }
+    }
     .build()
 
   private var content: @Composable (BalloonComposeView) -> Unit by mutableStateOf({})

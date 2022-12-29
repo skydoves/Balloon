@@ -19,6 +19,7 @@ package com.skydoves.balloon.compose
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCompositionContext
@@ -47,7 +48,7 @@ public fun BalloonCompose(
   modifier: Modifier = Modifier,
   builder: Balloon.Builder,
   key: Any? = null,
-  balloonContent: @Composable () -> Unit,
+  balloonContent: (@Composable () -> Unit)? = null,
   content: @Composable (BalloonComposeView) -> Unit
 ) {
   val current = LocalContext.current
@@ -61,24 +62,28 @@ public fun BalloonCompose(
   }
   val compositionContext = rememberCompositionContext()
   val currentContent by rememberUpdatedState(balloonContent)
+  val isComposableContent by remember { derivedStateOf { balloonContent != null } }
   val id = rememberSaveable { UUID.randomUUID() }
   val balloonComposeView = remember(key) {
     BalloonComposeView(
       anchorView = anchorView,
+      isComposableContent = isComposableContent,
       builder = builder,
       balloonID = id
     ).apply {
-      setContent(compositionContext) {
-        BalloonLayout(
-          Modifier.semantics { balloon() }
-        ) {
-          currentContent.invoke()
+      if (isComposableContent) {
+        setContent(compositionContext) {
+          BalloonLayout(
+            Modifier.semantics { balloon() }
+          ) {
+            currentContent?.invoke()
+          }
         }
       }
     }
   }
 
-  if (balloonComposeView.balloonLayoutInfo.value == null) {
+  if (isComposableContent && balloonComposeView.balloonLayoutInfo.value == null) {
     Box(
       modifier = Modifier
         .alpha(0f)
@@ -93,7 +98,7 @@ public fun BalloonCompose(
           )
         }
     ) {
-      balloonContent.invoke()
+      balloonContent?.invoke()
     }
   }
 
