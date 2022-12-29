@@ -67,6 +67,8 @@ import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
 import androidx.core.view.ViewCompat
 import androidx.core.view.forEach
+import androidx.core.view.get
+import androidx.core.view.updateLayoutParams
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleObserver
@@ -76,6 +78,7 @@ import com.skydoves.balloon.ArrowOrientation.Companion.getRTLSupportOrientation
 import com.skydoves.balloon.BalloonAlign.Companion.getRTLSupportAlign
 import com.skydoves.balloon.BalloonCenterAlign.Companion.getRTLSupportAlign
 import com.skydoves.balloon.animations.BalloonRotateAnimation
+import com.skydoves.balloon.animations.InternalBalloonApi
 import com.skydoves.balloon.annotations.Dp
 import com.skydoves.balloon.annotations.Sp
 import com.skydoves.balloon.databinding.BalloonLayoutBodyBinding
@@ -1214,6 +1217,16 @@ public class Balloon private constructor(
         }
       } else {
         dismissWindow()
+      }
+    }
+  }
+
+  @InternalBalloonApi
+  public fun updateHeightOfBalloonCard(height: Int) {
+    if (binding.balloonCard.childCount != 0) {
+      val child = binding.balloonCard[0]
+      child.updateLayoutParams {
+        this.height = height
       }
     }
   }

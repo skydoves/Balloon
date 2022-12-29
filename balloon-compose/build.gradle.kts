@@ -42,7 +42,8 @@ android {
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
   kotlinOptions.freeCompilerArgs += listOf(
-    "-Xexplicit-api=strict"
+    "-Xexplicit-api=strict",
+    "-opt-in=com.skydoves.balloon.animations.InternalBalloonApi",
   )
 }
 

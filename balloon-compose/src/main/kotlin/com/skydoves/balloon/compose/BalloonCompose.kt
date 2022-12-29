@@ -16,7 +16,6 @@
 
 package com.skydoves.balloon.compose
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -26,8 +25,10 @@ import androidx.compose.runtime.rememberCompositionContext
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -76,11 +77,28 @@ public fun BalloonCompose(
     }
   }
 
+  if (balloonComposeView.balloonLayoutInfo.value == null) {
+    Box(
+      modifier = Modifier
+        .alpha(0f)
+        .onGloballyPositioned { coordinates ->
+          val size = coordinates.size
+          balloonComposeView.updateHeightOfBalloonCard(size)
+          balloonComposeView.internalBalloonLayoutInfo.value = BalloonLayoutInfo(
+            x = coordinates.positionInWindow().x,
+            y = coordinates.positionInWindow().y,
+            width = size.width,
+            height = size.height
+          )
+        }
+    ) {
+      balloonContent.invoke()
+    }
+  }
+
   Box(modifier = modifier) {
     AndroidView(
-      modifier = Modifier
-        .matchParentSize()
-        .background(Color.Red),
+      modifier = Modifier.matchParentSize(),
       factory = { anchorView }
     )
 

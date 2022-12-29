@@ -71,7 +71,7 @@ class ComposeActivity : ComponentActivity() {
           balloonContent = {
             Text(
               modifier = Modifier.padding(12.dp),
-              text = "Helloooooooooo!",
+              text = "Helloooooooooo!\nnice to meet youuuuu\nqweqweqweqwe",
               color = Color.White
             )
           }

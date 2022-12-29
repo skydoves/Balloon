@@ -18,8 +18,6 @@ package com.skydoves.balloon.compose
 
 import android.annotation.SuppressLint
 import android.view.View
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionContext
 import androidx.compose.runtime.DisposableEffect
@@ -28,11 +26,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.R
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.AbstractComposeView
+import androidx.compose.ui.unit.IntSize
 import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.lifecycle.ViewTreeViewModelStoreOwner
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
@@ -47,21 +43,24 @@ public class BalloonComposeView constructor(
   balloonID: UUID
 ) : AbstractComposeView(anchorView.context) {
 
+  private val lifecycleOwner = ViewTreeLifecycleOwner.get(anchorView)
+
   private val balloon: Balloon = builder
+    .setLifecycleOwner(lifecycleOwner)
     .setIsComposableContent(true)
     .setLayout(this)
     .build()
 
   private var content: @Composable (BalloonComposeView) -> Unit by mutableStateOf({})
 
-  private var _balloonLayoutInfo: MutableState<BalloonLayoutInfo?> = mutableStateOf(null)
-  public val balloonLayoutInfo: State<BalloonLayoutInfo?> = _balloonLayoutInfo
+  internal var internalBalloonLayoutInfo: MutableState<BalloonLayoutInfo?> = mutableStateOf(null)
+  public val balloonLayoutInfo: State<BalloonLayoutInfo?> = internalBalloonLayoutInfo
 
   override var shouldCreateCompositionOnAttachedToWindow: Boolean = false
     private set
 
   init {
-    ViewTreeLifecycleOwner.set(this, ViewTreeLifecycleOwner.get(anchorView))
+    ViewTreeLifecycleOwner.set(this, lifecycleOwner)
     ViewTreeViewModelStoreOwner.set(this, ViewTreeViewModelStoreOwner.get(anchorView))
     setViewTreeSavedStateRegistryOwner(anchorView.findViewTreeSavedStateRegistryOwner())
     setTag(R.id.compose_view_saveable_id_tag, "BalloonComposeView:$balloonID")
@@ -69,20 +68,7 @@ public class BalloonComposeView constructor(
 
   @Composable
   override fun Content() {
-    Box(
-      modifier = Modifier
-        .wrapContentSize()
-        .onGloballyPositioned { coordinates ->
-          _balloonLayoutInfo.value = BalloonLayoutInfo(
-            x = coordinates.positionInWindow().x,
-            y = coordinates.positionInWindow().y,
-            width = coordinates.size.width,
-            height = coordinates.size.height
-          )
-        }
-    ) {
-      content.invoke(this@BalloonComposeView)
-    }
+    content.invoke(this@BalloonComposeView)
 
     DisposableEffect(key1 = Unit) {
       onDispose { dispose() }
@@ -102,7 +88,11 @@ public class BalloonComposeView constructor(
   }
 
   public fun showAtCenter() {
-    balloon.showAlignTop(anchor = anchorView)
+    balloon.showAlignTop(anchorView)
+  }
+
+  internal fun updateHeightOfBalloonCard(size: IntSize) {
+    balloon.updateHeightOfBalloonCard(height = size.height)
   }
 
   private fun dispose() {
