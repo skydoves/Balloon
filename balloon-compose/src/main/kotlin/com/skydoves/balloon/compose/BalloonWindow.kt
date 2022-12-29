@@ -14,17 +14,29 @@
  * limitations under the License.
  */
 
-package com.skydoves.balloon
+package com.skydoves.balloon.compose
 
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import com.skydoves.balloon.ArrowOrientation
+import com.skydoves.balloon.ArrowOrientationRules
+import com.skydoves.balloon.Balloon
+import com.skydoves.balloon.BalloonAlign
+import com.skydoves.balloon.BalloonCenterAlign
+import com.skydoves.balloon.OnBalloonClickListener
+import com.skydoves.balloon.OnBalloonDismissListener
+import com.skydoves.balloon.OnBalloonInitializedListener
+import com.skydoves.balloon.OnBalloonOutsideTouchListener
+import com.skydoves.balloon.OnBalloonOverlayClickListener
 import com.skydoves.balloon.animations.InternalBalloonApi
 
 /**
  * BalloonWindow is an interface that define all executable behaviors of the balloon's window.
  */
 public interface BalloonWindow {
+
+  public val balloon: Balloon
 
   /** Represents if the balloon should be displayed according to the internal persistence..*/
   public fun shouldShowUp(): Boolean
@@ -34,13 +46,11 @@ public interface BalloonWindow {
    * Even if you use with the [ArrowOrientationRules.ALIGN_ANCHOR], the alignment will not be guaranteed.
    * So if you use the function, use with [ArrowOrientationRules.ALIGN_FIXED] and fixed [ArrowOrientation].
    *
-   * @param anchor A target view which popup will be shown with overlap.
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    * @param centerAlign A rule for deciding the alignment of the balloon.
    */
   public fun showAtCenter(
-    anchor: View,
     xOff: Int = 0,
     yOff: Int = 0,
     centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP
@@ -51,7 +61,6 @@ public interface BalloonWindow {
    * This function returns the next balloon.
    *
    * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
-   * @param anchor A target view which popup will be shown to.
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    * @param centerAlign A rule for deciding the align of the balloon.
@@ -62,7 +71,6 @@ public interface BalloonWindow {
    */
   public fun relayShowAtCenter(
     balloon: Balloon,
-    anchor: View,
     xOff: Int = 0,
     yOff: Int = 0,
     centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP
@@ -71,18 +79,16 @@ public interface BalloonWindow {
   /**
    * Shows the balloon on an anchor view as drop down with x-off and y-off.
    *
-   * @param anchor A target view which popup will be shown to.
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    */
-  public fun showAsDropDown(anchor: View, xOff: Int = 0, yOff: Int = 0)
+  public fun showAsDropDown(xOff: Int = 0, yOff: Int = 0)
 
   /**
    * Shows the balloon on an anchor view as drop down with x-off and y-off and shows the next balloon sequentially.
    * This function returns the next balloon.
    *
    * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
-   * @param anchor A target view which popup will be shown to.
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    *
@@ -92,7 +98,6 @@ public interface BalloonWindow {
    */
   public fun relayShowAsDropDown(
     balloon: Balloon,
-    anchor: View,
     xOff: Int = 0,
     yOff: Int = 0
   ): Balloon
@@ -100,18 +105,16 @@ public interface BalloonWindow {
   /**
    * Shows the balloon on an anchor view as the top alignment with x-off and y-off.
    *
-   * @param anchor A target view which popup will be shown to.
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    */
-  public fun showAlignTop(anchor: View, xOff: Int = 0, yOff: Int = 0)
+  public fun showAlignTop(xOff: Int = 0, yOff: Int = 0)
 
   /**
    * Shows the balloon on an anchor view as the top alignment with x-off and y-off and shows the next balloon sequentially.
    * This function returns the next balloon.
    *
    * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
-   * @param anchor A target view which popup will be shown to.
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    *
@@ -121,7 +124,6 @@ public interface BalloonWindow {
    */
   public fun relayShowAlignTop(
     balloon: Balloon,
-    anchor: View,
     xOff: Int = 0,
     yOff: Int = 0
   ): Balloon
@@ -129,11 +131,10 @@ public interface BalloonWindow {
   /**
    * Shows the balloon on an anchor view as the bottom alignment with x-off and y-off.
    *
-   * @param anchor A target view which popup will be shown to.
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    */
-  public fun showAlignBottom(anchor: View, xOff: Int = 0, yOff: Int = 0)
+  public fun showAlignBottom(xOff: Int = 0, yOff: Int = 0)
 
   /**
    * Shows the balloon on an anchor view as the bottom alignment with x-off and y-off
@@ -141,7 +142,6 @@ public interface BalloonWindow {
    * This function returns the next balloon.
    *
    * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
-   * @param anchor A target view which popup will be shown to.
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    *
@@ -151,7 +151,6 @@ public interface BalloonWindow {
    */
   public fun relayShowAlignBottom(
     balloon: Balloon,
-    anchor: View,
     xOff: Int = 0,
     yOff: Int = 0
   ): Balloon
@@ -159,11 +158,10 @@ public interface BalloonWindow {
   /**
    * Shows the balloon on an anchor view as the right alignment with x-off and y-off.
    *
-   * @param anchor A target view which popup will be shown to.
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    */
-  public fun showAlignRight(anchor: View, xOff: Int = 0, yOff: Int = 0)
+  public fun showAlignRight(xOff: Int = 0, yOff: Int = 0)
 
   /**
    * Shows the balloon on an anchor view as the right alignment with x-off and y-off
@@ -171,7 +169,6 @@ public interface BalloonWindow {
    * This function returns the next balloon.
    *
    * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
-   * @param anchor A target view which popup will be shown to.
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    *
@@ -181,7 +178,6 @@ public interface BalloonWindow {
    */
   public fun relayShowAlignRight(
     balloon: Balloon,
-    anchor: View,
     xOff: Int = 0,
     yOff: Int = 0
   ): Balloon
@@ -189,11 +185,10 @@ public interface BalloonWindow {
   /**
    * Shows the balloon on an anchor view as the left alignment with x-off and y-off.
    *
-   * @param anchor A target view which popup will be shown to.
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    */
-  public fun showAlignLeft(anchor: View, xOff: Int = 0, yOff: Int = 0)
+  public fun showAlignLeft(xOff: Int = 0, yOff: Int = 0)
 
   /**
    * Shows the balloon on an anchor view as the left alignment with x-off and y-off
@@ -201,7 +196,6 @@ public interface BalloonWindow {
    * This function returns the next balloon.
    *
    * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
-   * @param anchor A target view which popup will be shown to.
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    *
@@ -211,7 +205,6 @@ public interface BalloonWindow {
    */
   public fun relayShowAlignLeft(
     balloon: Balloon,
-    anchor: View,
     xOff: Int = 0,
     yOff: Int = 0
   ): Balloon
@@ -239,7 +232,6 @@ public interface BalloonWindow {
    * This function returns the next balloon.
    *
    * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
-   * @param anchor A target view which popup will be shown to.
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    *
@@ -250,7 +242,6 @@ public interface BalloonWindow {
   public fun relayShowAlign(
     align: BalloonAlign,
     balloon: Balloon,
-    anchor: View,
     xOff: Int = 0,
     yOff: Int = 0
   ): Balloon
@@ -259,11 +250,10 @@ public interface BalloonWindow {
    * updates popup and arrow position of the popup based on
    * a new target anchor view with additional x-off and y-off.
    *
-   * @param anchor A target view which popup will be shown to.
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    */
-  public fun update(anchor: View, xOff: Int = 0, yOff: Int = 0)
+  public fun update(xOff: Int = 0, yOff: Int = 0)
 
   /** updates the size of the balloon card. */
   @InternalBalloonApi

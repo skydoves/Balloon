@@ -149,7 +149,7 @@ public inline fun createBalloon(
 public class Balloon private constructor(
   private val context: Context,
   private val builder: Builder
-) : BalloonWindow, DefaultLifecycleObserver {
+) : DefaultLifecycleObserver {
 
   /** A main content view of the popup. */
   private val binding: BalloonLayoutBodyBinding =
@@ -718,7 +718,7 @@ public class Balloon private constructor(
   /**
    * Checks if the balloon should show up.
    */
-  public override fun shouldShowUp(): Boolean {
+  public fun shouldShowUp(): Boolean {
     return this.builder.preferenceName?.let {
       this.balloonPersistence.shouldShowUp(it, builder.showTimes)
     } ?: true
@@ -834,11 +834,12 @@ public class Balloon private constructor(
    * @param yOff A vertical offset from the anchor in pixels.
    * @param centerAlign A rule for deciding the alignment of the balloon.
    */
-  public override fun showAtCenter(
+  @JvmOverloads
+  public fun showAtCenter(
     anchor: View,
-    xOff: Int,
-    yOff: Int,
-    centerAlign: BalloonCenterAlign
+    xOff: Int = 0,
+    yOff: Int = 0,
+    centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP
   ) {
     val halfAnchorWidth = (anchor.measuredWidth * 0.5f).roundToInt()
     val halfAnchorHeight = (anchor.measuredHeight * 0.5f).roundToInt()
@@ -889,12 +890,13 @@ public class Balloon private constructor(
    *
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
-  public override fun relayShowAtCenter(
+  @JvmOverloads
+  public fun relayShowAtCenter(
     balloon: Balloon,
     anchor: View,
-    xOff: Int,
-    yOff: Int,
-    centerAlign: BalloonCenterAlign
+    xOff: Int = 0,
+    yOff: Int = 0,
+    centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP
   ): Balloon = relay(balloon) { it.showAtCenter(anchor, xOff, yOff, centerAlign) }
 
   /**
@@ -904,7 +906,8 @@ public class Balloon private constructor(
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    */
-  public override fun showAsDropDown(anchor: View, xOff: Int, yOff: Int) {
+  @JvmOverloads
+  public fun showAsDropDown(anchor: View, xOff: Int = 0, yOff: Int = 0) {
     show(anchor) { bodyWindow.showAsDropDown(anchor, xOff, yOff) }
   }
 
@@ -921,11 +924,12 @@ public class Balloon private constructor(
    *
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
-  public override fun relayShowAsDropDown(
+  @JvmOverloads
+  public fun relayShowAsDropDown(
     balloon: Balloon,
     anchor: View,
-    xOff: Int,
-    yOff: Int
+    xOff: Int = 0,
+    yOff: Int = 0
   ): Balloon =
     relay(balloon) { it.showAsDropDown(anchor, xOff, yOff) }
 
@@ -936,7 +940,8 @@ public class Balloon private constructor(
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    */
-  public override fun showAlignTop(anchor: View, xOff: Int, yOff: Int) {
+  @JvmOverloads
+  public fun showAlignTop(anchor: View, xOff: Int = 0, yOff: Int = 0) {
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
@@ -959,11 +964,12 @@ public class Balloon private constructor(
    *
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
-  public override fun relayShowAlignTop(
+  @JvmOverloads
+  public fun relayShowAlignTop(
     balloon: Balloon,
     anchor: View,
-    xOff: Int,
-    yOff: Int
+    xOff: Int = 0,
+    yOff: Int = 0
   ): Balloon =
     relay(balloon) { it.showAlignTop(anchor, xOff, yOff) }
 
@@ -974,7 +980,8 @@ public class Balloon private constructor(
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    */
-  public override fun showAlignBottom(anchor: View, xOff: Int, yOff: Int) {
+  @JvmOverloads
+  public fun showAlignBottom(anchor: View, xOff: Int = 0, yOff: Int = 0) {
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
@@ -998,11 +1005,12 @@ public class Balloon private constructor(
    *
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
-  public override fun relayShowAlignBottom(
+  @JvmOverloads
+  public fun relayShowAlignBottom(
     balloon: Balloon,
     anchor: View,
-    xOff: Int,
-    yOff: Int
+    xOff: Int = 0,
+    yOff: Int = 0
   ): Balloon =
     relay(balloon) { it.showAlignBottom(anchor, xOff, yOff) }
 
@@ -1014,7 +1022,7 @@ public class Balloon private constructor(
    * @param yOff A vertical offset from the anchor in pixels.
    */
   @JvmOverloads
-  public override fun showAlignRight(anchor: View, xOff: Int, yOff: Int) {
+  public fun showAlignRight(anchor: View, xOff: Int = 0, yOff: Int = 0) {
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
@@ -1039,11 +1047,11 @@ public class Balloon private constructor(
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
   @JvmOverloads
-  public override fun relayShowAlignRight(
+  public fun relayShowAlignRight(
     balloon: Balloon,
     anchor: View,
-    xOff: Int,
-    yOff: Int
+    xOff: Int = 0,
+    yOff: Int = 0
   ): Balloon = relay(
     balloon
   ) {
@@ -1058,7 +1066,7 @@ public class Balloon private constructor(
    * @param yOff A vertical offset from the anchor in pixels.
    */
   @JvmOverloads
-  public override fun showAlignLeft(anchor: View, xOff: Int, yOff: Int) {
+  public fun showAlignLeft(anchor: View, xOff: Int = 0, yOff: Int = 0) {
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
@@ -1082,11 +1090,12 @@ public class Balloon private constructor(
    *
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
-  public override fun relayShowAlignLeft(
+  @JvmOverloads
+  public fun relayShowAlignLeft(
     balloon: Balloon,
     anchor: View,
-    xOff: Int,
-    yOff: Int
+    xOff: Int = 0,
+    yOff: Int = 0
   ): Balloon =
     relay(balloon) { it.showAlignLeft(anchor, xOff, yOff) }
 
@@ -1099,12 +1108,13 @@ public class Balloon private constructor(
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    */
-  public override fun showAlign(
+  @JvmOverloads
+  public fun showAlign(
     align: BalloonAlign,
     mainAnchor: View,
-    subAnchorList: List<View>,
-    xOff: Int,
-    yOff: Int
+    subAnchorList: List<View> = listOf(),
+    xOff: Int = 0,
+    yOff: Int = 0
   ) {
     val anchors = listOf(mainAnchor) + subAnchorList
     show(*anchors.toTypedArray()) {
@@ -1147,12 +1157,13 @@ public class Balloon private constructor(
    *
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
-  public override fun relayShowAlign(
+  @JvmOverloads
+  public fun relayShowAlign(
     align: BalloonAlign,
     balloon: Balloon,
     anchor: View,
-    xOff: Int,
-    yOff: Int
+    xOff: Int = 0,
+    yOff: Int = 0
   ): Balloon {
     return relay(balloon) {
       when (align.getRTLSupportAlign(builder.isRtlLayout)) {
@@ -1172,7 +1183,8 @@ public class Balloon private constructor(
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    */
-  public override fun update(anchor: View, xOff: Int, yOff: Int) {
+  @JvmOverloads
+  public fun update(anchor: View, xOff: Int = 0, yOff: Int = 0) {
     update(anchor = anchor) {
       this.bodyWindow.update(anchor, xOff, yOff, getMeasuredWidth(), getMeasuredHeight())
       if (builder.isVisibleOverlay) {
@@ -1191,7 +1203,7 @@ public class Balloon private constructor(
   }
 
   /** dismiss the popup menu. */
-  public override fun dismiss() {
+  public fun dismiss() {
     if (this.isShowing) {
       val dismissWindow: () -> Unit = {
         this.isShowing = false
@@ -1210,7 +1222,7 @@ public class Balloon private constructor(
   }
 
   @InternalBalloonApi
-  public override fun updateHeightOfBalloonCard(height: Int) {
+  public fun updateHeightOfBalloonCard(height: Int) {
     if (binding.balloonCard.childCount != 0) {
       val child = binding.balloonCard[0]
       child.updateLayoutParams {
@@ -1220,11 +1232,11 @@ public class Balloon private constructor(
   }
 
   /** dismiss the popup menu with milliseconds delay. */
-  public override fun dismissWithDelay(delay: Long): Boolean =
+  public fun dismissWithDelay(delay: Long): Boolean =
     handler.postDelayed(autoDismissRunnable, delay)
 
   /** sets a [OnBalloonClickListener] to the popup. */
-  public override fun setOnBalloonClickListener(onBalloonClickListener: OnBalloonClickListener?) {
+  public fun setOnBalloonClickListener(onBalloonClickListener: OnBalloonClickListener?) {
     this.binding.balloonWrapper.setOnClickListener {
       onBalloonClickListener?.onBalloonClick(it)
       if (builder.dismissWhenClicked) dismiss()
@@ -1232,13 +1244,13 @@ public class Balloon private constructor(
   }
 
   /** clears all persisted preferences. */
-  public override fun clearAllPreferences() {
+  public fun clearAllPreferences() {
     this.balloonPersistence.clearAllPreferences()
   }
 
   /** sets a [OnBalloonClickListener] to the popup using lambda. */
   @JvmSynthetic
-  public override fun setOnBalloonClickListener(block: (View) -> Unit) {
+  public fun setOnBalloonClickListener(block: (View) -> Unit) {
     setOnBalloonClickListener(OnBalloonClickListener(block))
   }
 
@@ -1247,7 +1259,7 @@ public class Balloon private constructor(
    * The [OnBalloonInitializedListener.onBalloonInitialized] will be invoked when inflating the
    * body content of the balloon is finished.
    */
-  public override fun setOnBalloonInitializedListener(onBalloonInitializedListener: OnBalloonInitializedListener?) {
+  public fun setOnBalloonInitializedListener(onBalloonInitializedListener: OnBalloonInitializedListener?) {
     this.onBalloonInitializedListener = onBalloonInitializedListener
   }
 
@@ -1257,12 +1269,12 @@ public class Balloon private constructor(
    * body content of the balloon is finished.
    */
   @JvmSynthetic
-  public override fun setOnBalloonInitializedListener(block: (View) -> Unit) {
+  public fun setOnBalloonInitializedListener(block: (View) -> Unit) {
     setOnBalloonInitializedListener(OnBalloonInitializedListener(block))
   }
 
   /** sets a [OnBalloonDismissListener] to the popup. */
-  public override fun setOnBalloonDismissListener(onBalloonDismissListener: OnBalloonDismissListener?) {
+  public fun setOnBalloonDismissListener(onBalloonDismissListener: OnBalloonDismissListener?) {
     this.bodyWindow.setOnDismissListener {
       stopBalloonHighlightAnimation()
       this@Balloon.dismiss()
@@ -1272,12 +1284,12 @@ public class Balloon private constructor(
 
   /** sets a [OnBalloonDismissListener] to the popup using lambda. */
   @JvmSynthetic
-  public override fun setOnBalloonDismissListener(block: () -> Unit) {
+  public fun setOnBalloonDismissListener(block: () -> Unit) {
     setOnBalloonDismissListener(OnBalloonDismissListener(block))
   }
 
   /** sets a [OnBalloonOutsideTouchListener] to the popup. */
-  public override fun setOnBalloonOutsideTouchListener(onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener?) {
+  public fun setOnBalloonOutsideTouchListener(onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener?) {
     this.bodyWindow.setTouchInterceptor(
       object : View.OnTouchListener {
         @SuppressLint("ClickableViewAccessibility")
@@ -1297,28 +1309,28 @@ public class Balloon private constructor(
 
   /** sets a [OnBalloonOutsideTouchListener] to the popup using lambda. */
   @JvmSynthetic
-  public override fun setOnBalloonOutsideTouchListener(block: (View, MotionEvent) -> Unit) {
+  public fun setOnBalloonOutsideTouchListener(block: (View, MotionEvent) -> Unit) {
     setOnBalloonOutsideTouchListener(
       OnBalloonOutsideTouchListener(block)
     )
   }
 
   /** sets a [View.OnTouchListener] to the popup. */
-  public override fun setOnBalloonTouchListener(onTouchListener: View.OnTouchListener?) {
+  public fun setOnBalloonTouchListener(onTouchListener: View.OnTouchListener?) {
     if (onTouchListener != null) {
       this.bodyWindow.setTouchInterceptor(onTouchListener)
     }
   }
 
   /** sets a [View.OnTouchListener] to the overlay popup */
-  public override fun setOnBalloonOverlayTouchListener(onTouchListener: View.OnTouchListener?) {
+  public fun setOnBalloonOverlayTouchListener(onTouchListener: View.OnTouchListener?) {
     if (onTouchListener != null) {
       this.overlayWindow.setTouchInterceptor(onTouchListener)
     }
   }
 
   /** sets a [View.OnTouchListener] to the overlay popup using lambda. */
-  public override fun setOnBalloonOverlayTouchListener(block: (View, MotionEvent) -> Boolean) {
+  public fun setOnBalloonOverlayTouchListener(block: (View, MotionEvent) -> Boolean) {
     setOnBalloonOverlayTouchListener(
       View.OnTouchListener(block)
     )
@@ -1338,7 +1350,7 @@ public class Balloon private constructor(
   }
 
   /** sets a [OnBalloonOverlayClickListener] to the overlay popup. */
-  public override fun setOnBalloonOverlayClickListener(onBalloonOverlayClickListener: OnBalloonOverlayClickListener?) {
+  public fun setOnBalloonOverlayClickListener(onBalloonOverlayClickListener: OnBalloonOverlayClickListener?) {
     this.overlayBinding.root.setOnClickListener {
       onBalloonOverlayClickListener?.onBalloonOverlayClick()
       if (builder.dismissWhenOverlayClicked) dismiss()
@@ -1347,7 +1359,7 @@ public class Balloon private constructor(
 
   /** sets a [OnBalloonOverlayClickListener] to the overlay popup using lambda. */
   @JvmSynthetic
-  public override fun setOnBalloonOverlayClickListener(block: () -> Unit) {
+  public fun setOnBalloonOverlayClickListener(block: () -> Unit) {
     setOnBalloonOverlayClickListener(
       OnBalloonOverlayClickListener(block)
     )
@@ -1357,14 +1369,14 @@ public class Balloon private constructor(
    * sets whether the popup window will be attached in the decor frame of its parent window.
    * If you want to show up balloon on your DialogFragment, it's recommended to use with true. (#131)
    */
-  public override fun setIsAttachedInDecor(value: Boolean): Balloon = apply {
+  public fun setIsAttachedInDecor(value: Boolean): Balloon = apply {
     runOnAfterSDK22 {
       this.bodyWindow.isAttachedInDecor = value
     }
   }
 
   /** gets measured width size of the balloon popup. */
-  public override fun getMeasuredWidth(): Int {
+  public fun getMeasuredWidth(): Int {
     val displayWidth = displaySize.x
     return when {
       builder.widthRatio != NO_Float_VALUE ->
@@ -1442,7 +1454,7 @@ public class Balloon private constructor(
   }
 
   /** gets measured height size of the balloon popup. */
-  public override fun getMeasuredHeight(): Int {
+  public fun getMeasuredHeight(): Int {
     if (builder.height != BalloonSizeSpec.WRAP) {
       return builder.height
     }
@@ -1450,12 +1462,12 @@ public class Balloon private constructor(
   }
 
   /** gets a content view of the balloon popup window. */
-  public override fun getContentView(): ViewGroup {
+  public fun getContentView(): ViewGroup {
     return binding.balloonCard
   }
 
   /** gets a arrow view of the balloon popup window. */
-  public override fun getBalloonArrowView(): View {
+  public fun getBalloonArrowView(): View {
     return binding.balloonArrow
   }
 

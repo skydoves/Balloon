@@ -82,7 +82,7 @@ class ComposeActivity : ComponentActivity() {
           Button(
             modifier = Modifier.size(120.dp, 75.dp),
             onClick = {
-              it.showAtCenter()
+              it.showAlignTop()
             }
           ) {
             Text(text = "click")

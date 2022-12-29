@@ -49,7 +49,7 @@ public fun BalloonCompose(
   builder: Balloon.Builder,
   key: Any? = null,
   balloonContent: (@Composable () -> Unit)? = null,
-  content: @Composable (BalloonComposeView) -> Unit
+  content: @Composable (BalloonWindow) -> Unit
 ) {
   val current = LocalContext.current
   val view = LocalView.current
