@@ -44,7 +44,7 @@ import java.lang.Integer.max
 import java.util.UUID
 
 @Composable
-public fun BalloonCompose(
+public fun Balloon(
   modifier: Modifier = Modifier,
   builder: Balloon.Builder,
   key: Any? = null,

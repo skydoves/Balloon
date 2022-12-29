@@ -1,7 +1,3 @@
-public final class com/skydoves/balloon/compose/BalloonComposeKt {
-	public static final fun BalloonCompose (Landroidx/compose/ui/Modifier;Lcom/skydoves/balloon/Balloon$Builder;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
-}
-
 public final class com/skydoves/balloon/compose/BalloonComposeView : androidx/compose/ui/platform/AbstractComposeView, com/skydoves/balloon/compose/BalloonWindow {
 	public static final field $stable I
 	public fun <init> (Landroid/view/View;ZLcom/skydoves/balloon/Balloon$Builder;Ljava/util/UUID;)V
@@ -46,6 +42,10 @@ public final class com/skydoves/balloon/compose/BalloonComposeView : androidx/co
 	public fun showAtCenter (IILcom/skydoves/balloon/BalloonCenterAlign;)V
 	public fun update (II)V
 	public fun updateHeightOfBalloonCard (I)V
+}
+
+public final class com/skydoves/balloon/compose/BalloonKt {
+	public static final fun Balloon (Landroidx/compose/ui/Modifier;Lcom/skydoves/balloon/Balloon$Builder;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/skydoves/balloon/compose/BalloonLayoutInfo {

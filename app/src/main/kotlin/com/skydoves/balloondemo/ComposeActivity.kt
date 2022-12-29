@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
-import com.skydoves.balloon.compose.BalloonCompose
+import com.skydoves.balloon.compose.Balloon
 import com.skydoves.balloon.compose.rememberBalloonBuilder
 
 class ComposeActivity : ComponentActivity() {
@@ -60,7 +60,7 @@ class ComposeActivity : ComponentActivity() {
       }
 
       Box(modifier = Modifier.fillMaxSize()) {
-        BalloonCompose(
+        Balloon(
           modifier = Modifier.align(Alignment.Center),
           builder = builder,
           balloonContent = {

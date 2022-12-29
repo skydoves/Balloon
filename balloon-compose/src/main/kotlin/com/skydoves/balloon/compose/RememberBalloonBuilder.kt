@@ -22,7 +22,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import com.skydoves.balloon.Balloon
 
+@DslMarker
+internal annotation class BalloonDsl
+
 @Composable
+@BalloonDsl
 public fun rememberBalloonBuilder(
   context: Context = LocalContext.current,
   block: Balloon.Builder.() -> Unit
