@@ -17,7 +17,6 @@
 package com.skydoves.balloondemo
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
@@ -30,14 +29,13 @@ import androidx.compose.material.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.skydoves.balloon.ArrowOrientation
-import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.compose.BalloonCompose
+import com.skydoves.balloon.compose.rememberBalloonBuilder
 
 class ComposeActivity : ComponentActivity() {
 
@@ -45,29 +43,26 @@ class ComposeActivity : ComponentActivity() {
     super.onCreate(savedInstanceState)
 
     setContent {
-      val context = LocalContext.current
-      val balloon = Balloon.Builder(context)
-        .setArrowSize(10)
-        .setWidthRatio(1.0f)
-        .setHeight(BalloonSizeSpec.WRAP)
-        .setArrowOrientation(ArrowOrientation.BOTTOM)
-        .setArrowPosition(0.5f)
-        .setPadding(12)
-        .setMarginHorizontal(12)
-        .setTextSize(15f)
-        .setCornerRadius(8f)
-        .setTextColorResource(R.color.white_87)
-        .setIconDrawableResource(R.drawable.ic_edit)
-        .setBackgroundColorResource(R.color.skyBlue)
-        .setOnBalloonDismissListener {
-          Toast.makeText(context, "dismissed", Toast.LENGTH_SHORT).show()
-        }
-        .setBalloonAnimation(BalloonAnimation.ELASTIC)
+      val builder = rememberBalloonBuilder {
+        setArrowSize(10)
+        setWidthRatio(1.0f)
+        setHeight(BalloonSizeSpec.WRAP)
+        setArrowOrientation(ArrowOrientation.BOTTOM)
+        setArrowPosition(0.5f)
+        setPadding(12)
+        setMarginHorizontal(12)
+        setTextSize(15f)
+        setCornerRadius(8f)
+        setTextColorResource(R.color.white_87)
+        setIconDrawableResource(R.drawable.ic_edit)
+        setBackgroundColorResource(R.color.skyBlue)
+        setBalloonAnimation(BalloonAnimation.ELASTIC)
+      }
 
       Box(modifier = Modifier.fillMaxSize()) {
         BalloonCompose(
           modifier = Modifier.align(Alignment.Center),
-          builder = balloon,
+          builder = builder,
           balloonContent = {
             Text(
               modifier = Modifier
