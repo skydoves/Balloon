@@ -1,5 +1,4 @@
-
-# Baseline Profiles for Balloon
+# Baseline Profiles for balloon
 
 HSPLcom/skydoves/balloon/ArrowOrientation$Companion;-><init>()V
 HSPLcom/skydoves/balloon/ArrowOrientation$Companion;-><init>(Lkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -106,6 +105,7 @@ HSPLcom/skydoves/balloon/Balloon$Builder;->getTextTypeface()I
 HSPLcom/skydoves/balloon/Balloon$Builder;->getTextTypefaceObject()Landroid/graphics/Typeface;
 HSPLcom/skydoves/balloon/Balloon$Builder;->getWidthRatio()F
 HSPLcom/skydoves/balloon/Balloon$Builder;->isAttachedInDecor()Z
+HSPLcom/skydoves/balloon/Balloon$Builder;->isComposableContent()Z
 HSPLcom/skydoves/balloon/Balloon$Builder;->isFocusable()Z
 HSPLcom/skydoves/balloon/Balloon$Builder;->isRtlLayout()Z
 HSPLcom/skydoves/balloon/Balloon$Builder;->isVisibleArrow()Z
@@ -155,7 +155,7 @@ HSPLcom/skydoves/balloon/Balloon$setOnBalloonOutsideTouchListener$1;-><init>(Lco
 HSPLcom/skydoves/balloon/Balloon$showAtCenter$$inlined$show$1;-><init>(Lcom/skydoves/balloon/Balloon;Landroid/view/View;[Landroid/view/View;Lcom/skydoves/balloon/BalloonCenterAlign;Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIIIII)V
 HSPLcom/skydoves/balloon/Balloon$showAtCenter$$inlined$show$1;->run()V
 HSPLcom/skydoves/balloon/Balloon;->$r8$lambda$1CXlMW7cK9fbSsmb2dZyrXgSWfY(Lcom/skydoves/balloon/Balloon;)V
-HSPLcom/skydoves/balloon/Balloon;->$r8$lambda$AG85m5Xf41snqpnqccIH1e-Pyhs(Lcom/skydoves/balloon/Balloon;Lcom/skydoves/balloon/OnBalloonDismissListener;)V
+HSPLcom/skydoves/balloon/Balloon;->$r8$lambda$4C0S0LOhfUKGIPSeFxP2GmOmApo(Lcom/skydoves/balloon/Balloon;Lcom/skydoves/balloon/OnBalloonDismissListener;)V
 HSPLcom/skydoves/balloon/Balloon;->$r8$lambda$dnfG9pCnm--dlCwPc9CyzYpFGgs(Lcom/skydoves/balloon/Balloon;)V
 HSPLcom/skydoves/balloon/Balloon;->$r8$lambda$eatXLsBF2YxmejA_BVike8u7iuA(Lcom/skydoves/balloon/Balloon;Landroid/view/View;Landroidx/appcompat/widget/AppCompatImageView;)V
 HSPLcom/skydoves/balloon/Balloon;-><init>(Landroid/content/Context;Lcom/skydoves/balloon/Balloon$Builder;)V
@@ -212,7 +212,7 @@ HSPLcom/skydoves/balloon/Balloon;->onPause(Landroidx/lifecycle/LifecycleOwner;)V
 HSPLcom/skydoves/balloon/Balloon;->passTouchEventToAnchor(Landroid/view/View;)V
 HSPLcom/skydoves/balloon/Balloon;->setIsAttachedInDecor(Z)Lcom/skydoves/balloon/Balloon;
 HSPLcom/skydoves/balloon/Balloon;->setOnBalloonClickListener(Lcom/skydoves/balloon/OnBalloonClickListener;)V
-HSPLcom/skydoves/balloon/Balloon;->setOnBalloonDismissListener$lambda$47(Lcom/skydoves/balloon/Balloon;Lcom/skydoves/balloon/OnBalloonDismissListener;)V
+HSPLcom/skydoves/balloon/Balloon;->setOnBalloonDismissListener$lambda$48(Lcom/skydoves/balloon/Balloon;Lcom/skydoves/balloon/OnBalloonDismissListener;)V
 HSPLcom/skydoves/balloon/Balloon;->setOnBalloonDismissListener(Lcom/skydoves/balloon/OnBalloonDismissListener;)V
 HSPLcom/skydoves/balloon/Balloon;->setOnBalloonOutsideTouchListener(Lcom/skydoves/balloon/OnBalloonOutsideTouchListener;)V
 HSPLcom/skydoves/balloon/Balloon;->setOnBalloonOverlayClickListener(Lcom/skydoves/balloon/OnBalloonOverlayClickListener;)V
@@ -256,7 +256,7 @@ HSPLcom/skydoves/balloon/IconForm$Builder;->build()Lcom/skydoves/balloon/IconFor
 HSPLcom/skydoves/balloon/IconForm$Builder;->getDrawable()Landroid/graphics/drawable/Drawable;
 HSPLcom/skydoves/balloon/IconForm$Builder;->getDrawableRes()Ljava/lang/Integer;
 HSPLcom/skydoves/balloon/IconForm$Builder;->getIconColor()I
-HSPLcom/skydoves/balloon/IconForm$Builder;->getIconContentDescription()Ljava/lang/String;
+HSPLcom/skydoves/balloon/IconForm$Builder;->getIconContentDescription()Ljava/lang/CharSequence;
 HSPLcom/skydoves/balloon/IconForm$Builder;->getIconGravity()Lcom/skydoves/balloon/IconGravity;
 HSPLcom/skydoves/balloon/IconForm$Builder;->getIconHeight()I
 HSPLcom/skydoves/balloon/IconForm$Builder;->getIconSpace()I
@@ -272,7 +272,7 @@ HSPLcom/skydoves/balloon/IconForm;-><init>(Lcom/skydoves/balloon/IconForm$Builde
 HSPLcom/skydoves/balloon/IconForm;->getDrawable()Landroid/graphics/drawable/Drawable;
 HSPLcom/skydoves/balloon/IconForm;->getDrawableRes()Ljava/lang/Integer;
 HSPLcom/skydoves/balloon/IconForm;->getIconColor()I
-HSPLcom/skydoves/balloon/IconForm;->getIconContentDescription()Ljava/lang/String;
+HSPLcom/skydoves/balloon/IconForm;->getIconContentDescription()Ljava/lang/CharSequence;
 HSPLcom/skydoves/balloon/IconForm;->getIconGravity()Lcom/skydoves/balloon/IconGravity;
 HSPLcom/skydoves/balloon/IconForm;->getIconHeight()I
 HSPLcom/skydoves/balloon/IconForm;->getIconSpace()I
@@ -312,19 +312,6 @@ HSPLcom/skydoves/balloon/TextForm;->getTextLineSpacing()Ljava/lang/Float;
 HSPLcom/skydoves/balloon/TextForm;->getTextSize()F
 HSPLcom/skydoves/balloon/TextForm;->getTextStyle()I
 HSPLcom/skydoves/balloon/TextForm;->getTextTypeface()Landroid/graphics/Typeface;
-HSPLcom/skydoves/balloon/benchmark/app/BalloonFactory$create$1;-><init>(Landroid/content/Context;)V
-HSPLcom/skydoves/balloon/benchmark/app/BalloonFactory$create$1;->invoke()Ljava/lang/Object;
-HSPLcom/skydoves/balloon/benchmark/app/BalloonFactory$create$1;->invoke()V
-HSPLcom/skydoves/balloon/benchmark/app/BalloonFactory;-><init>()V
-HSPLcom/skydoves/balloon/benchmark/app/BalloonFactory;->create(Landroid/content/Context;Landroidx/lifecycle/LifecycleOwner;)Lcom/skydoves/balloon/Balloon;
-HSPLcom/skydoves/balloon/benchmark/app/MainActivity;-><init>()V
-HSPLcom/skydoves/balloon/benchmark/app/MainActivity;->getBalloon()Lcom/skydoves/balloon/Balloon;
-HSPLcom/skydoves/balloon/benchmark/app/MainActivity;->onCreate(Landroid/os/Bundle;)V
-HSPLcom/skydoves/balloon/benchmark/app/databinding/ActivityMainBinding;-><init>(Landroid/widget/RelativeLayout;Landroid/widget/TextView;)V
-HSPLcom/skydoves/balloon/benchmark/app/databinding/ActivityMainBinding;->bind(Landroid/view/View;)Lcom/skydoves/balloon/benchmark/app/databinding/ActivityMainBinding;
-HSPLcom/skydoves/balloon/benchmark/app/databinding/ActivityMainBinding;->getRoot()Landroid/widget/RelativeLayout;
-HSPLcom/skydoves/balloon/benchmark/app/databinding/ActivityMainBinding;->inflate(Landroid/view/LayoutInflater;)Lcom/skydoves/balloon/benchmark/app/databinding/ActivityMainBinding;
-HSPLcom/skydoves/balloon/benchmark/app/databinding/ActivityMainBinding;->inflate(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Z)Lcom/skydoves/balloon/benchmark/app/databinding/ActivityMainBinding;
 HSPLcom/skydoves/balloon/databinding/BalloonLayoutBodyBinding;-><init>(Landroid/widget/FrameLayout;Landroid/widget/FrameLayout;Landroidx/appcompat/widget/AppCompatImageView;Lcom/skydoves/balloon/radius/RadiusLayout;Landroid/widget/FrameLayout;Lcom/skydoves/balloon/vectortext/VectorTextView;Landroid/widget/FrameLayout;)V
 HSPLcom/skydoves/balloon/databinding/BalloonLayoutBodyBinding;->bind(Landroid/view/View;)Lcom/skydoves/balloon/databinding/BalloonLayoutBodyBinding;
 HSPLcom/skydoves/balloon/databinding/BalloonLayoutBodyBinding;->getRoot()Landroid/widget/FrameLayout;
@@ -409,11 +396,11 @@ HSPLcom/skydoves/balloon/vectortext/VectorTextView;-><init>(Landroid/content/Con
 HSPLcom/skydoves/balloon/vectortext/VectorTextView;->initAttrs(Landroid/content/Context;Landroid/util/AttributeSet;)V
 HSPLcom/skydoves/balloon/vectortext/VectorTextView;->isRtlSupport(Z)V
 HSPLcom/skydoves/balloon/vectortext/VectorTextView;->setDrawableTextViewParams(Lcom/skydoves/balloon/vectortext/VectorTextViewParams;)V
-HSPLcom/skydoves/balloon/vectortext/VectorTextViewParams;-><init>(Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Landroid/graphics/drawable/Drawable;Landroid/graphics/drawable/Drawable;Landroid/graphics/drawable/Drawable;Landroid/graphics/drawable/Drawable;ZLjava/lang/String;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;)V
-HSPLcom/skydoves/balloon/vectortext/VectorTextViewParams;-><init>(Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Landroid/graphics/drawable/Drawable;Landroid/graphics/drawable/Drawable;Landroid/graphics/drawable/Drawable;Landroid/graphics/drawable/Drawable;ZLjava/lang/String;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+HSPLcom/skydoves/balloon/vectortext/VectorTextViewParams;-><init>(Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Landroid/graphics/drawable/Drawable;Landroid/graphics/drawable/Drawable;Landroid/graphics/drawable/Drawable;Landroid/graphics/drawable/Drawable;ZLjava/lang/CharSequence;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;)V
+HSPLcom/skydoves/balloon/vectortext/VectorTextViewParams;-><init>(Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Landroid/graphics/drawable/Drawable;Landroid/graphics/drawable/Drawable;Landroid/graphics/drawable/Drawable;Landroid/graphics/drawable/Drawable;ZLjava/lang/CharSequence;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 HSPLcom/skydoves/balloon/vectortext/VectorTextViewParams;->getCompoundDrawablePadding()Ljava/lang/Integer;
 HSPLcom/skydoves/balloon/vectortext/VectorTextViewParams;->getCompoundDrawablePaddingRes()Ljava/lang/Integer;
-HSPLcom/skydoves/balloon/vectortext/VectorTextViewParams;->getContentDescription()Ljava/lang/String;
+HSPLcom/skydoves/balloon/vectortext/VectorTextViewParams;->getContentDescription()Ljava/lang/CharSequence;
 HSPLcom/skydoves/balloon/vectortext/VectorTextViewParams;->getDrawableBottom()Landroid/graphics/drawable/Drawable;
 HSPLcom/skydoves/balloon/vectortext/VectorTextViewParams;->getDrawableBottomRes()Ljava/lang/Integer;
 HSPLcom/skydoves/balloon/vectortext/VectorTextViewParams;->getDrawableEnd()Landroid/graphics/drawable/Drawable;

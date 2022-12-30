@@ -57,8 +57,9 @@ android {
 }
 
 dependencies {
+  implementation(project(":balloon"))
+
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.fragment)
   implementation(libs.androidx.lifecycle)
-  implementation(project(":balloon"))
 }
