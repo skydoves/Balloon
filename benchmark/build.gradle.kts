@@ -1,10 +1,18 @@
+import com.skydoves.balloon.Configuration
+
 plugins {
   id("com.android.test")
   id("org.jetbrains.kotlin.android")
 }
 
 android {
-  compileSdk = 32
+  compileSdk = Configuration.compileSdk
+
+  defaultConfig {
+    minSdk = Configuration.minSdkBenchmark
+    targetSdk = Configuration.targetSdk
+    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+  }
 
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -12,13 +20,7 @@ android {
   }
 
   kotlinOptions {
-    jvmTarget = "1.8"
-  }
-
-  defaultConfig {
-    minSdk = 23
-    targetSdk = 32
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    jvmTarget = libs.versions.jvmTarget.get()
   }
 
   buildTypes {
