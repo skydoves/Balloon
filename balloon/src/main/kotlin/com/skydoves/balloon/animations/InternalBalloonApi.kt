@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package com.skydoves.balloon
+package com.skydoves.balloon.animations
 
-object Configuration {
-  const val compileSdk = 33
-  const val targetSdk = 33
-  const val minSdk = 17
-  const val minSdkCompose = 21
-  const val majorVersion = 1
-  const val minorVersion = 4
-  const val patchVersion = 8
-  const val versionName = "$majorVersion.$minorVersion.$patchVersion"
-  const val versionCode = 49
-  const val snapshotVersionName = "$majorVersion.$minorVersion.${patchVersion + 1}-SNAPSHOT"
-  const val artifactGroup = "com.github.skydoves"
-}
+@Target(
+  AnnotationTarget.CLASS,
+  AnnotationTarget.PROPERTY,
+  AnnotationTarget.CONSTRUCTOR,
+  AnnotationTarget.FUNCTION,
+  AnnotationTarget.TYPEALIAS
+)
+@RequiresOptIn(
+  message = "This is internal API for the balloon libraries. Do not depend on " +
+    "this API in your own client code.",
+  level = RequiresOptIn.Level.ERROR
+)
+public annotation class InternalBalloonApi

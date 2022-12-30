@@ -14,18 +14,21 @@
  * limitations under the License.
  */
 
-package com.skydoves.balloon
+package com.skydoves.balloon.compose
 
-object Configuration {
-  const val compileSdk = 33
-  const val targetSdk = 33
-  const val minSdk = 17
-  const val minSdkCompose = 21
-  const val majorVersion = 1
-  const val minorVersion = 4
-  const val patchVersion = 8
-  const val versionName = "$majorVersion.$minorVersion.$patchVersion"
-  const val versionCode = 49
-  const val snapshotVersionName = "$majorVersion.$minorVersion.${patchVersion + 1}-SNAPSHOT"
-  const val artifactGroup = "com.github.skydoves"
+import androidx.compose.ui.semantics.SemanticsPropertyKey
+import androidx.compose.ui.semantics.SemanticsPropertyReceiver
+
+internal fun SemanticsPropertyReceiver.balloon() {
+  this[IsBalloon] = Unit
 }
+
+internal val IsBalloon = SemanticsPropertyKey<Unit>(
+  name = "IsBalloon",
+  mergePolicy = { _, _ ->
+    throw IllegalStateException(
+      "merge function called on unmergeable property IsBalloon. " +
+        "A dialog should not be a child of a clickable/focusable node."
+    )
+  }
+)

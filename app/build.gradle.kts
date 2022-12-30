@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import com.skydoves.balloon.Configuration
-import com.skydoves.balloon.Dependencies
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -25,7 +24,7 @@ android {
   compileSdk = Configuration.compileSdk
   defaultConfig {
     applicationId = "com.skydoves.balloondemo"
-    minSdk = Configuration.minSdk
+    minSdk = Configuration.minSdkCompose
     targetSdk = Configuration.targetSdk
     versionCode = Configuration.versionCode
     versionName = Configuration.versionName
@@ -42,6 +41,11 @@ android {
 
   buildFeatures {
     viewBinding = true
+    compose = true
+  }
+
+  composeOptions {
+    kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
   }
 
   lint {
@@ -50,6 +54,15 @@ android {
 }
 
 dependencies {
-  implementation(Dependencies.material)
   implementation(project(":balloon"))
+  implementation(project(":balloon-compose"))
+
+  implementation(libs.androidx.material)
+  implementation(libs.androidx.activity.compose)
+  implementation(libs.androidx.compose.ui)
+  implementation(libs.androidx.compose.ui.tooling)
+  implementation(libs.androidx.compose.material)
+  implementation(libs.androidx.compose.foundation)
+  implementation(libs.androidx.compose.runtime)
+  implementation(libs.androidx.compose.constraintlayout)
 }

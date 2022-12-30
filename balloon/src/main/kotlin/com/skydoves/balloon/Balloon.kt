@@ -67,6 +67,8 @@ import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
 import androidx.core.view.ViewCompat
 import androidx.core.view.forEach
+import androidx.core.view.get
+import androidx.core.view.updateLayoutParams
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleObserver
@@ -76,6 +78,7 @@ import com.skydoves.balloon.ArrowOrientation.Companion.getRTLSupportOrientation
 import com.skydoves.balloon.BalloonAlign.Companion.getRTLSupportAlign
 import com.skydoves.balloon.BalloonCenterAlign.Companion.getRTLSupportAlign
 import com.skydoves.balloon.animations.BalloonRotateAnimation
+import com.skydoves.balloon.animations.InternalBalloonApi
 import com.skydoves.balloon.annotations.Dp
 import com.skydoves.balloon.annotations.Sp
 import com.skydoves.balloon.databinding.BalloonLayoutBodyBinding
@@ -758,7 +761,9 @@ public class Balloon private constructor(
         }
         this.binding.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         this.bodyWindow.width = getMeasuredWidth()
-        this.bodyWindow.height = getMeasuredHeight()
+        if (!builder.isComposableContent) {
+          this.bodyWindow.height = getMeasuredHeight()
+        }
         this.binding.balloonText.layoutParams = FrameLayout.LayoutParams(
           FrameLayout.LayoutParams.MATCH_PARENT,
           FrameLayout.LayoutParams.MATCH_PARENT
@@ -1212,6 +1217,16 @@ public class Balloon private constructor(
         }
       } else {
         dismissWindow()
+      }
+    }
+  }
+
+  @InternalBalloonApi
+  public fun updateHeightOfBalloonCard(height: Int) {
+    if (binding.balloonCard.childCount != 0) {
+      val child = binding.balloonCard[0]
+      child.updateLayoutParams {
+        this.height = height
       }
     }
   }
@@ -1803,6 +1818,9 @@ public class Balloon private constructor(
 
     @set:JvmSynthetic
     public var isAttachedInDecor: Boolean = true
+
+    @set:JvmSynthetic
+    public var isComposableContent: Boolean = false
 
     /** sets the width size. */
     public fun setWidth(@Dp value: Int): Builder = apply {
@@ -2667,6 +2685,14 @@ public class Balloon private constructor(
      * onBackPressed will be fired to the balloon.
      * */
     public fun setFocusable(value: Boolean): Builder = apply { this.isFocusable = value }
+
+    /**
+     * sets isComposableContent to the balloon content.
+     * isComposableContent indicates if the custom layout content is composed of Jetpack Compose
+     * Composable function.
+     */
+    public fun setIsComposableContent(value: Boolean): Builder =
+      apply { this.isComposableContent = value }
 
     /**
      * Create a new instance of the [Balloon] which includes customized attributes.

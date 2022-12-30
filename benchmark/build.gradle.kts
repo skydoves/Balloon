@@ -37,10 +37,10 @@ android {
 }
 
 dependencies {
-  implementation(com.skydoves.balloon.Dependencies.ANDROIDX_TEST_RUNNER)
-  implementation(com.skydoves.balloon.Dependencies.MACRO_BENCHMARK)
-  implementation(com.skydoves.balloon.Dependencies.BASE_PROFILE)
-  implementation(com.skydoves.balloon.Dependencies.ANDROIDX_UI_AUTOMATOR)
+  implementation(libs.androidx.test.runner)
+  implementation(libs.androidx.test.uiautomator)
+  implementation(libs.androidx.benchmark.macro)
+  implementation(libs.androidx.profileinstaller)
 }
 
 androidComponents {

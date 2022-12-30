@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package com.skydoves.balloon
+package com.skydoves.balloon.compose
 
-object Configuration {
-  const val compileSdk = 33
-  const val targetSdk = 33
-  const val minSdk = 17
-  const val minSdkCompose = 21
-  const val majorVersion = 1
-  const val minorVersion = 4
-  const val patchVersion = 8
-  const val versionName = "$majorVersion.$minorVersion.$patchVersion"
-  const val versionCode = 49
-  const val snapshotVersionName = "$majorVersion.$minorVersion.${patchVersion + 1}-SNAPSHOT"
-  const val artifactGroup = "com.github.skydoves"
-}
+/**
+ * Represent layout information of a Composable node.
+ *
+ * @property x the x coordinate of the composable.
+ * @property y the y coordinate of the composable.
+ * @property width the width size of the composable.
+ * @property height the height size of the composable.
+ */
+internal data class BalloonLayoutInfo constructor(
+  val x: Float,
+  val y: Float,
+  val width: Int,
+  val height: Int
+)
