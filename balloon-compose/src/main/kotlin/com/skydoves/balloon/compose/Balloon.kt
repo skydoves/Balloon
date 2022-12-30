@@ -43,6 +43,16 @@ import com.skydoves.balloon.Balloon
 import java.lang.Integer.max
 import java.util.UUID
 
+/**
+ * Balloon allows you to display tooltips, which is fully customizable with an arrow
+ * and animations for Compose.
+ *
+ * @param modifier [Modifier] used to adjust the layout or drawing content.
+ * @param builder [Balloon.Builder] that includes details of tooltips to be displayed.
+ * @param key key to recompose the content of balloon.
+ * @param balloonContent the content to be displayed inside the balloon.
+ * @param content the main content of the screen. You should use the [BalloonWindow] to control balloon.
+ */
 @Composable
 public fun Balloon(
   modifier: Modifier = Modifier,
@@ -90,7 +100,7 @@ public fun Balloon(
         .onGloballyPositioned { coordinates ->
           val size = coordinates.size
           balloonComposeView.updateHeightOfBalloonCard(size)
-          balloonComposeView.internalBalloonLayoutInfo.value = BalloonLayoutInfo(
+          balloonComposeView.balloonLayoutInfo.value = BalloonLayoutInfo(
             x = coordinates.positionInWindow().x,
             y = coordinates.positionInWindow().y,
             width = size.width,

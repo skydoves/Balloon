@@ -16,9 +16,17 @@
 
 package com.skydoves.balloon.compose
 
-public data class BalloonLayoutInfo constructor(
-  public val x: Float,
-  public val y: Float,
-  public val width: Int,
-  public val height: Int
+/**
+ * Represent layout information of a Composable node.
+ *
+ * @property x the x coordinate of the composable.
+ * @property y the y coordinate of the composable.
+ * @property width the width size of the composable.
+ * @property height the height size of the composable.
+ */
+internal data class BalloonLayoutInfo constructor(
+  val x: Float,
+  val y: Float,
+  val width: Int,
+  val height: Int
 )

@@ -23,7 +23,6 @@ import android.view.ViewGroup
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionContext
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -45,8 +44,17 @@ import com.skydoves.balloon.OnBalloonOverlayClickListener
 import com.skydoves.balloon.animations.InternalBalloonApi
 import java.util.UUID
 
+/**
+ * An implementation of [AbstractComposeView] that binds view tree lifecycles with [anchorView] and
+ * delegates [balloon] and composable contents.
+ *
+ * @property anchorView the anchor for a balloon to be displayed on the screen.
+ * @param isComposableContent represents the internal content should be composable.
+ * @param builder the builder of balloon.
+ * @param balloonID unique UUID to restore the state of balloon.
+ */
 @SuppressLint("ViewConstructor")
-public class BalloonComposeView constructor(
+internal class BalloonComposeView constructor(
   private val anchorView: View,
   isComposableContent: Boolean,
   builder: Balloon.Builder,
@@ -55,7 +63,7 @@ public class BalloonComposeView constructor(
 
   private val lifecycleOwner = ViewTreeLifecycleOwner.get(anchorView)
 
-  public override val balloon: Balloon = builder
+  override val balloon: Balloon = builder
     .setLifecycleOwner(lifecycleOwner)
     .setIsComposableContent(isComposableContent)
     .apply {
@@ -67,8 +75,7 @@ public class BalloonComposeView constructor(
 
   private var content: @Composable (BalloonComposeView) -> Unit by mutableStateOf({})
 
-  internal var internalBalloonLayoutInfo: MutableState<BalloonLayoutInfo?> = mutableStateOf(null)
-  public val balloonLayoutInfo: State<BalloonLayoutInfo?> = internalBalloonLayoutInfo
+  internal var balloonLayoutInfo: MutableState<BalloonLayoutInfo?> = mutableStateOf(null)
 
   override var shouldCreateCompositionOnAttachedToWindow: Boolean = false
     private set
@@ -85,7 +92,7 @@ public class BalloonComposeView constructor(
     content.invoke(this@BalloonComposeView)
   }
 
-  public fun setContent(
+  fun setContent(
     compositionContext: CompositionContext,
     content: @Composable (BalloonComposeView) -> Unit
   ) {

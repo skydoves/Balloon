@@ -25,6 +25,12 @@ import com.skydoves.balloon.Balloon
 @DslMarker
 internal annotation class BalloonDsl
 
+/**
+ * Create and remember [Balloon.Builder].
+ *
+ * @param context context to create balloon.
+ * @param block a receiver lambda that will be applied with [Balloon.Builder].
+ */
 @Composable
 @BalloonDsl
 public fun rememberBalloonBuilder(

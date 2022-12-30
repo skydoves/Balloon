@@ -7,72 +7,8 @@ public final class com/skydoves/balloon/compose/BalloonComposeExtensionKt {
 	public static final fun setTextColor-4WTKRHQ (Lcom/skydoves/balloon/Balloon$Builder;J)Lcom/skydoves/balloon/Balloon$Builder;
 }
 
-public final class com/skydoves/balloon/compose/BalloonComposeView : androidx/compose/ui/platform/AbstractComposeView, com/skydoves/balloon/compose/BalloonWindow {
-	public static final field $stable I
-	public fun <init> (Landroid/view/View;ZLcom/skydoves/balloon/Balloon$Builder;Ljava/util/UUID;)V
-	public fun Content (Landroidx/compose/runtime/Composer;I)V
-	public fun clearAllPreferences ()V
-	public fun dismiss ()V
-	public fun dismissWithDelay (J)Z
-	public fun getAccessibilityClassName ()Ljava/lang/CharSequence;
-	public fun getBalloon ()Lcom/skydoves/balloon/Balloon;
-	public fun getBalloonArrowView ()Landroid/view/View;
-	public final fun getBalloonLayoutInfo ()Landroidx/compose/runtime/State;
-	public fun getContentView ()Landroid/view/ViewGroup;
-	public fun relayShowAlign (Lcom/skydoves/balloon/BalloonAlign;Lcom/skydoves/balloon/Balloon;II)Lcom/skydoves/balloon/Balloon;
-	public fun relayShowAlignBottom (Lcom/skydoves/balloon/Balloon;II)Lcom/skydoves/balloon/Balloon;
-	public fun relayShowAlignLeft (Lcom/skydoves/balloon/Balloon;II)Lcom/skydoves/balloon/Balloon;
-	public fun relayShowAlignRight (Lcom/skydoves/balloon/Balloon;II)Lcom/skydoves/balloon/Balloon;
-	public fun relayShowAlignTop (Lcom/skydoves/balloon/Balloon;II)Lcom/skydoves/balloon/Balloon;
-	public fun relayShowAsDropDown (Lcom/skydoves/balloon/Balloon;II)Lcom/skydoves/balloon/Balloon;
-	public fun relayShowAtCenter (Lcom/skydoves/balloon/Balloon;IILcom/skydoves/balloon/BalloonCenterAlign;)Lcom/skydoves/balloon/Balloon;
-	public final fun setContent (Landroidx/compose/runtime/CompositionContext;Lkotlin/jvm/functions/Function3;)V
-	public fun setIsAttachedInDecor (Z)Lcom/skydoves/balloon/Balloon;
-	public fun setOnBalloonClickListener (Lcom/skydoves/balloon/OnBalloonClickListener;)V
-	public fun setOnBalloonClickListener (Lkotlin/jvm/functions/Function1;)V
-	public fun setOnBalloonDismissListener (Lcom/skydoves/balloon/OnBalloonDismissListener;)V
-	public fun setOnBalloonDismissListener (Lkotlin/jvm/functions/Function0;)V
-	public fun setOnBalloonInitializedListener (Lcom/skydoves/balloon/OnBalloonInitializedListener;)V
-	public fun setOnBalloonInitializedListener (Lkotlin/jvm/functions/Function1;)V
-	public fun setOnBalloonOutsideTouchListener (Lcom/skydoves/balloon/OnBalloonOutsideTouchListener;)V
-	public fun setOnBalloonOutsideTouchListener (Lkotlin/jvm/functions/Function2;)V
-	public fun setOnBalloonOverlayClickListener (Lcom/skydoves/balloon/OnBalloonOverlayClickListener;)V
-	public fun setOnBalloonOverlayClickListener (Lkotlin/jvm/functions/Function0;)V
-	public fun setOnBalloonOverlayTouchListener (Landroid/view/View$OnTouchListener;)V
-	public fun setOnBalloonOverlayTouchListener (Lkotlin/jvm/functions/Function2;)V
-	public fun setOnBalloonTouchListener (Landroid/view/View$OnTouchListener;)V
-	public fun shouldShowUp ()Z
-	public fun showAlign (Lcom/skydoves/balloon/BalloonAlign;Landroid/view/View;Ljava/util/List;II)V
-	public fun showAlignBottom (II)V
-	public fun showAlignLeft (II)V
-	public fun showAlignRight (II)V
-	public fun showAlignTop (II)V
-	public fun showAsDropDown (II)V
-	public fun showAtCenter (IILcom/skydoves/balloon/BalloonCenterAlign;)V
-	public fun update (II)V
-	public fun updateHeightOfBalloonCard (I)V
-}
-
 public final class com/skydoves/balloon/compose/BalloonKt {
 	public static final fun Balloon (Landroidx/compose/ui/Modifier;Lcom/skydoves/balloon/Balloon$Builder;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class com/skydoves/balloon/compose/BalloonLayoutInfo {
-	public static final field $stable I
-	public fun <init> (FFII)V
-	public final fun component1 ()F
-	public final fun component2 ()F
-	public final fun component3 ()I
-	public final fun component4 ()I
-	public final fun copy (FFII)Lcom/skydoves/balloon/compose/BalloonLayoutInfo;
-	public static synthetic fun copy$default (Lcom/skydoves/balloon/compose/BalloonLayoutInfo;FFIIILjava/lang/Object;)Lcom/skydoves/balloon/compose/BalloonLayoutInfo;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getHeight ()I
-	public final fun getWidth ()I
-	public final fun getX ()F
-	public final fun getY ()F
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
 }
 
 public abstract interface class com/skydoves/balloon/compose/BalloonWindow {
