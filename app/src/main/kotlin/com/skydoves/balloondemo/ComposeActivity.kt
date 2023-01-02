@@ -73,14 +73,14 @@ class ComposeActivity : ComponentActivity() {
               color = Color.White
             )
           }
-        ) {
+        ) { balloonWindow ->
           Button(
             modifier = Modifier.size(120.dp, 75.dp),
             onClick = {
-              it.showAlignTop()
+              balloonWindow.showAlignTop()
             }
           ) {
-            Text(text = "click")
+            Text(text = "showAlignTop")
           }
         }
       }
