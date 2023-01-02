@@ -714,7 +714,7 @@ Balloon(
 
 ### BalloonWindow
 
-`BalloonWindow` is an interface that define all executable behaviors of the balloon's window, such as showing, dismissing, updating, and setting listeners. You will get an instance of `BalloonWindow` inside of the `content` parameter of `Balloon` composable function like the below:
+`BalloonWindow` is an interface that defines all executable behaviors of the balloon's window, such as showing, dismissing, updating, and setting listeners. You will get an instance of `BalloonWindow` inside of the `content` parameter of `Balloon` composable function like the below:
 
 ```kotlin
 Balloon(
@@ -753,7 +753,7 @@ val builder = rememberBalloonBuilder {
 ```
 
 ## Find this library useful? :heart:
-Support it by joining __[stargazers](https://github.com/skydoves/balloon/stargazers)__ for this repository. :star:
+Support it by joining __[stargazers](https://github.com/skydoves/balloon/stargazers)__ for this repository. :star: <br>
 Also, __[follow me](https://github.com/skydoves)__ on GitHub for my next creations! 🤩
 
 # License
