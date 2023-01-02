@@ -749,7 +749,7 @@ val builder = rememberBalloonBuilder {
   setTextColor(Color.White) // set text color with compose color.
   setBackgroundColor(Color.White) // set background color with compose color.
   setIconDrawableResource(R.drawable.ic_edit)
-  setBalloonAnimation(Balloon
+}
 ```
 
 ## Find this library useful? :heart:
