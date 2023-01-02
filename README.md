@@ -655,85 +655,106 @@ We can implement the rotate animation like the example below:
 For more details, you can check out the documentations below:
 - [Balloon documentations](https://skydoves.github.io/libraries/balloon/html/balloon/com.skydoves.balloon/-balloon/index.html)
 - [Builder documentations](https://skydoves.github.io/libraries/balloon/html/balloon/com.skydoves.balloon/-balloon/-builder/index.html)
-```java
-.setWidth(value: Int)
-.setWidthRatio(@FloatRange(from = 0.0, to = 1.0) value: Float)
-.setHeight(value: Int)
-.setSize(value: Int, value: Int)
-.setSpace(value: Int)
-.setPadding(value: Int)
-.setPaddingLeft(value: Int)
-.setPaddingTop(value: Int)
-.setPaddingRight(value: Int)
-.setPaddingBottom(value: Int)
-.setMargin(value: Int)
-.setMarginLeft(value: Int)
-.setMarginTop(value: Int)
-.setMarginRight(value: Int)
-.setMarginBottom(value: Int)
-.setElevation(value: Int)
-.setIsVisibleArrow(value: Boolean)
-.setArrowSize(value: Int)
-.setArrowPosition(@FloatRange(from = 0.0, to = 1.0) value: Float)
-.setArrowOrientation(value: ArrowOrientation)
-.setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
-.setArrowColor(value: Int)
-.setArrowColorResource(@ColorRes value: Int)
-.setArrowDrawable(value: Drawable?)
-.setArrowDrawableResource(@DrawableRes value: Int)
-.setArrowAlignAnchorPadding(value: Int)
-.setArrowAlignAnchorPaddingRatio(value: Float)
-.setBackgroundColor(value: Int)
-.setBackgroundColorResource(@ColorRes value: Int)
-.setBackgroundDrawable(value: Drawable?)
-.setBackgroundDrawableResource(@DrawableRes value: Int)
-.setCornerRadius(value: Float)
-.setText(value: String)
-.setTextResource(value: Int)
-.setTextColor(value: Int)
-.setTextColorResource(value: Int)
-.setTextSize(value: Float)
-.setTextTypeface(value: Int)
-.setTextGravity(value: Int)
-.setTextForm(value: TextForm)
-.setIconDrawable(value: Drawable?)
-.setIconDrawableResource(@DrawableRes value: Int)
-.setIconSize(value: Int)
-.setIconWidth(value: Int)
-.setIconHeight(value: Int)
-.setIconColor(value: Int)
-.setIconColorResource(@ColorRes value: Int)
-.setIconSpace(value: Int)
-.setIconForm(value: IconForm)
-.setIconGravity(value: IconGravity)
-.setAlpha(@FloatRange(from = 0.0, to = 1.0) value: Float)
-.setLayout(@LayoutRes layout: Int)
-.setIsVisibleOverlay(value: Boolean)
-.setOverlayColor(@ColorInt value: Int)
-.setOverlayColorResource(@ColorRes value: Int)
-.setOverlayPadding(@Dp value: Float)
-.setOverlayPosition(value: Point)
-.setOverlayShape(value: BalloonOverlayShape)
-.setPreferenceName(value: String)
-.setShowCount(value: Int)
-.setFocusable(value: Boolean)
-.setLifecycleOwner(value: LifecycleOwner)
-.setDismissWhenClicked(value: Boolean)
-.setDismissWhenLifecycleOnPause(value: Boolean)
-.setDismissWhenTouchOutside(value: Boolean)
-.setDismissWhenShowAgain(value: Boolean)
-.setDismissWhenOverlayClicked(value: Boolean)
-.setBalloonAnimation(value: BalloonAnimation)
-.setOnBalloonClickListener(value: OnBalloonClickListener)
-.setOnBalloonDismissListener(value: OnBalloonDismissListener)
-.setOnBalloonInitializedListener(value: OnBalloonInitializedListener)
-.setOnBalloonOutsideTouchListener(value: OnBalloonOutsideTouchListener)
-.setOnBalloonOverlayClickListener(value: OnBalloonOverlayClickListener)
-.setDismissWhenTouchOutside(value: Boolean)
+
+<img align="right" width="130px" src="https://user-images.githubusercontent.com/24237865/210227682-cbc03479-8625-4213-b907-4f15217f91ba.png"/>
+
+## Balloon in Jetpack Compose
+
+Balloon allows you to display tooltips in Jetpack Compose easily.
+
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/balloon.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22balloon%22)
+
+Add the dependency below to your **module**'s `build.gradle` file:
+
+```gradle
+dependencies {
+    implementation "com.github.skydoves:balloon-compose:$version"
+}
+```
+
+### Balloon Compoable
+
+You can display tooltips with `Balloon` composable function and `rememberBalloonBuilder` like the below:
+
+```kotlin
+// create and remember a builder of Balloon.
+val builder = rememberBalloonBuilder {
+  setArrowSize(10)
+  setWidthRatio(1.0f)
+  setHeight(BalloonSizeSpec.WRAP)
+  setArrowOrientation(ArrowOrientation.BOTTOM)
+  setArrowPosition(0.5f)
+  setPadding(12)
+  setMarginHorizontal(12)
+  setTextSize(15f)
+  setCornerRadius(8f)
+  setTextColorResource(R.color.white_87)
+  setIconDrawableResource(R.drawable.ic_edit)
+  setBackgroundColorResource(R.color.skyBlue)
+  setBalloonAnimation(BalloonAnimation.ELASTIC)
+}
+
+Balloon(
+  modifier = Modifier.align(Alignment.Center),
+  builder = builder,
+  balloonContent = {
+    Text(text = "Now you can edit your profile!")
+  }
+) { balloonWindow ->
+    Button(
+      modifier = Modifier.size(120.dp, 75.dp),
+      onClick = {
+        balloonWindow.showAlignTop() // display your balloon.
+     }
+    ) {
+      Text(text = "showAlignTop")
+    }
+}
+```
+
+### BalloonWindow
+
+`BalloonWindow` is an interface that define all executable behaviors of the balloon's window, such as showing, dismissing, updating, and setting listeners. You will get an instance of `BalloonWindow` inside of the `content` parameter of `Balloon` composable function like the below:
+
+```kotlin
+Balloon(
+  ..
+) { balloonWindow ->
+    Button(
+      modifier = Modifier.size(120.dp, 75.dp),
+      onClick = {
+        balloonWindow.showAtCenter() // display your balloon.
+     }
+    ) {
+      Text(text = "showAtCenter")
+    }
+}
+```
+
+### Compose Extensions
+
+The `balloon-compose` package provides useful compose extensions, such as setting a color with `androidx.compose.ui.graphics.Color` like the below:
+
+```kotlin
+val builder = rememberBalloonBuilder {
+  setArrowSize(10)
+  setWidthRatio(1.0f)
+  setHeight(BalloonSizeSpec.WRAP)
+  setArrowOrientation(ArrowOrientation.BOTTOM)
+  setArrowPosition(0.5f)
+  setPadding(12)
+  setMarginHorizontal(12)
+  setTextSize(15f)
+  setCornerRadius(8f)
+  setTextColor(Color.White) // set text color with compose color.
+  setBackgroundColor(Color.White) // set background color with compose color.
+  setIconDrawableResource(R.drawable.ic_edit)
+  setBalloonAnimation(Balloon
 ```
 
 ## Find this library useful? :heart:
 Support it by joining __[stargazers](https://github.com/skydoves/balloon/stargazers)__ for this repository. :star:
+Also, __[follow me](https://github.com/skydoves)__ on GitHub for my next creations! 🤩
 
 # License
 ```xml
