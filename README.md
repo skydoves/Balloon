@@ -40,7 +40,7 @@ Add the dependency below to your **module**'s `build.gradle` file:
 
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:balloon:1.4.8"
+    implementation "com.github.skydoves:balloon:1.5.0"
 }
 ```
 
