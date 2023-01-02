@@ -29,8 +29,8 @@ Balloon hits **+300,000 downloads every month** around the globe! :balloon:
 
 ![globe](https://user-images.githubusercontent.com/24237865/196018576-a9c87534-81a2-4618-8519-0024b67964bf.png)
 
-## Balloon for Jetpack Compose
-If you want to use Balloon in your Jetpack Compose project, check out the **[Orchestra's Balloon](https://github.com/skydoves/Orchestra#balloon)**.
+## Balloon in Jetpack Compose
+If you want to use Balloon in your Jetpack Compose project, check out the **[Balloon in Jetpack Compose](https://github.com/skydoves/Balloon#balloon-in-jetpack-compose)** guidelines.
 
 ## Including in your project
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/balloon.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22balloon%22)
