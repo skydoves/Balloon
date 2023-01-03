@@ -61,10 +61,10 @@ public fun Balloon(
   balloonContent: (@Composable () -> Unit)? = null,
   content: @Composable (BalloonWindow) -> Unit
 ) {
-  val current = LocalContext.current
+  val context = LocalContext.current
   val view = LocalView.current
   val anchorView = remember {
-    ComposeView(current).also {
+    ComposeView(context).also {
       ViewTreeLifecycleOwner.set(it, ViewTreeLifecycleOwner.get(view))
       ViewTreeViewModelStoreOwner.set(it, ViewTreeViewModelStoreOwner.get(view))
       it.setViewTreeSavedStateRegistryOwner(view.findViewTreeSavedStateRegistryOwner())
