@@ -675,7 +675,7 @@ dependencies {
 }
 ```
 
-### Balloon Compoable
+### Balloon Composable
 
 You can display tooltips with `Balloon` composable function and `rememberBalloonBuilder` like the below:
 
