@@ -31,11 +31,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.skydoves.balloon.ArrowOrientation
+import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.BalloonHighlightAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.compose.Balloon
 import com.skydoves.balloon.compose.rememberBalloonBuilder
+import com.skydoves.balloon.overlay.BalloonOverlayRoundRect
 
 class ComposeActivity : ComponentActivity() {
 
@@ -47,16 +49,26 @@ class ComposeActivity : ComponentActivity() {
         setArrowSize(10)
         setWidthRatio(1.0f)
         setHeight(BalloonSizeSpec.WRAP)
-        setArrowOrientation(ArrowOrientation.BOTTOM)
+        setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
         setArrowPosition(0.5f)
         setPadding(12)
-        setMarginHorizontal(12)
+        setMarginRight(12)
+        setMarginLeft(12)
         setTextSize(15f)
         setCornerRadius(8f)
-        setTextColorResource(R.color.white_87)
-        setIconDrawableResource(R.drawable.ic_edit)
         setBackgroundColorResource(R.color.skyBlue)
         setBalloonAnimation(BalloonAnimation.ELASTIC)
+        setIsVisibleOverlay(true)
+        setOverlayColorResource(R.color.overlay)
+        setOverlayPaddingResource(R.dimen.editBalloonOverlayPadding)
+        setBalloonHighlightAnimation(BalloonHighlightAnimation.SHAKE)
+        setOverlayShape(
+          BalloonOverlayRoundRect(
+            R.dimen.editBalloonOverlayRadius,
+            R.dimen.editBalloonOverlayRadius
+          )
+        )
+        setDismissWhenClicked(true)
       }
 
       Box(modifier = Modifier.fillMaxSize()) {
@@ -75,7 +87,7 @@ class ComposeActivity : ComponentActivity() {
           }
         ) { balloonWindow ->
           Button(
-            modifier = Modifier.size(120.dp, 75.dp),
+            modifier = Modifier.size(160.dp, 60.dp),
             onClick = {
               balloonWindow.showAlignTop()
             }
