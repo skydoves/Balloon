@@ -689,10 +689,7 @@ val builder = rememberBalloonBuilder {
   setArrowPosition(0.5f)
   setPadding(12)
   setMarginHorizontal(12)
-  setTextSize(15f)
   setCornerRadius(8f)
-  setTextColorResource(R.color.white_87)
-  setIconDrawableResource(R.drawable.ic_edit)
   setBackgroundColorResource(R.color.skyBlue)
   setBalloonAnimation(BalloonAnimation.ELASTIC)
 }
@@ -740,6 +737,7 @@ The `balloon-compose` package provides useful compose extensions, such as settin
 
 ```kotlin
 val builder = rememberBalloonBuilder {
+  setText("Now you can edit your profile!")
   setArrowSize(10)
   setWidthRatio(1.0f)
   setHeight(BalloonSizeSpec.WRAP)
@@ -754,6 +752,8 @@ val builder = rememberBalloonBuilder {
   setIconDrawableResource(R.drawable.ic_edit)
 }
 ```
+
+> **Note**: If you want to use the default form of balloon (icon + text), you should pass a null value to the `balloonContent` parameter of your Balloon composable.
 
 ## Find this library useful? :heart:
 Support it by joining __[stargazers](https://github.com/skydoves/balloon/stargazers)__ for this repository. :star: <br>
