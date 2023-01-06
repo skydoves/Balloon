@@ -434,6 +434,16 @@ public class Balloon private constructor(
       builder.setArrowOrientation(ArrowOrientation.TOP)
     }
 
+    if (builder.arrowOrientation == ArrowOrientation.START &&
+      location[0] < anchorRect.right
+    ) {
+      builder.setArrowOrientation(ArrowOrientation.END)
+    } else if (builder.arrowOrientation == ArrowOrientation.END &&
+      location[0] > anchorRect.left
+    ) {
+      builder.setArrowOrientation(ArrowOrientation.START)
+    }
+
     initializeBalloonContent()
   }
 
