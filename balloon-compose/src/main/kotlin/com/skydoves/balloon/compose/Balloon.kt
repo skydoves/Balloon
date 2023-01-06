@@ -35,6 +35,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.ViewTreeLifecycleOwner
@@ -100,7 +101,12 @@ public fun Balloon(
       modifier = Modifier
         .alpha(0f)
         .onGloballyPositioned { coordinates ->
-          val size = coordinates.size
+          val padding = builder.paddingLeft + builder.paddingRight
+          val margin = builder.marginLeft + builder.marginRight
+          val size = IntSize(
+            width = coordinates.size.width - (padding + margin + builder.arrowSize),
+            height = coordinates.size.height
+          )
           balloonComposeView.updateSizeOfBalloonCard(size)
           balloonComposeView.balloonLayoutInfo.value = BalloonLayoutInfo(
             x = coordinates.positionInWindow().x,

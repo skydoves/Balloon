@@ -58,7 +58,7 @@ import java.util.UUID
 internal class BalloonComposeView constructor(
   private val anchorView: View,
   isComposableContent: Boolean,
-  private val builder: Balloon.Builder,
+  builder: Balloon.Builder,
   balloonID: UUID
 ) : AbstractComposeView(anchorView.context), BalloonWindow {
 
@@ -222,9 +222,7 @@ internal class BalloonComposeView constructor(
   internal fun updateSizeOfBalloonCard(size: IntSize) {
     balloon.updateSizeOfBalloonCard(width = size.width, height = size.height)
     updateLayoutParams {
-      val padding = builder.paddingLeft + builder.paddingRight
-      val margin = builder.marginLeft + builder.marginRight
-      width = size.width - (padding + margin + builder.arrowSize)
+      width = size.width
       height = size.height
     }
   }
