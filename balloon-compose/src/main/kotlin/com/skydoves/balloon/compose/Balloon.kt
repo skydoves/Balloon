@@ -29,12 +29,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.lifecycle.ViewTreeViewModelStoreOwner
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
@@ -112,7 +114,14 @@ public fun Balloon(
     }
   }
 
-  Box(modifier = modifier) {
+  Box(
+    modifier = modifier.onSizeChanged {
+      anchorView.updateLayoutParams {
+        width = it.width
+        height = it.height
+      }
+    }
+  ) {
     AndroidView(
       modifier = Modifier.matchParentSize(),
       factory = { anchorView }
