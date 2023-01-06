@@ -101,7 +101,7 @@ public fun Balloon(
         .alpha(0f)
         .onGloballyPositioned { coordinates ->
           val size = coordinates.size
-          balloonComposeView.updateHeightOfBalloonCard(size)
+          balloonComposeView.updateSizeOfBalloonCard(size)
           balloonComposeView.balloonLayoutInfo.value = BalloonLayoutInfo(
             x = coordinates.positionInWindow().x,
             y = coordinates.positionInWindow().y,

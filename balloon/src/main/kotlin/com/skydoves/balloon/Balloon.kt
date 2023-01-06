@@ -760,8 +760,8 @@ public class Balloon private constructor(
           measureTextWidth(binding.balloonText, binding.balloonCard)
         }
         this.binding.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-        this.bodyWindow.width = getMeasuredWidth()
         if (!builder.isComposableContent) {
+          this.bodyWindow.width = getMeasuredWidth()
           this.bodyWindow.height = getMeasuredHeight()
         }
         this.binding.balloonText.layoutParams = FrameLayout.LayoutParams(
@@ -1222,10 +1222,11 @@ public class Balloon private constructor(
   }
 
   @InternalBalloonApi
-  public fun updateHeightOfBalloonCard(height: Int) {
+  public fun updateSizeOfBalloonCard(width: Int, height: Int) {
     if (binding.balloonCard.childCount != 0) {
       val child = binding.balloonCard[0]
       child.updateLayoutParams {
+        this.width = width
         this.height = height
       }
     }
