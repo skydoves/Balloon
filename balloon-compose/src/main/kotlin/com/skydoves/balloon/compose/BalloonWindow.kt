@@ -257,7 +257,7 @@ public interface BalloonWindow {
 
   /** updates the size of the balloon card. */
   @InternalBalloonApi
-  public fun updateHeightOfBalloonCard(height: Int)
+  public fun updateSizeOfBalloonCard(width: Int, height: Int)
 
   /** dismiss the popup menu. */
   public fun dismiss()

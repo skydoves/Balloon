@@ -22,7 +22,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -52,8 +51,7 @@ class ComposeActivity : ComponentActivity() {
         setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
         setArrowPosition(0.5f)
         setPadding(12)
-        setMarginRight(12)
-        setMarginLeft(12)
+        setMarginHorizontal(12)
         setTextSize(15f)
         setCornerRadius(8f)
         setBackgroundColorResource(R.color.skyBlue)
@@ -77,9 +75,7 @@ class ComposeActivity : ComponentActivity() {
           builder = builder,
           balloonContent = {
             Text(
-              modifier = Modifier
-                .padding(12.dp)
-                .fillMaxWidth(),
+              modifier = Modifier.fillMaxWidth(),
               text = "Helloooooooooo!\nNice to meet youuuuu\nskydoves",
               textAlign = TextAlign.Center,
               color = Color.White

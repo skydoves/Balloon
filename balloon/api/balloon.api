@@ -114,7 +114,7 @@ public final class com/skydoves/balloon/Balloon : androidx/lifecycle/DefaultLife
 	public final fun update (Landroid/view/View;I)V
 	public final fun update (Landroid/view/View;II)V
 	public static synthetic fun update$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
-	public final fun updateHeightOfBalloonCard (I)V
+	public final fun updateSizeOfBalloonCard (II)V
 }
 
 public final class com/skydoves/balloon/Balloon$Builder {

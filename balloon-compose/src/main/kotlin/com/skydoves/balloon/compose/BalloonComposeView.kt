@@ -29,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.R
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.unit.IntSize
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.lifecycle.ViewTreeViewModelStoreOwner
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
@@ -57,7 +58,7 @@ import java.util.UUID
 internal class BalloonComposeView constructor(
   private val anchorView: View,
   isComposableContent: Boolean,
-  builder: Balloon.Builder,
+  private val builder: Balloon.Builder,
   balloonID: UUID
 ) : AbstractComposeView(anchorView.context), BalloonWindow {
 
@@ -164,8 +165,8 @@ internal class BalloonComposeView constructor(
   ): Unit = balloon.showAlign(align, mainAnchor, subAnchorList, xOff, yOff)
 
   @InternalBalloonApi
-  override fun updateHeightOfBalloonCard(height: Int): Unit =
-    balloon.updateHeightOfBalloonCard(height)
+  override fun updateSizeOfBalloonCard(width: Int, height: Int): Unit =
+    balloon.updateSizeOfBalloonCard(width = width, height = height)
 
   override fun dismiss(): Unit = balloon.dismiss()
 
@@ -218,8 +219,14 @@ internal class BalloonComposeView constructor(
 
   override fun getBalloonArrowView(): View = balloon.getBalloonArrowView()
 
-  internal fun updateHeightOfBalloonCard(size: IntSize) {
-    balloon.updateHeightOfBalloonCard(height = size.height)
+  internal fun updateSizeOfBalloonCard(size: IntSize) {
+    balloon.updateSizeOfBalloonCard(width = size.width, height = size.height)
+    updateLayoutParams {
+      val padding = builder.paddingLeft + builder.paddingRight
+      val margin = builder.marginLeft + builder.marginRight
+      width = size.width - (padding + margin + builder.arrowSize)
+      height = size.height
+    }
   }
 
   internal fun dispose() {

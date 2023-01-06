@@ -50,7 +50,7 @@ public abstract interface class com/skydoves/balloon/compose/BalloonWindow {
 	public abstract fun showAsDropDown (II)V
 	public abstract fun showAtCenter (IILcom/skydoves/balloon/BalloonCenterAlign;)V
 	public abstract fun update (II)V
-	public abstract fun updateHeightOfBalloonCard (I)V
+	public abstract fun updateSizeOfBalloonCard (II)V
 }
 
 public final class com/skydoves/balloon/compose/BalloonWindow$DefaultImpls {
