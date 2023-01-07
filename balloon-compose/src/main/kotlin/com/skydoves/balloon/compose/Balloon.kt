@@ -17,6 +17,7 @@
 package com.skydoves.balloon.compose
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.derivedStateOf
@@ -32,10 +33,13 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.ViewTreeLifecycleOwner
@@ -87,7 +91,7 @@ public fun Balloon(
       if (isComposableContent) {
         setContent(compositionContext) {
           BalloonLayout(
-            Modifier.semantics { balloon() }
+            modifier = Modifier.semantics { balloon() }
           ) {
             currentContent?.invoke()
           }
@@ -97,14 +101,29 @@ public fun Balloon(
   }
 
   if (isComposableContent && balloonComposeView.balloonLayoutInfo.value == null) {
+    val configuration = LocalConfiguration.current
+    val density = LocalDensity.current
+    val screenWidth = remember { with(density) { configuration.screenWidthDp.dp.toPx() }.toInt() }
+    val paddingStart =
+      remember { with(density) { (builder.paddingLeft + builder.marginLeft).toDp() } }
+    val paddingEnd =
+      remember { with(density) { (builder.paddingRight + builder.marginRight).toDp() } }
     Box(
       modifier = Modifier
         .alpha(0f)
+        .padding(start = paddingStart, end = paddingEnd)
         .onGloballyPositioned { coordinates ->
+          val originalSize = coordinates.size
           val padding = builder.paddingLeft + builder.paddingRight
           val margin = builder.marginLeft + builder.marginRight
+          val space = padding + margin + builder.arrowSize
+          val calculatedWidth = if (originalSize.width + space > screenWidth) {
+            screenWidth - space
+          } else {
+            originalSize.width
+          }
           val size = IntSize(
-            width = coordinates.size.width - (padding + margin + builder.arrowSize),
+            width = calculatedWidth,
             height = coordinates.size.height
           )
           balloonComposeView.updateSizeOfBalloonCard(size)
