@@ -43,7 +43,7 @@ Add the dependency below to your **module**'s `build.gradle` file:
 
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:balloon:1.5.1"
+    implementation "com.github.skydoves:balloon:1.5.2"
 }
 ```
 
@@ -66,7 +66,7 @@ repositories {
 Next, add the below dependency to your **module**'s `build.gradle` file.
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:balloon:1.5.2-SNAPSHOT"
+    implementation "com.github.skydoves:balloon:1.5.3-SNAPSHOT"
 }
 ```
 
@@ -683,10 +683,10 @@ You can display tooltips with `Balloon` composable function and `rememberBalloon
 // create and remember a builder of Balloon.
 val builder = rememberBalloonBuilder {
   setArrowSize(10)
-  setWidthRatio(1.0f)
-  setHeight(BalloonSizeSpec.WRAP)
-  setArrowOrientation(ArrowOrientation.BOTTOM)
   setArrowPosition(0.5f)
+  setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+  setWidth(BalloonSizeSpec.WRAP)
+  setHeight(BalloonSizeSpec.WRAP)
   setPadding(12)
   setMarginHorizontal(12)
   setCornerRadius(8f)
@@ -728,6 +728,13 @@ Balloon(
     ) {
       Text(text = "showAtCenter")
     }
+}
+
+Balloon(
+  builder = builder,
+  balloonContent = null
+) { balloonWindow ->
+  ..
 }
 ```
 
