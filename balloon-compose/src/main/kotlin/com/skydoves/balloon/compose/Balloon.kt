@@ -17,6 +17,7 @@
 package com.skydoves.balloon.compose
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.derivedStateOf
@@ -103,9 +104,14 @@ public fun Balloon(
     val configuration = LocalConfiguration.current
     val density = LocalDensity.current
     val screenWidth = remember { with(density) { configuration.screenWidthDp.dp.toPx() }.toInt() }
+    val paddingStart =
+      remember { with(density) { (builder.paddingLeft + builder.marginLeft).toDp() } }
+    val paddingEnd =
+      remember { with(density) { (builder.paddingRight + builder.marginRight).toDp() } }
     Box(
       modifier = Modifier
         .alpha(0f)
+        .padding(start = paddingStart, end = paddingEnd)
         .onGloballyPositioned { coordinates ->
           val originalSize = coordinates.size
           val padding = builder.paddingLeft + builder.paddingRight

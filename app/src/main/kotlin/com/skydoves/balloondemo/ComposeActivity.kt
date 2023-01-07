@@ -19,9 +19,12 @@ package com.skydoves.balloondemo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -46,7 +49,7 @@ class ComposeActivity : ComponentActivity() {
     setContent {
       val builder = rememberBalloonBuilder {
         setArrowSize(10)
-        setWidthRatio(1.0f)
+        setWidth(BalloonSizeSpec.WRAP)
         setHeight(BalloonSizeSpec.WRAP)
         setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
         setArrowPosition(0.5f)
@@ -71,12 +74,13 @@ class ComposeActivity : ComponentActivity() {
 
       Box(modifier = Modifier.fillMaxSize()) {
         Balloon(
-          modifier = Modifier.align(Alignment.Center),
+          modifier = Modifier
+            .padding(20.dp)
+            .align(Alignment.Center),
           builder = builder,
           balloonContent = {
             Text(
-              modifier = Modifier.fillMaxWidth(),
-              text = "Helloooooooooo!\nNice to meet youuuuu\nskydoves",
+              text = "Now you can edit your profile1 profile2 profile3 profile4",
               textAlign = TextAlign.Center,
               color = Color.White
             )
@@ -84,11 +88,67 @@ class ComposeActivity : ComponentActivity() {
         ) { balloonWindow ->
           Button(
             modifier = Modifier.size(160.dp, 60.dp),
-            onClick = {
-              balloonWindow.showAlignTop()
-            }
+            onClick = { balloonWindow.showAlignTop() }
           ) {
             Text(text = "showAlignTop")
+          }
+        }
+
+        Balloon(
+          modifier = Modifier
+            .padding(20.dp)
+            .align(Alignment.TopStart),
+          builder = builder,
+          balloonContent = {
+            Text(
+              text = "Now you can edit your profile!",
+              textAlign = TextAlign.Center,
+              color = Color.White
+            )
+          }
+        ) { balloonWindow ->
+          Button(
+            modifier = Modifier.size(160.dp, 60.dp),
+            onClick = { balloonWindow.showAlignTop() }
+          ) {
+            Text(text = "wrap balloon")
+          }
+        }
+
+        Balloon(
+          modifier = Modifier
+            .padding(20.dp)
+            .align(Alignment.TopEnd),
+          builder = builder,
+          balloonContent = {
+            Box(modifier = Modifier.fillMaxWidth()) {
+              Box(
+                modifier = Modifier
+                  .size(50.dp)
+                  .align(Alignment.CenterStart)
+                  .background(Color.Blue)
+              )
+              Box(
+                modifier = Modifier
+                  .size(50.dp)
+                  .align(Alignment.Center)
+                  .background(Color.Blue)
+              )
+              Box(
+                modifier = Modifier
+                  .size(50.dp)
+                  .border(2.dp, Color.Red)
+                  .align(Alignment.CenterEnd)
+                  .background(Color.Blue)
+              )
+            }
+          }
+        ) { balloonWindow ->
+          Button(
+            modifier = Modifier.size(160.dp, 60.dp),
+            onClick = { balloonWindow.showAlignBottom() }
+          ) {
+            Text(text = "alignments")
           }
         }
       }
