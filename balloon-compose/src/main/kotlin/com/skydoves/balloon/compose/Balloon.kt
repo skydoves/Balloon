@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCompositionContext
@@ -79,7 +78,7 @@ public fun Balloon(
   }
   val compositionContext = rememberCompositionContext()
   val currentContent by rememberUpdatedState(balloonContent)
-  val isComposableContent by remember { derivedStateOf { balloonContent != null } }
+  val isComposableContent = balloonContent != null
   val id = rememberSaveable { UUID.randomUUID() }
   val balloonComposeView = remember(key) {
     BalloonComposeView(
