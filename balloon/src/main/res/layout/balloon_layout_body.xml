@@ -25,6 +25,7 @@
     android:id="@+id/balloon_wrapper"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
     tools:ignore="UselessParent">
 
     <FrameLayout
@@ -50,6 +51,7 @@
           android:layout_gravity="center_vertical"
           android:gravity="center"
           android:textColor="@android:color/white"
+          android:focusable="false"
           tools:text="@tools:sample/lorem" />
 
       </com.skydoves.balloon.radius.RadiusLayout>

@@ -1248,9 +1248,11 @@ public class Balloon private constructor(
 
   /** sets a [OnBalloonClickListener] to the popup. */
   public fun setOnBalloonClickListener(onBalloonClickListener: OnBalloonClickListener?) {
-    this.binding.balloonWrapper.setOnClickListener {
-      onBalloonClickListener?.onBalloonClick(it)
-      if (builder.dismissWhenClicked) dismiss()
+    if (onBalloonClickListener != null || builder.dismissWhenClicked) {
+      this.binding.balloonWrapper.setOnClickListener {
+        onBalloonClickListener?.onBalloonClick(it)
+        if (builder.dismissWhenClicked) dismiss()
+      }
     }
   }
 
