@@ -58,6 +58,8 @@ dependencies {
   implementation(project(":balloon-compose"))
 
   implementation(libs.androidx.material)
+
+  implementation(platform(libs.androidx.compose.bom))
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.compose.ui)
   implementation(libs.androidx.compose.ui.tooling)
