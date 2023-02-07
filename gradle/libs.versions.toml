@@ -16,9 +16,9 @@ androidxFragment = "1.5.3"
 androidxLifecycle = "2.5.1"
 androidxAnnotation = "1.5.0"
 androidxTest = "1.4.0"
-baselineProfiles = "1.2.0"
-macroBenchmark = "1.1.0"
-uiAutomator = "2.2.0"
+baselineProfiles = "1.2.2"
+macroBenchmark = "1.2.0-alpha09"
+uiAutomator = "2.3.0-alpha02"
 spotless = "6.7.2"
 
 [plugins]
