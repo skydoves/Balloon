@@ -24,7 +24,7 @@ android {
   compileSdk = Configuration.compileSdk
   defaultConfig {
     applicationId = "com.skydoves.balloondemo"
-    minSdk = Configuration.minSdkCompose
+    minSdk = Configuration.minSdk
     targetSdk = Configuration.targetSdk
     versionCode = Configuration.versionCode
     versionName = Configuration.versionName

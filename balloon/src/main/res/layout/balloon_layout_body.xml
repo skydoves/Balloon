@@ -49,24 +49,25 @@
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_gravity="center_vertical"
+          android:focusable="false"
           android:gravity="center"
           android:textColor="@android:color/white"
-          android:focusable="false"
           tools:text="@tools:sample/lorem" />
 
       </com.skydoves.balloon.radius.RadiusLayout>
 
     </FrameLayout>
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <ImageView
       android:id="@+id/balloon_arrow"
       android:layout_width="15dp"
       android:layout_height="10dp"
+      android:contentDescription="@null"
       android:rotation="180"
       android:scaleType="fitXY"
-      android:tint="@android:color/black"
+      android:src="@drawable/balloon_arrow_drawable"
       android:visibility="invisible"
-      app:srcCompat="@drawable/balloon_arrow_drawable" />
+      app:tint="@android:color/black" />
 
   </FrameLayout>
 

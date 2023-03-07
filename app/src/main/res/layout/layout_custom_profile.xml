@@ -37,7 +37,7 @@
     app:shapeAppearanceOverlay="@style/CircleImageStyle"
     app:strokeColor="@null" />
 
-  <androidx.appcompat.widget.AppCompatImageView
+  <ImageView
     android:id="@+id/icon"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

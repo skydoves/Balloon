@@ -20,20 +20,6 @@ import android.os.Build
 import androidx.annotation.ChecksSdkIntAtLeast
 
 /**
- * Runs a [block] lambda when the device's SDK level is 21 or higher.
- *
- * @param block A lambda that should be run when the device's SDK level is 21 or higher.
- */
-@JvmSynthetic
-@PublishedApi
-@ChecksSdkIntAtLeast(api = Build.VERSION_CODES.LOLLIPOP, lambda = 0)
-internal inline fun runOnAfterSDK21(block: () -> Unit) {
-  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-    block()
-  }
-}
-
-/**
  * Runs a [block] lambda when the device's SDK level is 22 or higher.
  *
  * @param block A lambda that should be run when the device's SDK level is 22 or higher.

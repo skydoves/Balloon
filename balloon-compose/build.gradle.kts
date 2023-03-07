@@ -17,7 +17,7 @@ apply(from ="${rootDir}/scripts/publish-module.gradle")
 android {
   compileSdk = Configuration.compileSdk
   defaultConfig {
-    minSdk = Configuration.minSdkCompose
+    minSdk = Configuration.minSdk
     targetSdk = Configuration.targetSdk
   }
 
