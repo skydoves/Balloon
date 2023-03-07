@@ -19,7 +19,6 @@
 package com.skydoves.balloon
 
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
@@ -37,7 +36,6 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.text.method.MovementMethod
@@ -2205,13 +2203,11 @@ public class Balloon private constructor(
     }
 
     /** sets the elevation of the arrow. */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public fun setArrowElevation(@Dp value: Int): Builder = apply {
       this.arrowElevation = value.dp.toFloat()
     }
 
     /** sets the elevation of the arrow using dimension resource. */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public fun setArrowElevationResource(@DimenRes value: Int): Builder = apply {
       this.arrowElevation = context.dimen(value)
     }
@@ -2383,13 +2379,11 @@ public class Balloon private constructor(
     }
 
     /** sets the elevation to the popup. */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public fun setElevation(@Dp value: Int): Builder = apply {
       this.elevation = value.dp.toFloat()
     }
 
     /** sets the elevation to the popup using dimension resource. */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public fun setElevationResource(@DimenRes value: Int): Builder = apply {
       this.elevation = context.dimen(value)
     }
