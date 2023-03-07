@@ -102,7 +102,6 @@ import com.skydoves.balloon.extensions.isAPILevelHigherThan23
 import com.skydoves.balloon.extensions.isExistHorizontalDrawable
 import com.skydoves.balloon.extensions.isFinishing
 import com.skydoves.balloon.extensions.px2Sp
-import com.skydoves.balloon.extensions.runOnAfterSDK21
 import com.skydoves.balloon.extensions.runOnAfterSDK22
 import com.skydoves.balloon.extensions.runOnAfterSDK23
 import com.skydoves.balloon.extensions.sumOfCompoundPadding
@@ -259,9 +258,7 @@ public class Balloon private constructor(
       } else {
         ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.backgroundColor))
       }
-      runOnAfterSDK21 {
-        outlineProvider = ViewOutlineProvider.BOUNDS
-      }
+      outlineProvider = ViewOutlineProvider.BOUNDS
       binding.balloonCard.post {
         onBalloonInitializedListener?.onBalloonInitialized(getContentView())
 
@@ -522,9 +519,7 @@ public class Balloon private constructor(
       isOutsideTouchable = true
       isFocusable = builder.isFocusable
       setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-      runOnAfterSDK21 {
-        elevation = builder.elevation
-      }
+      elevation = builder.elevation
       setIsAttachedInDecor(builder.isAttachedInDecor)
     }
   }

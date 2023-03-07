@@ -18,11 +18,9 @@ package com.skydoves.balloon.extensions
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.annotation.TargetApi
 import android.app.Activity
 import android.graphics.Point
 import android.graphics.Rect
-import android.os.Build
 import android.view.View
 import android.view.ViewAnimationUtils
 import androidx.annotation.MainThread
@@ -60,23 +58,20 @@ internal fun View.getStatusBarHeight(isStatusBarVisible: Boolean): Int {
 /** shows circular revealed animation to a view. */
 @MainThread
 @JvmSynthetic
-@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 internal fun View.circularRevealed(circularDuration: Long) {
   visibility = View.INVISIBLE
-  runOnAfterSDK21 {
-    post {
-      if (isAttachedToWindow) {
-        visibility = View.VISIBLE
-        ViewAnimationUtils.createCircularReveal(
-          this,
-          (left + right) / 2,
-          (top + bottom) / 2,
-          0f,
-          max(width, height).toFloat()
-        ).apply {
-          duration = circularDuration
-          start()
-        }
+  post {
+    if (isAttachedToWindow) {
+      visibility = View.VISIBLE
+      ViewAnimationUtils.createCircularReveal(
+        this,
+        (left + right) / 2,
+        (top + bottom) / 2,
+        0f,
+        max(width, height).toFloat()
+      ).apply {
+        duration = circularDuration
+        start()
       }
     }
   }
@@ -86,32 +81,29 @@ internal fun View.circularRevealed(circularDuration: Long) {
 @MainThread
 @PublishedApi
 @JvmSynthetic
-@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 internal inline fun View.circularUnRevealed(
   circularDuration: Long,
   crossinline doAfterFinish: () -> Unit
 ) {
-  runOnAfterSDK21 {
-    post {
-      if (isAttachedToWindow) {
-        ViewAnimationUtils.createCircularReveal(
-          this,
-          (left + right) / 2,
-          (top + bottom) / 2,
-          max(width, height).toFloat(),
-          0f
-        ).apply {
-          duration = circularDuration
-          start()
-        }.addListener(
-          object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-              super.onAnimationEnd(animation)
-              doAfterFinish()
-            }
+  post {
+    if (isAttachedToWindow) {
+      ViewAnimationUtils.createCircularReveal(
+        this,
+        (left + right) / 2,
+        (top + bottom) / 2,
+        max(width, height).toFloat(),
+        0f
+      ).apply {
+        duration = circularDuration
+        start()
+      }.addListener(
+        object : AnimatorListenerAdapter() {
+          override fun onAnimationEnd(animation: Animator) {
+            super.onAnimationEnd(animation)
+            doAfterFinish()
           }
-        )
-      }
+        }
+      )
     }
   }
 }
