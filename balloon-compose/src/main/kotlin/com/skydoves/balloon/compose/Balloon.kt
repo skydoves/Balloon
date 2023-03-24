@@ -41,8 +41,10 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.updateLayoutParams
-import androidx.lifecycle.ViewTreeLifecycleOwner
-import androidx.lifecycle.ViewTreeViewModelStoreOwner
+import androidx.lifecycle.findViewTreeLifecycleOwner
+import androidx.lifecycle.findViewTreeViewModelStoreOwner
+import androidx.lifecycle.setViewTreeLifecycleOwner
+import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.skydoves.balloon.Balloon
@@ -70,10 +72,10 @@ public fun Balloon(
   val context = LocalContext.current
   val view = LocalView.current
   val anchorView = remember {
-    ComposeView(context).also {
-      ViewTreeLifecycleOwner.set(it, ViewTreeLifecycleOwner.get(view))
-      ViewTreeViewModelStoreOwner.set(it, ViewTreeViewModelStoreOwner.get(view))
-      it.setViewTreeSavedStateRegistryOwner(view.findViewTreeSavedStateRegistryOwner())
+    ComposeView(context).also { composeView ->
+      composeView.setViewTreeLifecycleOwner(view.findViewTreeLifecycleOwner())
+      composeView.setViewTreeViewModelStoreOwner(view.findViewTreeViewModelStoreOwner())
+      composeView.setViewTreeSavedStateRegistryOwner(view.findViewTreeSavedStateRegistryOwner())
     }
   }
   val compositionContext = rememberCompositionContext()
@@ -161,8 +163,8 @@ public fun Balloon(
       // clear anchor view's lifecycle.
       anchorView.apply {
         setViewTreeSavedStateRegistryOwner(null)
-        ViewTreeLifecycleOwner.set(this, null)
-        ViewTreeViewModelStoreOwner.set(this, null)
+        setViewTreeLifecycleOwner(null)
+        setViewTreeViewModelStoreOwner(null)
       }
     }
   }
