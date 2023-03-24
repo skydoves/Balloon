@@ -30,8 +30,10 @@ import androidx.compose.ui.R
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.unit.IntSize
 import androidx.core.view.updateLayoutParams
-import androidx.lifecycle.ViewTreeLifecycleOwner
-import androidx.lifecycle.ViewTreeViewModelStoreOwner
+import androidx.lifecycle.findViewTreeLifecycleOwner
+import androidx.lifecycle.findViewTreeViewModelStoreOwner
+import androidx.lifecycle.setViewTreeLifecycleOwner
+import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.skydoves.balloon.Balloon
@@ -62,7 +64,7 @@ internal class BalloonComposeView constructor(
   balloonID: UUID
 ) : AbstractComposeView(anchorView.context), BalloonWindow {
 
-  private val lifecycleOwner = ViewTreeLifecycleOwner.get(anchorView)
+  private val lifecycleOwner = anchorView.findViewTreeLifecycleOwner()
 
   override val balloon: Balloon = builder
     .setLifecycleOwner(lifecycleOwner)
@@ -82,8 +84,8 @@ internal class BalloonComposeView constructor(
     private set
 
   init {
-    ViewTreeLifecycleOwner.set(this, lifecycleOwner)
-    ViewTreeViewModelStoreOwner.set(this, ViewTreeViewModelStoreOwner.get(anchorView))
+    setViewTreeLifecycleOwner(lifecycleOwner)
+    setViewTreeViewModelStoreOwner(anchorView.findViewTreeViewModelStoreOwner())
     setViewTreeSavedStateRegistryOwner(anchorView.findViewTreeSavedStateRegistryOwner())
     setTag(R.id.compose_view_saveable_id_tag, "BalloonComposeView:$balloonID")
   }
@@ -229,9 +231,9 @@ internal class BalloonComposeView constructor(
 
   internal fun dispose() {
     balloon.dismiss()
+    setViewTreeLifecycleOwner(null)
+    setViewTreeViewModelStoreOwner(null)
     setViewTreeSavedStateRegistryOwner(null)
-    ViewTreeLifecycleOwner.set(this@BalloonComposeView, null)
-    ViewTreeViewModelStoreOwner.set(this@BalloonComposeView, null)
   }
 
   override fun getAccessibilityClassName(): CharSequence {
