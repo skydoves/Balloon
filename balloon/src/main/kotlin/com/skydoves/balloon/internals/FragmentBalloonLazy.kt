@@ -39,23 +39,22 @@ internal class FragmentBalloonLazy<out T : Balloon.Factory>(
 
   override val value: Balloon
     get() {
-      var instance = cached
-      if (instance === null) {
-        if (fragment.context != null) {
-          val factory = factory::java.get().newInstance()
-          val lifecycle = if (fragment.view !== null) {
-            fragment.viewLifecycleOwner
-          } else {
-            fragment
-          }
-          instance = factory.create(fragment.requireActivity(), lifecycle)
-          cached = instance
-        } else {
-          throw IllegalArgumentException(
-            "Balloon can not be initialized. The passed fragment's context is null."
-          )
-        }
+      cached?.let { return it }
+
+      if (fragment.context == null) {
+        throw IllegalArgumentException(
+          "Balloon can not be initialized. The passed fragment's context is null."
+        )
       }
+
+      val factory = factory::java.get().newInstance()
+      val lifecycle = if (fragment.view !== null) {
+        fragment.viewLifecycleOwner
+      } else {
+        fragment
+      }
+      val instance = factory.create(fragment.requireActivity(), lifecycle)
+      cached = instance
 
       return instance
     }
