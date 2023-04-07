@@ -26,10 +26,10 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme"
     tools:ignore="GoogleAppIndexingWarning">
-    <activity android:name=".MainActivity" />
+    <activity android:name=".ComposeActivity" />
     <activity android:name=".CustomActivity" />
     <activity
-      android:name=".ComposeActivity"
+      android:name=".MainActivity"
       android:exported="true"
       android:theme="@style/AppTheme.NoActionBar">
       <intent-filter>
