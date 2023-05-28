@@ -18,6 +18,8 @@ package com.skydoves.balloon.compose
 
 import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import com.skydoves.balloon.Balloon
@@ -39,3 +41,16 @@ public fun rememberBalloonBuilder(
 ): Balloon.Builder = remember {
   Balloon.Builder(context).apply(block)
 }
+
+/**
+ * Create and remember [BalloonWindow].
+ *
+ * @param initialValue The initial state of [BalloonWindow].
+ * @param key The key that may trigger recomposition.
+ */
+@Composable
+@BalloonDsl
+public fun rememberBalloonWindow(
+  initialValue: BalloonWindow?,
+  key: Any? = null
+): MutableState<BalloonWindow?> = remember(key1 = key) { mutableStateOf(initialValue) }
