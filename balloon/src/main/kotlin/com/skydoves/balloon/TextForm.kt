@@ -44,7 +44,7 @@ internal annotation class TextFormDsl
 @JvmSynthetic
 public inline fun textForm(
   context: Context,
-  crossinline block: TextForm.Builder.() -> Unit
+  crossinline block: TextForm.Builder.() -> Unit,
 ): TextForm =
   TextForm.Builder(context).apply(block).build()
 
@@ -53,7 +53,7 @@ public inline fun textForm(
  * for customizing popup texts easily.
  */
 public class TextForm private constructor(
-  builder: Builder
+  builder: Builder,
 ) {
 
   public val text: CharSequence = builder.text

@@ -130,7 +130,7 @@ internal annotation class BalloonInlineDsl
 @BalloonInlineDsl
 public inline fun createBalloon(
   context: Context,
-  crossinline block: Balloon.Builder.() -> Unit
+  crossinline block: Balloon.Builder.() -> Unit,
 ): Balloon =
   Balloon.Builder(context).apply(block).build()
 
@@ -145,7 +145,7 @@ public inline fun createBalloon(
 @Suppress("MemberVisibilityCanBePrivate")
 public class Balloon private constructor(
   private val context: Context,
-  private val builder: Builder
+  private val builder: Builder,
 ) : DefaultLifecycleObserver {
 
   /** A main content view of the popup. */
@@ -160,14 +160,14 @@ public class Balloon private constructor(
   public val bodyWindow: PopupWindow = PopupWindow(
     binding.root,
     FrameLayout.LayoutParams.WRAP_CONTENT,
-    FrameLayout.LayoutParams.WRAP_CONTENT
+    FrameLayout.LayoutParams.WRAP_CONTENT,
   )
 
   /** An overlay window of the background popup. */
   public val overlayWindow: PopupWindow = PopupWindow(
     overlayBinding.root,
     ViewGroup.LayoutParams.MATCH_PARENT,
-    ViewGroup.LayoutParams.MATCH_PARENT
+    ViewGroup.LayoutParams.MATCH_PARENT,
   )
 
   /** Denotes the popup is showing or not. */
@@ -190,7 +190,7 @@ public class Balloon private constructor(
 
   /** A runnable for dismissing the balloon with the [Builder.autoDismissDuration]. */
   private val autoDismissRunnable: AutoDismissRunnable by lazy(
-    LazyThreadSafetyMode.NONE
+    LazyThreadSafetyMode.NONE,
   ) { AutoDismissRunnable(this) }
 
   /** A persistence helper for showing the popup a limited number of times. */
@@ -249,7 +249,7 @@ public class Balloon private constructor(
         builder.arrowLeftPadding,
         builder.arrowTopPadding,
         builder.arrowRightPadding,
-        builder.arrowBottomPadding
+        builder.arrowBottomPadding,
       )
       if (builder.arrowColor != NO_INT_VALUE) {
         ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(builder.arrowColor))
@@ -272,18 +272,21 @@ public class Balloon private constructor(
               foreground = getArrowForeground(x, binding.balloonCard.height.toFloat())
             }
           }
+
           ArrowOrientation.TOP -> {
             rotation = 0f
             x = getArrowConstraintPositionX(anchor)
             y = binding.balloonCard.y - builder.arrowSize + SIZE_ARROW_BOUNDARY
             runOnAfterSDK23 { foreground = getArrowForeground(x, 0f) }
           }
+
           ArrowOrientation.START -> {
             rotation = -90f
             x = binding.balloonCard.x - builder.arrowSize + SIZE_ARROW_BOUNDARY
             y = getArrowConstraintPositionY(anchor)
             runOnAfterSDK23 { foreground = getArrowForeground(0f, y) }
           }
+
           ArrowOrientation.END -> {
             rotation = 90f
             x = binding.balloonCard.x + binding.balloonCard.width - SIZE_ARROW_BOUNDARY
@@ -303,9 +306,11 @@ public class Balloon private constructor(
     return if (builder.arrowColorMatchBalloon && isAPILevelHigherThan23()) {
       BitmapDrawable(
         resources,
-        adjustArrowColorByMatchingCardBackground(this, x, y)
+        adjustArrowColorByMatchingCardBackground(this, x, y),
       )
-    } else null
+    } else {
+      null
+    }
   }
 
   /**
@@ -321,20 +326,20 @@ public class Balloon private constructor(
   private fun adjustArrowColorByMatchingCardBackground(
     imageView: ImageView,
     x: Float,
-    y: Float
+    y: Float,
   ): Bitmap {
     imageView.setColorFilter(builder.backgroundColor, PorterDuff.Mode.SRC_IN)
     val oldBitmap = drawableToBitmap(
       imageView.drawable,
       imageView.drawable.intrinsicWidth,
-      imageView.drawable.intrinsicHeight
+      imageView.drawable.intrinsicHeight,
     )
     val colors: Pair<Int, Int>
     try {
       colors = getColorsFromBalloonCard(x, y)
     } catch (e: IllegalArgumentException) {
       throw IllegalArgumentException(
-        "Arrow attached outside balloon. Could not get a matching color."
+        "Arrow attached outside balloon. Could not get a matching color.",
       )
     }
     val startColor = colors.first
@@ -354,9 +359,10 @@ public class Balloon private constructor(
           0f,
           startColor,
           endColor,
-          Shader.TileMode.CLAMP
+          Shader.TileMode.CLAMP,
         )
       }
+
       ArrowOrientation.END, ArrowOrientation.TOP -> {
         LinearGradient(
           oldBitmap.width.toFloat() / 2 + builder.arrowHalfSize,
@@ -365,7 +371,7 @@ public class Balloon private constructor(
           0f,
           startColor,
           endColor,
-          Shader.TileMode.CLAMP
+          Shader.TileMode.CLAMP,
         )
       }
     }
@@ -380,7 +386,7 @@ public class Balloon private constructor(
     val bitmap = drawableToBitmap(
       binding.balloonCard.background,
       binding.balloonCard.width + 1,
-      binding.balloonCard.height + 1
+      binding.balloonCard.height + 1,
     )
     val startColor: Int
     val endColor: Int
@@ -389,6 +395,7 @@ public class Balloon private constructor(
         startColor = bitmap.getPixel((x + builder.arrowHalfSize).toInt(), y.toInt())
         endColor = bitmap.getPixel((x - builder.arrowHalfSize).toInt(), y.toInt())
       }
+
       ArrowOrientation.START, ArrowOrientation.END -> {
         startColor = bitmap.getPixel(x.toInt(), (y + builder.arrowHalfSize).toInt())
         endColor = bitmap.getPixel(x.toInt(), (y - builder.arrowHalfSize).toInt())
@@ -446,9 +453,16 @@ public class Balloon private constructor(
     val balloonX: Int = binding.balloonContent.getViewPointOnScreen().x
     val anchorX: Int = anchor.getViewPointOnScreen().x
     val minPosition = getMinArrowPosition()
-    val maxPosition = getMeasuredWidth() - minPosition - builder.marginRight - builder.marginLeft
+    val maxPosition = (
+      getMeasuredWidth() - minPosition -
+        builder.marginRight - builder.marginLeft
+      )
     return when (builder.arrowPositionRules) {
-      ArrowPositionRules.ALIGN_BALLOON -> binding.balloonWrapper.width * builder.arrowPosition - builder.arrowHalfSize
+      ArrowPositionRules.ALIGN_BALLOON -> (
+        binding.balloonWrapper.width * builder.arrowPosition -
+          builder.arrowHalfSize
+        )
+
       ArrowPositionRules.ALIGN_ANCHOR -> {
         when {
           anchorX + anchor.width < balloonX -> minPosition
@@ -475,7 +489,11 @@ public class Balloon private constructor(
     val maxPosition = getMeasuredHeight() - minPosition - builder.marginTop - builder.marginBottom
     val arrowHalfSize = builder.arrowSize / 2
     return when (builder.arrowPositionRules) {
-      ArrowPositionRules.ALIGN_BALLOON -> binding.balloonWrapper.height * builder.arrowPosition - arrowHalfSize
+      ArrowPositionRules.ALIGN_BALLOON -> (
+        binding.balloonWrapper.height * builder.arrowPosition -
+          arrowHalfSize
+        )
+
       ArrowPositionRules.ALIGN_ANCHOR -> {
         when {
           anchorY + anchor.height < balloonY -> minPosition
@@ -507,7 +525,7 @@ public class Balloon private constructor(
         builder.paddingLeft,
         builder.paddingTop,
         builder.paddingRight,
-        builder.paddingBottom
+        builder.paddingBottom,
       )
     }
   }
@@ -537,7 +555,7 @@ public class Balloon private constructor(
         builder.marginLeft,
         builder.marginTop,
         builder.marginRight,
-        builder.marginBottom
+        builder.marginBottom,
       )
     }
   }
@@ -551,6 +569,7 @@ public class Balloon private constructor(
         ArrowOrientation.END -> setPadding(paddingSize, elevation, paddingSize, elevation)
         ArrowOrientation.TOP ->
           setPadding(elevation, paddingSize, elevation, paddingSize.coerceAtLeast(elevation))
+
         ArrowOrientation.BOTTOM ->
           setPadding(elevation, paddingSize, elevation, paddingSize.coerceAtLeast(elevation))
       }
@@ -569,7 +588,7 @@ public class Balloon private constructor(
           setIconColor(builder.iconColor)
           setIconSpace(builder.iconSpace)
           setDrawableGravity(builder.iconGravity)
-        }
+        },
       )
       isRtlSupport(builder.isRtlLayout)
     }
@@ -590,7 +609,7 @@ public class Balloon private constructor(
           setTextTypeface(builder.textTypefaceObject)
           setTextLineSpacing(builder.textLineSpacing)
           setMovementMethod(builder.movementMethod)
-        }
+        },
       )
       measureTextWidth(this, binding.balloonCard)
     }
@@ -623,13 +642,15 @@ public class Balloon private constructor(
   }
 
   private fun initializeBalloonOverlay() {
-    if (builder.isVisibleOverlay) with(overlayBinding.balloonOverlayView) {
-      overlayColor = builder.overlayColor
-      overlayPadding = builder.overlayPadding
-      overlayPosition = builder.overlayPosition
-      balloonOverlayShape = builder.overlayShape
-      overlayPaddingColor = builder.overlayPaddingColor
-      overlayWindow.isClippingEnabled = false
+    if (builder.isVisibleOverlay) {
+      with(overlayBinding.balloonOverlayView) {
+        overlayColor = builder.overlayColor
+        overlayPadding = builder.overlayPadding
+        overlayPosition = builder.overlayPosition
+        balloonOverlayShape = builder.overlayShape
+        overlayPaddingColor = builder.overlayPaddingColor
+        overlayWindow.isClippingEnabled = false
+      }
     }
   }
 
@@ -641,6 +662,7 @@ public class Balloon private constructor(
           bodyWindow.contentView.circularRevealed(builder.circularDuration)
           bodyWindow.animationStyle = R.style.Balloon_Normal_Dispose_Anim
         }
+
         BalloonAnimation.FADE -> bodyWindow.animationStyle = R.style.Balloon_Fade_Anim
         BalloonAnimation.OVERSHOOT -> bodyWindow.animationStyle = R.style.Balloon_Overshoot_Anim
         BalloonAnimation.NONE -> bodyWindow.animationStyle = R.style.Balloon_Normal_Anim
@@ -676,6 +698,7 @@ public class Balloon private constructor(
             R.anim.balloon_heartbeat_center
           }
         }
+
         BalloonHighlightAnimation.SHAKE -> {
           when (builder.arrowOrientation) {
             ArrowOrientation.TOP -> R.anim.balloon_shake_bottom
@@ -684,6 +707,7 @@ public class Balloon private constructor(
             ArrowOrientation.END -> R.anim.balloon_shake_left
           }
         }
+
         BalloonHighlightAnimation.BREATH -> R.anim.balloon_fade
         BalloonHighlightAnimation.ROTATE -> return builder.balloonRotateAnimation
         else -> return null
@@ -703,7 +727,7 @@ public class Balloon private constructor(
             binding.balloon.startAnimation(animation)
           }
         },
-        builder.balloonHighlightAnimationStartDelay
+        builder.balloonHighlightAnimationStartDelay,
       )
     }
   }
@@ -769,7 +793,7 @@ public class Balloon private constructor(
         }
         this.binding.balloonText.layoutParams = FrameLayout.LayoutParams(
           FrameLayout.LayoutParams.MATCH_PARENT,
-          FrameLayout.LayoutParams.MATCH_PARENT
+          FrameLayout.LayoutParams.MATCH_PARENT,
         )
         initializeArrow(mainAnchor)
         initializeBalloonContent()
@@ -817,7 +841,7 @@ public class Balloon private constructor(
   @MainThread
   private inline fun relay(
     balloon: Balloon,
-    crossinline block: (balloon: Balloon) -> Unit
+    crossinline block: (balloon: Balloon) -> Unit,
   ): Balloon {
     this.setOnBalloonDismissListener {
       if (!destroyed) {
@@ -842,7 +866,7 @@ public class Balloon private constructor(
     anchor: View,
     xOff: Int = 0,
     yOff: Int = 0,
-    centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP
+    centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP,
   ) {
     val halfAnchorWidth = (anchor.measuredWidth * 0.5f).roundToInt()
     val halfAnchorHeight = (anchor.measuredHeight * 0.5f).roundToInt()
@@ -855,25 +879,28 @@ public class Balloon private constructor(
           bodyWindow.showAsDropDown(
             anchor,
             builder.supportRtlLayoutFactor * (halfAnchorWidth - halfBalloonWidth + xOff),
-            -(getMeasuredHeight() + halfAnchorHeight) + yOff
+            -(getMeasuredHeight() + halfAnchorHeight) + yOff,
           )
+
         BalloonCenterAlign.BOTTOM ->
           bodyWindow.showAsDropDown(
             anchor,
             builder.supportRtlLayoutFactor * (halfAnchorWidth - halfBalloonWidth + xOff),
-            -halfBalloonHeight + halfAnchorWidth + yOff
+            -halfBalloonHeight + halfAnchorWidth + yOff,
           )
+
         BalloonCenterAlign.START ->
           bodyWindow.showAsDropDown(
             anchor,
             builder.supportRtlLayoutFactor * (halfAnchorWidth - getMeasuredWidth() + xOff),
-            (-getMeasuredHeight() + halfAnchorHeight) + yOff
+            (-getMeasuredHeight() + halfAnchorHeight) + yOff,
           )
+
         BalloonCenterAlign.END ->
           bodyWindow.showAsDropDown(
             anchor,
             builder.supportRtlLayoutFactor * (halfAnchorWidth + getMeasuredWidth() + xOff),
-            (-getMeasuredHeight() + halfAnchorHeight) + yOff
+            (-getMeasuredHeight() + halfAnchorHeight) + yOff,
           )
       }
     }
@@ -899,7 +926,7 @@ public class Balloon private constructor(
     anchor: View,
     xOff: Int = 0,
     yOff: Int = 0,
-    centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP
+    centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP,
   ): Balloon = relay(balloon) { it.showAtCenter(anchor, xOff, yOff, centerAlign) }
 
   /**
@@ -932,7 +959,7 @@ public class Balloon private constructor(
     balloon: Balloon,
     anchor: View,
     xOff: Int = 0,
-    yOff: Int = 0
+    yOff: Int = 0,
   ): Balloon =
     relay(balloon) { it.showAsDropDown(anchor, xOff, yOff) }
 
@@ -948,8 +975,11 @@ public class Balloon private constructor(
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
-        builder.supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasuredWidth() / 2) + xOff),
-        -getMeasuredHeight() - anchor.measuredHeight + yOff
+        builder.supportRtlLayoutFactor * (
+          (anchor.measuredWidth / 2) -
+            (getMeasuredWidth() / 2) + xOff
+          ),
+        -getMeasuredHeight() - anchor.measuredHeight + yOff,
       )
     }
   }
@@ -972,7 +1002,7 @@ public class Balloon private constructor(
     balloon: Balloon,
     anchor: View,
     xOff: Int = 0,
-    yOff: Int = 0
+    yOff: Int = 0,
   ): Balloon =
     relay(balloon) { it.showAlignTop(anchor, xOff, yOff) }
 
@@ -988,8 +1018,11 @@ public class Balloon private constructor(
     show(anchor) {
       bodyWindow.showAsDropDown(
         anchor,
-        builder.supportRtlLayoutFactor * ((anchor.measuredWidth / 2) - (getMeasuredWidth() / 2) + xOff),
-        yOff
+        builder.supportRtlLayoutFactor * (
+          (anchor.measuredWidth / 2) -
+            (getMeasuredWidth() / 2) + xOff
+          ),
+        yOff,
       )
     }
   }
@@ -1013,7 +1046,7 @@ public class Balloon private constructor(
     balloon: Balloon,
     anchor: View,
     xOff: Int = 0,
-    yOff: Int = 0
+    yOff: Int = 0,
   ): Balloon =
     relay(balloon) { it.showAlignBottom(anchor, xOff, yOff) }
 
@@ -1030,7 +1063,7 @@ public class Balloon private constructor(
       bodyWindow.showAsDropDown(
         anchor,
         anchor.measuredWidth + xOff,
-        -(getMeasuredHeight() / 2) - (anchor.measuredHeight / 2) + yOff
+        -(getMeasuredHeight() / 2) - (anchor.measuredHeight / 2) + yOff,
       )
     }
   }
@@ -1054,9 +1087,9 @@ public class Balloon private constructor(
     balloon: Balloon,
     anchor: View,
     xOff: Int = 0,
-    yOff: Int = 0
+    yOff: Int = 0,
   ): Balloon = relay(
-    balloon
+    balloon,
   ) {
     it.showAlignRight(anchor, xOff, yOff)
   }
@@ -1074,7 +1107,7 @@ public class Balloon private constructor(
       bodyWindow.showAsDropDown(
         anchor,
         -(getMeasuredWidth()) + xOff,
-        -(getMeasuredHeight() / 2) - (anchor.measuredHeight / 2) + yOff
+        -(getMeasuredHeight() / 2) - (anchor.measuredHeight / 2) + yOff,
       )
     }
   }
@@ -1098,7 +1131,7 @@ public class Balloon private constructor(
     balloon: Balloon,
     anchor: View,
     xOff: Int = 0,
-    yOff: Int = 0
+    yOff: Int = 0,
   ): Balloon =
     relay(balloon) { it.showAlignLeft(anchor, xOff, yOff) }
 
@@ -1117,30 +1150,39 @@ public class Balloon private constructor(
     mainAnchor: View,
     subAnchorList: List<View> = listOf(),
     xOff: Int = 0,
-    yOff: Int = 0
+    yOff: Int = 0,
   ) {
     val anchors = listOf(mainAnchor) + subAnchorList
     show(*anchors.toTypedArray()) {
       when (align.getRTLSupportAlign(builder.isRtlLayout)) {
         BalloonAlign.TOP -> bodyWindow.showAsDropDown(
           mainAnchor,
-          builder.supportRtlLayoutFactor * ((mainAnchor.measuredWidth / 2) - (getMeasuredWidth() / 2) + xOff),
-          -getMeasuredHeight() - mainAnchor.measuredHeight + yOff
+          builder.supportRtlLayoutFactor * (
+            (mainAnchor.measuredWidth / 2) -
+              (getMeasuredWidth() / 2) + xOff
+            ),
+          -getMeasuredHeight() - mainAnchor.measuredHeight + yOff,
         )
+
         BalloonAlign.BOTTOM -> bodyWindow.showAsDropDown(
           mainAnchor,
-          builder.supportRtlLayoutFactor * ((mainAnchor.measuredWidth / 2) - (getMeasuredWidth() / 2) + xOff),
-          yOff
+          builder.supportRtlLayoutFactor * (
+            (mainAnchor.measuredWidth / 2) -
+              (getMeasuredWidth() / 2) + xOff
+            ),
+          yOff,
         )
+
         BalloonAlign.END -> bodyWindow.showAsDropDown(
           mainAnchor,
           mainAnchor.measuredWidth + xOff,
-          -(getMeasuredHeight() / 2) - (mainAnchor.measuredHeight / 2) + yOff
+          -(getMeasuredHeight() / 2) - (mainAnchor.measuredHeight / 2) + yOff,
         )
+
         BalloonAlign.START -> bodyWindow.showAsDropDown(
           mainAnchor,
           -(getMeasuredWidth()) + xOff,
-          -(getMeasuredHeight() / 2) - (mainAnchor.measuredHeight / 2) + yOff
+          -(getMeasuredHeight() / 2) - (mainAnchor.measuredHeight / 2) + yOff,
         )
       }
     }
@@ -1166,7 +1208,7 @@ public class Balloon private constructor(
     balloon: Balloon,
     anchor: View,
     xOff: Int = 0,
-    yOff: Int = 0
+    yOff: Int = 0,
   ): Balloon {
     return relay(balloon) {
       when (align.getRTLSupportAlign(builder.isRtlLayout)) {
@@ -1265,7 +1307,9 @@ public class Balloon private constructor(
    * The [OnBalloonInitializedListener.onBalloonInitialized] will be invoked when inflating the
    * body content of the balloon is finished.
    */
-  public fun setOnBalloonInitializedListener(onBalloonInitializedListener: OnBalloonInitializedListener?) {
+  public fun setOnBalloonInitializedListener(
+    onBalloonInitializedListener: OnBalloonInitializedListener?,
+  ) {
     this.onBalloonInitializedListener = onBalloonInitializedListener
   }
 
@@ -1295,7 +1339,9 @@ public class Balloon private constructor(
   }
 
   /** sets a [OnBalloonOutsideTouchListener] to the popup. */
-  public fun setOnBalloonOutsideTouchListener(onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener?) {
+  public fun setOnBalloonOutsideTouchListener(
+    onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener?,
+  ) {
     this.bodyWindow.setTouchInterceptor(
       object : View.OnTouchListener {
         @SuppressLint("ClickableViewAccessibility")
@@ -1309,7 +1355,7 @@ public class Balloon private constructor(
           }
           return false
         }
-      }
+      },
     )
   }
 
@@ -1317,7 +1363,7 @@ public class Balloon private constructor(
   @JvmSynthetic
   public fun setOnBalloonOutsideTouchListener(block: (View, MotionEvent) -> Unit) {
     setOnBalloonOutsideTouchListener(
-      OnBalloonOutsideTouchListener(block)
+      OnBalloonOutsideTouchListener(block),
     )
   }
 
@@ -1338,7 +1384,7 @@ public class Balloon private constructor(
   /** sets a [View.OnTouchListener] to the overlay popup using lambda. */
   public fun setOnBalloonOverlayTouchListener(block: (View, MotionEvent) -> Boolean) {
     setOnBalloonOverlayTouchListener(
-      View.OnTouchListener(block)
+      View.OnTouchListener(block),
     )
   }
 
@@ -1351,12 +1397,16 @@ public class Balloon private constructor(
       if (rect.contains(event.rawX.toInt(), event.rawY.toInt())) {
         anchor.rootView.dispatchTouchEvent(event)
         true
-      } else false
+      } else {
+        false
+      }
     }
   }
 
   /** sets a [OnBalloonOverlayClickListener] to the overlay popup. */
-  public fun setOnBalloonOverlayClickListener(onBalloonOverlayClickListener: OnBalloonOverlayClickListener?) {
+  public fun setOnBalloonOverlayClickListener(
+    onBalloonOverlayClickListener: OnBalloonOverlayClickListener?,
+  ) {
     this.overlayBinding.root.setOnClickListener {
       onBalloonOverlayClickListener?.onBalloonOverlayClick()
       if (builder.dismissWhenOverlayClicked) dismiss()
@@ -1367,7 +1417,7 @@ public class Balloon private constructor(
   @JvmSynthetic
   public fun setOnBalloonOverlayClickListener(block: () -> Unit) {
     setOnBalloonOverlayClickListener(
-      OnBalloonOverlayClickListener(block)
+      OnBalloonOverlayClickListener(block),
     )
   }
 
@@ -1387,14 +1437,16 @@ public class Balloon private constructor(
     return when {
       builder.widthRatio != NO_Float_VALUE ->
         (displayWidth * builder.widthRatio).toInt()
+
       builder.minWidthRatio != NO_Float_VALUE || builder.maxWidthRatio != NO_Float_VALUE -> {
         val maxWidthRatio =
           if (builder.maxWidthRatio != NO_Float_VALUE) builder.maxWidthRatio else 1f
         binding.root.measuredWidth.coerceIn(
           (displayWidth * builder.minWidthRatio).toInt(),
-          (displayWidth * maxWidthRatio).toInt()
+          (displayWidth * maxWidthRatio).toInt(),
         )
       }
+
       builder.width != BalloonSizeSpec.WRAP -> builder.width.coerceAtMost(displayWidth)
       else -> binding.root.measuredWidth.coerceIn(builder.minWidth, builder.maxWidth)
     }
@@ -1412,7 +1464,8 @@ public class Balloon private constructor(
       var measuredTextWidth = textView.paint.measureText(textView.text.toString()).toInt()
       if (compoundDrawablesRelative.isExistHorizontalDrawable()) {
         minHeight = compoundDrawablesRelative.getIntrinsicHeight()
-        measuredTextWidth += compoundDrawablesRelative.getSumOfIntrinsicWidth() + sumOfCompoundPadding
+        measuredTextWidth +=
+          compoundDrawablesRelative.getSumOfIntrinsicWidth() + sumOfCompoundPadding
       } else if (compoundDrawables.isExistHorizontalDrawable()) {
         minHeight = compoundDrawables.getIntrinsicHeight()
         measuredTextWidth += compoundDrawables.getSumOfIntrinsicWidth() + sumOfCompoundPadding
@@ -1442,19 +1495,24 @@ public class Balloon private constructor(
     val displayWidth = displaySize.x
     val spaces = rootView.paddingLeft + rootView.paddingRight + if (builder.iconDrawable != null) {
       builder.iconWidth + builder.iconSpace
-    } else 0 + builder.marginRight + builder.marginLeft + (builder.arrowSize * 2)
+    } else {
+      0 + builder.marginRight + builder.marginLeft + (builder.arrowSize * 2)
+    }
     val maxTextWidth = builder.maxWidth - spaces
 
     return when {
       builder.widthRatio != NO_Float_VALUE ->
         (displayWidth * builder.widthRatio).toInt() - spaces
+
       builder.minWidthRatio != NO_Float_VALUE || builder.maxWidthRatio != NO_Float_VALUE -> {
         val maxWidthRatio =
           if (builder.maxWidthRatio != NO_Float_VALUE) builder.maxWidthRatio else 1f
         measuredWidth.coerceAtMost((displayWidth * maxWidthRatio).toInt() - spaces)
       }
+
       builder.width != BalloonSizeSpec.WRAP && builder.width <= displayWidth ->
         builder.width - spaces
+
       else -> measuredWidth.coerceAtMost(maxTextWidth)
     }
   }
@@ -1831,7 +1889,7 @@ public class Balloon private constructor(
     /** sets the width size. */
     public fun setWidth(@Dp value: Int): Builder = apply {
       require(
-        value > 0 || value == BalloonSizeSpec.WRAP
+        value > 0 || value == BalloonSizeSpec.WRAP,
       ) { "The width of the balloon must bigger than zero." }
       this.width = value.dp
     }
@@ -1875,23 +1933,23 @@ public class Balloon private constructor(
 
     /** sets the width size by the display screen size ratio. */
     public fun setWidthRatio(
-      @FloatRange(from = 0.0, to = 1.0) value: Float
+      @FloatRange(from = 0.0, to = 1.0) value: Float,
     ): Builder = apply { this.widthRatio = value }
 
     /** sets the minimum width size by the display screen size ratio. */
     public fun setMinWidthRatio(
-      @FloatRange(from = 0.0, to = 1.0) value: Float
+      @FloatRange(from = 0.0, to = 1.0) value: Float,
     ): Builder = apply { this.minWidthRatio = value }
 
     /** sets the maximum width size by the display screen size ratio. */
     public fun setMaxWidthRatio(
-      @FloatRange(from = 0.0, to = 1.0) value: Float
+      @FloatRange(from = 0.0, to = 1.0) value: Float,
     ): Builder = apply { this.maxWidthRatio = value }
 
     /** sets the height size. */
     public fun setHeight(@Dp value: Int): Builder = apply {
       require(
-        value > 0 || value == BalloonSizeSpec.WRAP
+        value > 0 || value == BalloonSizeSpec.WRAP,
       ) { "The height of the balloon must bigger than zero." }
       this.height = value.dp
     }
@@ -2107,7 +2165,7 @@ public class Balloon private constructor(
 
     /** sets the arrow position by popup size ration. The popup size depends on [arrowOrientation]. */
     public fun setArrowPosition(
-      @FloatRange(from = 0.0, to = 1.0) value: Float
+      @FloatRange(from = 0.0, to = 1.0) value: Float,
     ): Builder = apply { this.arrowPosition = value }
 
     /**
@@ -2502,7 +2560,7 @@ public class Balloon private constructor(
     @JvmOverloads
     public fun setBalloonHighlightAnimation(
       value: BalloonHighlightAnimation,
-      startDelay: Long = 0L
+      startDelay: Long = 0L,
     ): Builder = apply {
       this.balloonHighlightAnimation = value
       this.balloonHighlightAnimationStartDelay = startDelay
@@ -2512,7 +2570,7 @@ public class Balloon private constructor(
     @JvmOverloads
     public fun setBalloonHighlightAnimationResource(
       @AnimRes value: Int,
-      startDelay: Long = 0L
+      startDelay: Long = 0L,
     ): Builder = apply {
       this.balloonHighlightAnimationStyle = value
       this.balloonHighlightAnimationStartDelay = startDelay
@@ -2520,7 +2578,7 @@ public class Balloon private constructor(
 
     /** sets a [BalloonRotateAnimation] to give highlight animation. */
     public fun setBalloonRotationAnimation(
-      balloonRotateAnimation: BalloonRotateAnimation
+      balloonRotateAnimation: BalloonRotateAnimation,
     ): Builder = apply {
       this.balloonRotateAnimation = balloonRotateAnimation
     }
@@ -2703,7 +2761,7 @@ public class Balloon private constructor(
      */
     public fun build(): Balloon = Balloon(
       context = context,
-      builder = this@Builder
+      builder = this@Builder,
     )
   }
 

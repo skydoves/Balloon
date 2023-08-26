@@ -21,5 +21,5 @@ public enum class IconGravity {
   START,
   END,
   TOP,
-  BOTTOM
+  BOTTOM,
 }

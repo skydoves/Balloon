@@ -25,5 +25,5 @@ public enum class BalloonRotateDirection(public val value: Int) {
   RIGHT(1),
 
   /** Rotate in the left direction. */
-  LEFT(-1);
+  LEFT(-1),
 }

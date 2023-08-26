@@ -30,7 +30,7 @@ import androidx.annotation.Dimension
   AnnotationTarget.PROPERTY_SETTER,
   AnnotationTarget.VALUE_PARAMETER,
   AnnotationTarget.FIELD,
-  AnnotationTarget.LOCAL_VARIABLE
+  AnnotationTarget.LOCAL_VARIABLE,
 )
 @Dimension(unit = Dimension.SP)
 internal annotation class Sp

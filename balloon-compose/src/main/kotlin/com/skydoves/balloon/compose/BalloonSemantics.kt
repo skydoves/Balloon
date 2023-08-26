@@ -28,7 +28,7 @@ internal val IsBalloon = SemanticsPropertyKey<Unit>(
   mergePolicy = { _, _ ->
     throw IllegalStateException(
       "merge function called on unmergeable property IsBalloon. " +
-        "A dialog should not be a child of a clickable/focusable node."
+        "A dialog should not be a child of a clickable/focusable node.",
     )
-  }
+  },
 )

@@ -27,7 +27,7 @@ import android.view.animation.Transformation
  * This class can be created by [BalloonRotateAnimation.Builder].
  */
 public class BalloonRotateAnimation private constructor(
-  builder: Builder
+  builder: Builder,
 ) : Animation() {
 
   private val degreeX: Float

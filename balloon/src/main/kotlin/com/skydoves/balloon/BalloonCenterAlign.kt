@@ -21,7 +21,8 @@ public enum class BalloonCenterAlign {
   START,
   END,
   TOP,
-  BOTTOM;
+  BOTTOM,
+  ;
 
   internal companion object {
 

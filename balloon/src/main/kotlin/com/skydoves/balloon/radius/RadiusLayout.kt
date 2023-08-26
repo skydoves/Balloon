@@ -31,7 +31,7 @@ import com.skydoves.balloon.internals.viewProperty
 public class RadiusLayout @JvmOverloads constructor(
   context: Context,
   attr: AttributeSet? = null,
-  defStyle: Int = 0
+  defStyle: Int = 0,
 ) : FrameLayout(context, attr, defStyle) {
 
   /** path for smoothing the container's corner. */
@@ -45,7 +45,7 @@ public class RadiusLayout @JvmOverloads constructor(
     w: Int,
     h: Int,
     oldw: Int,
-    oldh: Int
+    oldh: Int,
   ) {
     super.onSizeChanged(w, h, oldw, oldh)
     path.apply {
@@ -53,7 +53,7 @@ public class RadiusLayout @JvmOverloads constructor(
         RectF(0f, 0f, w.toFloat(), h.toFloat()),
         radius,
         radius,
-        Path.Direction.CW
+        Path.Direction.CW,
       )
     }
   }

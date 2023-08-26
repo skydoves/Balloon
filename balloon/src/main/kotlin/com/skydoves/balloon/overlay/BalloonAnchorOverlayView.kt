@@ -41,7 +41,7 @@ import com.skydoves.balloon.internals.viewProperty
 public class BalloonAnchorOverlayView @JvmOverloads constructor(
   context: Context,
   attr: AttributeSet? = null,
-  defStyle: Int = 0
+  defStyle: Int = 0,
 ) : View(context, attr, defStyle) {
 
   /** target view for highlighting. */
@@ -152,13 +152,13 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
           position.x - overlayPadding,
           position.y - overlayPadding + getStatusBarHeight(),
           position.x + anchor.width + overlayPadding,
-          position.y + anchor.height + overlayPadding + getStatusBarHeight()
+          position.y + anchor.height + overlayPadding + getStatusBarHeight(),
         )
       } ?: RectF(
         rect.left - overlayPadding,
         rect.top - overlayPadding,
         rect.right + overlayPadding,
-        rect.bottom + overlayPadding
+        rect.bottom + overlayPadding,
       )
 
       val halfOfOverlayPadding = overlayPadding / 2
@@ -185,7 +185,7 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
               anchorPaddingRect.centerX(),
               anchorPaddingRect.centerY(),
               radius - halfOfOverlayPadding,
-              paddingColorPaint
+              paddingColorPaint,
             )
           }
           overlay.radiusRes?.let { radiusRes ->
@@ -193,13 +193,13 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
               anchorRect.centerX(),
               anchorRect.centerY(),
               context.dimen(radiusRes),
-              paint
+              paint,
             )
             canvas.drawCircle(
               anchorPaddingRect.centerX(),
               anchorPaddingRect.centerY(),
               context.dimen(radiusRes) - halfOfOverlayPadding,
-              paddingColorPaint
+              paddingColorPaint,
             )
           }
         }
@@ -211,7 +211,7 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
               anchorPaddingRect,
               radiusPair.first - halfOfOverlayPadding,
               radiusPair.second - halfOfOverlayPadding,
-              paddingColorPaint
+              paddingColorPaint,
             )
           }
           overlay.radiusResPair?.let { radiusResPair ->
@@ -219,13 +219,13 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
               anchorRect,
               context.dimen(radiusResPair.first),
               context.dimen(radiusResPair.second),
-              paint
+              paint,
             )
             canvas.drawRoundRect(
               anchorPaddingRect,
               context.dimen(radiusResPair.first) - halfOfOverlayPadding,
               context.dimen(radiusResPair.second) - halfOfOverlayPadding,
-              paddingColorPaint
+              paddingColorPaint,
             )
           }
         }
@@ -239,7 +239,9 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
     return if (context is Activity) {
       context.window.decorView.getWindowVisibleDisplayFrame(rectangle)
       rectangle.top
-    } else 0
+    } else {
+      0
+    }
   }
 
   override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {

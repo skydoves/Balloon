@@ -31,36 +31,36 @@ object ItemUtils {
         SampleItem(
           drawable(context, R.drawable.sample0),
           "Vincent",
-          "It is such a mysterious place, the land of tears."
-        )
+          "It is such a mysterious place, the land of tears.",
+        ),
       )
       samples.add(
         SampleItem(
           drawable(context, R.drawable.sample1),
           "Vermeer",
-          "Be clearly aware of the stars and infinity on high."
-        )
+          "Be clearly aware of the stars and infinity on high.",
+        ),
       )
       samples.add(
         SampleItem(
           drawable(context, R.drawable.sample2),
           "Mia Vance",
-          "The most beautiful things in the world cannot be seen or touched."
-        )
+          "The most beautiful things in the world cannot be seen or touched.",
+        ),
       )
       samples.add(
         SampleItem(
           drawable(context, R.drawable.sample3),
           "Monet",
-          "And now here is my secret, a very simple secret."
-        )
+          "And now here is my secret, a very simple secret.",
+        ),
       )
       samples.add(
         SampleItem(
           drawable(context, R.drawable.sample4),
           "Picasso",
-          "Everything you can imagine is real."
-        )
+          "Everything you can imagine is real.",
+        ),
       )
     }
     return samples

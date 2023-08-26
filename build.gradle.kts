@@ -23,7 +23,7 @@ plugins {
   alias(libs.plugins.kotlin.binary.compatibility)
 }
 
-apply(from ="${rootDir}/scripts/publish-root.gradle")
+apply(from = "${rootDir}/scripts/publish-root.gradle")
 
 apiValidation {
   ignoredProjects.addAll(listOf("app", "benchmark-app"))
@@ -38,7 +38,7 @@ subprojects {
     kotlin {
       target("**/*.kt")
       targetExclude("$buildDir/**/*.kt")
-      ktlint().setUseExperimental(true).editorConfigOverride(
+      ktlint().editorConfigOverride(
         mapOf(
           "indent_size" to "2",
           "continuation_indent_size" to "2"

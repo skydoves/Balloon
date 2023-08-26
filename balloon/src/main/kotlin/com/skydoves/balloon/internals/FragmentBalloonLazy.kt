@@ -32,7 +32,7 @@ import kotlin.reflect.KClass
 @PublishedApi
 internal class FragmentBalloonLazy<out T : Balloon.Factory>(
   private val fragment: Fragment,
-  private val factory: KClass<T>
+  private val factory: KClass<T>,
 ) : Lazy<Balloon>, Serializable {
 
   private var cached: Balloon? = null
@@ -43,7 +43,7 @@ internal class FragmentBalloonLazy<out T : Balloon.Factory>(
 
       if (fragment.context == null) {
         throw IllegalArgumentException(
-          "Balloon can not be initialized. The passed fragment's context is null."
+          "Balloon can not be initialized. The passed fragment's context is null.",
         )
       }
 

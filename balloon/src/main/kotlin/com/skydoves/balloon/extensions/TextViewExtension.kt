@@ -63,7 +63,7 @@ internal fun VectorTextView.applyIconForm(iconForm: IconForm) {
       iconHeight = iconForm.iconHeight,
       compoundDrawablePadding = iconForm.iconSpace,
       contentDescription = iconForm.iconContentDescription,
-      tintColor = iconForm.iconColor.takeIf { it != NO_INT_VALUE }
+      tintColor = iconForm.iconColor.takeIf { it != NO_INT_VALUE },
     ).apply {
       when (iconForm.iconGravity) {
         IconGravity.START -> {
@@ -130,14 +130,14 @@ internal fun TextView.applyDrawable(vectorTextViewParams: VectorTextViewParams) 
       drawableEnd,
       drawableTop,
       drawableStart,
-      drawableBottom
+      drawableBottom,
     )
   } else {
     setCompoundDrawablesWithIntrinsicBounds(
       drawableStart,
       drawableTop,
       drawableEnd,
-      drawableBottom
+      drawableBottom,
     )
   }
 

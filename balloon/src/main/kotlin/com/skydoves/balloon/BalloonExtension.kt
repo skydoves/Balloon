@@ -28,7 +28,7 @@ public fun View.showAtCenter(
   balloon: Balloon,
   xOff: Int = 0,
   yOff: Int = 0,
-  centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP
+  centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP,
 ) {
   balloon { balloon.showAtCenter(this, xOff, yOff, centerAlign) }
 }
@@ -76,7 +76,7 @@ public fun View.showAlign(
   align: BalloonAlign,
   subAnchorList: List<View> = listOf(),
   xOff: Int = 0,
-  yOff: Int = 0
+  yOff: Int = 0,
 ) {
   balloon {
     balloon.showAlign(
@@ -84,7 +84,7 @@ public fun View.showAlign(
       subAnchorList = subAnchorList,
       align = align,
       xOff = xOff,
-      yOff = yOff
+      yOff = yOff,
     )
   }
 }

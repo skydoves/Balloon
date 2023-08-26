@@ -67,7 +67,7 @@ public fun Balloon(
   builder: Balloon.Builder,
   key: Any? = null,
   balloonContent: (@Composable () -> Unit)? = null,
-  content: @Composable (BalloonWindow) -> Unit
+  content: @Composable (BalloonWindow) -> Unit,
 ) {
   val context = LocalContext.current
   val view = LocalView.current
@@ -87,12 +87,12 @@ public fun Balloon(
       anchorView = anchorView,
       isComposableContent = isComposableContent,
       builder = builder,
-      balloonID = id
+      balloonID = id,
     ).apply {
       if (isComposableContent) {
         setContent(compositionContext) {
           BalloonLayout(
-            modifier = Modifier.semantics { balloon() }
+            modifier = Modifier.semantics { balloon() },
           ) {
             currentContent?.invoke()
           }
@@ -125,16 +125,16 @@ public fun Balloon(
           }
           val size = IntSize(
             width = calculatedWidth,
-            height = coordinates.size.height
+            height = coordinates.size.height,
           )
           balloonComposeView.updateSizeOfBalloonCard(size)
           balloonComposeView.balloonLayoutInfo.value = BalloonLayoutInfo(
             x = coordinates.positionInWindow().x,
             y = coordinates.positionInWindow().y,
             width = size.width,
-            height = size.height
+            height = size.height,
           )
-        }
+        },
     ) {
       balloonContent?.invoke()
     }
@@ -146,11 +146,11 @@ public fun Balloon(
         width = it.width
         height = it.height
       }
-    }
+    },
   ) {
     AndroidView(
       modifier = Modifier.matchParentSize(),
-      factory = { anchorView }
+      factory = { anchorView },
     )
 
     content.invoke(balloonComposeView)
@@ -173,11 +173,11 @@ public fun Balloon(
 @Composable
 private fun BalloonLayout(
   modifier: Modifier = Modifier,
-  content: @Composable () -> Unit
+  content: @Composable () -> Unit,
 ) {
   Layout(
     content = content,
-    modifier = modifier
+    modifier = modifier,
   ) { measurables, constraints ->
     val contentConstraints = constraints.copy(minWidth = 0, minHeight = 0)
     val placeables = measurables.map { it.measure(contentConstraints) }

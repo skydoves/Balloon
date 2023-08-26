@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.skydoves.balloondemo.databinding.ItemCustomBinding
 
 class CustomAdapter(
-  private val delegate: CustomViewHolder.Delegate
+  private val delegate: CustomViewHolder.Delegate,
 ) : RecyclerView.Adapter<CustomAdapter.CustomViewHolder>() {
 
   private val customItems = mutableListOf<CustomItem>()
