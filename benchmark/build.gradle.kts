@@ -7,6 +7,7 @@ plugins {
 
 android {
   compileSdk = Configuration.compileSdk
+  namespace = "com.skydoves.balloon.benchmark"
 
   defaultConfig {
     minSdk = Configuration.minSdkBenchmark

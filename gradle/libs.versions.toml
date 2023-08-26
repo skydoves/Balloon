@@ -1,24 +1,23 @@
 [versions]
-agp = "7.4.1"
-dokka = "1.8.10"
+agp = "8.1.0"
+dokka = "1.8.20"
 nexusPlugin = "1.3.0"
-kotlin = "1.8.10"
-kotlinBinaryCompatibility = "0.13.1"
-javaRelease = "8"
-jvmTarget = "1.8"
-androidxComposeBom = "2023.06.00"
-androidxComposeCompiler = "1.4.4"
+kotlin = "1.9.0"
+kotlinBinaryCompatibility = "0.13.2"
+jvmTarget = "11"
+androidxComposeBom = "2023.08.00"
+androidxComposeCompiler = "1.5.1"
 androidxComposeConstraintLayout = "1.0.1"
 androidxMaterial = "1.9.0"
 androidxAppcompat = "1.6.1"
 androidxActivity = "1.7.2"
-androidxFragment = "1.6.0"
+androidxFragment = "1.6.1"
 androidxLifecycle = "2.6.1"
 androidxAnnotation = "1.6.0"
 androidxTest = "1.5.2"
 baselineProfiles = "1.3.1"
-macroBenchmark = "1.2.0-alpha12"
-uiAutomator = "2.3.0-alpha02"
+macroBenchmark = "1.2.0-beta04"
+uiAutomator = "2.3.0-alpha04"
 spotless = "6.7.2"
 
 [plugins]
@@ -32,9 +31,6 @@ kotlin-binary-compatibility = { id = "org.jetbrains.kotlinx.binary-compatibility
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 
 [libraries]
-agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
-kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-
 androidx-material = { module = "com.google.android.material:material", version.ref = "androidxMaterial" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppcompat" }
 androidx-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "androidxFragment" }

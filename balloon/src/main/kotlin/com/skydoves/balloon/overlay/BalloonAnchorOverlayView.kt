@@ -91,14 +91,14 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
     invalidate()
   }
 
-  override fun dispatchDraw(canvas: Canvas?) {
+  override fun dispatchDraw(canvas: Canvas) {
     if (invalidated || bitmap == null || bitmap?.isRecycled == true) {
       prepareBitmap()
     }
 
     val bitmap = this.bitmap
     if (bitmap != null && !bitmap.isRecycled) {
-      canvas?.drawBitmap(bitmap, 0f, 0f, null)
+      canvas.drawBitmap(bitmap, 0f, 0f, null)
     }
   }
 
@@ -172,10 +172,12 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
           canvas.drawRect(anchorRect, paint)
           canvas.drawRect(anchorPaddingRect, paddingColorPaint)
         }
+
         is BalloonOverlayOval -> {
           canvas.drawOval(anchorRect, paint)
           canvas.drawOval(anchorPaddingRect, paddingColorPaint)
         }
+
         is BalloonOverlayCircle -> {
           overlay.radius?.let { radius ->
             canvas.drawCircle(anchorRect.centerX(), anchorRect.centerY(), radius, paint)
@@ -201,6 +203,7 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
             )
           }
         }
+
         is BalloonOverlayRoundRect -> {
           overlay.radiusPair?.let { radiusPair ->
             canvas.drawRoundRect(anchorRect, radiusPair.first, radiusPair.second, paint)

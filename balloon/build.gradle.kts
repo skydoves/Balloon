@@ -30,9 +30,10 @@ apply(from ="${rootDir}/scripts/publish-module.gradle")
 
 android {
   compileSdk = Configuration.compileSdk
+  namespace = "com.skydoves.balloon"
+
   defaultConfig {
     minSdk = Configuration.minSdk
-    targetSdk = Configuration.targetSdk
   }
 
   resourcePrefix = "balloon"
@@ -42,8 +43,8 @@ android {
   }
 
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
   }
 
   kotlinOptions {
@@ -56,9 +57,12 @@ android {
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-  kotlinOptions.freeCompilerArgs += listOf(
-    "-Xexplicit-api=strict"
-  )
+  kotlinOptions.freeCompilerArgs += listOf("-Xexplicit-api=strict")
+}
+
+tasks.withType(JavaCompile::class.java).configureEach {
+  this.targetCompatibility = libs.versions.jvmTarget.get()
+  this.sourceCompatibility = libs.versions.jvmTarget.get()
 }
 
 dependencies {
