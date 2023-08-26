@@ -54,7 +54,7 @@ object BalloonUtils {
   fun getNavigationBalloon(
     context: Context,
     onBalloonClickListener: OnBalloonClickListener,
-    lifecycleOwner: LifecycleOwner
+    lifecycleOwner: LifecycleOwner,
   ): Balloon {
     return Balloon.Builder(context)
       .setText("You can access your profile from on now.")

@@ -44,7 +44,7 @@ internal fun <T : Any?> View.viewProperty(defaultValue: T): ViewPropertyDelegate
  */
 internal class ViewPropertyDelegate<T : Any?>(
   defaultValue: T,
-  private val invalidator: () -> Unit
+  private val invalidator: () -> Unit,
 ) : ReadWriteProperty<Any?, T> {
 
   private var propertyValue: T = defaultValue

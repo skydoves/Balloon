@@ -38,5 +38,5 @@ public enum class ArrowOrientationRules {
    *
    * The orientation of the arrow will be fixed by the specific [Balloon.Builder.arrowOrientation].
    */
-  ALIGN_FIXED
+  ALIGN_FIXED,
 }

@@ -27,7 +27,7 @@ import com.skydoves.balloon.internals.takeIfNotNoIntValue
 /** VectorTextView is a customizable textView having a vector icon.  */
 public class VectorTextView @JvmOverloads constructor(
   context: Context,
-  attrs: AttributeSet? = null
+  attrs: AttributeSet? = null,
 ) : AppCompatTextView(context, attrs) {
 
   public var drawableTextViewParams: VectorTextViewParams? = null
@@ -45,40 +45,40 @@ public class VectorTextView @JvmOverloads constructor(
       drawableTextViewParams = VectorTextViewParams(
         drawableStartRes = attributeArray.getResourceId(
           R.styleable.VectorTextView_balloon_drawableStart,
-          NO_INT_VALUE
+          NO_INT_VALUE,
         ).takeIfNotNoIntValue(),
         drawableEndRes = attributeArray.getResourceId(
           R.styleable.VectorTextView_balloon_drawableEnd,
-          NO_INT_VALUE
+          NO_INT_VALUE,
         ).takeIfNotNoIntValue(),
         drawableBottomRes = attributeArray.getResourceId(
           R.styleable.VectorTextView_balloon_drawableBottom,
-          NO_INT_VALUE
+          NO_INT_VALUE,
         ).takeIfNotNoIntValue(),
         drawableTopRes = attributeArray.getResourceId(
           R.styleable.VectorTextView_balloon_drawableTop,
-          NO_INT_VALUE
+          NO_INT_VALUE,
         ).takeIfNotNoIntValue(),
         compoundDrawablePaddingRes = attributeArray.getResourceId(
           R.styleable.VectorTextView_balloon_drawablePadding,
-          NO_INT_VALUE
+          NO_INT_VALUE,
         ).takeIfNotNoIntValue(),
         tintColor = attributeArray.getColor(
           R.styleable.VectorTextView_balloon_drawableTintColor,
-          NO_INT_VALUE
+          NO_INT_VALUE,
         ).takeIfNotNoIntValue(),
         widthRes = attributeArray.getResourceId(
           R.styleable.VectorTextView_balloon_drawableWidth,
-          NO_INT_VALUE
+          NO_INT_VALUE,
         ).takeIfNotNoIntValue(),
         heightRes = attributeArray.getResourceId(
           R.styleable.VectorTextView_balloon_drawableHeight,
-          NO_INT_VALUE
+          NO_INT_VALUE,
         ).takeIfNotNoIntValue(),
         squareSizeRes = attributeArray.getResourceId(
           R.styleable.VectorTextView_balloon_drawableSquareSize,
-          NO_INT_VALUE
-        ).takeIfNotNoIntValue()
+          NO_INT_VALUE,
+        ).takeIfNotNoIntValue(),
       )
       attributeArray.recycle()
     }

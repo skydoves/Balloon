@@ -74,8 +74,8 @@ class MainActivity : ComponentActivity() {
         setOverlayShape(
           BalloonOverlayRoundRect(
             R.dimen.editBalloonOverlayRadius,
-            R.dimen.editBalloonOverlayRadius
-          )
+            R.dimen.editBalloonOverlayRadius,
+          ),
         )
         setDismissWhenClicked(true)
         setOnBalloonDismissListener {}
@@ -92,9 +92,9 @@ class MainActivity : ComponentActivity() {
                 .fillMaxWidth(),
               text = "Helloooooooooo!\nNice to meet youuuuu\nskydoves",
               textAlign = TextAlign.Center,
-              color = Color.White
+              color = Color.White,
             )
-          }
+          },
         ) {
           val view = LocalView.current
           LaunchedEffect(key1 = Unit) {
@@ -104,7 +104,7 @@ class MainActivity : ComponentActivity() {
 
           Button(
             modifier = Modifier.size(120.dp, 75.dp),
-            onClick = { }
+            onClick = { },
           ) {
             Text(text = "click")
           }

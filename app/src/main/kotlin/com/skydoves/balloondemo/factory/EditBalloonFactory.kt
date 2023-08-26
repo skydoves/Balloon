@@ -53,8 +53,8 @@ class EditBalloonFactory : Balloon.Factory() {
       .setOverlayShape(
         BalloonOverlayRoundRect(
           R.dimen.editBalloonOverlayRadius,
-          R.dimen.editBalloonOverlayRadius
-        )
+          R.dimen.editBalloonOverlayRadius,
+        ),
       )
       .setLifecycleOwner(lifecycle)
       .setDismissWhenClicked(true)

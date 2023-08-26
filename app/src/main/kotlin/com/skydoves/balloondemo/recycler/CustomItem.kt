@@ -20,5 +20,5 @@ import android.graphics.drawable.Drawable
 
 data class CustomItem(
   val icon: Drawable?,
-  val title: String
+  val title: String,
 )

@@ -37,7 +37,7 @@ internal annotation class BalloonDsl
 @BalloonDsl
 public fun rememberBalloonBuilder(
   context: Context = LocalContext.current,
-  block: Balloon.Builder.() -> Unit
+  block: Balloon.Builder.() -> Unit,
 ): Balloon.Builder = remember {
   Balloon.Builder(context).apply(block)
 }
@@ -52,5 +52,5 @@ public fun rememberBalloonBuilder(
 @BalloonDsl
 public fun rememberBalloonWindow(
   initialValue: BalloonWindow?,
-  key: Any? = null
+  key: Any? = null,
 ): MutableState<BalloonWindow?> = remember(key1 = key) { mutableStateOf(initialValue) }

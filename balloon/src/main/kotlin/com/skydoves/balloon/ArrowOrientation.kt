@@ -21,7 +21,8 @@ public enum class ArrowOrientation {
   BOTTOM,
   TOP,
   START,
-  END;
+  END,
+  ;
 
   internal companion object {
     /** Return [ArrowOrientation] depending on the [isRtlLayout].] */

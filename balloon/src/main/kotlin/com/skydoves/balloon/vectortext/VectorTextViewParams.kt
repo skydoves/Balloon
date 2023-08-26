@@ -41,5 +41,5 @@ public data class VectorTextViewParams @JvmOverloads constructor(
   @ColorInt public var tintColor: Int? = null,
   @DimenRes public var widthRes: Int? = null,
   @DimenRes public var heightRes: Int? = null,
-  @DimenRes public var squareSizeRes: Int? = null
+  @DimenRes public var squareSizeRes: Int? = null,
 )

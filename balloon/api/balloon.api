@@ -3,6 +3,7 @@ public final class com/skydoves/balloon/ArrowOrientation : java/lang/Enum {
 	public static final field END Lcom/skydoves/balloon/ArrowOrientation;
 	public static final field START Lcom/skydoves/balloon/ArrowOrientation;
 	public static final field TOP Lcom/skydoves/balloon/ArrowOrientation;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/ArrowOrientation;
 	public static fun values ()[Lcom/skydoves/balloon/ArrowOrientation;
 }
@@ -10,6 +11,7 @@ public final class com/skydoves/balloon/ArrowOrientation : java/lang/Enum {
 public final class com/skydoves/balloon/ArrowOrientationRules : java/lang/Enum {
 	public static final field ALIGN_ANCHOR Lcom/skydoves/balloon/ArrowOrientationRules;
 	public static final field ALIGN_FIXED Lcom/skydoves/balloon/ArrowOrientationRules;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/ArrowOrientationRules;
 	public static fun values ()[Lcom/skydoves/balloon/ArrowOrientationRules;
 }
@@ -17,6 +19,7 @@ public final class com/skydoves/balloon/ArrowOrientationRules : java/lang/Enum {
 public final class com/skydoves/balloon/ArrowPositionRules : java/lang/Enum {
 	public static final field ALIGN_ANCHOR Lcom/skydoves/balloon/ArrowPositionRules;
 	public static final field ALIGN_BALLOON Lcom/skydoves/balloon/ArrowPositionRules;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/ArrowPositionRules;
 	public static fun values ()[Lcom/skydoves/balloon/ArrowPositionRules;
 }
@@ -487,6 +490,7 @@ public final class com/skydoves/balloon/BalloonAlign : java/lang/Enum {
 	public static final field END Lcom/skydoves/balloon/BalloonAlign;
 	public static final field START Lcom/skydoves/balloon/BalloonAlign;
 	public static final field TOP Lcom/skydoves/balloon/BalloonAlign;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/BalloonAlign;
 	public static fun values ()[Lcom/skydoves/balloon/BalloonAlign;
 }
@@ -497,6 +501,7 @@ public final class com/skydoves/balloon/BalloonAnimation : java/lang/Enum {
 	public static final field FADE Lcom/skydoves/balloon/BalloonAnimation;
 	public static final field NONE Lcom/skydoves/balloon/BalloonAnimation;
 	public static final field OVERSHOOT Lcom/skydoves/balloon/BalloonAnimation;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/BalloonAnimation;
 	public static fun values ()[Lcom/skydoves/balloon/BalloonAnimation;
 }
@@ -506,6 +511,7 @@ public final class com/skydoves/balloon/BalloonCenterAlign : java/lang/Enum {
 	public static final field END Lcom/skydoves/balloon/BalloonCenterAlign;
 	public static final field START Lcom/skydoves/balloon/BalloonCenterAlign;
 	public static final field TOP Lcom/skydoves/balloon/BalloonCenterAlign;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/BalloonCenterAlign;
 	public static fun values ()[Lcom/skydoves/balloon/BalloonCenterAlign;
 }
@@ -549,6 +555,7 @@ public final class com/skydoves/balloon/BalloonHighlightAnimation : java/lang/En
 	public static final field NONE Lcom/skydoves/balloon/BalloonHighlightAnimation;
 	public static final field ROTATE Lcom/skydoves/balloon/BalloonHighlightAnimation;
 	public static final field SHAKE Lcom/skydoves/balloon/BalloonHighlightAnimation;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/BalloonHighlightAnimation;
 	public static fun values ()[Lcom/skydoves/balloon/BalloonHighlightAnimation;
 }
@@ -631,6 +638,7 @@ public final class com/skydoves/balloon/IconGravity : java/lang/Enum {
 	public static final field END Lcom/skydoves/balloon/IconGravity;
 	public static final field START Lcom/skydoves/balloon/IconGravity;
 	public static final field TOP Lcom/skydoves/balloon/IconGravity;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/IconGravity;
 	public static fun values ()[Lcom/skydoves/balloon/IconGravity;
 }
@@ -734,6 +742,7 @@ public final class com/skydoves/balloon/animations/BalloonRotateAnimation$Builde
 public final class com/skydoves/balloon/animations/BalloonRotateDirection : java/lang/Enum {
 	public static final field LEFT Lcom/skydoves/balloon/animations/BalloonRotateDirection;
 	public static final field RIGHT Lcom/skydoves/balloon/animations/BalloonRotateDirection;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public final fun getValue ()I
 	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/animations/BalloonRotateDirection;
 	public static fun values ()[Lcom/skydoves/balloon/animations/BalloonRotateDirection;
@@ -773,6 +782,7 @@ public final class com/skydoves/balloon/overlay/BalloonAnchorOverlayView : andro
 public final class com/skydoves/balloon/overlay/BalloonOverlayAnimation : java/lang/Enum {
 	public static final field FADE Lcom/skydoves/balloon/overlay/BalloonOverlayAnimation;
 	public static final field NONE Lcom/skydoves/balloon/overlay/BalloonOverlayAnimation;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/overlay/BalloonOverlayAnimation;
 	public static fun values ()[Lcom/skydoves/balloon/overlay/BalloonOverlayAnimation;
 }

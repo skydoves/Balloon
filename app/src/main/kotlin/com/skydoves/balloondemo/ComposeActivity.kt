@@ -66,8 +66,8 @@ class ComposeActivity : ComponentActivity() {
         setOverlayShape(
           BalloonOverlayRoundRect(
             R.dimen.editBalloonOverlayRadius,
-            R.dimen.editBalloonOverlayRadius
-          )
+            R.dimen.editBalloonOverlayRadius,
+          ),
         )
         setDismissWhenClicked(true)
       }
@@ -82,13 +82,13 @@ class ComposeActivity : ComponentActivity() {
             Text(
               text = "Now you can edit your profile1 profile2 profile3 profile4",
               textAlign = TextAlign.Center,
-              color = Color.White
+              color = Color.White,
             )
-          }
+          },
         ) { balloonWindow ->
           Button(
             modifier = Modifier.size(160.dp, 60.dp),
-            onClick = { balloonWindow.showAlignTop() }
+            onClick = { balloonWindow.showAlignTop() },
           ) {
             Text(text = "showAlignTop")
           }
@@ -103,13 +103,13 @@ class ComposeActivity : ComponentActivity() {
             Text(
               text = "Now you can edit your profile!",
               textAlign = TextAlign.Center,
-              color = Color.White
+              color = Color.White,
             )
-          }
+          },
         ) { balloonWindow ->
           Button(
             modifier = Modifier.size(160.dp, 60.dp),
-            onClick = { balloonWindow.showAlignTop() }
+            onClick = { balloonWindow.showAlignTop() },
           ) {
             Text(text = "wrap balloon")
           }
@@ -126,27 +126,27 @@ class ComposeActivity : ComponentActivity() {
                 modifier = Modifier
                   .size(50.dp)
                   .align(Alignment.CenterStart)
-                  .background(Color.Blue)
+                  .background(Color.Blue),
               )
               Box(
                 modifier = Modifier
                   .size(50.dp)
                   .align(Alignment.Center)
-                  .background(Color.Blue)
+                  .background(Color.Blue),
               )
               Box(
                 modifier = Modifier
                   .size(50.dp)
                   .border(2.dp, Color.Red)
                   .align(Alignment.CenterEnd)
-                  .background(Color.Blue)
+                  .background(Color.Blue),
               )
             }
-          }
+          },
         ) { balloonWindow ->
           Button(
             modifier = Modifier.size(160.dp, 60.dp),
-            onClick = { balloonWindow.showAlignBottom() }
+            onClick = { balloonWindow.showAlignBottom() },
           ) {
             Text(text = "alignments")
           }

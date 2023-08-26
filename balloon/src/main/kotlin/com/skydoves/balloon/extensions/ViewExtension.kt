@@ -52,7 +52,9 @@ internal fun View.getStatusBarHeight(isStatusBarVisible: Boolean): Int {
   return if (context is Activity && isStatusBarVisible) {
     context.window.decorView.getWindowVisibleDisplayFrame(rectangle)
     rectangle.top
-  } else 0
+  } else {
+    0
+  }
 }
 
 /** shows circular revealed animation to a view. */
@@ -68,7 +70,7 @@ internal fun View.circularRevealed(circularDuration: Long) {
         (left + right) / 2,
         (top + bottom) / 2,
         0f,
-        max(width, height).toFloat()
+        max(width, height).toFloat(),
       ).apply {
         duration = circularDuration
         start()
@@ -83,7 +85,7 @@ internal fun View.circularRevealed(circularDuration: Long) {
 @JvmSynthetic
 internal inline fun View.circularUnRevealed(
   circularDuration: Long,
-  crossinline doAfterFinish: () -> Unit
+  crossinline doAfterFinish: () -> Unit,
 ) {
   post {
     if (isAttachedToWindow) {
@@ -92,7 +94,7 @@ internal inline fun View.circularUnRevealed(
         (left + right) / 2,
         (top + bottom) / 2,
         max(width, height).toFloat(),
-        0f
+        0f,
       ).apply {
         duration = circularDuration
         start()
@@ -102,7 +104,7 @@ internal inline fun View.circularUnRevealed(
             super.onAnimationEnd(animation)
             doAfterFinish()
           }
-        }
+        },
       )
     }
   }

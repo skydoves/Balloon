@@ -22,5 +22,5 @@ public enum class BalloonAnimation {
   ELASTIC,
   FADE,
   CIRCULAR,
-  OVERSHOOT
+  OVERSHOOT,
 }

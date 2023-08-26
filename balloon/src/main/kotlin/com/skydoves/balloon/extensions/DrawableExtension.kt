@@ -44,7 +44,9 @@ internal fun Drawable.resize(context: Context, @Px width: Int?, @Px height: Int?
     setBounds(0, 0, width, height)
     draw(canvas)
     BitmapDrawable(context.resources, bitmap)
-  } else this
+  } else {
+    this
+  }
 
 /** returns true if there is a start/left or end/right drawable in the array. */
 @JvmSynthetic

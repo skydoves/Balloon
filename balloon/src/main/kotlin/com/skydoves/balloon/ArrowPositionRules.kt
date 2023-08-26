@@ -35,5 +35,5 @@ public enum class ArrowPositionRules {
    *
    * If [Balloon.Builder.arrowPosition] is 0.5, the arrow will be located in the middle of an anchor.
    */
-  ALIGN_ANCHOR
+  ALIGN_ANCHOR,
 }

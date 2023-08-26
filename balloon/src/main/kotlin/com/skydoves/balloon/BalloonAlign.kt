@@ -21,7 +21,8 @@ public enum class BalloonAlign {
   START,
   END,
   TOP,
-  BOTTOM;
+  BOTTOM,
+  ;
 
   internal companion object {
 

@@ -35,7 +35,7 @@ import kotlin.reflect.KClass
 internal class ActivityBalloonLazy<out T : Balloon.Factory>(
   private val context: Context,
   private val lifecycleOwner: LifecycleOwner,
-  private val factory: KClass<T>
+  private val factory: KClass<T>,
 ) : Lazy<Balloon>, Serializable {
 
   private var cached: Balloon? = null

@@ -40,7 +40,7 @@ internal annotation class IconFormDsl
 @JvmSynthetic
 public inline fun iconForm(
   context: Context,
-  crossinline block: IconForm.Builder.() -> Unit
+  crossinline block: IconForm.Builder.() -> Unit,
 ): IconForm =
   IconForm.Builder(context).apply(block).build()
 
@@ -49,7 +49,7 @@ public inline fun iconForm(
  * for customizing popup icons easily.
  */
 public class IconForm private constructor(
-  builder: Builder
+  builder: Builder,
 ) {
 
   public val drawable: Drawable? = builder.drawable

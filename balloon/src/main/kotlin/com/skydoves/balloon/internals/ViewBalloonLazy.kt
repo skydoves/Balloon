@@ -36,7 +36,7 @@ import kotlin.reflect.KClass
 @PublishedApi
 internal class ViewBalloonLazy<out T : Balloon.Factory>(
   private val view: View,
-  private val factory: KClass<T>
+  private val factory: KClass<T>,
 ) : Lazy<Balloon>, Serializable {
 
   private var cached: Balloon? = null
@@ -53,10 +53,12 @@ internal class ViewBalloonLazy<out T : Balloon.Factory>(
             instance = factory.create(context, viewTreeLifecycle)
             cached = instance
           }
+
           context is LifecycleOwner -> {
             instance = factory.create(context, context)
             cached = instance
           }
+
           else -> {
             try {
               val fragment = view.findFragment<Fragment>()
@@ -70,12 +72,13 @@ internal class ViewBalloonLazy<out T : Balloon.Factory>(
                 cached = instance
               } else {
                 throw IllegalArgumentException(
-                  "Balloon can not be initialized. The passed fragment's context is null."
+                  "Balloon can not be initialized. The passed fragment's context is null.",
                 )
               }
             } catch (e: Exception) {
               throw IllegalArgumentException(
-                "Balloon can not be initialized. The passed context is not an instance of the LifecycleOwner."
+                "Balloon can not be initialized. " +
+                  "The passed context is not an instance of the LifecycleOwner.",
               )
             }
           }

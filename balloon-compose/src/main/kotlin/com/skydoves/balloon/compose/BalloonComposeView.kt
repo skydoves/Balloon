@@ -57,11 +57,11 @@ import java.util.UUID
  * @param balloonID unique UUID to restore the state of balloon.
  */
 @SuppressLint("ViewConstructor")
-internal class BalloonComposeView constructor(
+internal class BalloonComposeView(
   private val anchorView: View,
   isComposableContent: Boolean,
   builder: Balloon.Builder,
-  balloonID: UUID
+  balloonID: UUID,
 ) : AbstractComposeView(anchorView.context), BalloonWindow {
 
   private val lifecycleOwner = anchorView.findViewTreeLifecycleOwner()
@@ -97,7 +97,7 @@ internal class BalloonComposeView constructor(
 
   fun setContent(
     compositionContext: CompositionContext,
-    content: @Composable (BalloonComposeView) -> Unit
+    content: @Composable (BalloonComposeView) -> Unit,
   ) {
     setParentCompositionContext(compositionContext)
     shouldCreateCompositionOnAttachedToWindow = true
@@ -116,7 +116,7 @@ internal class BalloonComposeView constructor(
     balloon: Balloon,
     xOff: Int,
     yOff: Int,
-    centerAlign: BalloonCenterAlign
+    centerAlign: BalloonCenterAlign,
   ): Balloon = balloon.relayShowAtCenter(balloon, anchorView, xOff, yOff, centerAlign)
 
   override fun showAsDropDown(xOff: Int, yOff: Int): Unit =
@@ -153,7 +153,7 @@ internal class BalloonComposeView constructor(
     align: BalloonAlign,
     balloon: Balloon,
     xOff: Int,
-    yOff: Int
+    yOff: Int,
   ): Balloon = balloon.relayShowAlign(align, balloon, anchorView, xOff, yOff)
 
   override fun update(xOff: Int, yOff: Int): Unit = balloon.update(anchorView, xOff, yOff)
@@ -163,7 +163,7 @@ internal class BalloonComposeView constructor(
     mainAnchor: View,
     subAnchorList: List<View>,
     xOff: Int,
-    yOff: Int
+    yOff: Int,
   ): Unit = balloon.showAlign(align, mainAnchor, subAnchorList, xOff, yOff)
 
   @InternalBalloonApi
@@ -182,20 +182,23 @@ internal class BalloonComposeView constructor(
   override fun setOnBalloonClickListener(block: (View) -> Unit): Unit =
     balloon.setOnBalloonClickListener(block)
 
-  override fun setOnBalloonInitializedListener(onBalloonInitializedListener: OnBalloonInitializedListener?): Unit =
-    balloon.setOnBalloonInitializedListener(onBalloonInitializedListener)
+  override fun setOnBalloonInitializedListener(
+    onBalloonInitializedListener: OnBalloonInitializedListener?,
+  ): Unit = balloon.setOnBalloonInitializedListener(onBalloonInitializedListener)
 
   override fun setOnBalloonInitializedListener(block: (View) -> Unit): Unit =
     balloon.setOnBalloonInitializedListener(block)
 
-  override fun setOnBalloonDismissListener(onBalloonDismissListener: OnBalloonDismissListener?): Unit =
-    balloon.setOnBalloonDismissListener(onBalloonDismissListener)
+  override fun setOnBalloonDismissListener(
+    onBalloonDismissListener: OnBalloonDismissListener?,
+  ): Unit = balloon.setOnBalloonDismissListener(onBalloonDismissListener)
 
   override fun setOnBalloonDismissListener(block: () -> Unit): Unit =
     balloon.setOnBalloonDismissListener(block)
 
-  override fun setOnBalloonOutsideTouchListener(onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener?): Unit =
-    balloon.setOnBalloonOutsideTouchListener(onBalloonOutsideTouchListener)
+  override fun setOnBalloonOutsideTouchListener(
+    onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener?,
+  ): Unit = balloon.setOnBalloonOutsideTouchListener(onBalloonOutsideTouchListener)
 
   override fun setOnBalloonOutsideTouchListener(block: (View, MotionEvent) -> Unit): Unit =
     balloon.setOnBalloonOutsideTouchListener(block)
@@ -209,8 +212,9 @@ internal class BalloonComposeView constructor(
   override fun setOnBalloonOverlayTouchListener(block: (View, MotionEvent) -> Boolean): Unit =
     balloon.setOnBalloonOverlayTouchListener(block)
 
-  override fun setOnBalloonOverlayClickListener(onBalloonOverlayClickListener: OnBalloonOverlayClickListener?): Unit =
-    balloon.setOnBalloonOverlayClickListener(onBalloonOverlayClickListener)
+  override fun setOnBalloonOverlayClickListener(
+    onBalloonOverlayClickListener: OnBalloonOverlayClickListener?,
+  ): Unit = balloon.setOnBalloonOverlayClickListener(onBalloonOverlayClickListener)
 
   override fun setOnBalloonOverlayClickListener(block: () -> Unit): Unit =
     balloon.setOnBalloonOverlayClickListener(block)

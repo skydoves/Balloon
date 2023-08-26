@@ -53,7 +53,7 @@ public interface BalloonWindow {
   public fun showAtCenter(
     xOff: Int = 0,
     yOff: Int = 0,
-    centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP
+    centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP,
   )
 
   /**
@@ -73,7 +73,7 @@ public interface BalloonWindow {
     balloon: Balloon,
     xOff: Int = 0,
     yOff: Int = 0,
-    centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP
+    centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP,
   ): Balloon
 
   /**
@@ -99,7 +99,7 @@ public interface BalloonWindow {
   public fun relayShowAsDropDown(
     balloon: Balloon,
     xOff: Int = 0,
-    yOff: Int = 0
+    yOff: Int = 0,
   ): Balloon
 
   /**
@@ -125,7 +125,7 @@ public interface BalloonWindow {
   public fun relayShowAlignTop(
     balloon: Balloon,
     xOff: Int = 0,
-    yOff: Int = 0
+    yOff: Int = 0,
   ): Balloon
 
   /**
@@ -152,7 +152,7 @@ public interface BalloonWindow {
   public fun relayShowAlignBottom(
     balloon: Balloon,
     xOff: Int = 0,
-    yOff: Int = 0
+    yOff: Int = 0,
   ): Balloon
 
   /**
@@ -179,7 +179,7 @@ public interface BalloonWindow {
   public fun relayShowAlignRight(
     balloon: Balloon,
     xOff: Int = 0,
-    yOff: Int = 0
+    yOff: Int = 0,
   ): Balloon
 
   /**
@@ -206,7 +206,7 @@ public interface BalloonWindow {
   public fun relayShowAlignLeft(
     balloon: Balloon,
     xOff: Int = 0,
-    yOff: Int = 0
+    yOff: Int = 0,
   ): Balloon
 
   /**
@@ -223,7 +223,7 @@ public interface BalloonWindow {
     mainAnchor: View,
     subAnchorList: List<View> = listOf(),
     xOff: Int = 0,
-    yOff: Int = 0
+    yOff: Int = 0,
   )
 
   /**
@@ -243,7 +243,7 @@ public interface BalloonWindow {
     align: BalloonAlign,
     balloon: Balloon,
     xOff: Int = 0,
-    yOff: Int = 0
+    yOff: Int = 0,
   ): Balloon
 
   /**
@@ -280,7 +280,9 @@ public interface BalloonWindow {
    * The [OnBalloonInitializedListener.onBalloonInitialized] will be invoked when inflating the
    * body content of the balloon is finished.
    */
-  public fun setOnBalloonInitializedListener(onBalloonInitializedListener: OnBalloonInitializedListener?)
+  public fun setOnBalloonInitializedListener(
+    onBalloonInitializedListener: OnBalloonInitializedListener?,
+  )
 
   /**
    * sets a [OnBalloonInitializedListener] to the popup using a lambda.
@@ -298,7 +300,9 @@ public interface BalloonWindow {
   public fun setOnBalloonDismissListener(block: () -> Unit)
 
   /** sets a [OnBalloonOutsideTouchListener] to the popup. */
-  public fun setOnBalloonOutsideTouchListener(onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener?)
+  public fun setOnBalloonOutsideTouchListener(
+    onBalloonOutsideTouchListener: OnBalloonOutsideTouchListener?,
+  )
 
   /** sets a [OnBalloonOutsideTouchListener] to the popup using lambda. */
   @JvmSynthetic
@@ -314,7 +318,9 @@ public interface BalloonWindow {
   public fun setOnBalloonOverlayTouchListener(block: (View, MotionEvent) -> Boolean)
 
   /** sets a [OnBalloonOverlayClickListener] to the overlay popup. */
-  public fun setOnBalloonOverlayClickListener(onBalloonOverlayClickListener: OnBalloonOverlayClickListener?)
+  public fun setOnBalloonOverlayClickListener(
+    onBalloonOverlayClickListener: OnBalloonOverlayClickListener?,
+  )
 
   /** sets a [OnBalloonOverlayClickListener] to the overlay popup using lambda. */
   @JvmSynthetic

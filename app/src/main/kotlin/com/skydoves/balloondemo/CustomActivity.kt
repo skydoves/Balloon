@@ -69,7 +69,7 @@ class CustomActivity : AppCompatActivity(), CustomAdapter.CustomViewHolder.Deleg
         editBalloon.showAlign(
           align = BalloonAlign.BOTTOM,
           mainAnchor = circleImageView,
-          subAnchorList = listOf(it)
+          subAnchorList = listOf(it),
         )
       }
 
