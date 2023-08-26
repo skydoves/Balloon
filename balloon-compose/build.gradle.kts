@@ -16,9 +16,10 @@ apply(from ="${rootDir}/scripts/publish-module.gradle")
 
 android {
   compileSdk = Configuration.compileSdk
+  namespace = "com.skydoves.balloon.compose"
+
   defaultConfig {
     minSdk = Configuration.minSdk
-    targetSdk = Configuration.targetSdk
   }
 
   buildFeatures {
@@ -29,7 +30,16 @@ android {
     kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
   }
 
-  packagingOptions {
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+  }
+
+  kotlinOptions {
+    jvmTarget = libs.versions.jvmTarget.get()
+  }
+
+  packaging {
     resources {
       excludes.add("/META-INF/{AL2.0,LGPL2.1}")
     }
@@ -45,6 +55,11 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     "-Xexplicit-api=strict",
     "-opt-in=com.skydoves.balloon.animations.InternalBalloonApi",
   )
+}
+
+tasks.withType(JavaCompile::class.java).configureEach {
+  this.targetCompatibility = libs.versions.jvmTarget.get()
+  this.sourceCompatibility = libs.versions.jvmTarget.get()
 }
 
 dependencies {
