@@ -2,30 +2,35 @@ name: Publish
 
 on:
   release:
-    types: [released]
+    types: [ released ]
+  workflow_dispatch:
 
 jobs:
   publish:
-    name: Release build and publish
+    name: Snapshot build and publish
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v3.1.0
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3.5.1
         with:
-          distribution: adopt
+          distribution: 'zulu'
           java-version: 17
+
+      - name: Grant Permission to Execute Gradle
+        run: chmod +x gradlew
+
       - name: Release build
-        run: ./gradlew assemble --scan
-      - name: Source jar and dokka
-        run: ./gradlew androidSourcesJar javadocJar --scan
+        run: ./gradlew assemble --scan -x :benchmark:pixel6api31Setup -x :benchmark:pixel6api31NonMinifiedReleaseAndroidTest -x :benchmark:collectNonMinifiedReleaseBaselineProfile
+
       - name: Publish to MavenCentral
-        run: ./gradlew publishReleasePublicationToSonatypeRepository --max-workers 1 closeAndReleaseSonatypeStagingRepository --scan
+        run: |
+          ./gradlew publishAllPublicationsToMavenCentral --no-configuration-cache
         env:
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-          SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
-          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
-          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
-          SONATYPE_STAGING_PROFILE_ID: ${{ secrets.SONATYPE_STAGING_PROFILE_ID }}
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.OSSRH_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.OSSRH_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
