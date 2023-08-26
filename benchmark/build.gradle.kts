@@ -16,6 +16,13 @@ android {
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+  }
+
+  targetProjectPath = ":benchmark-app"
+
   testOptions.managedDevices.devices {
     maybeCreate<com.android.build.api.dsl.ManagedVirtualDevice>("pixel6api31").apply {
       device = "Pixel 6"
@@ -23,28 +30,6 @@ android {
       systemImageSource = "aosp"
     }
   }
-
-  compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-  }
-
-  kotlinOptions {
-    jvmTarget = "17"
-  }
-
-  buildTypes {
-    // This benchmark buildType is used for benchmarking, and should function like your
-    // release build (for example, with minification on). It"s signed with a debug key
-    // for easy local/CI testing.
-    create("benchmark") {
-      isDebuggable = true
-      signingConfig = getByName("debug").signingConfig
-      matchingFallbacks += listOf("release")
-    }
-  }
-
-  targetProjectPath = ":benchmark-app"
 }
 
 // This is the plugin configuration. Everything is optional. Defaults are in the
