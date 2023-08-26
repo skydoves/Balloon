@@ -18,15 +18,24 @@ import com.skydoves.balloon.Configuration
 plugins {
   id(libs.plugins.android.library.get().pluginId)
   id(libs.plugins.kotlin.android.get().pluginId)
+  id(libs.plugins.nexus.plugin.get().pluginId)
 }
 
-rootProject.extra.apply {
-  set("PUBLISH_GROUP_ID", Configuration.artifactGroup)
-  set("PUBLISH_ARTIFACT_ID", "balloon")
-  set("PUBLISH_VERSION", rootProject.extra.get("rootVersionName"))
-}
+apply(from = "${rootDir}/scripts/publish-module.gradle.kts")
 
-apply(from ="${rootDir}/scripts/publish-module.gradle")
+mavenPublishing {
+  val artifactId = "balloon"
+  coordinates(
+    Configuration.artifactGroup,
+    artifactId,
+    rootProject.extra.get("libVersion").toString()
+  )
+
+  pom {
+    name.set(artifactId)
+    description.set("Modernized and sophisticated tooltips, fully customizable with an arrow and animations for Android.")
+  }
+}
 
 android {
   compileSdk = Configuration.compileSdk
