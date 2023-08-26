@@ -16,8 +16,9 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3.5.1
         with:
-          distribution: adopt
+          distribution: zulu
           java-version: 17
+      - uses: gradle/gradle-build-action@v2.7.1
       - name: spotless
         run: ./gradlew spotlessCheck
 
@@ -30,34 +31,27 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3.5.1
         with:
-          distribution: adopt
+          distribution: zulu
           java-version: 17
+      - uses: gradle/gradle-build-action@v2.7.1
       - name: API check
         run: ./gradlew apiCheck
 
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3.1.0
+      - uses: actions/checkout@v3.1.0
+      - name: set up JDK
+        uses: actions/setup-java@v3.5.1
+        with:
+          distribution: zulu
+          java-version: 17
 
-    - name: set up JDK
-      uses: actions/setup-java@v3.5.1
-      with:
-        distribution: adopt
-        java-version: 17
+      - uses: gradle/gradle-build-action@v2.7.1
+      - name: Make Gradle executable
+        run: chmod +x ./gradlew
 
-    - name: Cache Gradle and wrapper
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-        restore-keys: |
-           ${{ runner.os }}-gradle-
-
-    - name: Make Gradle executable
-      run: chmod +x ./gradlew
-
-    - name: Build with Gradle
-      run: ./gradlew build
+      - name: Build with Gradle
+        run: |
+          ./gradlew --scan --stacktrace \
+              assemble -x :benchmark:pixel6api31Setup -x :benchmark:pixel6api31NonMinifiedReleaseAndroidTest -x :benchmark:collectNonMinifiedReleaseBaselineProfile
