@@ -31,7 +31,7 @@ class BaselineProfileGenerator {
   fun startup() =
     baselineProfileRule.collect(
       packageName = "com.skydoves.balloon.benchmark.app",
-      includeInStartupProfile = true
+      includeInStartupProfile = true,
     ) {
       pressHome()
       // This block defines the app's critical user journey. Here we are interested in
