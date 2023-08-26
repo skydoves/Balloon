@@ -18,6 +18,7 @@ import com.skydoves.balloon.Configuration
 plugins {
   id(libs.plugins.android.application.get().pluginId)
   id(libs.plugins.kotlin.android.get().pluginId)
+  id(libs.plugins.baseline.profile.get().pluginId)
 }
 
 android {
@@ -78,4 +79,6 @@ dependencies {
   implementation(libs.androidx.compose.material)
   implementation(libs.androidx.compose.foundation)
   implementation(libs.androidx.compose.runtime)
+
+  baselineProfile(project(":benchmark"))
 }

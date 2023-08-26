@@ -14,9 +14,9 @@ androidxActivity = "1.7.2"
 androidxFragment = "1.6.1"
 androidxLifecycle = "2.6.1"
 androidxAnnotation = "1.6.0"
+androidxMacroBenchmark = "1.2.0-beta04"
 androidxTest = "1.5.2"
 baselineProfiles = "1.3.1"
-macroBenchmark = "1.2.0-beta04"
 uiAutomator = "2.3.0-alpha04"
 spotless = "6.20.0"
 
@@ -27,6 +27,7 @@ android-test = { id = "com.android.test", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 nexus-plugin = { id = "com.vanniktech.maven.publish", version.ref = "nexusPlugin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+baseline-profile = { id = "androidx.baselineprofile", version.ref = "androidxMacroBenchmark" }
 kotlin-binary-compatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinBinaryCompatibility" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 
@@ -50,5 +51,5 @@ androidx-compose-constraintlayout = { group = "androidx.constraintlayout", name 
 # unit test
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTest" }
 androidx-profileinstaller = { module = "androidx.profileinstaller:profileinstaller", version.ref = "baselineProfiles" }
-androidx-benchmark-macro = { module = "androidx.benchmark:benchmark-macro-junit4", version.ref = "macroBenchmark" }
+androidx-benchmark-macro = { module = "androidx.benchmark:benchmark-macro-junit4", version.ref = "androidxMacroBenchmark" }
 androidx-test-uiautomator = { module = "androidx.test.uiautomator:uiautomator", version.ref = "uiAutomator" }

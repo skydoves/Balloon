@@ -19,6 +19,7 @@ plugins {
   id(libs.plugins.android.library.get().pluginId)
   id(libs.plugins.kotlin.android.get().pluginId)
   id(libs.plugins.nexus.plugin.get().pluginId)
+  id(libs.plugins.baseline.profile.get().pluginId)
 }
 
 apply(from = "${rootDir}/scripts/publish-module.gradle.kts")
@@ -65,6 +66,12 @@ android {
   }
 }
 
+baselineProfile {
+  filter {
+    include("com.skydoves.balloon.**")
+  }
+}
+
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
   kotlinOptions.freeCompilerArgs += listOf("-Xexplicit-api=strict")
 }
@@ -79,4 +86,6 @@ dependencies {
   implementation(libs.androidx.fragment)
   implementation(libs.androidx.lifecycle)
   implementation(libs.androidx.annotation)
+
+  baselineProfile(project(":benchmark"))
 }
