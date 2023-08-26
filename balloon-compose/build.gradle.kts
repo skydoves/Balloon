@@ -5,6 +5,7 @@ plugins {
   id(libs.plugins.android.library.get().pluginId)
   id(libs.plugins.kotlin.android.get().pluginId)
   id(libs.plugins.nexus.plugin.get().pluginId)
+  id(libs.plugins.baseline.profile.get().pluginId)
 }
 
 apply(from = "${rootDir}/scripts/publish-module.gradle.kts")
@@ -59,6 +60,12 @@ android {
   }
 }
 
+baselineProfile {
+  filter {
+    include("com.skydoves.balloon.compose.**")
+  }
+}
+
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
   kotlinOptions.freeCompilerArgs += listOf(
     "-Xexplicit-api=strict",
@@ -80,4 +87,6 @@ dependencies {
   implementation(libs.androidx.compose.runtime)
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.lifecycle)
+
+  baselineProfile(project(":benchmark"))
 }

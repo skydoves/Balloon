@@ -18,6 +18,7 @@ import com.skydoves.balloon.Configuration
 plugins {
   id(libs.plugins.android.application.get().pluginId)
   id(libs.plugins.kotlin.android.get().pluginId)
+  id(libs.plugins.baseline.profile.get().pluginId)
 }
 
 android {
@@ -33,8 +34,8 @@ android {
   }
 
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
   }
 
   kotlinOptions {
@@ -78,4 +79,6 @@ dependencies {
   implementation(libs.androidx.compose.material)
   implementation(libs.androidx.compose.foundation)
   implementation(libs.androidx.compose.runtime)
+
+  baselineProfile(project(":benchmark"))
 }
