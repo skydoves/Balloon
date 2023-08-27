@@ -79,7 +79,7 @@ public final class com/skydoves/balloon/compose/ComposableSingletons$BalloonComp
 }
 
 public final class com/skydoves/balloon/compose/RememberBalloonBuilderKt {
-	public static final fun rememberBalloonBuilder (Landroid/content/Context;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Lcom/skydoves/balloon/Balloon$Builder;
+	public static final fun rememberBalloonBuilder (Ljava/lang/Object;Landroid/content/Context;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Lcom/skydoves/balloon/Balloon$Builder;
 	public static final fun rememberBalloonWindow (Lcom/skydoves/balloon/compose/BalloonWindow;Ljava/lang/Object;Landroidx/compose/runtime/Composer;II)Landroidx/compose/runtime/MutableState;
 }
 
