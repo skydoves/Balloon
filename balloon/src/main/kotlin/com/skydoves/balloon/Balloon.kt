@@ -945,7 +945,7 @@ public class Balloon private constructor(
   }
 
   /**
-   * Coroutine alternative for [showAtCenter]. This method suspends until the popup is dismissed.
+   * Coroutine alternative for [showAtCenter]. This method suspends until the popup is displayed.
    * Can be used to show popups sequentially without using relay methods.
    *
    * @param anchor A target view which popup will be shown with overlap.
@@ -998,7 +998,7 @@ public class Balloon private constructor(
   }
 
   /**
-   * Coroutine alternative for [showAsDropDown]. This method suspends until the popup is dismissed.
+   * Coroutine alternative for [showAsDropDown]. This method suspends until the popup is displayed.
    * Can be used to show popups sequentially without using relay methods.
    *
    * @param anchor A target view which popup will be shown to.
@@ -1053,7 +1053,7 @@ public class Balloon private constructor(
   }
 
   /**
-   * Coroutine alternative for [showAlignTop]. This method suspends until the popup is dismissed.
+   * Coroutine alternative for [showAlignTop]. This method suspends until the popup is displayed.
    * Can be used to show popups sequentially without using relay methods.
    *
    * @param anchor A target view which popup will be shown to.
@@ -1108,7 +1108,7 @@ public class Balloon private constructor(
   }
 
   /**
-   * Coroutine alternative for [showAlignBottom]. This method suspends until the popup is dismissed.
+   * Coroutine alternative for [showAlignBottom]. This method suspends until the popup is displayed.
    * Can be used to show popups sequentially without using relay methods.
    *
    * @param anchor A target view which popup will be shown to.
@@ -1161,7 +1161,7 @@ public class Balloon private constructor(
   }
 
   /**
-   * Coroutine alternative for [showAlignRight]. This method suspends until the popup is dismissed.
+   * Coroutine alternative for [showAlignRight]. This method suspends until the popup is displayed.
    * Can be used to show popups sequentially without using relay methods.
    *
    * @param anchor A target view which popup will be shown to.
@@ -1217,7 +1217,7 @@ public class Balloon private constructor(
   }
 
   /**
-   * Coroutine alternative for [showAlignLeft]. This method suspends until the popup is dismissed.
+   * Coroutine alternative for [showAlignLeft]. This method suspends until the popup is displayed.
    * Can be used to show popups sequentially without using relay methods.
    *
    * @param anchor A target view which popup will be shown to.
@@ -1305,7 +1305,7 @@ public class Balloon private constructor(
   }
 
   /**
-   * Coroutine alternative for [showAlign]. This method suspends until the popup is dismissed.
+   * Coroutine alternative for [showAlign]. This method suspends until the popup is displayed.
    * Can be used to show popups sequentially without using relay methods.
    *
    * @param align Decides where the balloon should be placed.
