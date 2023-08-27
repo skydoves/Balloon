@@ -30,15 +30,17 @@ internal annotation class BalloonDsl
 /**
  * Create and remember [Balloon.Builder].
  *
+ * @param key The key that may trigger recomposition.
  * @param context context to create balloon.
  * @param block a receiver lambda that will be applied with [Balloon.Builder].
  */
 @Composable
 @BalloonDsl
 public fun rememberBalloonBuilder(
+  key: Any? = null,
   context: Context = LocalContext.current,
   block: Balloon.Builder.() -> Unit,
-): Balloon.Builder = remember {
+): Balloon.Builder = remember(key) {
   Balloon.Builder(context).apply(block)
 }
 
