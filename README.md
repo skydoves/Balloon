@@ -197,7 +197,7 @@ Balloon.Builder(context)
 ```
 
 ### Show up Balloon Sequentially
-We can show up a couple of Balloons sequentially with the `relayShow__` methods.
+We can show up a couple of Balloons sequentially with the `relayShow__` and `await__` methods.
 
 ```kotlin
 customListBalloon
@@ -207,8 +207,15 @@ customListBalloon
 // show sequentially customListBalloon-customProfileBalloon-customTagBalloon
 customListBalloon.showAlignBottom(anchorView)
 ```
+```kotlin
+coroutineScope.launch {
+  customListBalloon.awaitAlignBottom(anchorView)
+  customProfileBalloon.awaitAlignBottom(circleImageView, 0, 0)
+  customTagBalloon.awaitAlignTop(bottomNavigationView, 130, 0)
+}
+```
 
-> Note: The `relayShow__` methods overwrites the `setOnDismissListener` internally, so you can't use the `setOnDismissListener` at the same time.
+> Note: The `relayShow__` and `await__` methods overwrite the `setOnDismissListener` internally, so you can't use the `setOnDismissListener` at the same time.
 
 ### Width and height
 We can adjust specific width and height sizes of Balloon with the below builder methods. If we don't set any specific sizes of the width and height of the Balloon, the size of the Balloon will be decided by the content.
