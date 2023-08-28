@@ -115,6 +115,7 @@ import com.skydoves.balloon.overlay.BalloonOverlayOval
 import com.skydoves.balloon.overlay.BalloonOverlayShape
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -153,33 +154,6 @@ public class Balloon private constructor(
   private val context: Context,
   private val builder: Builder,
 ) : DefaultLifecycleObserver {
-
-  private companion object {
-    val channel by lazy { Channel<Triple<Balloon, View, () -> Unit>>() }
-    val scope by lazy { CoroutineScope(Dispatchers.Main) }
-    var isConsumerActive = false
-
-    fun initConsumerIfNeeded() {
-      if (isConsumerActive) return
-      isConsumerActive = true
-      scope.launch {
-        for ((balloon, anchor, showBalloonAction) in channel) {
-          if (!balloon.canShowBalloonWindow(anchor)) continue
-          if (!balloon.shouldShowUp()) {
-            balloon.builder.runIfReachedShowCounts?.invoke()
-            continue
-          }
-
-          suspendCancellableCoroutine { cont ->
-            showBalloonAction()
-            balloon.setOnBalloonDismissListener {
-              cont.resume(Unit)
-            }
-          }
-        }
-      }
-    }
-  }
 
   /** A main content view of the popup. */
   private val binding: BalloonLayoutBodyBinding =
@@ -1686,6 +1660,9 @@ public class Balloon private constructor(
     this.overlayWindow.dismiss()
     this.bodyWindow.dismiss()
     this.builder.lifecycleOwner?.lifecycle?.removeObserver(this)
+    isConsumerActive = false
+    scope.cancel()
+    channel.close()
   }
 
   /** Builder class for creating [Balloon]. */
@@ -2916,5 +2893,32 @@ public class Balloon private constructor(
      * @return A new created instance of the [Balloon].
      */
     public abstract fun create(context: Context, lifecycle: LifecycleOwner?): Balloon
+  }
+
+  private companion object {
+    val channel by lazy { Channel<Triple<Balloon, View, () -> Unit>>() }
+    val scope by lazy { CoroutineScope(Dispatchers.Main) }
+    var isConsumerActive = false
+
+    fun initConsumerIfNeeded() {
+      if (isConsumerActive) return
+      isConsumerActive = true
+      scope.launch {
+        for ((balloon, anchor, showBalloonAction) in channel) {
+          if (!balloon.canShowBalloonWindow(anchor)) continue
+          if (!balloon.shouldShowUp()) {
+            balloon.builder.runIfReachedShowCounts?.invoke()
+            continue
+          }
+
+          suspendCancellableCoroutine { cont ->
+            showBalloonAction()
+            balloon.setOnBalloonDismissListener {
+              cont.resume(Unit)
+            }
+          }
+        }
+      }
+    }
   }
 }
