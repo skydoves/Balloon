@@ -12,6 +12,13 @@ public final class com/skydoves/balloon/compose/BalloonKt {
 }
 
 public abstract interface class com/skydoves/balloon/compose/BalloonWindow {
+	public abstract fun awaitAlign (Lcom/skydoves/balloon/BalloonAlign;Landroid/view/View;Ljava/util/List;IILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun awaitAlignBottom (IILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun awaitAlignLeft (IILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun awaitAlignRight (IILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun awaitAlignTop (IILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun awaitAsDropDown (IILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun awaitAtCenter (IILcom/skydoves/balloon/BalloonCenterAlign;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun clearAllPreferences ()V
 	public abstract fun dismiss ()V
 	public abstract fun dismissWithDelay (J)Z
@@ -54,6 +61,13 @@ public abstract interface class com/skydoves/balloon/compose/BalloonWindow {
 }
 
 public final class com/skydoves/balloon/compose/BalloonWindow$DefaultImpls {
+	public static synthetic fun awaitAlign$default (Lcom/skydoves/balloon/compose/BalloonWindow;Lcom/skydoves/balloon/BalloonAlign;Landroid/view/View;Ljava/util/List;IILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun awaitAlignBottom$default (Lcom/skydoves/balloon/compose/BalloonWindow;IILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun awaitAlignLeft$default (Lcom/skydoves/balloon/compose/BalloonWindow;IILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun awaitAlignRight$default (Lcom/skydoves/balloon/compose/BalloonWindow;IILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun awaitAlignTop$default (Lcom/skydoves/balloon/compose/BalloonWindow;IILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun awaitAsDropDown$default (Lcom/skydoves/balloon/compose/BalloonWindow;IILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun awaitAtCenter$default (Lcom/skydoves/balloon/compose/BalloonWindow;IILcom/skydoves/balloon/BalloonCenterAlign;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public static synthetic fun relayShowAlign$default (Lcom/skydoves/balloon/compose/BalloonWindow;Lcom/skydoves/balloon/BalloonAlign;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
 	public static synthetic fun relayShowAlignBottom$default (Lcom/skydoves/balloon/compose/BalloonWindow;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
 	public static synthetic fun relayShowAlignLeft$default (Lcom/skydoves/balloon/compose/BalloonWindow;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
