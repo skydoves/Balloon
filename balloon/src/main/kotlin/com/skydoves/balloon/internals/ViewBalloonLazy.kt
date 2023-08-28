@@ -46,7 +46,7 @@ internal class ViewBalloonLazy<out T : Balloon.Factory>(
       var instance = cached
       if (instance === null) {
         val context = view.context
-        val factory = factory::java.get().newInstance()
+        val factory = factory::java.get().getDeclaredConstructor().newInstance()
         val viewTreeLifecycle = view.findViewTreeLifecycleOwner()
         when {
           viewTreeLifecycle != null -> {
