@@ -113,6 +113,12 @@ import com.skydoves.balloon.internals.unaryMinus
 import com.skydoves.balloon.overlay.BalloonOverlayAnimation
 import com.skydoves.balloon.overlay.BalloonOverlayOval
 import com.skydoves.balloon.overlay.BalloonOverlayShape
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 import kotlin.math.max
 import kotlin.math.roundToInt
 
@@ -147,6 +153,33 @@ public class Balloon private constructor(
   private val context: Context,
   private val builder: Builder,
 ) : DefaultLifecycleObserver {
+
+  private companion object {
+    val channel by lazy { Channel<Triple<Balloon, View, () -> Unit>>() }
+    val scope by lazy { CoroutineScope(Dispatchers.Main) }
+    var isConsumerActive = false
+
+    fun initConsumerIfNeeded() {
+      if (isConsumerActive) return
+      isConsumerActive = true
+      scope.launch {
+        for ((balloon, anchor, showBalloonAction) in channel) {
+          if (!balloon.canShowBalloonWindow(anchor)) continue
+          if (!balloon.shouldShowUp()) {
+            balloon.builder.runIfReachedShowCounts?.invoke()
+            continue
+          }
+
+          suspendCancellableCoroutine { cont ->
+            showBalloonAction()
+            balloon.setOnBalloonDismissListener {
+              cont.resume(Unit)
+            }
+          }
+        }
+      }
+    }
+  }
 
   /** A main content view of the popup. */
   private val binding: BalloonLayoutBodyBinding =
@@ -838,6 +871,11 @@ public class Balloon private constructor(
     }
   }
 
+  private suspend fun awaitBalloon(anchor: View, block: () -> Unit) {
+    initConsumerIfNeeded()
+    channel.send(Triple(this, anchor, block))
+  }
+
   @MainThread
   private inline fun relay(
     balloon: Balloon,
@@ -907,6 +945,24 @@ public class Balloon private constructor(
   }
 
   /**
+   * Coroutine alternative for [showAtCenter]. This method suspends until the popup is displayed.
+   * Can be used to show popups sequentially without using relay methods.
+   *
+   * @param anchor A target view which popup will be shown with overlap.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   * @param centerAlign A rule for deciding the alignment of the balloon.
+   */
+  public suspend fun awaitAtCenter(
+    anchor: View,
+    xOff: Int = 0,
+    yOff: Int = 0,
+    centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP,
+  ) {
+    awaitBalloon(anchor) { showAtCenter(anchor, xOff, yOff, centerAlign) }
+  }
+
+  /**
    * Shows the balloon on an anchor view as the center alignment with x-off and y-off and shows the next balloon sequentially.
    * This function returns the next balloon.
    *
@@ -939,6 +995,18 @@ public class Balloon private constructor(
   @JvmOverloads
   public fun showAsDropDown(anchor: View, xOff: Int = 0, yOff: Int = 0) {
     show(anchor) { bodyWindow.showAsDropDown(anchor, xOff, yOff) }
+  }
+
+  /**
+   * Coroutine alternative for [showAsDropDown]. This method suspends until the popup is displayed.
+   * Can be used to show popups sequentially without using relay methods.
+   *
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  public suspend fun awaitAsDropDown(anchor: View, xOff: Int = 0, yOff: Int = 0) {
+    awaitBalloon(anchor) { showAsDropDown(anchor, xOff, yOff) }
   }
 
   /**
@@ -985,6 +1053,18 @@ public class Balloon private constructor(
   }
 
   /**
+   * Coroutine alternative for [showAlignTop]. This method suspends until the popup is displayed.
+   * Can be used to show popups sequentially without using relay methods.
+   *
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  public suspend fun awaitAlignTop(anchor: View, xOff: Int = 0, yOff: Int = 0) {
+    awaitBalloon(anchor) { showAlignTop(anchor, xOff, yOff) }
+  }
+
+  /**
    * Shows the balloon on an anchor view as the top alignment with x-off and y-off and shows the next balloon sequentially.
    * This function returns the next balloon.
    *
@@ -1025,6 +1105,18 @@ public class Balloon private constructor(
         yOff,
       )
     }
+  }
+
+  /**
+   * Coroutine alternative for [showAlignBottom]. This method suspends until the popup is displayed.
+   * Can be used to show popups sequentially without using relay methods.
+   *
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  public suspend fun awaitAlignBottom(anchor: View, xOff: Int = 0, yOff: Int = 0) {
+    awaitBalloon(anchor) { showAlignBottom(anchor, xOff, yOff) }
   }
 
   /**
@@ -1069,6 +1161,18 @@ public class Balloon private constructor(
   }
 
   /**
+   * Coroutine alternative for [showAlignRight]. This method suspends until the popup is displayed.
+   * Can be used to show popups sequentially without using relay methods.
+   *
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  public suspend fun awaitAlignRight(anchor: View, xOff: Int = 0, yOff: Int = 0) {
+    awaitBalloon(anchor) { showAlignRight(anchor, xOff, yOff) }
+  }
+
+  /**
    * Shows the balloon on an anchor view as the right alignment with x-off and y-off
    * and shows the next balloon sequentially.
    * This function returns the next balloon.
@@ -1110,6 +1214,18 @@ public class Balloon private constructor(
         -(getMeasuredHeight() / 2) - (anchor.measuredHeight / 2) + yOff,
       )
     }
+  }
+
+  /**
+   * Coroutine alternative for [showAlignLeft]. This method suspends until the popup is displayed.
+   * Can be used to show popups sequentially without using relay methods.
+   *
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  public suspend fun awaitAlignLeft(anchor: View, xOff: Int = 0, yOff: Int = 0) {
+    awaitBalloon(anchor) { showAlignLeft(anchor, xOff, yOff) }
   }
 
   /**
@@ -1186,6 +1302,26 @@ public class Balloon private constructor(
         )
       }
     }
+  }
+
+  /**
+   * Coroutine alternative for [showAlign]. This method suspends until the popup is displayed.
+   * Can be used to show popups sequentially without using relay methods.
+   *
+   * @param align Decides where the balloon should be placed.
+   * @param mainAnchor A target view which popup will be displayed.
+   * @param subAnchorList A list of anchors to display focuses on the overlay view.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  public suspend fun awaitAlign(
+    align: BalloonAlign,
+    mainAnchor: View,
+    subAnchorList: List<View> = listOf(),
+    xOff: Int = 0,
+    yOff: Int = 0,
+  ) {
+    awaitBalloon(mainAnchor) { showAlign(align, mainAnchor, subAnchorList, xOff, yOff) }
   }
 
   /**
