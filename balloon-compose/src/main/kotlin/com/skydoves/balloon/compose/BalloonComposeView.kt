@@ -134,6 +134,45 @@ internal class BalloonComposeView(
   override fun showAlignBottom(xOff: Int, yOff: Int): Unit =
     balloon.showAlignBottom(anchorView, xOff, yOff)
 
+  override suspend fun awaitAtCenter(
+    xOff: Int,
+    yOff: Int,
+    centerAlign: BalloonCenterAlign,
+  ) = balloon.awaitAtCenter(anchorView, xOff, yOff, centerAlign)
+
+  override suspend fun awaitAsDropDown(
+    xOff: Int,
+    yOff: Int,
+  ) = balloon.awaitAsDropDown(anchorView, xOff, yOff)
+
+  override suspend fun awaitAlignTop(
+    xOff: Int,
+    yOff: Int,
+  ) = balloon.awaitAlignTop(anchorView, xOff, yOff)
+
+  override suspend fun awaitAlignBottom(
+    xOff: Int,
+    yOff: Int,
+  ) = balloon.awaitAlignBottom(anchorView, xOff, yOff)
+
+  override suspend fun awaitAlignRight(
+    xOff: Int,
+    yOff: Int,
+  ) = balloon.awaitAlignRight(anchorView, xOff, yOff)
+
+  override suspend fun awaitAlignLeft(
+    xOff: Int,
+    yOff: Int,
+  ) = balloon.awaitAlignLeft(anchorView, xOff, yOff)
+
+  override suspend fun awaitAlign(
+    align: BalloonAlign,
+    mainAnchor: View,
+    subAnchorList: List<View>,
+    xOff: Int,
+    yOff: Int,
+  ) = balloon.awaitAlign(align, mainAnchor, subAnchorList, xOff, yOff)
+
   override fun relayShowAlignBottom(balloon: Balloon, xOff: Int, yOff: Int): Balloon =
     balloon.relayShowAlignBottom(balloon, anchorView, xOff, yOff)
 

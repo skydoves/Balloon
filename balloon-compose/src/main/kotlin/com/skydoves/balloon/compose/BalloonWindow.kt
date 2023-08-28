@@ -30,6 +30,13 @@ import com.skydoves.balloon.OnBalloonInitializedListener
 import com.skydoves.balloon.OnBalloonOutsideTouchListener
 import com.skydoves.balloon.OnBalloonOverlayClickListener
 import com.skydoves.balloon.animations.InternalBalloonApi
+import com.skydoves.balloon.showAlign
+import com.skydoves.balloon.showAlignBottom
+import com.skydoves.balloon.showAlignLeft
+import com.skydoves.balloon.showAlignRight
+import com.skydoves.balloon.showAlignTop
+import com.skydoves.balloon.showAsDropDown
+import com.skydoves.balloon.showAtCenter
 
 /**
  * BalloonWindow is an interface that define all executable behaviors of the balloon's window.
@@ -51,6 +58,20 @@ public interface BalloonWindow {
    * @param centerAlign A rule for deciding the alignment of the balloon.
    */
   public fun showAtCenter(
+    xOff: Int = 0,
+    yOff: Int = 0,
+    centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP,
+  )
+
+  /**
+   * Coroutine alternative for [showAtCenter]. This method suspends until the popup is displayed.
+   * Can be used to show popups sequentially without using relay methods.
+   *
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   * @param centerAlign A rule for deciding the alignment of the balloon.
+   */
+  public suspend fun awaitAtCenter(
     xOff: Int = 0,
     yOff: Int = 0,
     centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP,
@@ -85,6 +106,15 @@ public interface BalloonWindow {
   public fun showAsDropDown(xOff: Int = 0, yOff: Int = 0)
 
   /**
+   * Coroutine alternative for [showAsDropDown]. This method suspends until the popup is displayed.
+   * Can be used to show popups sequentially without using relay methods.
+   *
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  public suspend fun awaitAsDropDown(xOff: Int = 0, yOff: Int = 0)
+
+  /**
    * Shows the balloon on an anchor view as drop down with x-off and y-off and shows the next balloon sequentially.
    * This function returns the next balloon.
    *
@@ -111,6 +141,15 @@ public interface BalloonWindow {
   public fun showAlignTop(xOff: Int = 0, yOff: Int = 0)
 
   /**
+   * Coroutine alternative for [showAlignTop]. This method suspends until the popup is displayed.
+   * Can be used to show popups sequentially without using relay methods.
+   *
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  public suspend fun awaitAlignTop(xOff: Int = 0, yOff: Int = 0)
+
+  /**
    * Shows the balloon on an anchor view as the top alignment with x-off and y-off and shows the next balloon sequentially.
    * This function returns the next balloon.
    *
@@ -135,6 +174,15 @@ public interface BalloonWindow {
    * @param yOff A vertical offset from the anchor in pixels.
    */
   public fun showAlignBottom(xOff: Int = 0, yOff: Int = 0)
+
+  /**
+   * Coroutine alternative for [showAlignBottom]. This method suspends until the popup is displayed.
+   * Can be used to show popups sequentially without using relay methods.
+   *
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  public suspend fun awaitAlignBottom(xOff: Int = 0, yOff: Int = 0)
 
   /**
    * Shows the balloon on an anchor view as the bottom alignment with x-off and y-off
@@ -164,6 +212,15 @@ public interface BalloonWindow {
   public fun showAlignRight(xOff: Int = 0, yOff: Int = 0)
 
   /**
+   * Coroutine alternative for [showAlignRight]. This method suspends until the popup is displayed.
+   * Can be used to show popups sequentially without using relay methods.
+   *
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  public suspend fun awaitAlignRight(xOff: Int = 0, yOff: Int = 0)
+
+  /**
    * Shows the balloon on an anchor view as the right alignment with x-off and y-off
    * and shows the next balloon sequentially.
    * This function returns the next balloon.
@@ -189,6 +246,15 @@ public interface BalloonWindow {
    * @param yOff A vertical offset from the anchor in pixels.
    */
   public fun showAlignLeft(xOff: Int = 0, yOff: Int = 0)
+
+  /**
+   * Coroutine alternative for [showAlignLeft]. This method suspends until the popup is displayed.
+   * Can be used to show popups sequentially without using relay methods.
+   *
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  public suspend fun awaitAlignLeft(xOff: Int = 0, yOff: Int = 0)
 
   /**
    * Shows the balloon on an anchor view as the left alignment with x-off and y-off
@@ -219,6 +285,24 @@ public interface BalloonWindow {
    * @param yOff A vertical offset from the anchor in pixels.
    */
   public fun showAlign(
+    align: BalloonAlign,
+    mainAnchor: View,
+    subAnchorList: List<View> = listOf(),
+    xOff: Int = 0,
+    yOff: Int = 0,
+  )
+
+  /**
+   * Coroutine alternative for [showAlign]. This method suspends until the popup is displayed.
+   * Can be used to show popups sequentially without using relay methods.
+   *
+   * @param align Decides where the balloon should be placed.
+   * @param mainAnchor A target view which popup will be displayed.
+   * @param subAnchorList A list of anchors to display focuses on the overlay view.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  public suspend fun awaitAlign(
     align: BalloonAlign,
     mainAnchor: View,
     subAnchorList: List<View> = listOf(),
