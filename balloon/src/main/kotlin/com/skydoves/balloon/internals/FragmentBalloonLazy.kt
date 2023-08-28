@@ -47,7 +47,7 @@ internal class FragmentBalloonLazy<out T : Balloon.Factory>(
         )
       }
 
-      val factory = factory::java.get().newInstance()
+      val factory = factory::java.get().getDeclaredConstructor().newInstance()
       val lifecycle = if (fragment.view !== null) {
         fragment.viewLifecycleOwner
       } else {

@@ -44,7 +44,7 @@ internal class ActivityBalloonLazy<out T : Balloon.Factory>(
     get() {
       var instance = cached
       if (instance === null) {
-        val factory = factory::java.get().newInstance()
+        val factory = factory::java.get().getDeclaredConstructor().newInstance()
         instance = factory.create(context, lifecycleOwner)
         cached = instance
       }
