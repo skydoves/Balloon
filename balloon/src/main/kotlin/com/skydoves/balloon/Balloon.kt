@@ -1660,9 +1660,6 @@ public class Balloon private constructor(
     this.overlayWindow.dismiss()
     this.bodyWindow.dismiss()
     this.builder.lifecycleOwner?.lifecycle?.removeObserver(this)
-    isConsumerActive = false
-    scope.cancel()
-    channel.close()
   }
 
   /** Builder class for creating [Balloon]. */
