@@ -24,19 +24,10 @@ public enum class BalloonCenterAlign {
   BOTTOM,
   ;
 
-  internal companion object {
-
-    /** Return [BalloonCenterAlign] depending on the [isRtlLayout].] */
-    internal fun BalloonCenterAlign.getRTLSupportAlign(isRtlLayout: Boolean): BalloonCenterAlign {
-      return if (!isRtlLayout) {
-        this
-      } else {
-        when (this) {
-          START -> END
-          END -> START
-          else -> this
-        }
-      }
-    }
+  internal fun toAlign(): BalloonAlign = when (this) {
+    START -> BalloonAlign.START
+    END -> BalloonAlign.END
+    TOP -> BalloonAlign.TOP
+    BOTTOM -> BalloonAlign.BOTTOM
   }
 }

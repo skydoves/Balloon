@@ -73,8 +73,6 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import com.skydoves.balloon.ArrowOrientation.Companion.getRTLSupportOrientation
-import com.skydoves.balloon.BalloonAlign.Companion.getRTLSupportAlign
-import com.skydoves.balloon.BalloonCenterAlign.Companion.getRTLSupportAlign
 import com.skydoves.balloon.animations.BalloonRotateAnimation
 import com.skydoves.balloon.animations.InternalBalloonApi
 import com.skydoves.balloon.annotations.Dp
@@ -115,7 +113,6 @@ import com.skydoves.balloon.overlay.BalloonOverlayOval
 import com.skydoves.balloon.overlay.BalloonOverlayShape
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -759,15 +756,15 @@ public class Balloon private constructor(
   }
 
   /**
-   * Shows [Balloon] tooltips on the [anchors] with some initializations related to arrow, content, and overlay.
+   * Shows [Balloon] tooltips on the [placement] with some initializations related to arrow, content, and overlay.
    * The balloon will be shown with the [overlayWindow] if the anchorView's parent window is in a valid state.
    * The size of the content will be measured internally, and it will affect calculating the popup size.
    *
-   * @param block A lambda block for showing the [bodyWindow].
+   * @param placement place where to show tooltip.
    */
   @MainThread
-  private inline fun show(vararg anchors: View, crossinline block: () -> Unit) {
-    val mainAnchor = anchors[0]
+  private fun show(placement: BalloonPlacement) {
+    val mainAnchor = placement.anchor
     if (canShowBalloonWindow(mainAnchor)) {
       mainAnchor.post {
         canShowBalloonWindow(mainAnchor).takeIf { it } ?: return@post
@@ -806,15 +803,77 @@ public class Balloon private constructor(
         initializeBalloonContent()
 
         applyBalloonOverlayAnimation()
-        showOverlayWindow(*anchors)
+        showOverlayWindow(mainAnchor, placement.subAnchors)
         passTouchEventToAnchor(mainAnchor)
 
         applyBalloonAnimation()
         startBalloonHighlightAnimation()
-        block()
+
+        val (xOff, yOff) = calculateOffset(placement)
+        bodyWindow.showAsDropDown(mainAnchor, xOff, yOff)
       }
     } else if (builder.dismissWhenShowAgain) {
       dismiss()
+    }
+  }
+
+  private fun calculateOffset(placement: BalloonPlacement): Pair<Int, Int> =
+    when (placement.type) {
+      PlacementType.DROPDOWN -> placement.xOff to placement.yOff
+      PlacementType.ALIGNMENT -> calculateAlignOffset(placement)
+      PlacementType.CENTER -> calculateCenterOffset(placement)
+    }
+
+  private fun calculateAlignOffset(placement: BalloonPlacement): Pair<Int, Int> {
+    val anchor = placement.anchor
+    val halfAnchorWidth = (anchor.measuredWidth * 0.5f).roundToInt()
+    val halfAnchorHeight = (anchor.measuredHeight * 0.5f).roundToInt()
+    val halfBalloonWidth = (getMeasuredWidth() * 0.5f).roundToInt()
+    val halfBalloonHeight = (getMeasuredHeight() * 0.5f).roundToInt()
+    val xOff = placement.xOff
+    val yOff = placement.yOff
+
+    return when (placement.align) {
+      BalloonAlign.TOP ->
+        builder.supportRtlLayoutFactor * (halfAnchorWidth - halfBalloonWidth + xOff) to
+          -(getMeasuredHeight() + anchor.measuredHeight) + yOff
+
+      BalloonAlign.BOTTOM ->
+        builder.supportRtlLayoutFactor * (halfAnchorWidth - halfBalloonWidth + xOff) to yOff
+
+      BalloonAlign.START -> builder.supportRtlLayoutFactor * (-getMeasuredWidth() + xOff) to
+        -(halfBalloonHeight + halfAnchorHeight) + yOff
+
+      BalloonAlign.END -> builder.supportRtlLayoutFactor * (anchor.measuredWidth + xOff) to
+        -(halfBalloonHeight + halfAnchorHeight) + yOff
+    }
+  }
+
+  private fun calculateCenterOffset(placement: BalloonPlacement): Pair<Int, Int> {
+    val anchor = placement.anchor
+    val halfAnchorWidth = (anchor.measuredWidth * 0.5f).roundToInt()
+    val halfAnchorHeight = (anchor.measuredHeight * 0.5f).roundToInt()
+    val halfBalloonWidth = (getMeasuredWidth() * 0.5f).roundToInt()
+    val halfBalloonHeight = (getMeasuredHeight() * 0.5f).roundToInt()
+    val xOff = placement.xOff
+    val yOff = placement.yOff
+
+    return when (placement.align) {
+      BalloonAlign.TOP ->
+        builder.supportRtlLayoutFactor * (halfAnchorWidth - halfBalloonWidth + xOff) to
+          -(getMeasuredHeight() + halfAnchorHeight) + yOff
+
+      BalloonAlign.BOTTOM ->
+        builder.supportRtlLayoutFactor * (halfAnchorWidth - halfBalloonWidth + xOff) to
+          -halfAnchorHeight + yOff
+
+      BalloonAlign.START ->
+        builder.supportRtlLayoutFactor * (halfAnchorWidth - getMeasuredWidth() + xOff) to
+          -halfBalloonHeight - halfAnchorHeight + yOff
+
+      BalloonAlign.END ->
+        builder.supportRtlLayoutFactor * (halfAnchorWidth + xOff) to
+          -halfBalloonHeight - halfAnchorHeight + yOff
     }
   }
 
@@ -833,21 +892,20 @@ public class Balloon private constructor(
       ViewCompat.isAttachedToWindow(anchor)
   }
 
-  private fun showOverlayWindow(vararg anchors: View) {
+  private fun showOverlayWindow(anchor: View, subAnchors: List<View>) {
     if (builder.isVisibleOverlay) {
-      val mainAnchor = anchors[0]
-      if (anchors.size == 1) {
-        overlayBinding.balloonOverlayView.anchorView = mainAnchor
+      if (subAnchors.isEmpty()) {
+        overlayBinding.balloonOverlayView.anchorView = anchor
       } else {
-        overlayBinding.balloonOverlayView.anchorViewList = anchors.toList()
+        overlayBinding.balloonOverlayView.anchorViewList = subAnchors + anchor
       }
-      overlayWindow.showAtLocation(mainAnchor, builder.overlayGravity, 0, 0)
+      overlayWindow.showAtLocation(anchor, builder.overlayGravity, 0, 0)
     }
   }
 
-  private suspend fun awaitBalloon(anchor: View, block: () -> Unit) {
+  private suspend fun awaitBalloon(placement: BalloonPlacement) {
     initConsumerIfNeeded()
-    channel.send(Triple(this, anchor, block))
+    channel.send(this to placement)
   }
 
   @MainThread
@@ -880,42 +938,20 @@ public class Balloon private constructor(
     yOff: Int = 0,
     centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP,
   ) {
-    val halfAnchorWidth = (anchor.measuredWidth * 0.5f).roundToInt()
-    val halfAnchorHeight = (anchor.measuredHeight * 0.5f).roundToInt()
-    val halfBalloonWidth = (getMeasuredWidth() * 0.5f).roundToInt()
-    val halfBalloonHeight = (getMeasuredHeight() * 0.5f).roundToInt()
-    val rtlAlign = centerAlign.getRTLSupportAlign(builder.isRtlLayout)
-    show(anchor) {
-      when (rtlAlign) {
-        BalloonCenterAlign.TOP ->
-          bodyWindow.showAsDropDown(
-            anchor,
-            builder.supportRtlLayoutFactor * (halfAnchorWidth - halfBalloonWidth + xOff),
-            -(getMeasuredHeight() + halfAnchorHeight) + yOff,
-          )
-
-        BalloonCenterAlign.BOTTOM ->
-          bodyWindow.showAsDropDown(
-            anchor,
-            builder.supportRtlLayoutFactor * (halfAnchorWidth - halfBalloonWidth + xOff),
-            -halfBalloonHeight + halfAnchorWidth + yOff,
-          )
-
-        BalloonCenterAlign.START ->
-          bodyWindow.showAsDropDown(
-            anchor,
-            builder.supportRtlLayoutFactor * (halfAnchorWidth - getMeasuredWidth() + xOff),
-            (-getMeasuredHeight() + halfAnchorHeight) + yOff,
-          )
-
-        BalloonCenterAlign.END ->
-          bodyWindow.showAsDropDown(
-            anchor,
-            builder.supportRtlLayoutFactor * (halfAnchorWidth + getMeasuredWidth() + xOff),
-            (-getMeasuredHeight() + halfAnchorHeight) + yOff,
-          )
-      }
-    }
+    show(
+      BalloonPlacement(
+        anchor = anchor,
+        xOff = xOff,
+        yOff = yOff,
+        type = PlacementType.CENTER,
+        align = when (centerAlign) {
+          BalloonCenterAlign.TOP -> BalloonAlign.TOP
+          BalloonCenterAlign.BOTTOM -> BalloonAlign.BOTTOM
+          BalloonCenterAlign.START -> BalloonAlign.START
+          BalloonCenterAlign.END -> BalloonAlign.END
+        },
+      ),
+    )
   }
 
   /**
@@ -933,7 +969,15 @@ public class Balloon private constructor(
     yOff: Int = 0,
     centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP,
   ) {
-    awaitBalloon(anchor) { showAtCenter(anchor, xOff, yOff, centerAlign) }
+    awaitBalloon(
+      BalloonPlacement(
+        anchor = anchor,
+        xOff = xOff,
+        yOff = yOff,
+        type = PlacementType.CENTER,
+        align = centerAlign.toAlign(),
+      ),
+    )
   }
 
   /**
@@ -968,7 +1012,7 @@ public class Balloon private constructor(
    */
   @JvmOverloads
   public fun showAsDropDown(anchor: View, xOff: Int = 0, yOff: Int = 0) {
-    show(anchor) { bodyWindow.showAsDropDown(anchor, xOff, yOff) }
+    show(BalloonPlacement(anchor = anchor, xOff = xOff, yOff = yOff, type = PlacementType.DROPDOWN))
   }
 
   /**
@@ -980,7 +1024,14 @@ public class Balloon private constructor(
    * @param yOff A vertical offset from the anchor in pixels.
    */
   public suspend fun awaitAsDropDown(anchor: View, xOff: Int = 0, yOff: Int = 0) {
-    awaitBalloon(anchor) { showAsDropDown(anchor, xOff, yOff) }
+    awaitBalloon(
+      BalloonPlacement(
+        anchor = anchor,
+        xOff = xOff,
+        yOff = yOff,
+        type = PlacementType.DROPDOWN,
+      ),
+    )
   }
 
   /**
@@ -1014,16 +1065,7 @@ public class Balloon private constructor(
    */
   @JvmOverloads
   public fun showAlignTop(anchor: View, xOff: Int = 0, yOff: Int = 0) {
-    show(anchor) {
-      bodyWindow.showAsDropDown(
-        anchor,
-        builder.supportRtlLayoutFactor * (
-          (anchor.measuredWidth / 2) -
-            (getMeasuredWidth() / 2) + xOff
-          ),
-        -getMeasuredHeight() - anchor.measuredHeight + yOff,
-      )
-    }
+    show(BalloonPlacement(anchor = anchor, align = BalloonAlign.TOP, xOff = xOff, yOff = yOff))
   }
 
   /**
@@ -1035,7 +1077,14 @@ public class Balloon private constructor(
    * @param yOff A vertical offset from the anchor in pixels.
    */
   public suspend fun awaitAlignTop(anchor: View, xOff: Int = 0, yOff: Int = 0) {
-    awaitBalloon(anchor) { showAlignTop(anchor, xOff, yOff) }
+    awaitBalloon(
+      BalloonPlacement(
+        anchor = anchor,
+        align = BalloonAlign.TOP,
+        xOff = xOff,
+        yOff = yOff,
+      ),
+    )
   }
 
   /**
@@ -1069,16 +1118,7 @@ public class Balloon private constructor(
    */
   @JvmOverloads
   public fun showAlignBottom(anchor: View, xOff: Int = 0, yOff: Int = 0) {
-    show(anchor) {
-      bodyWindow.showAsDropDown(
-        anchor,
-        builder.supportRtlLayoutFactor * (
-          (anchor.measuredWidth / 2) -
-            (getMeasuredWidth() / 2) + xOff
-          ),
-        yOff,
-      )
-    }
+    show(BalloonPlacement(anchor = anchor, align = BalloonAlign.BOTTOM, xOff = xOff, yOff = yOff))
   }
 
   /**
@@ -1090,7 +1130,14 @@ public class Balloon private constructor(
    * @param yOff A vertical offset from the anchor in pixels.
    */
   public suspend fun awaitAlignBottom(anchor: View, xOff: Int = 0, yOff: Int = 0) {
-    awaitBalloon(anchor) { showAlignBottom(anchor, xOff, yOff) }
+    awaitBalloon(
+      BalloonPlacement(
+        anchor = anchor,
+        align = BalloonAlign.BOTTOM,
+        xOff = xOff,
+        yOff = yOff,
+      ),
+    )
   }
 
   /**
@@ -1124,26 +1171,43 @@ public class Balloon private constructor(
    * @param yOff A vertical offset from the anchor in pixels.
    */
   @JvmOverloads
+  @Deprecated(
+    message = "Use showAlignEnd instead.",
+    replaceWith = ReplaceWith("showAlignEnd(anchor, xOff, yOff)"),
+  )
   public fun showAlignRight(anchor: View, xOff: Int = 0, yOff: Int = 0) {
-    show(anchor) {
-      bodyWindow.showAsDropDown(
-        anchor,
-        anchor.measuredWidth + xOff,
-        -(getMeasuredHeight() / 2) - (anchor.measuredHeight / 2) + yOff,
-      )
-    }
+    show(BalloonPlacement(anchor = anchor, align = BalloonAlign.END, xOff = xOff, yOff = yOff))
   }
 
   /**
-   * Coroutine alternative for [showAlignRight]. This method suspends until the popup is displayed.
+   * Shows the balloon on an anchor view as the end alignment with x-off and y-off.
+   *
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  @JvmOverloads
+  public fun showAlignEnd(anchor: View, xOff: Int = 0, yOff: Int = 0) {
+    show(BalloonPlacement(anchor = anchor, align = BalloonAlign.END, xOff = xOff, yOff = yOff))
+  }
+
+  /**
+   * Coroutine alternative for [showAlignEnd]. This method suspends until the popup is displayed.
    * Can be used to show popups sequentially without using relay methods.
    *
    * @param anchor A target view which popup will be shown to.
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    */
-  public suspend fun awaitAlignRight(anchor: View, xOff: Int = 0, yOff: Int = 0) {
-    awaitBalloon(anchor) { showAlignRight(anchor, xOff, yOff) }
+  public suspend fun awaitAlignEnd(anchor: View, xOff: Int = 0, yOff: Int = 0) {
+    awaitBalloon(
+      BalloonPlacement(
+        anchor = anchor,
+        align = BalloonAlign.END,
+        xOff = xOff,
+        yOff = yOff,
+      ),
+    )
   }
 
   /**
@@ -1161,6 +1225,10 @@ public class Balloon private constructor(
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
   @JvmOverloads
+  @Deprecated(
+    message = "Use relayShowAlignEnd instead.",
+    replaceWith = ReplaceWith("relayShowAlignEnd(balloon, anchor, xOff, yOff)"),
+  )
   public fun relayShowAlignRight(
     balloon: Balloon,
     anchor: View,
@@ -1173,6 +1241,32 @@ public class Balloon private constructor(
   }
 
   /**
+   * Shows the balloon on an anchor view as the end alignment with x-off and y-off
+   * and shows the next balloon sequentially.
+   * This function returns the next balloon.
+   *
+   * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   *
+   * @return A next [balloon].
+   *
+   * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
+   */
+  @JvmOverloads
+  public fun relayShowAlignEnd(
+    balloon: Balloon,
+    anchor: View,
+    xOff: Int = 0,
+    yOff: Int = 0,
+  ): Balloon = relay(
+    balloon,
+  ) {
+    it.showAlignEnd(anchor, xOff, yOff)
+  }
+
+  /**
    * Shows the balloon on an anchor view as the left alignment with x-off and y-off.
    *
    * @param anchor A target view which popup will be shown to.
@@ -1180,14 +1274,24 @@ public class Balloon private constructor(
    * @param yOff A vertical offset from the anchor in pixels.
    */
   @JvmOverloads
+  @Deprecated(
+    message = "Use showAlignStart instead.",
+    replaceWith = ReplaceWith("showAlignStart(anchor, xOff, yOff)"),
+  )
   public fun showAlignLeft(anchor: View, xOff: Int = 0, yOff: Int = 0) {
-    show(anchor) {
-      bodyWindow.showAsDropDown(
-        anchor,
-        -(getMeasuredWidth()) + xOff,
-        -(getMeasuredHeight() / 2) - (anchor.measuredHeight / 2) + yOff,
-      )
-    }
+    show(BalloonPlacement(anchor = anchor, align = BalloonAlign.START, xOff = xOff, yOff = yOff))
+  }
+
+  /**
+   * Shows the balloon on an anchor view as the start alignment with x-off and y-off.
+   *
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  @JvmOverloads
+  public fun showAlignStart(anchor: View, xOff: Int = 0, yOff: Int = 0) {
+    show(BalloonPlacement(anchor = anchor, align = BalloonAlign.START, xOff = xOff, yOff = yOff))
   }
 
   /**
@@ -1198,8 +1302,15 @@ public class Balloon private constructor(
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    */
-  public suspend fun awaitAlignLeft(anchor: View, xOff: Int = 0, yOff: Int = 0) {
-    awaitBalloon(anchor) { showAlignLeft(anchor, xOff, yOff) }
+  public suspend fun awaitAlignStart(anchor: View, xOff: Int = 0, yOff: Int = 0) {
+    awaitBalloon(
+      BalloonPlacement(
+        anchor = anchor,
+        align = BalloonAlign.START,
+        xOff = xOff,
+        yOff = yOff,
+      ),
+    )
   }
 
   /**
@@ -1217,6 +1328,10 @@ public class Balloon private constructor(
    * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
    */
   @JvmOverloads
+  @Deprecated(
+    message = "Use relayShowAlignStart instead.",
+    replaceWith = ReplaceWith("relayShowAlignStart(balloon, anchor, xOff, yOff)"),
+  )
   public fun relayShowAlignLeft(
     balloon: Balloon,
     anchor: View,
@@ -1224,6 +1339,29 @@ public class Balloon private constructor(
     yOff: Int = 0,
   ): Balloon =
     relay(balloon) { it.showAlignLeft(anchor, xOff, yOff) }
+
+  /**
+   * Shows the balloon on an anchor view as the start alignment with x-off and y-off
+   * and shows the next balloon sequentially.
+   * This function returns the next balloon.
+   *
+   * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   *
+   * @return A next [balloon].
+   *
+   * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
+   */
+  @JvmOverloads
+  public fun relayShowAlignStart(
+    balloon: Balloon,
+    anchor: View,
+    xOff: Int = 0,
+    yOff: Int = 0,
+  ): Balloon =
+    relay(balloon) { it.showAlignStart(anchor, xOff, yOff) }
 
   /**
    * Shows the balloon on an anchor view depending on the [align] alignment with x-off and y-off.
@@ -1242,40 +1380,15 @@ public class Balloon private constructor(
     xOff: Int = 0,
     yOff: Int = 0,
   ) {
-    val anchors = listOf(mainAnchor) + subAnchorList
-    show(*anchors.toTypedArray()) {
-      when (align.getRTLSupportAlign(builder.isRtlLayout)) {
-        BalloonAlign.TOP -> bodyWindow.showAsDropDown(
-          mainAnchor,
-          builder.supportRtlLayoutFactor * (
-            (mainAnchor.measuredWidth / 2) -
-              (getMeasuredWidth() / 2) + xOff
-            ),
-          -getMeasuredHeight() - mainAnchor.measuredHeight + yOff,
-        )
-
-        BalloonAlign.BOTTOM -> bodyWindow.showAsDropDown(
-          mainAnchor,
-          builder.supportRtlLayoutFactor * (
-            (mainAnchor.measuredWidth / 2) -
-              (getMeasuredWidth() / 2) + xOff
-            ),
-          yOff,
-        )
-
-        BalloonAlign.END -> bodyWindow.showAsDropDown(
-          mainAnchor,
-          mainAnchor.measuredWidth + xOff,
-          -(getMeasuredHeight() / 2) - (mainAnchor.measuredHeight / 2) + yOff,
-        )
-
-        BalloonAlign.START -> bodyWindow.showAsDropDown(
-          mainAnchor,
-          -(getMeasuredWidth()) + xOff,
-          -(getMeasuredHeight() / 2) - (mainAnchor.measuredHeight / 2) + yOff,
-        )
-      }
-    }
+    show(
+      BalloonPlacement(
+        anchor = mainAnchor,
+        subAnchors = subAnchorList,
+        align = align,
+        xOff = xOff,
+        yOff = yOff,
+      ),
+    )
   }
 
   /**
@@ -1295,7 +1408,15 @@ public class Balloon private constructor(
     xOff: Int = 0,
     yOff: Int = 0,
   ) {
-    awaitBalloon(mainAnchor) { showAlign(align, mainAnchor, subAnchorList, xOff, yOff) }
+    awaitBalloon(
+      BalloonPlacement(
+        anchor = mainAnchor,
+        subAnchors = subAnchorList,
+        align = align,
+        xOff = xOff,
+        yOff = yOff,
+      ),
+    )
   }
 
   /**
@@ -1321,11 +1442,11 @@ public class Balloon private constructor(
     yOff: Int = 0,
   ): Balloon {
     return relay(balloon) {
-      when (align.getRTLSupportAlign(builder.isRtlLayout)) {
+      when (align) {
         BalloonAlign.TOP -> it.showAlignTop(anchor, xOff, yOff)
         BalloonAlign.BOTTOM -> it.showAlignBottom(anchor, xOff, yOff)
-        BalloonAlign.END -> it.showAlignRight(anchor, xOff, yOff)
-        BalloonAlign.START -> it.showAlignLeft(anchor, xOff, yOff)
+        BalloonAlign.END -> it.showAlignEnd(anchor, xOff, yOff)
+        BalloonAlign.START -> it.showAlignStart(anchor, xOff, yOff)
       }
     }
   }
@@ -2893,7 +3014,7 @@ public class Balloon private constructor(
   }
 
   private companion object {
-    val channel by lazy { Channel<Triple<Balloon, View, () -> Unit>>() }
+    val channel by lazy { Channel<Pair<Balloon, BalloonPlacement>>() }
     val scope by lazy { CoroutineScope(Dispatchers.Main) }
     var isConsumerActive = false
 
@@ -2901,15 +3022,15 @@ public class Balloon private constructor(
       if (isConsumerActive) return
       isConsumerActive = true
       scope.launch {
-        for ((balloon, anchor, showBalloonAction) in channel) {
-          if (!balloon.canShowBalloonWindow(anchor)) continue
+        for ((balloon, placement) in channel) {
+          if (!balloon.canShowBalloonWindow(placement.anchor)) continue
           if (!balloon.shouldShowUp()) {
             balloon.builder.runIfReachedShowCounts?.invoke()
             continue
           }
 
           suspendCancellableCoroutine { cont ->
-            showBalloonAction()
+            balloon.show(placement)
             balloon.setOnBalloonDismissListener {
               cont.resume(Unit)
             }

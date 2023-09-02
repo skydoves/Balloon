@@ -16,10 +16,8 @@
 
 package com.skydoves.balloon
 
-/** BalloonAlign decides where the balloon should be placed. */
-public enum class BalloonAlign {
-  START,
-  END,
-  TOP,
-  BOTTOM,
+internal enum class PlacementType {
+  ALIGNMENT,
+  DROPDOWN,
+  CENTER,
 }

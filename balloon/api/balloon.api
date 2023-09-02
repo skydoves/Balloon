@@ -31,10 +31,10 @@ public final class com/skydoves/balloon/Balloon : androidx/lifecycle/DefaultLife
 	public static synthetic fun awaitAlign$default (Lcom/skydoves/balloon/Balloon;Lcom/skydoves/balloon/BalloonAlign;Landroid/view/View;Ljava/util/List;IILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun awaitAlignBottom (Landroid/view/View;IILkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun awaitAlignBottom$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
-	public final fun awaitAlignLeft (Landroid/view/View;IILkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun awaitAlignLeft$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
-	public final fun awaitAlignRight (Landroid/view/View;IILkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun awaitAlignRight$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun awaitAlignEnd (Landroid/view/View;IILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun awaitAlignEnd$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun awaitAlignStart (Landroid/view/View;IILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun awaitAlignStart$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun awaitAlignTop (Landroid/view/View;IILkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun awaitAlignTop$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun awaitAsDropDown (Landroid/view/View;IILkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -61,6 +61,10 @@ public final class com/skydoves/balloon/Balloon : androidx/lifecycle/DefaultLife
 	public final fun relayShowAlignBottom (Lcom/skydoves/balloon/Balloon;Landroid/view/View;I)Lcom/skydoves/balloon/Balloon;
 	public final fun relayShowAlignBottom (Lcom/skydoves/balloon/Balloon;Landroid/view/View;II)Lcom/skydoves/balloon/Balloon;
 	public static synthetic fun relayShowAlignBottom$default (Lcom/skydoves/balloon/Balloon;Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
+	public final fun relayShowAlignEnd (Lcom/skydoves/balloon/Balloon;Landroid/view/View;)Lcom/skydoves/balloon/Balloon;
+	public final fun relayShowAlignEnd (Lcom/skydoves/balloon/Balloon;Landroid/view/View;I)Lcom/skydoves/balloon/Balloon;
+	public final fun relayShowAlignEnd (Lcom/skydoves/balloon/Balloon;Landroid/view/View;II)Lcom/skydoves/balloon/Balloon;
+	public static synthetic fun relayShowAlignEnd$default (Lcom/skydoves/balloon/Balloon;Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
 	public final fun relayShowAlignLeft (Lcom/skydoves/balloon/Balloon;Landroid/view/View;)Lcom/skydoves/balloon/Balloon;
 	public final fun relayShowAlignLeft (Lcom/skydoves/balloon/Balloon;Landroid/view/View;I)Lcom/skydoves/balloon/Balloon;
 	public final fun relayShowAlignLeft (Lcom/skydoves/balloon/Balloon;Landroid/view/View;II)Lcom/skydoves/balloon/Balloon;
@@ -69,6 +73,10 @@ public final class com/skydoves/balloon/Balloon : androidx/lifecycle/DefaultLife
 	public final fun relayShowAlignRight (Lcom/skydoves/balloon/Balloon;Landroid/view/View;I)Lcom/skydoves/balloon/Balloon;
 	public final fun relayShowAlignRight (Lcom/skydoves/balloon/Balloon;Landroid/view/View;II)Lcom/skydoves/balloon/Balloon;
 	public static synthetic fun relayShowAlignRight$default (Lcom/skydoves/balloon/Balloon;Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
+	public final fun relayShowAlignStart (Lcom/skydoves/balloon/Balloon;Landroid/view/View;)Lcom/skydoves/balloon/Balloon;
+	public final fun relayShowAlignStart (Lcom/skydoves/balloon/Balloon;Landroid/view/View;I)Lcom/skydoves/balloon/Balloon;
+	public final fun relayShowAlignStart (Lcom/skydoves/balloon/Balloon;Landroid/view/View;II)Lcom/skydoves/balloon/Balloon;
+	public static synthetic fun relayShowAlignStart$default (Lcom/skydoves/balloon/Balloon;Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
 	public final fun relayShowAlignTop (Lcom/skydoves/balloon/Balloon;Landroid/view/View;)Lcom/skydoves/balloon/Balloon;
 	public final fun relayShowAlignTop (Lcom/skydoves/balloon/Balloon;Landroid/view/View;I)Lcom/skydoves/balloon/Balloon;
 	public final fun relayShowAlignTop (Lcom/skydoves/balloon/Balloon;Landroid/view/View;II)Lcom/skydoves/balloon/Balloon;
@@ -106,6 +114,10 @@ public final class com/skydoves/balloon/Balloon : androidx/lifecycle/DefaultLife
 	public final fun showAlignBottom (Landroid/view/View;I)V
 	public final fun showAlignBottom (Landroid/view/View;II)V
 	public static synthetic fun showAlignBottom$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public final fun showAlignEnd (Landroid/view/View;)V
+	public final fun showAlignEnd (Landroid/view/View;I)V
+	public final fun showAlignEnd (Landroid/view/View;II)V
+	public static synthetic fun showAlignEnd$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
 	public final fun showAlignLeft (Landroid/view/View;)V
 	public final fun showAlignLeft (Landroid/view/View;I)V
 	public final fun showAlignLeft (Landroid/view/View;II)V
@@ -114,6 +126,10 @@ public final class com/skydoves/balloon/Balloon : androidx/lifecycle/DefaultLife
 	public final fun showAlignRight (Landroid/view/View;I)V
 	public final fun showAlignRight (Landroid/view/View;II)V
 	public static synthetic fun showAlignRight$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public final fun showAlignStart (Landroid/view/View;)V
+	public final fun showAlignStart (Landroid/view/View;I)V
+	public final fun showAlignStart (Landroid/view/View;II)V
+	public static synthetic fun showAlignStart$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
 	public final fun showAlignTop (Landroid/view/View;)V
 	public final fun showAlignTop (Landroid/view/View;I)V
 	public final fun showAlignTop (Landroid/view/View;II)V
@@ -535,10 +551,10 @@ public final class com/skydoves/balloon/BalloonExtensionKt {
 	public static synthetic fun awaitAlign$default (Landroid/view/View;Lcom/skydoves/balloon/Balloon;Lcom/skydoves/balloon/BalloonAlign;Ljava/util/List;IILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public static final fun awaitAlignBottom (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IILkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun awaitAlignBottom$default (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
-	public static final fun awaitAlignLeft (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IILkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun awaitAlignLeft$default (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
-	public static final fun awaitAlignRight (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IILkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun awaitAlignRight$default (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun awaitAlignEnd (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun awaitAlignEnd$default (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun awaitAlignStart (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IILkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun awaitAlignStart$default (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public static final fun awaitAlignTop (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IILkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun awaitAlignTop$default (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public static final fun awaitAsDropDown (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IILkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -554,6 +570,10 @@ public final class com/skydoves/balloon/BalloonExtensionKt {
 	public static final synthetic fun showAlignBottom (Landroid/view/View;Lcom/skydoves/balloon/Balloon;I)V
 	public static final synthetic fun showAlignBottom (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
 	public static synthetic fun showAlignBottom$default (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)V
+	public static final synthetic fun showAlignEnd (Landroid/view/View;Lcom/skydoves/balloon/Balloon;)V
+	public static final synthetic fun showAlignEnd (Landroid/view/View;Lcom/skydoves/balloon/Balloon;I)V
+	public static final synthetic fun showAlignEnd (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public static synthetic fun showAlignEnd$default (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)V
 	public static final synthetic fun showAlignLeft (Landroid/view/View;Lcom/skydoves/balloon/Balloon;)V
 	public static final synthetic fun showAlignLeft (Landroid/view/View;Lcom/skydoves/balloon/Balloon;I)V
 	public static final synthetic fun showAlignLeft (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
@@ -562,6 +582,10 @@ public final class com/skydoves/balloon/BalloonExtensionKt {
 	public static final synthetic fun showAlignRight (Landroid/view/View;Lcom/skydoves/balloon/Balloon;I)V
 	public static final synthetic fun showAlignRight (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
 	public static synthetic fun showAlignRight$default (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)V
+	public static final synthetic fun showAlignStart (Landroid/view/View;Lcom/skydoves/balloon/Balloon;)V
+	public static final synthetic fun showAlignStart (Landroid/view/View;Lcom/skydoves/balloon/Balloon;I)V
+	public static final synthetic fun showAlignStart (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public static synthetic fun showAlignStart$default (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)V
 	public static final synthetic fun showAlignTop (Landroid/view/View;Lcom/skydoves/balloon/Balloon;)V
 	public static final synthetic fun showAlignTop (Landroid/view/View;Lcom/skydoves/balloon/Balloon;I)V
 	public static final synthetic fun showAlignTop (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V

@@ -82,25 +82,47 @@ public suspend fun View.awaitAlignBottom(balloon: Balloon, xOff: Int = 0, yOff: 
 /** shows the balloon on an anchor view as the right alignment with x-off and y-off. */
 @JvmOverloads
 @JvmSynthetic
+@Deprecated(
+  message = "Use showAlignEnd instead.",
+  replaceWith = ReplaceWith("showAlignEnd(balloon, xOff, yOff)"),
+)
 public fun View.showAlignRight(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
   balloon { balloon.showAlignRight(this, xOff, yOff) }
 }
 
 /** shows the balloon on an anchor view as the right alignment with x-off and y-off. */
-public suspend fun View.awaitAlignRight(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
-  balloon.awaitAlignRight(this, xOff, yOff)
+@JvmOverloads
+@JvmSynthetic
+public fun View.showAlignEnd(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
+  balloon { balloon.showAlignEnd(this, xOff, yOff) }
+}
+
+/** shows the balloon on an anchor view as the right alignment with x-off and y-off. */
+public suspend fun View.awaitAlignEnd(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
+  balloon.awaitAlignEnd(this, xOff, yOff)
 }
 
 /** shows the balloon on an anchor view as the left alignment with x-off and y-off. */
 @JvmOverloads
 @JvmSynthetic
+@Deprecated(
+  message = "Use showAlignStart instead.",
+  replaceWith = ReplaceWith("showAlignStart(balloon, xOff, yOff)"),
+)
 public fun View.showAlignLeft(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
   balloon { balloon.showAlignLeft(this, xOff, yOff) }
 }
 
+/** shows the balloon on an anchor view as the start alignment with x-off and y-off. */
+@JvmOverloads
+@JvmSynthetic
+public fun View.showAlignStart(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
+  balloon { balloon.showAlignStart(this, xOff, yOff) }
+}
+
 /** shows the balloon on an anchor view as the left alignment with x-off and y-off. */
-public suspend fun View.awaitAlignLeft(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
-  balloon.awaitAlignLeft(this, xOff, yOff)
+public suspend fun View.awaitAlignStart(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
+  balloon.awaitAlignStart(this, xOff, yOff)
 }
 
 /** shows the balloon on an anchor view depending on the [align] alignment with x-off and y-off. */
