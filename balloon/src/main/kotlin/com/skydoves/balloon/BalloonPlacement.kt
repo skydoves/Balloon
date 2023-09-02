@@ -16,10 +16,14 @@
 
 package com.skydoves.balloon
 
-/** BalloonAlign decides where the balloon should be placed. */
-public enum class BalloonAlign {
-  START,
-  END,
-  TOP,
-  BOTTOM,
-}
+import android.view.View
+
+/** BalloonPlacement contains data to determinate position where balloon should be displayed  */
+internal data class BalloonPlacement(
+  val anchor: View,
+  val subAnchors: List<View> = emptyList(),
+  val align: BalloonAlign = BalloonAlign.TOP,
+  val xOff: Int = 0,
+  val yOff: Int = 0,
+  val type: PlacementType = PlacementType.ALIGNMENT,
+)
