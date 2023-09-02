@@ -163,10 +163,10 @@ balloon.showAlignTop(anchor: View) // shows the balloon on an anchor view as the
 balloon.showAlignTop(anchor: View, xOff: Int, yOff: Int) // shows top alignment with x-off and y-off.
 balloon.showAlignBottom(anchor: View) // shows the balloon on an anchor view as the bottom alignment.
 balloon.showAlignBottom(anchor: View, xOff: Int, yOff: Int) // shows bottom alignment with x-off and y-off.
-balloon.showAlignRight(anchor: View) // shows the balloon on an anchor view as the right alignment.
-balloon.showAlignRight(anchor: View, xOff: Int, yOff: Int) // shows right alignment with x-off and y-off.
-balloon.showAlignLeft(anchor: View) // shows the balloon on an anchor view as the left alignment.
-balloon.showAlignLeft(anchor: View, xOff: Int, yOff: Int) // shows left alignment with x-off and y-off.
+balloon.showAlignEnd(anchor: View) // shows the balloon on an anchor view as the end alignment.
+balloon.showAlignEnd(anchor: View, xOff: Int, yOff: Int) // shows end alignment with x-off and y-off.
+balloon.showAlignStart(anchor: View) // shows the balloon on an anchor view as the start alignment.
+balloon.showAlignStart(anchor: View, xOff: Int, yOff: Int) // shows start alignment with x-off and y-off.
 balloon.showAsDropDown(anchor: View) // shows the balloon as a dropdown without any alignments.
 balloon.showAsDropDown(anchor: View, xOff: Int, yOff: Int) // shows no alignments with x-off and y-off.
 balloon.showAtCenter(anchor: View, xOff: Int, yOff: Int, centerAlign: BalloonCenterAlign.TOP)
@@ -302,8 +302,8 @@ We can decide the orientation of the arrow depending on the aligning rules with 
 Below previews are shows examples of `setArrowOrientation` and `setArrowPosition` methods. <br>
 The `setArrowPosition` measures the Balloon's size and sets the arrow's position with the ratio value.
 
-Orientation: BOTTOM<br> Position: 0.62<br> showAlignTop | Orientation: TOP<br> Position : 0.5<br> showAlignBottom | Orientation: LEFT<br> Position: 0.5<br> showAlignRight  | Orientation: RIGHT<br> Position: 0.5<br> showAlignLeft |
-| :---------------: | :---------------: | :---------------: | :---------------: |
+Orientation: BOTTOM<br> Position: 0.62<br> showAlignTop | Orientation: TOP<br> Position : 0.5<br> showAlignBottom | Orientation: START<br> Position: 0.5<br> showAlignStart | Orientation: END<br> Position: 0.5<br> showAlignEnd |
+| :---------------: | :---------------: |:---------------------------------------------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------:|
 | <img src="https://user-images.githubusercontent.com/24237865/61320410-55120e80-a844-11e9-9af6-cae49b8897e7.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/61320412-55120e80-a844-11e9-9ca9-81375707886e.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/61320415-55aaa500-a844-11e9-874f-ca44be02aace.gif" align="center" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/61320416-55aaa500-a844-11e9-9aa1-53e409ca63fb.gif" align="center" width="100%"/> |
 
 ### Text Composition
