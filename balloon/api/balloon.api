@@ -24,6 +24,48 @@ public final class com/skydoves/balloon/ArrowPositionRules : java/lang/Enum {
 	public static fun values ()[Lcom/skydoves/balloon/ArrowPositionRules;
 }
 
+public abstract interface class com/skydoves/balloon/AwaitBalloonsDsl {
+	public abstract fun alignBottom (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public abstract fun alignBottom (Lcom/skydoves/balloon/Balloon;Landroid/view/View;II)V
+	public abstract fun alignEnd (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public abstract fun alignEnd (Lcom/skydoves/balloon/Balloon;Landroid/view/View;II)V
+	public abstract fun alignStart (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public abstract fun alignStart (Lcom/skydoves/balloon/Balloon;Landroid/view/View;II)V
+	public abstract fun alignTop (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public abstract fun alignTop (Lcom/skydoves/balloon/Balloon;Landroid/view/View;II)V
+	public abstract fun asDropDown (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public abstract fun asDropDown (Lcom/skydoves/balloon/Balloon;Landroid/view/View;II)V
+	public abstract fun atCenter (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IILcom/skydoves/balloon/BalloonCenterAlign;)V
+	public abstract fun atCenter (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IILcom/skydoves/balloon/BalloonCenterAlign;)V
+	public abstract fun getDismissSequentially ()Z
+	public abstract fun setDismissSequentially (Z)V
+}
+
+public final class com/skydoves/balloon/AwaitBalloonsDsl$DefaultImpls {
+	public static fun alignBottom (Lcom/skydoves/balloon/AwaitBalloonsDsl;Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public static synthetic fun alignBottom$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Landroid/view/View;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)V
+	public static synthetic fun alignBottom$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public static fun alignEnd (Lcom/skydoves/balloon/AwaitBalloonsDsl;Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public static synthetic fun alignEnd$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Landroid/view/View;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)V
+	public static synthetic fun alignEnd$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public static fun alignStart (Lcom/skydoves/balloon/AwaitBalloonsDsl;Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public static synthetic fun alignStart$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Landroid/view/View;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)V
+	public static synthetic fun alignStart$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public static fun alignTop (Lcom/skydoves/balloon/AwaitBalloonsDsl;Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public static synthetic fun alignTop$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Landroid/view/View;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)V
+	public static synthetic fun alignTop$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public static fun asDropDown (Lcom/skydoves/balloon/AwaitBalloonsDsl;Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public static synthetic fun asDropDown$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Landroid/view/View;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)V
+	public static synthetic fun asDropDown$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public static fun atCenter (Lcom/skydoves/balloon/AwaitBalloonsDsl;Landroid/view/View;Lcom/skydoves/balloon/Balloon;IILcom/skydoves/balloon/BalloonCenterAlign;)V
+	public static synthetic fun atCenter$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Landroid/view/View;Lcom/skydoves/balloon/Balloon;IILcom/skydoves/balloon/BalloonCenterAlign;ILjava/lang/Object;)V
+	public static synthetic fun atCenter$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Lcom/skydoves/balloon/Balloon;Landroid/view/View;IILcom/skydoves/balloon/BalloonCenterAlign;ILjava/lang/Object;)V
+}
+
+public final class com/skydoves/balloon/AwaitBalloonsKt {
+	public static final fun awaitBalloons (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
 public final class com/skydoves/balloon/Balloon : androidx/lifecycle/DefaultLifecycleObserver {
 	public field onBalloonInitializedListener Lcom/skydoves/balloon/OnBalloonInitializedListener;
 	public synthetic fun <init> (Landroid/content/Context;Lcom/skydoves/balloon/Balloon$Builder;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
