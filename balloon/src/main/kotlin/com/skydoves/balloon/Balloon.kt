@@ -908,7 +908,7 @@ public class Balloon private constructor(
 
   private suspend fun awaitBalloon(placement: BalloonPlacement) {
     initConsumerIfNeeded()
-    channel.send(DeferredBalloonGroup(listOf(DeferredBalloon(this, placement)), false))
+    channel.send(DeferredBalloonGroup(listOf(DeferredBalloon(this, placement)), true))
   }
 
   @MainThread
