@@ -243,6 +243,7 @@ lifecycleScope.launch {
   }
 }
 ```
+> Note: The methods inside `awaitBalloons` are `atCenter`, `asDropdown`, `alignTop` and etc. Don't confuse with `show__` and `await__` methods.
 
 ### Width and height
 We can adjust specific width and height sizes of Balloon with the below builder methods. If we don't set any specific sizes of the width and height of the Balloon, the size of the Balloon will be decided by the content.
