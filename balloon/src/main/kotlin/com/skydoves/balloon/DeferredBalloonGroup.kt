@@ -16,11 +16,14 @@
 
 package com.skydoves.balloon
 
+import com.skydoves.balloon.annotations.InternalBalloonApi
+
 /**
  * Pack of [DeferredBalloon]s that will be shown at the same time.
  * @property dismissSequentially decides whether to dismiss balloons sequentially or not.
  */
-internal class DeferredBalloonGroup(
-  val balloons: List<DeferredBalloon>,
-  val dismissSequentially: Boolean,
+@InternalBalloonApi
+public class DeferredBalloonGroup(
+  public val balloons: List<DeferredBalloon>,
+  public val dismissSequentially: Boolean,
 )

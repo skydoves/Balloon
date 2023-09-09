@@ -67,6 +67,7 @@ public final class com/skydoves/balloon/AwaitBalloonsKt {
 }
 
 public final class com/skydoves/balloon/Balloon : androidx/lifecycle/DefaultLifecycleObserver {
+	public static final field Companion Lcom/skydoves/balloon/Balloon$Companion;
 	public field onBalloonInitializedListener Lcom/skydoves/balloon/OnBalloonInitializedListener;
 	public synthetic fun <init> (Landroid/content/Context;Lcom/skydoves/balloon/Balloon$Builder;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun awaitAlign (Lcom/skydoves/balloon/BalloonAlign;Landroid/view/View;Ljava/util/List;IILkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -552,6 +553,11 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun setWidthResource (I)Lcom/skydoves/balloon/Balloon$Builder;
 }
 
+public final class com/skydoves/balloon/Balloon$Companion {
+	public final fun getChannel ()Lkotlinx/coroutines/channels/Channel;
+	public final fun initConsumerIfNeeded ()V
+}
+
 public abstract class com/skydoves/balloon/Balloon$Factory {
 	public fun <init> ()V
 	public abstract fun create (Landroid/content/Context;Landroidx/lifecycle/LifecycleOwner;)Lcom/skydoves/balloon/Balloon;
@@ -584,6 +590,7 @@ public final class com/skydoves/balloon/BalloonCenterAlign : java/lang/Enum {
 	public static final field START Lcom/skydoves/balloon/BalloonCenterAlign;
 	public static final field TOP Lcom/skydoves/balloon/BalloonCenterAlign;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun toAlign ()Lcom/skydoves/balloon/BalloonAlign;
 	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/BalloonCenterAlign;
 	public static fun values ()[Lcom/skydoves/balloon/BalloonCenterAlign;
 }
@@ -672,9 +679,50 @@ public final class com/skydoves/balloon/BalloonPersistence$Companion {
 	public final fun getPersistName (Ljava/lang/String;)Ljava/lang/String;
 }
 
+public final class com/skydoves/balloon/BalloonPlacement {
+	public fun <init> (Landroid/view/View;Ljava/util/List;Lcom/skydoves/balloon/BalloonAlign;IILcom/skydoves/balloon/PlacementType;)V
+	public synthetic fun <init> (Landroid/view/View;Ljava/util/List;Lcom/skydoves/balloon/BalloonAlign;IILcom/skydoves/balloon/PlacementType;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Landroid/view/View;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Lcom/skydoves/balloon/BalloonAlign;
+	public final fun component4 ()I
+	public final fun component5 ()I
+	public final fun component6 ()Lcom/skydoves/balloon/PlacementType;
+	public final fun copy (Landroid/view/View;Ljava/util/List;Lcom/skydoves/balloon/BalloonAlign;IILcom/skydoves/balloon/PlacementType;)Lcom/skydoves/balloon/BalloonPlacement;
+	public static synthetic fun copy$default (Lcom/skydoves/balloon/BalloonPlacement;Landroid/view/View;Ljava/util/List;Lcom/skydoves/balloon/BalloonAlign;IILcom/skydoves/balloon/PlacementType;ILjava/lang/Object;)Lcom/skydoves/balloon/BalloonPlacement;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAlign ()Lcom/skydoves/balloon/BalloonAlign;
+	public final fun getAnchor ()Landroid/view/View;
+	public final fun getSubAnchors ()Ljava/util/List;
+	public final fun getType ()Lcom/skydoves/balloon/PlacementType;
+	public final fun getXOff ()I
+	public final fun getYOff ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/skydoves/balloon/BalloonSizeSpec {
 	public static final field INSTANCE Lcom/skydoves/balloon/BalloonSizeSpec;
 	public static final field WRAP I
+}
+
+public final class com/skydoves/balloon/DeferredBalloon {
+	public fun <init> (Lcom/skydoves/balloon/Balloon;Lcom/skydoves/balloon/BalloonPlacement;)V
+	public final fun component1 ()Lcom/skydoves/balloon/Balloon;
+	public final fun component2 ()Lcom/skydoves/balloon/BalloonPlacement;
+	public final fun copy (Lcom/skydoves/balloon/Balloon;Lcom/skydoves/balloon/BalloonPlacement;)Lcom/skydoves/balloon/DeferredBalloon;
+	public static synthetic fun copy$default (Lcom/skydoves/balloon/DeferredBalloon;Lcom/skydoves/balloon/Balloon;Lcom/skydoves/balloon/BalloonPlacement;ILjava/lang/Object;)Lcom/skydoves/balloon/DeferredBalloon;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBalloon ()Lcom/skydoves/balloon/Balloon;
+	public final fun getPlacement ()Lcom/skydoves/balloon/BalloonPlacement;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/skydoves/balloon/DeferredBalloonGroup {
+	public fun <init> (Ljava/util/List;Z)V
+	public final fun getBalloons ()Ljava/util/List;
+	public final fun getDismissSequentially ()Z
 }
 
 public final class com/skydoves/balloon/IconForm {
@@ -755,6 +803,15 @@ public abstract interface class com/skydoves/balloon/OnBalloonOutsideTouchListen
 
 public abstract interface class com/skydoves/balloon/OnBalloonOverlayClickListener {
 	public abstract fun onBalloonOverlayClick ()V
+}
+
+public final class com/skydoves/balloon/PlacementType : java/lang/Enum {
+	public static final field ALIGNMENT Lcom/skydoves/balloon/PlacementType;
+	public static final field CENTER Lcom/skydoves/balloon/PlacementType;
+	public static final field DROPDOWN Lcom/skydoves/balloon/PlacementType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/PlacementType;
+	public static fun values ()[Lcom/skydoves/balloon/PlacementType;
 }
 
 public final class com/skydoves/balloon/TextForm {
@@ -842,7 +899,7 @@ public final class com/skydoves/balloon/animations/BalloonRotateDirection : java
 	public static fun values ()[Lcom/skydoves/balloon/animations/BalloonRotateDirection;
 }
 
-public abstract interface annotation class com/skydoves/balloon/animations/InternalBalloonApi : java/lang/annotation/Annotation {
+public abstract interface annotation class com/skydoves/balloon/annotations/InternalBalloonApi : java/lang/annotation/Annotation {
 }
 
 public final class com/skydoves/balloon/extensions/GlobalExtensionKt {

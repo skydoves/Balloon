@@ -74,8 +74,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import com.skydoves.balloon.ArrowOrientation.Companion.getRTLSupportOrientation
 import com.skydoves.balloon.animations.BalloonRotateAnimation
-import com.skydoves.balloon.animations.InternalBalloonApi
 import com.skydoves.balloon.annotations.Dp
+import com.skydoves.balloon.annotations.InternalBalloonApi
 import com.skydoves.balloon.annotations.Sp
 import com.skydoves.balloon.databinding.BalloonLayoutBodyBinding
 import com.skydoves.balloon.databinding.BalloonLayoutOverlayBinding
@@ -3016,12 +3016,13 @@ public class Balloon private constructor(
     public abstract fun create(context: Context, lifecycle: LifecycleOwner?): Balloon
   }
 
-  internal companion object {
-    val channel by lazy { Channel<DeferredBalloonGroup>() }
+  @InternalBalloonApi
+  public companion object {
+    public val channel: Channel<DeferredBalloonGroup> by lazy { Channel() }
     private val scope by lazy { CoroutineScope(Dispatchers.Main) }
     private var isConsumerActive = false
 
-    fun initConsumerIfNeeded() {
+    public fun initConsumerIfNeeded() {
       if (isConsumerActive) return
       isConsumerActive = true
       scope.launch {

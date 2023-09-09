@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.skydoves.balloon.animations
+package com.skydoves.balloon.annotations
 
 @Target(
   AnnotationTarget.CLASS,
@@ -23,6 +23,7 @@ package com.skydoves.balloon.animations
   AnnotationTarget.FUNCTION,
   AnnotationTarget.TYPEALIAS,
 )
+@Retention(AnnotationRetention.BINARY)
 @RequiresOptIn(
   message = "This is internal API for the balloon libraries. Do not depend on " +
     "this API in your own client code.",

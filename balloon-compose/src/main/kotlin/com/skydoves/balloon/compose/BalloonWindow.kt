@@ -29,7 +29,7 @@ import com.skydoves.balloon.OnBalloonDismissListener
 import com.skydoves.balloon.OnBalloonInitializedListener
 import com.skydoves.balloon.OnBalloonOutsideTouchListener
 import com.skydoves.balloon.OnBalloonOverlayClickListener
-import com.skydoves.balloon.animations.InternalBalloonApi
+import com.skydoves.balloon.annotations.InternalBalloonApi
 import com.skydoves.balloon.showAlign
 import com.skydoves.balloon.showAlignBottom
 import com.skydoves.balloon.showAlignTop
