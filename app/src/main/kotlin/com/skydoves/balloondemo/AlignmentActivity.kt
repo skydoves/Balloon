@@ -26,6 +26,7 @@ import com.skydoves.balloon.awaitAlignEnd
 import com.skydoves.balloon.awaitAlignStart
 import com.skydoves.balloon.awaitAlignTop
 import com.skydoves.balloon.awaitAtCenter
+import com.skydoves.balloon.awaitBalloons
 import com.skydoves.balloon.showAlignBottom
 import com.skydoves.balloon.showAlignEnd
 import com.skydoves.balloon.showAlignStart
@@ -58,7 +59,7 @@ class AlignmentActivity : AppCompatActivity() {
     binding.textView.showAtCenter(balloon("Center Bottom"), centerAlign = BalloonCenterAlign.BOTTOM)
   }
 
-  private fun awaitBalloons() {
+  private fun awaitBalloonsSequential() {
     lifecycleScope.launch {
       binding.textView.awaitAlignTop(balloon("Align Top"))
       binding.textView.awaitAlignStart(balloon("Align Start"))
@@ -75,6 +76,32 @@ class AlignmentActivity : AppCompatActivity() {
         balloon("Center Bottom"),
         centerAlign = BalloonCenterAlign.BOTTOM,
       )
+    }
+  }
+
+  private fun awaitBalloonsParallel() {
+    lifecycleScope.launch {
+      awaitBalloons {
+        binding.textView.alignTop(balloon("Align Top"))
+        binding.textView.alignStart(balloon("Align Start"))
+        binding.textView.alignEnd(balloon("Align End"))
+        binding.textView.alignBottom(balloon("Align Bottom"))
+      }
+
+      awaitBalloons {
+        dismissSequentially = true
+
+        binding.textView.atCenter(balloon("Center Top"), centerAlign = BalloonCenterAlign.TOP)
+        binding.textView.atCenter(
+          balloon("Center Start"),
+          centerAlign = BalloonCenterAlign.START,
+        )
+        binding.textView.atCenter(balloon("Center End"), centerAlign = BalloonCenterAlign.END)
+        binding.textView.atCenter(
+          balloon("Center Bottom"),
+          centerAlign = BalloonCenterAlign.BOTTOM,
+        )
+      }
     }
   }
 

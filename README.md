@@ -217,6 +217,34 @@ coroutineScope.launch {
 
 > Note: The `relayShow__` and `await__` methods overwrite the `setOnDismissListener` internally, so you can't use the `setOnDismissListener` at the same time.
 
+#### Parallel Displaying
+We can show multiple balloons at the same with sequential behaviour.
+```kotlin
+lifecycleScope.launch {
+  // shows balloons at the same time
+  awaitBalloons {
+    // dismissing of any balloon dismisses all of them. Default behaviour
+    dismissSequentially = false
+    
+    textView.alignTop(balloonAlignTop)
+    textView.alignStart(balloonAlignStart)
+    textView.alignEnd(balloonAlignEnd)
+    textView.alignBottom(balloonAlignBottom)
+  }
+
+  // shows another group after dismissing the previous group.
+  awaitBalloons {
+    dismissSequentially = true // balloons dismissed individually
+
+    imageView.alignTop(balloonAlignTop)
+    imageView.alignStart(balloonAlignStart)
+    imageView.alignEnd(balloonAlignEnd)
+    imageView.alignBottom(balloonAlignBottom)
+  }
+}
+```
+> Note: The methods inside `awaitBalloons` are `atCenter`, `asDropdown`, `alignTop` and etc. Don't confuse with `show__` and `await__` methods.
+
 ### Width and height
 We can adjust specific width and height sizes of Balloon with the below builder methods. If we don't set any specific sizes of the width and height of the Balloon, the size of the Balloon will be decided by the content.
 

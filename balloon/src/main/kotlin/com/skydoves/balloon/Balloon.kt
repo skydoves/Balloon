@@ -112,7 +112,10 @@ import com.skydoves.balloon.overlay.BalloonOverlayAnimation
 import com.skydoves.balloon.overlay.BalloonOverlayOval
 import com.skydoves.balloon.overlay.BalloonOverlayShape
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -905,7 +908,7 @@ public class Balloon private constructor(
 
   private suspend fun awaitBalloon(placement: BalloonPlacement) {
     initConsumerIfNeeded()
-    channel.send(this to placement)
+    channel.send(DeferredBalloonGroup(listOf(DeferredBalloon(this, placement)), true))
   }
 
   @MainThread
@@ -3013,28 +3016,39 @@ public class Balloon private constructor(
     public abstract fun create(context: Context, lifecycle: LifecycleOwner?): Balloon
   }
 
-  private companion object {
-    val channel by lazy { Channel<Pair<Balloon, BalloonPlacement>>() }
-    val scope by lazy { CoroutineScope(Dispatchers.Main) }
-    var isConsumerActive = false
+  internal companion object {
+    val channel by lazy { Channel<DeferredBalloonGroup>() }
+    private val scope by lazy { CoroutineScope(Dispatchers.Main) }
+    private var isConsumerActive = false
 
     fun initConsumerIfNeeded() {
       if (isConsumerActive) return
       isConsumerActive = true
       scope.launch {
-        for ((balloon, placement) in channel) {
-          if (!balloon.canShowBalloonWindow(placement.anchor)) continue
-          if (!balloon.shouldShowUp()) {
-            balloon.builder.runIfReachedShowCounts?.invoke()
-            continue
-          }
+        for (group in channel) {
+          if (group.balloons.isEmpty()) continue
+          val deferred = mutableListOf<Deferred<Unit>>()
+          for ((balloon, placement) in group.balloons) {
+            if (!balloon.canShowBalloonWindow(placement.anchor)) continue
+            if (!balloon.shouldShowUp()) {
+              balloon.builder.runIfReachedShowCounts?.invoke()
+              continue
+            }
 
-          suspendCancellableCoroutine { cont ->
-            balloon.show(placement)
-            balloon.setOnBalloonDismissListener {
-              cont.resume(Unit)
+            deferred += async {
+              suspendCancellableCoroutine { cont ->
+                balloon.show(placement)
+                balloon.setOnBalloonDismissListener {
+                  cont.resume(Unit)
+                  if (!group.dismissSequentially) {
+                    group.balloons.forEach { it.balloon.dismiss() }
+                  }
+                }
+              }
             }
           }
+
+          deferred.awaitAll()
         }
       }
     }
