@@ -1,39 +1,21 @@
 public abstract interface class com/skydoves/balloon/compose/AwaitBalloonWindowsDsl {
-	public abstract fun alignBottom (Landroid/view/View;Lcom/skydoves/balloon/compose/BalloonWindow;II)V
-	public abstract fun alignBottom (Lcom/skydoves/balloon/compose/BalloonWindow;Landroid/view/View;II)V
-	public abstract fun alignEnd (Landroid/view/View;Lcom/skydoves/balloon/compose/BalloonWindow;II)V
-	public abstract fun alignEnd (Lcom/skydoves/balloon/compose/BalloonWindow;Landroid/view/View;II)V
-	public abstract fun alignStart (Landroid/view/View;Lcom/skydoves/balloon/compose/BalloonWindow;II)V
-	public abstract fun alignStart (Lcom/skydoves/balloon/compose/BalloonWindow;Landroid/view/View;II)V
-	public abstract fun alignTop (Landroid/view/View;Lcom/skydoves/balloon/compose/BalloonWindow;II)V
-	public abstract fun alignTop (Lcom/skydoves/balloon/compose/BalloonWindow;Landroid/view/View;II)V
-	public abstract fun asDropDown (Landroid/view/View;Lcom/skydoves/balloon/compose/BalloonWindow;II)V
-	public abstract fun asDropDown (Lcom/skydoves/balloon/compose/BalloonWindow;Landroid/view/View;II)V
-	public abstract fun atCenter (Landroid/view/View;Lcom/skydoves/balloon/compose/BalloonWindow;IILcom/skydoves/balloon/BalloonCenterAlign;)V
-	public abstract fun atCenter (Lcom/skydoves/balloon/compose/BalloonWindow;Landroid/view/View;IILcom/skydoves/balloon/BalloonCenterAlign;)V
+	public abstract fun alignBottom (Lcom/skydoves/balloon/compose/BalloonWindow;II)V
+	public abstract fun alignEnd (Lcom/skydoves/balloon/compose/BalloonWindow;II)V
+	public abstract fun alignStart (Lcom/skydoves/balloon/compose/BalloonWindow;II)V
+	public abstract fun alignTop (Lcom/skydoves/balloon/compose/BalloonWindow;II)V
+	public abstract fun asDropDown (Lcom/skydoves/balloon/compose/BalloonWindow;II)V
+	public abstract fun atCenter (Lcom/skydoves/balloon/compose/BalloonWindow;IILcom/skydoves/balloon/BalloonCenterAlign;)V
 	public abstract fun getDismissSequentially ()Z
 	public abstract fun setDismissSequentially (Z)V
 }
 
 public final class com/skydoves/balloon/compose/AwaitBalloonWindowsDsl$DefaultImpls {
-	public static fun alignBottom (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Landroid/view/View;Lcom/skydoves/balloon/compose/BalloonWindow;II)V
-	public static synthetic fun alignBottom$default (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Landroid/view/View;Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
-	public static synthetic fun alignBottom$default (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Lcom/skydoves/balloon/compose/BalloonWindow;Landroid/view/View;IIILjava/lang/Object;)V
-	public static fun alignEnd (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Landroid/view/View;Lcom/skydoves/balloon/compose/BalloonWindow;II)V
-	public static synthetic fun alignEnd$default (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Landroid/view/View;Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
-	public static synthetic fun alignEnd$default (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Lcom/skydoves/balloon/compose/BalloonWindow;Landroid/view/View;IIILjava/lang/Object;)V
-	public static fun alignStart (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Landroid/view/View;Lcom/skydoves/balloon/compose/BalloonWindow;II)V
-	public static synthetic fun alignStart$default (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Landroid/view/View;Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
-	public static synthetic fun alignStart$default (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Lcom/skydoves/balloon/compose/BalloonWindow;Landroid/view/View;IIILjava/lang/Object;)V
-	public static fun alignTop (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Landroid/view/View;Lcom/skydoves/balloon/compose/BalloonWindow;II)V
-	public static synthetic fun alignTop$default (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Landroid/view/View;Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
-	public static synthetic fun alignTop$default (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Lcom/skydoves/balloon/compose/BalloonWindow;Landroid/view/View;IIILjava/lang/Object;)V
-	public static fun asDropDown (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Landroid/view/View;Lcom/skydoves/balloon/compose/BalloonWindow;II)V
-	public static synthetic fun asDropDown$default (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Landroid/view/View;Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
-	public static synthetic fun asDropDown$default (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Lcom/skydoves/balloon/compose/BalloonWindow;Landroid/view/View;IIILjava/lang/Object;)V
-	public static fun atCenter (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Landroid/view/View;Lcom/skydoves/balloon/compose/BalloonWindow;IILcom/skydoves/balloon/BalloonCenterAlign;)V
-	public static synthetic fun atCenter$default (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Landroid/view/View;Lcom/skydoves/balloon/compose/BalloonWindow;IILcom/skydoves/balloon/BalloonCenterAlign;ILjava/lang/Object;)V
-	public static synthetic fun atCenter$default (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Lcom/skydoves/balloon/compose/BalloonWindow;Landroid/view/View;IILcom/skydoves/balloon/BalloonCenterAlign;ILjava/lang/Object;)V
+	public static synthetic fun alignBottom$default (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
+	public static synthetic fun alignEnd$default (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
+	public static synthetic fun alignStart$default (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
+	public static synthetic fun alignTop$default (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
+	public static synthetic fun asDropDown$default (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
+	public static synthetic fun atCenter$default (Lcom/skydoves/balloon/compose/AwaitBalloonWindowsDsl;Lcom/skydoves/balloon/compose/BalloonWindow;IILcom/skydoves/balloon/BalloonCenterAlign;ILjava/lang/Object;)V
 }
 
 public final class com/skydoves/balloon/compose/AwaitBalloonWindowsKt {
@@ -64,6 +46,7 @@ public abstract interface class com/skydoves/balloon/compose/BalloonWindow {
 	public abstract fun clearAllPreferences ()V
 	public abstract fun dismiss ()V
 	public abstract fun dismissWithDelay (J)Z
+	public abstract fun getAnchorView ()Landroid/view/View;
 	public abstract fun getBalloon ()Lcom/skydoves/balloon/Balloon;
 	public abstract fun getBalloonArrowView ()Landroid/view/View;
 	public abstract fun getContentView ()Landroid/view/ViewGroup;
