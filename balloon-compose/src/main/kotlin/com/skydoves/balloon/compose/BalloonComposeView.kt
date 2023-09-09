@@ -58,7 +58,7 @@ import java.util.UUID
  */
 @SuppressLint("ViewConstructor")
 internal class BalloonComposeView(
-  private val anchorView: View,
+  override val anchorView: View,
   isComposableContent: Boolean,
   builder: Balloon.Builder,
   balloonID: UUID,

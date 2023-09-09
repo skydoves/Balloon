@@ -16,7 +16,6 @@
 
 package com.skydoves.balloon.compose
 
-import android.view.View
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAlign
 import com.skydoves.balloon.BalloonCenterAlign
@@ -38,7 +37,6 @@ public interface AwaitBalloonWindowsDsl {
    * Look at [BalloonWindow.showAtCenter]
    */
   public fun BalloonWindow.atCenter(
-    anchor: View,
     xOff: Int = 0,
     yOff: Int = 0,
     centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP,
@@ -47,74 +45,27 @@ public interface AwaitBalloonWindowsDsl {
   /**
    * Look at [BalloonWindow.showAsDropDown]
    */
-  public fun BalloonWindow.asDropDown(anchor: View, xOff: Int = 0, yOff: Int = 0)
+  public fun BalloonWindow.asDropDown(xOff: Int = 0, yOff: Int = 0)
 
   /**
    * Look at [BalloonWindow.showAlignTop]
    */
-  public fun BalloonWindow.alignTop(anchor: View, xOff: Int = 0, yOff: Int = 0)
+  public fun BalloonWindow.alignTop(xOff: Int = 0, yOff: Int = 0)
 
   /**
    * Look at [BalloonWindow.showAlignStart]
    */
-  public fun BalloonWindow.alignStart(anchor: View, xOff: Int = 0, yOff: Int = 0)
+  public fun BalloonWindow.alignStart(xOff: Int = 0, yOff: Int = 0)
 
   /**
    * Look at [BalloonWindow.showAlignEnd]
    */
-  public fun BalloonWindow.alignEnd(anchor: View, xOff: Int = 0, yOff: Int = 0)
+  public fun BalloonWindow.alignEnd(xOff: Int = 0, yOff: Int = 0)
 
   /**
    * Look at [BalloonWindow.showAlignBottom]
    */
-  public fun BalloonWindow.alignBottom(anchor: View, xOff: Int = 0, yOff: Int = 0)
-
-  /**
-   * Extension for [BalloonWindow.awaitAtCenter]
-   */
-  public fun View.atCenter(
-    balloon: BalloonWindow,
-    xOff: Int = 0,
-    yOff: Int = 0,
-    centerAlign: BalloonCenterAlign = BalloonCenterAlign.TOP,
-  ) {
-    balloon.atCenter(this, xOff, yOff, centerAlign)
-  }
-
-  /**
-   * Extension for [BalloonWindow.awaitAsDropDown]
-   */
-  public fun View.asDropDown(balloon: BalloonWindow, xOff: Int = 0, yOff: Int = 0) {
-    balloon.asDropDown(this, xOff, yOff)
-  }
-
-  /**
-   * Extension for [BalloonWindow.awaitAlignTop]
-   */
-  public fun View.alignTop(balloon: BalloonWindow, xOff: Int = 0, yOff: Int = 0) {
-    balloon.alignTop(this, xOff, yOff)
-  }
-
-  /**
-   * Extension for [BalloonWindow.awaitAlignStart]
-   */
-  public fun View.alignStart(balloon: BalloonWindow, xOff: Int = 0, yOff: Int = 0) {
-    balloon.alignStart(this, xOff, yOff)
-  }
-
-  /**
-   * Extension for [BalloonWindow.awaitAlignEnd]
-   */
-  public fun View.alignEnd(balloon: BalloonWindow, xOff: Int = 0, yOff: Int = 0) {
-    balloon.alignEnd(this, xOff, yOff)
-  }
-
-  /**
-   * Extension for [BalloonWindow.awaitAlignBottom]
-   */
-  public fun View.alignBottom(balloon: BalloonWindow, xOff: Int = 0, yOff: Int = 0) {
-    balloon.alignBottom(this, xOff, yOff)
-  }
+  public fun BalloonWindow.alignBottom(xOff: Int = 0, yOff: Int = 0)
 }
 
 private class AwaitBalloonWindowsDslImpl : AwaitBalloonWindowsDsl {
@@ -122,7 +73,6 @@ private class AwaitBalloonWindowsDslImpl : AwaitBalloonWindowsDsl {
   private val _balloons = mutableListOf<DeferredBalloon>()
 
   override fun BalloonWindow.atCenter(
-    anchor: View,
     xOff: Int,
     yOff: Int,
     centerAlign: BalloonCenterAlign,
@@ -131,7 +81,7 @@ private class AwaitBalloonWindowsDslImpl : AwaitBalloonWindowsDsl {
       DeferredBalloon(
         balloon = this.balloon,
         placement = BalloonPlacement(
-          anchor = anchor,
+          anchor = anchorView,
           xOff = xOff,
           yOff = yOff,
           align = centerAlign.toAlign(),
@@ -141,12 +91,12 @@ private class AwaitBalloonWindowsDslImpl : AwaitBalloonWindowsDsl {
     )
   }
 
-  override fun BalloonWindow.asDropDown(anchor: View, xOff: Int, yOff: Int) {
+  override fun BalloonWindow.asDropDown(xOff: Int, yOff: Int) {
     _balloons.add(
       DeferredBalloon(
         balloon = this.balloon,
         placement = BalloonPlacement(
-          anchor = anchor,
+          anchor = anchorView,
           xOff = xOff,
           yOff = yOff,
           type = PlacementType.DROPDOWN,
@@ -155,12 +105,12 @@ private class AwaitBalloonWindowsDslImpl : AwaitBalloonWindowsDsl {
     )
   }
 
-  override fun BalloonWindow.alignTop(anchor: View, xOff: Int, yOff: Int) {
+  override fun BalloonWindow.alignTop(xOff: Int, yOff: Int) {
     _balloons.add(
       DeferredBalloon(
         balloon = this.balloon,
         placement = BalloonPlacement(
-          anchor = anchor,
+          anchor = anchorView,
           xOff = xOff,
           yOff = yOff,
           align = BalloonAlign.TOP,
@@ -169,12 +119,12 @@ private class AwaitBalloonWindowsDslImpl : AwaitBalloonWindowsDsl {
     )
   }
 
-  override fun BalloonWindow.alignStart(anchor: View, xOff: Int, yOff: Int) {
+  override fun BalloonWindow.alignStart(xOff: Int, yOff: Int) {
     _balloons.add(
       DeferredBalloon(
         balloon = this.balloon,
         placement = BalloonPlacement(
-          anchor = anchor,
+          anchor = anchorView,
           xOff = xOff,
           yOff = yOff,
           align = BalloonAlign.START,
@@ -183,12 +133,12 @@ private class AwaitBalloonWindowsDslImpl : AwaitBalloonWindowsDsl {
     )
   }
 
-  override fun BalloonWindow.alignEnd(anchor: View, xOff: Int, yOff: Int) {
+  override fun BalloonWindow.alignEnd(xOff: Int, yOff: Int) {
     _balloons.add(
       DeferredBalloon(
         balloon = this.balloon,
         placement = BalloonPlacement(
-          anchor = anchor,
+          anchor = anchorView,
           xOff = xOff,
           yOff = yOff,
           align = BalloonAlign.END,
@@ -197,12 +147,12 @@ private class AwaitBalloonWindowsDslImpl : AwaitBalloonWindowsDsl {
     )
   }
 
-  override fun BalloonWindow.alignBottom(anchor: View, xOff: Int, yOff: Int) {
+  override fun BalloonWindow.alignBottom(xOff: Int, yOff: Int) {
     _balloons.add(
       DeferredBalloon(
         balloon = this.balloon,
         placement = BalloonPlacement(
-          anchor = anchor,
+          anchor = anchorView,
           xOff = xOff,
           yOff = yOff,
           align = BalloonAlign.BOTTOM,

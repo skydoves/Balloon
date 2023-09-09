@@ -28,6 +28,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,6 +43,7 @@ import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonHighlightAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.compose.Balloon
+import com.skydoves.balloon.compose.BalloonWindow
 import com.skydoves.balloon.compose.rememberBalloonBuilder
 import com.skydoves.balloon.overlay.BalloonOverlayRoundRect
 
@@ -72,6 +78,10 @@ class ComposeActivity : ComponentActivity() {
         setDismissWhenClicked(true)
       }
 
+      var balloonWindow1: BalloonWindow? by remember { mutableStateOf(null) }
+      var balloonWindow2: BalloonWindow? by remember { mutableStateOf(null) }
+      var balloonWindow3: BalloonWindow? by remember { mutableStateOf(null) }
+
       Box(modifier = Modifier.fillMaxSize()) {
         Balloon(
           modifier = Modifier
@@ -86,9 +96,13 @@ class ComposeActivity : ComponentActivity() {
             )
           },
         ) { balloonWindow ->
+          LaunchedEffect(key1 = Unit) {
+            balloonWindow1 = balloonWindow
+          }
+
           Button(
             modifier = Modifier.size(160.dp, 60.dp),
-            onClick = { balloonWindow.showAlignTop() },
+            onClick = { balloonWindow1?.showAlignTop() },
           ) {
             Text(text = "showAlignTop")
           }
@@ -107,9 +121,13 @@ class ComposeActivity : ComponentActivity() {
             )
           },
         ) { balloonWindow ->
+          LaunchedEffect(key1 = Unit) {
+            balloonWindow2 = balloonWindow
+          }
+
           Button(
             modifier = Modifier.size(160.dp, 60.dp),
-            onClick = { balloonWindow.showAlignTop() },
+            onClick = { balloonWindow2?.showAlignTop() },
           ) {
             Text(text = "wrap balloon")
           }
@@ -144,9 +162,13 @@ class ComposeActivity : ComponentActivity() {
             }
           },
         ) { balloonWindow ->
+          LaunchedEffect(key1 = Unit) {
+            balloonWindow3 = balloonWindow
+          }
+
           Button(
             modifier = Modifier.size(160.dp, 60.dp),
-            onClick = { balloonWindow.showAlignBottom() },
+            onClick = { balloonWindow3?.showAlignBottom() },
           ) {
             Text(text = "alignments")
           }

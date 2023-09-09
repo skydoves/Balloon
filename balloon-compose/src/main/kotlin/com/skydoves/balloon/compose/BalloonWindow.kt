@@ -41,6 +41,8 @@ import com.skydoves.balloon.showAtCenter
  */
 public interface BalloonWindow {
 
+  public val anchorView: View
+
   public val balloon: Balloon
 
   /** Represents if the balloon should be displayed according to the internal persistence..*/
