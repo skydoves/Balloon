@@ -16,11 +16,14 @@
 
 package com.skydoves.balloon
 
+import com.skydoves.balloon.annotations.InternalBalloonApi
+
 /**
  * Container for [Balloon] and [BalloonPlacement].
  * @see DeferredBalloonGroup
  */
-internal data class DeferredBalloon(
+@InternalBalloonApi
+public data class DeferredBalloon(
   val balloon: Balloon,
   val placement: BalloonPlacement,
 )

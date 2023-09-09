@@ -16,6 +16,8 @@
 
 package com.skydoves.balloon
 
+import com.skydoves.balloon.annotations.InternalBalloonApi
+
 /** BalloonCenterAlign is an aligning rule for the [Balloon.showAtCenter]. */
 public enum class BalloonCenterAlign {
   START,
@@ -24,7 +26,8 @@ public enum class BalloonCenterAlign {
   BOTTOM,
   ;
 
-  internal fun toAlign(): BalloonAlign = when (this) {
+  @InternalBalloonApi
+  public fun toAlign(): BalloonAlign = when (this) {
     START -> BalloonAlign.START
     END -> BalloonAlign.END
     TOP -> BalloonAlign.TOP

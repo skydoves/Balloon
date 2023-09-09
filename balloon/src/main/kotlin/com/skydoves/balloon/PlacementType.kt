@@ -16,7 +16,10 @@
 
 package com.skydoves.balloon
 
-internal enum class PlacementType {
+import com.skydoves.balloon.annotations.InternalBalloonApi
+
+@InternalBalloonApi
+public enum class PlacementType {
   ALIGNMENT,
   DROPDOWN,
   CENTER,

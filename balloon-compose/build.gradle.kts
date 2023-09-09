@@ -69,7 +69,7 @@ baselineProfile {
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
   kotlinOptions.freeCompilerArgs += listOf(
     "-Xexplicit-api=strict",
-    "-opt-in=com.skydoves.balloon.animations.InternalBalloonApi",
+    "-opt-in=com.skydoves.balloon.annotations.InternalBalloonApi",
   )
 }
 

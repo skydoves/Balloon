@@ -44,7 +44,7 @@ import com.skydoves.balloon.OnBalloonDismissListener
 import com.skydoves.balloon.OnBalloonInitializedListener
 import com.skydoves.balloon.OnBalloonOutsideTouchListener
 import com.skydoves.balloon.OnBalloonOverlayClickListener
-import com.skydoves.balloon.animations.InternalBalloonApi
+import com.skydoves.balloon.annotations.InternalBalloonApi
 import java.util.UUID
 
 /**
@@ -58,7 +58,7 @@ import java.util.UUID
  */
 @SuppressLint("ViewConstructor")
 internal class BalloonComposeView(
-  private val anchorView: View,
+  override val anchorView: View,
   isComposableContent: Boolean,
   builder: Balloon.Builder,
   balloonID: UUID,

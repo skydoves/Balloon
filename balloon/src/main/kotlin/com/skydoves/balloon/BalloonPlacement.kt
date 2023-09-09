@@ -17,9 +17,11 @@
 package com.skydoves.balloon
 
 import android.view.View
+import com.skydoves.balloon.annotations.InternalBalloonApi
 
 /** BalloonPlacement contains data to determinate position where balloon should be displayed  */
-internal data class BalloonPlacement(
+@InternalBalloonApi
+public data class BalloonPlacement(
   val anchor: View,
   val subAnchors: List<View> = emptyList(),
   val align: BalloonAlign = BalloonAlign.TOP,

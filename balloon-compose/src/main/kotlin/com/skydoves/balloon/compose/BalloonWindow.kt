@@ -29,7 +29,7 @@ import com.skydoves.balloon.OnBalloonDismissListener
 import com.skydoves.balloon.OnBalloonInitializedListener
 import com.skydoves.balloon.OnBalloonOutsideTouchListener
 import com.skydoves.balloon.OnBalloonOverlayClickListener
-import com.skydoves.balloon.animations.InternalBalloonApi
+import com.skydoves.balloon.annotations.InternalBalloonApi
 import com.skydoves.balloon.showAlign
 import com.skydoves.balloon.showAlignBottom
 import com.skydoves.balloon.showAlignTop
@@ -40,6 +40,8 @@ import com.skydoves.balloon.showAtCenter
  * BalloonWindow is an interface that define all executable behaviors of the balloon's window.
  */
 public interface BalloonWindow {
+
+  public val anchorView: View
 
   public val balloon: Balloon
 
