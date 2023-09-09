@@ -2,6 +2,7 @@ Lcom/skydoves/balloon/compose/BalloonComposeView;
 HPLcom/skydoves/balloon/compose/BalloonComposeView;-><init>(Landroid/view/View;ZLcom/skydoves/balloon/Balloon$Builder;Ljava/util/UUID;)V
 HSPLcom/skydoves/balloon/compose/BalloonComposeView;->Content(Landroidx/compose/runtime/Composer;I)V
 PLcom/skydoves/balloon/compose/BalloonComposeView;->dispose$balloon_compose_release()V
+HSPLcom/skydoves/balloon/compose/BalloonComposeView;->getAnchorView()Landroid/view/View;
 HSPLcom/skydoves/balloon/compose/BalloonComposeView;->getBalloon()Lcom/skydoves/balloon/Balloon;
 HSPLcom/skydoves/balloon/compose/BalloonComposeView;->getBalloonLayoutInfo$balloon_compose_release()Landroidx/compose/runtime/MutableState;
 HSPLcom/skydoves/balloon/compose/BalloonComposeView;->getContent()Lkotlin/jvm/functions/Function3;
@@ -78,4 +79,4 @@ Lcom/skydoves/balloon/compose/ComposableSingletons$BalloonComposeViewKt$lambda-1
 HSPLcom/skydoves/balloon/compose/ComposableSingletons$BalloonComposeViewKt$lambda-1$1;-><clinit>()V
 HSPLcom/skydoves/balloon/compose/ComposableSingletons$BalloonComposeViewKt$lambda-1$1;-><init>()V
 Lcom/skydoves/balloon/compose/RememberBalloonBuilderKt;
-HPLcom/skydoves/balloon/compose/RememberBalloonBuilderKt;->rememberBalloonBuilder(Landroid/content/Context;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Lcom/skydoves/balloon/Balloon$Builder;
+HPLcom/skydoves/balloon/compose/RememberBalloonBuilderKt;->rememberBalloonBuilder(Ljava/lang/Object;Landroid/content/Context;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Lcom/skydoves/balloon/Balloon$Builder;
