@@ -1502,6 +1502,7 @@ public class Balloon private constructor(
 
   @InternalBalloonApi
   public fun updateSizeOfBalloonCard(width: Int, height: Int) {
+    builder.setMeasuredWidth(width)
     if (binding.balloonCard.childCount != 0) {
       val child = binding.balloonCard[0]
       child.updateLayoutParams {
@@ -1812,6 +1813,10 @@ public class Balloon private constructor(
     @FloatRange(from = 0.0, to = 1.0)
     @set:JvmSynthetic
     public var maxWidthRatio: Float = NO_Float_VALUE
+
+    @Px
+    @set:JvmSynthetic
+    public var measuredWidth: Int = BalloonSizeSpec.WRAP
 
     @Px
     @set:JvmSynthetic
@@ -2179,6 +2184,14 @@ public class Balloon private constructor(
     public fun setMaxWidthRatio(
       @FloatRange(from = 0.0, to = 1.0) value: Float,
     ): Builder = apply { this.maxWidthRatio = value }
+
+    /** sets the measured width size. */
+    public fun setMeasuredWidth(@Px value: Int): Builder = apply {
+      require(
+        value > 0 || value == BalloonSizeSpec.WRAP,
+      ) { "The width of the balloon must bigger than zero." }
+      this.measuredWidth = value
+    }
 
     /** sets the height size. */
     public fun setHeight(@Dp value: Int): Builder = apply {

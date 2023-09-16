@@ -128,14 +128,11 @@ public fun Balloon(
           .padding(start = paddingStart, end = paddingEnd)
           .onGloballyPositioned { coordinates ->
             val originalSize = coordinates.size
-            val padding = builder.paddingLeft + builder.paddingRight
-            val margin = builder.marginLeft + builder.marginRight
-            val space = padding + margin + builder.arrowSize
-            val calculatedWidth = if (originalSize.width + space > screenWidth) {
-              screenWidth - space
+            val calculatedWidth = if (originalSize.width > screenWidth) {
+              screenWidth
             } else {
               originalSize.width
-            }
+            } - builder.arrowSize
             val size = IntSize(
               width = calculatedWidth,
               height = coordinates.size.height,

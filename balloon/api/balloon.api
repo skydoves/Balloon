@@ -251,6 +251,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun getMarginTop ()I
 	public final fun getMaxWidth ()I
 	public final fun getMaxWidthRatio ()F
+	public final fun getMeasuredWidth ()I
 	public final fun getMinWidth ()I
 	public final fun getMinWidthRatio ()F
 	public final fun getMovementMethod ()Landroid/text/method/MovementMethod;
@@ -450,6 +451,8 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun setMaxWidthRatio (F)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setMaxWidthRatio (F)V
 	public final fun setMaxWidthResource (I)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setMeasuredWidth (I)Lcom/skydoves/balloon/Balloon$Builder;
+	public final synthetic fun setMeasuredWidth (I)V
 	public final fun setMinWidth (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setMinWidth (I)V
 	public final fun setMinWidthRatio (F)Lcom/skydoves/balloon/Balloon$Builder;

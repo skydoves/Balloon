@@ -16,12 +16,15 @@
 
 package com.skydoves.balloon.internals
 
+import com.skydoves.balloon.annotations.InternalBalloonApi
+
 /** definition of the non-value of Int type. */
 @get:JvmSynthetic
 internal const val NO_INT_VALUE: Int = Int.MIN_VALUE
 
 /** definition of the non-value of Float type. */
 @get:JvmSynthetic
+@InternalBalloonApi
 internal const val NO_Float_VALUE: Float = 0f
 
 /** definition of the non-value of Long type. */
