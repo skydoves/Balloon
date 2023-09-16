@@ -40,6 +40,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
@@ -109,34 +111,41 @@ public fun Balloon(
       remember { with(density) { (builder.paddingLeft + builder.marginLeft).toDp() } }
     val paddingEnd =
       remember { with(density) { (builder.paddingRight + builder.marginRight).toDp() } }
-    Box(
-      modifier = Modifier
-        .alpha(0f)
-        .padding(start = paddingStart, end = paddingEnd)
-        .onGloballyPositioned { coordinates ->
-          val originalSize = coordinates.size
-          val padding = builder.paddingLeft + builder.paddingRight
-          val margin = builder.marginLeft + builder.marginRight
-          val space = padding + margin + builder.arrowSize
-          val calculatedWidth = if (originalSize.width + space > screenWidth) {
-            screenWidth - space
-          } else {
-            originalSize.width
-          }
-          val size = IntSize(
-            width = calculatedWidth,
-            height = coordinates.size.height,
-          )
-          balloonComposeView.updateSizeOfBalloonCard(size)
-          balloonComposeView.balloonLayoutInfo.value = BalloonLayoutInfo(
-            x = coordinates.positionInWindow().x,
-            y = coordinates.positionInWindow().y,
-            width = size.width,
-            height = size.height,
-          )
-        },
+    Popup(
+      properties = PopupProperties(
+        dismissOnBackPress = false,
+        dismissOnClickOutside = false,
+      ),
     ) {
-      balloonContent?.invoke()
+      Box(
+        modifier = Modifier
+          .alpha(0f)
+          .padding(start = paddingStart, end = paddingEnd)
+          .onGloballyPositioned { coordinates ->
+            val originalSize = coordinates.size
+            val padding = builder.paddingLeft + builder.paddingRight
+            val margin = builder.marginLeft + builder.marginRight
+            val space = padding + margin + builder.arrowSize
+            val calculatedWidth = if (originalSize.width + space > screenWidth) {
+              screenWidth - space
+            } else {
+              originalSize.width
+            }
+            val size = IntSize(
+              width = calculatedWidth,
+              height = coordinates.size.height,
+            )
+            balloonComposeView.updateSizeOfBalloonCard(size)
+            balloonComposeView.balloonLayoutInfo.value = BalloonLayoutInfo(
+              x = coordinates.positionInWindow().x,
+              y = coordinates.positionInWindow().y,
+              width = size.width,
+              height = size.height,
+            )
+          },
+      ) {
+        balloonContent?.invoke()
+      }
     }
   }
 
