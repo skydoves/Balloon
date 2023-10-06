@@ -132,7 +132,7 @@ public fun Balloon(
               screenWidth
             } else {
               originalSize.width
-            } - builder.arrowSize
+            }
             val size = IntSize(
               width = calculatedWidth,
               height = coordinates.size.height,
