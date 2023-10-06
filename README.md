@@ -25,7 +25,7 @@
 ## Who's using Balloon?
 **👉 [Check out who's using Balloon](/usecases.md)**
 
-Balloon hits **+300,000 downloads every month** around the globe! :balloon:
+Balloon hits **+500,000 downloads every month** around the globe! :balloon:
 
 ![globe](https://user-images.githubusercontent.com/24237865/196018576-a9c87534-81a2-4618-8519-0024b67964bf.png)
 
