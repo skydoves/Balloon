@@ -2427,6 +2427,7 @@ public class Balloon private constructor(
     /** sets the arrow orientation using [ArrowOrientation]. */
     public fun setArrowOrientation(value: ArrowOrientation): Builder = apply {
       this.arrowOrientation = value
+      this.arrowOrientationRules = ArrowOrientationRules.ALIGN_FIXED
     }
 
     /**
