@@ -42,6 +42,7 @@ internal fun TextView.applyTextForm(textForm: TextForm) {
   gravity = textForm.textGravity
   setTextColor(textForm.textColor)
   textForm.textLineSpacing?.let { setLineSpacing(it, 1.0f) }
+  textForm.textLetterSpacing?.let { letterSpacing = it }
   textForm.textTypeface?.let { typeface = it } ?: setTypeface(typeface, textForm.textStyle)
   textForm.movementMethod?.let { movementMethod = it }
 }

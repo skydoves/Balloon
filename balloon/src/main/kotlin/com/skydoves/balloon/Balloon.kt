@@ -615,6 +615,7 @@ public class Balloon private constructor(
           setTextTypeface(builder.textTypeface)
           setTextTypeface(builder.textTypefaceObject)
           setTextLineSpacing(builder.textLineSpacing)
+          setTextLetterSpacing(builder.textLetterSpacing)
           setMovementMethod(builder.movementMethod)
         },
       )
@@ -1948,6 +1949,9 @@ public class Balloon private constructor(
     public var textLineSpacing: Float? = null
 
     @set:JvmSynthetic
+    public var textLetterSpacing: Float? = null
+
+    @set:JvmSynthetic
     public var textGravity: Int = Gravity.CENTER
 
     @set:JvmSynthetic
@@ -2588,9 +2592,18 @@ public class Balloon private constructor(
     public fun setTextLineSpacing(@Dp value: Float): Builder =
       apply { this.textLineSpacing = value }
 
+    /** sets the letter spacing value of the text. */
+    public fun setTextLetterSpacing(@Dp value: Float): Builder =
+      apply { this.textLetterSpacing = value }
+
     /** sets the line spacing value resource of the text. */
     public fun setTextLineSpacingResource(@DimenRes value: Int): Builder = apply {
       this.textLineSpacing = context.dimen(value)
+    }
+
+    /** sets the letter spacing value resource of the text. */
+    public fun setTextLetterSpacingResource(@DimenRes value: Int): Builder = apply {
+      this.textLetterSpacing = context.dimen(value)
     }
 
     /**
