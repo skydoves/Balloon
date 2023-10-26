@@ -14,9 +14,14 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/background">
+
+<androidx.constraintlayout.widget.ConstraintLayout
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:background="@color/background">
@@ -194,10 +199,11 @@
   <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/recyclerView"
     android:layout_width="0dp"
-    android:layout_height="0dp"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:overScrollMode="never"
     android:padding="8dp"
+    android:nestedScrollingEnabled="true"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
     app:layout_constraintEnd_toEndOf="parent"
@@ -220,3 +226,5 @@
     app:layout_constraintTop_toBottomOf="@id/recyclerView"
     app:menu="@menu/menus" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

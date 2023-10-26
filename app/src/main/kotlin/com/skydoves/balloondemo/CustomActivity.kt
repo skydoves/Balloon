@@ -53,6 +53,7 @@ class CustomActivity : AppCompatActivity(), CustomAdapter.CustomViewHolder.Deleg
       tabLayout.addTab(tabLayout.newTab().setText("Contents"))
 
       recyclerView.adapter = adapter
+      recyclerView.setHasFixedSize(true)
       adapter.addItems(ItemUtils.getSamples(this@CustomActivity))
 
       // gets customListBalloon's recyclerView.
