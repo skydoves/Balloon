@@ -35,7 +35,7 @@ jobs:
     steps:
 
       # Checks your code out on the machine
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # Sets java up
       - uses: actions/setup-java@v3
