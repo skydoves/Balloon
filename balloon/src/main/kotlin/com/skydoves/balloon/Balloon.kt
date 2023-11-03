@@ -1952,6 +1952,9 @@ public class Balloon private constructor(
     public var textLetterSpacing: Float? = null
 
     @set:JvmSynthetic
+    public var includeFontPadding: Boolean = true
+
+    @set:JvmSynthetic
     public var textGravity: Int = Gravity.CENTER
 
     @set:JvmSynthetic
@@ -2604,6 +2607,11 @@ public class Balloon private constructor(
     /** sets the letter spacing value resource of the text. */
     public fun setTextLetterSpacingResource(@DimenRes value: Int): Builder = apply {
       this.textLetterSpacing = context.dimen(value)
+    }
+
+    /** includes the font paddings of the text. */
+    public fun setIncludeFontPadding(value: Boolean): Builder = apply {
+      this.includeFontPadding = value
     }
 
     /**
