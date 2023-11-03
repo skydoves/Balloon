@@ -917,7 +917,9 @@ public class Balloon private constructor(
     balloon: Balloon,
     crossinline block: (balloon: Balloon) -> Unit,
   ): Balloon {
+    val previousListener = balloon.builder.onBalloonDismissListener
     this.setOnBalloonDismissListener {
+      previousListener?.onBalloonDismiss()
       if (!destroyed) {
         block(balloon)
       }
@@ -3074,8 +3076,10 @@ public class Balloon private constructor(
             deferred += async {
               suspendCancellableCoroutine { cont ->
                 balloon.show(placement)
+                val previousListener = balloon.builder.onBalloonDismissListener
                 balloon.setOnBalloonDismissListener {
                   cont.resume(Unit)
+                  previousListener?.onBalloonDismiss()
                   if (!group.dismissSequentially) {
                     group.balloons.forEach { it.balloon.dismiss() }
                   }
