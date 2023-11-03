@@ -241,6 +241,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun getIconHeight ()I
 	public final fun getIconSpace ()I
 	public final fun getIconWidth ()I
+	public final fun getIncludeFontPadding ()Z
 	public final fun getLayout ()Landroid/view/View;
 	public final fun getLayoutRes ()Ljava/lang/Integer;
 	public final fun getLifecycleObserver ()Landroidx/lifecycle/LifecycleObserver;
@@ -415,6 +416,8 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun setIconWidth (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setIconWidth (I)V
 	public final fun setIconWidthResource (I)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setIncludeFontPadding (Z)Lcom/skydoves/balloon/Balloon$Builder;
+	public final synthetic fun setIncludeFontPadding (Z)V
 	public final fun setIsAttachedInDecor (Z)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setIsComposableContent (Z)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setIsStatusBarVisible (Z)Lcom/skydoves/balloon/Balloon$Builder;
@@ -823,6 +826,7 @@ public final class com/skydoves/balloon/PlacementType : java/lang/Enum {
 
 public final class com/skydoves/balloon/TextForm {
 	public synthetic fun <init> (Lcom/skydoves/balloon/TextForm$Builder;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getIncludeFontPadding ()Z
 	public final fun getMovementMethod ()Landroid/text/method/MovementMethod;
 	public final fun getText ()Ljava/lang/CharSequence;
 	public final fun getTextColor ()I
@@ -839,6 +843,7 @@ public final class com/skydoves/balloon/TextForm$Builder {
 	public fun <init> (Landroid/content/Context;)V
 	public final fun build ()Lcom/skydoves/balloon/TextForm;
 	public final fun getContext ()Landroid/content/Context;
+	public final fun getIncludeFontPadding ()Z
 	public final fun getMovementMethod ()Landroid/text/method/MovementMethod;
 	public final fun getText ()Ljava/lang/CharSequence;
 	public final fun getTextColor ()I
@@ -849,6 +854,8 @@ public final class com/skydoves/balloon/TextForm$Builder {
 	public final fun getTextSize ()F
 	public final fun getTextTypeface ()I
 	public final fun getTextTypefaceObject ()Landroid/graphics/Typeface;
+	public final fun setIncludeFontPadding (Z)Lcom/skydoves/balloon/TextForm$Builder;
+	public final synthetic fun setIncludeFontPadding (Z)V
 	public final fun setMovementMethod (Landroid/text/method/MovementMethod;)Lcom/skydoves/balloon/TextForm$Builder;
 	public final synthetic fun setMovementMethod (Landroid/text/method/MovementMethod;)V
 	public final fun setText (Ljava/lang/CharSequence;)Lcom/skydoves/balloon/TextForm$Builder;

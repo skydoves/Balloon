@@ -74,6 +74,8 @@ public class TextForm private constructor(
 
   public val textLineSpacing: Float? = builder.textLineSpacing
 
+  public val includeFontPadding: Boolean = builder.includeFontPadding
+
   public val textLetterSpacing: Float? = builder.textLetterSpacing
 
   public val textGravity: Int = builder.textGravity
@@ -106,6 +108,9 @@ public class TextForm private constructor(
 
     @set:JvmSynthetic
     public var textLineSpacing: Float? = null
+
+    @set:JvmSynthetic
+    public var includeFontPadding: Boolean = true
 
     @set:JvmSynthetic
     public var textLetterSpacing: Float? = null
@@ -152,6 +157,10 @@ public class TextForm private constructor(
     /** sets the letter spacing value of the text. */
     public fun setTextLetterSpacing(@Dp value: Float?): Builder =
       apply { this.textLetterSpacing = value }
+
+    /** includes the font paddings of the text. */
+    public fun setIncludeFontPadding(value: Boolean): Builder =
+      apply { this.includeFontPadding = value }
 
     /** sets the line spacing value resource of the text. */
     public fun setTextLineSpacingResource(@DimenRes value: Int): Builder = apply {
