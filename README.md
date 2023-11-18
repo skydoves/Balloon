@@ -41,9 +41,9 @@ If you want to use Balloon in your Jetpack Compose project, check out the **[Bal
 ### Gradle
 Add the dependency below to your **module**'s `build.gradle` file:
 
-```gradle
+```kotlin
 dependencies {
-    implementation "com.github.skydoves:balloon:1.6.2"
+    implementation("com.github.skydoves:balloon:1.6.3")
 }
 ```
 
@@ -57,16 +57,16 @@ dependencies {
 Snapshots of the current development version of Balloon are available, which track [the latest versions](https://oss.sonatype.org/content/repositories/snapshots/com/github/skydoves/balloon/).
 
 To import snapshot versions on your project, add the code snippet below on your gradle file.
-```Gradle
+```kotlin
 repositories {
-   maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+   maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
 }
 ```
 
 Next, add the below dependency to your **module**'s `build.gradle` file.
-```gradle
+```kotlin
 dependencies {
-    implementation "com.github.skydoves:balloon:1.6.3-SNAPSHOT"
+    implementation("com.github.skydoves:balloon:1.6.4-SNAPSHOT")
 }
 ```
 
