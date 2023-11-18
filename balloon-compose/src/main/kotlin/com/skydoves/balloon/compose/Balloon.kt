@@ -37,7 +37,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -113,10 +112,6 @@ public fun Balloon(
     val paddingEnd =
       remember { with(density) { (builder.paddingRight + builder.marginRight).toDp() } }
     Popup(
-      offset = IntOffset(
-        Int.MAX_VALUE,
-        Int.MAX_VALUE,
-      ),
       properties = PopupProperties(
         dismissOnBackPress = false,
         dismissOnClickOutside = false,
