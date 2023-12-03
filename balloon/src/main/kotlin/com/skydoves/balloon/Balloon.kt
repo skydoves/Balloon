@@ -673,7 +673,7 @@ public class Balloon private constructor(
 
         BalloonAnimation.FADE -> bodyWindow.animationStyle = R.style.Balloon_Fade_Anim
         BalloonAnimation.OVERSHOOT -> bodyWindow.animationStyle = R.style.Balloon_Overshoot_Anim
-        BalloonAnimation.NONE -> bodyWindow.animationStyle = R.style.Balloon_Normal_Anim
+        BalloonAnimation.NONE -> bodyWindow.animationStyle = R.style.Balloon_None_Anim
       }
     } else {
       bodyWindow.animationStyle = builder.balloonAnimationStyle
