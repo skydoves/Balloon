@@ -16,6 +16,11 @@
 -->
 <resources>
 
+  <style name="Balloon_None_Anim">
+    <item name="android:windowEnterAnimation">@anim/balloon_none_in</item>
+    <item name="android:windowExitAnimation">@anim/balloon_none_out</item>
+  </style>
+
   <style name="Balloon_Normal_Anim">
     <item name="android:windowEnterAnimation">@anim/balloon_show_up_center</item>
     <item name="android:windowExitAnimation">@anim/balloon_show_down_center</item>
