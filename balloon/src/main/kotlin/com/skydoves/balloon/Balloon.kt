@@ -477,6 +477,17 @@ public class Balloon private constructor(
           else -> {
             val position =
               (anchor.width) * builder.arrowPosition + anchorX - balloonX - builder.arrowHalfSize
+
+            val tipArrowPosition = anchorX + (anchor.width) * builder.arrowPosition
+            if ((tipArrowPosition - builder.arrowHalfSize) <= balloonX) {
+              return 0.0f // + builder.cornerRadius
+            }
+            if ((tipArrowPosition - builder.arrowHalfSize) > balloonX) {
+              if (anchor.width <= getMeasuredWidth() - builder.marginRight - builder.marginLeft) {
+                return tipArrowPosition - builder.arrowHalfSize - balloonX
+              }
+            }
+
             when {
               position <= getDoubleArrowSize() -> minPosition
               position > getMeasuredWidth() - getDoubleArrowSize() -> maxPosition
