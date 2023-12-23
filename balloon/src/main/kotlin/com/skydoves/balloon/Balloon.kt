@@ -1603,7 +1603,9 @@ public class Balloon private constructor(
             return true
           }
           if (event.action == MotionEvent.ACTION_UP) {
-            if (binding.balloonWrapper.getViewPointOnScreen().x > event.rawX) {
+            if (binding.balloonWrapper.getViewPointOnScreen().x > event.rawX ||
+              binding.balloonWrapper.getViewPointOnScreen().x + binding.balloonWrapper.measuredWidth < event.rawX
+            ) {
               if (builder.dismissWhenTouchOutside) {
                 this@Balloon.dismiss()
               }
