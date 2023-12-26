@@ -1602,7 +1602,7 @@ public class Balloon private constructor(
             onBalloonOutsideTouchListener?.onBalloonOutsideTouch(view, event)
             return true
           }
-          if (event.action == MotionEvent.ACTION_UP) {
+          if (builder.dismissWhenTouchMargin && event.action == MotionEvent.ACTION_UP) {
             if (binding.balloonWrapper.getViewPointOnScreen().x > event.rawX ||
               (
                 binding.balloonWrapper.getViewPointOnScreen().x +
@@ -2076,6 +2076,9 @@ public class Balloon private constructor(
 
     @set:JvmSynthetic
     public var dismissWhenTouchOutside: Boolean = true
+
+    @set:JvmSynthetic
+    public var dismissWhenTouchMargin: Boolean = true
 
     @set:JvmSynthetic
     public var dismissWhenShowAgain: Boolean = false
@@ -2949,6 +2952,11 @@ public class Balloon private constructor(
       if (!value) {
         setFocusable(value)
       }
+    }
+
+    /** dismisses when touch margin of the popup. */
+    public fun setDismissWhenTouchMargin(value: Boolean): Builder = apply {
+      this.dismissWhenTouchMargin = value
     }
 
     /** sets a [View.OnTouchListener] to the overlay popup. */

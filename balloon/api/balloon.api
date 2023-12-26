@@ -230,6 +230,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun getDismissWhenLifecycleOnPause ()Z
 	public final fun getDismissWhenOverlayClicked ()Z
 	public final fun getDismissWhenShowAgain ()Z
+	public final fun getDismissWhenTouchMargin ()Z
 	public final fun getDismissWhenTouchOutside ()Z
 	public final fun getElevation ()F
 	public final fun getHeight ()I
@@ -382,6 +383,8 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final synthetic fun setDismissWhenOverlayClicked (Z)V
 	public final fun setDismissWhenShowAgain (Z)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setDismissWhenShowAgain (Z)V
+	public final fun setDismissWhenTouchMargin (Z)Lcom/skydoves/balloon/Balloon$Builder;
+	public final synthetic fun setDismissWhenTouchMargin (Z)V
 	public final fun setDismissWhenTouchOutside (Z)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setDismissWhenTouchOutside (Z)V
 	public final synthetic fun setElevation (F)V
