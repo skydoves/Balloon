@@ -1602,6 +1602,20 @@ public class Balloon private constructor(
             onBalloonOutsideTouchListener?.onBalloonOutsideTouch(view, event)
             return true
           }
+          if (event.action == MotionEvent.ACTION_UP) {
+            if (binding.balloonWrapper.getViewPointOnScreen().x > event.rawX ||
+              (
+                binding.balloonWrapper.getViewPointOnScreen().x +
+                  binding.balloonWrapper.measuredWidth
+                ) < event.rawX
+            ) {
+              if (builder.dismissWhenTouchOutside) {
+                this@Balloon.dismiss()
+              }
+              onBalloonOutsideTouchListener?.onBalloonOutsideTouch(view, event)
+              return true
+            }
+          }
           return false
         }
       },
