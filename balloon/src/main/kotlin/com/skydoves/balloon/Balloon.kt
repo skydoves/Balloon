@@ -273,40 +273,8 @@ public class Balloon private constructor(
 
         adjustArrowOrientationByRules(anchor)
 
-        when (builder.arrowOrientation.getRTLSupportOrientation(builder.isRtlLayout)) {
-          ArrowOrientation.BOTTOM -> {
-            rotation = 180f
-            x = getArrowConstraintPositionX(anchor)
-            y = binding.balloonCard.y + binding.balloonCard.height - SIZE_ARROW_BOUNDARY
-            ViewCompat.setElevation(this, builder.arrowElevation)
-            runOnAfterSDK23 {
-              foreground = getArrowForeground(x, binding.balloonCard.height.toFloat())
-            }
-          }
+        updateArrow(anchor)
 
-          ArrowOrientation.TOP -> {
-            rotation = 0f
-            x = getArrowConstraintPositionX(anchor)
-            y = binding.balloonCard.y - builder.arrowSize + SIZE_ARROW_BOUNDARY
-            runOnAfterSDK23 { foreground = getArrowForeground(x, 0f) }
-          }
-
-          ArrowOrientation.START -> {
-            rotation = -90f
-            x = binding.balloonCard.x - builder.arrowSize + SIZE_ARROW_BOUNDARY
-            y = getArrowConstraintPositionY(anchor)
-            runOnAfterSDK23 { foreground = getArrowForeground(0f, y) }
-          }
-
-          ArrowOrientation.END -> {
-            rotation = 90f
-            x = binding.balloonCard.x + binding.balloonCard.width - SIZE_ARROW_BOUNDARY
-            y = getArrowConstraintPositionY(anchor)
-            runOnAfterSDK23 {
-              foreground = getArrowForeground(binding.balloonCard.width.toFloat(), y)
-            }
-          }
-        }
         visible(builder.isVisibleArrow)
       }
     }
