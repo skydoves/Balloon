@@ -28,7 +28,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -88,6 +87,8 @@ class ComposeActivity : ComponentActivity() {
             .padding(20.dp)
             .align(Alignment.Center),
           builder = builder,
+          onBalloonWindowInitialized = { balloonWindow1 = it },
+          onComposedAnchor = { balloonWindow1?.showAlignTop() },
           balloonContent = {
             Text(
               text = "Now you can edit your profile1 profile2 profile3 profile4",
@@ -95,11 +96,7 @@ class ComposeActivity : ComponentActivity() {
               color = Color.White,
             )
           },
-        ) { balloonWindow ->
-          LaunchedEffect(key1 = Unit) {
-            balloonWindow1 = balloonWindow
-          }
-
+        ) {
           Button(
             modifier = Modifier.size(160.dp, 60.dp),
             onClick = { balloonWindow1?.showAlignTop() },
@@ -113,6 +110,7 @@ class ComposeActivity : ComponentActivity() {
             .padding(20.dp)
             .align(Alignment.TopStart),
           builder = builder,
+          onBalloonWindowInitialized = { balloonWindow2 = it },
           balloonContent = {
             Text(
               text = "Now you can edit your profile!",
@@ -121,10 +119,6 @@ class ComposeActivity : ComponentActivity() {
             )
           },
         ) { balloonWindow ->
-          LaunchedEffect(key1 = Unit) {
-            balloonWindow2 = balloonWindow
-          }
-
           Button(
             modifier = Modifier.size(160.dp, 60.dp),
             onClick = { balloonWindow2?.showAlignTop() },
@@ -138,6 +132,7 @@ class ComposeActivity : ComponentActivity() {
             .padding(20.dp)
             .align(Alignment.TopEnd),
           builder = builder,
+          onBalloonWindowInitialized = { balloonWindow3 = it },
           balloonContent = {
             Box(modifier = Modifier.fillMaxWidth()) {
               Box(
@@ -162,10 +157,6 @@ class ComposeActivity : ComponentActivity() {
             }
           },
         ) { balloonWindow ->
-          LaunchedEffect(key1 = Unit) {
-            balloonWindow3 = balloonWindow
-          }
-
           Button(
             modifier = Modifier.size(160.dp, 60.dp),
             onClick = { balloonWindow3?.showAlignBottom() },
