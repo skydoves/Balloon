@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCompositionContext
@@ -68,6 +69,8 @@ public fun Balloon(
   modifier: Modifier = Modifier,
   builder: Balloon.Builder,
   key: Any? = null,
+  onComposedAnchor: (ComposeView) -> Unit = {},
+  onBalloonWindowInitialized: (BalloonWindow) -> Unit = {},
   balloonContent: (@Composable () -> Unit)? = null,
   content: @Composable (BalloonWindow) -> Unit,
 ) {
@@ -78,6 +81,8 @@ public fun Balloon(
       composeView.setViewTreeLifecycleOwner(view.findViewTreeLifecycleOwner())
       composeView.setViewTreeViewModelStoreOwner(view.findViewTreeViewModelStoreOwner())
       composeView.setViewTreeSavedStateRegistryOwner(view.findViewTreeSavedStateRegistryOwner())
+    }.apply {
+      post { onComposedAnchor.invoke(this) }
     }
   }
   val compositionContext = rememberCompositionContext()
@@ -101,6 +106,10 @@ public fun Balloon(
         }
       }
     }
+  }
+
+  LaunchedEffect(Unit) {
+    onBalloonWindowInitialized.invoke(balloonComposeView)
   }
 
   if (isComposableContent && balloonComposeView.balloonLayoutInfo.value == null) {
