@@ -1467,6 +1467,87 @@ public class Balloon private constructor(
   }
 
   /**
+   * Update the balloon on a given new [anchor] as the top alignment with x-off and y-off.
+   *
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  @JvmOverloads
+  public fun updateAlignTop(anchor: View, xOff: Int = 0, yOff: Int = 0) {
+    update(BalloonPlacement(anchor = anchor, align = BalloonAlign.TOP, xOff = xOff, yOff = yOff))
+  }
+
+  /**
+   * Update the balloon on a given new [anchor] as the bottom alignment with x-off and y-off.
+   *
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  @JvmOverloads
+  public fun updateAlignBottom(anchor: View, xOff: Int = 0, yOff: Int = 0) {
+    update(BalloonPlacement(anchor = anchor, align = BalloonAlign.BOTTOM, xOff = xOff, yOff = yOff))
+  }
+
+  /**
+   * Update the balloon on a given new [anchor] as the end alignment with x-off and y-off.
+   *
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  @JvmOverloads
+  public fun updateAlignEnd(anchor: View, xOff: Int = 0, yOff: Int = 0) {
+    update(BalloonPlacement(anchor = anchor, align = BalloonAlign.END, xOff = xOff, yOff = yOff))
+  }
+
+  /**
+   * Update the balloon on a given new [anchor] as the start alignment with x-off and y-off.
+   *
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  @JvmOverloads
+  public fun updateAlignStart(anchor: View, xOff: Int = 0, yOff: Int = 0) {
+    update(BalloonPlacement(anchor = anchor, align = BalloonAlign.START, xOff = xOff, yOff = yOff))
+  }
+
+  /**
+   * Update the balloon on a given new [anchor] as the bottom alignment with x-off and y-off.
+   *
+   * @param align Decides where the balloon should be placed.
+   * @param anchor A target view which popup will be shown to.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  @JvmOverloads
+  public fun updateAlign(align: BalloonAlign, anchor: View, xOff: Int = 0, yOff: Int = 0) {
+    update(BalloonPlacement(anchor = anchor, align = align, xOff = xOff, yOff = yOff))
+  }
+
+  /** updates popup and arrow position of the popup based on the given [placement]. */
+  @MainThread
+  private fun update(placement: BalloonPlacement) {
+    if (isShowing) {
+      initializeArrow(placement.anchor)
+
+      val (xOff, yOff) = calculateOffset(placement)
+      this.bodyWindow.update(
+        placement.anchor,
+        xOff,
+        yOff,
+        getMeasuredWidth(),
+        getMeasuredHeight(),
+      )
+      if (builder.isVisibleOverlay) {
+        overlayBinding.balloonOverlayView.forceInvalidate()
+      }
+    }
+  }
+
+  /**
    * updates popup and arrow position of the popup based on
    * a new target anchor view with additional x-off and y-off.
    *
@@ -1475,22 +1556,12 @@ public class Balloon private constructor(
    * @param yOff A vertical offset from the anchor in pixels.
    */
   @JvmOverloads
+  @Deprecated(
+    "Use updateAlign instead.",
+    replaceWith = ReplaceWith("updateAlign(BalloonAlign.Top, anchor, xOff, yOff)"),
+  )
   public fun update(anchor: View, xOff: Int = 0, yOff: Int = 0) {
-    update(anchor = anchor) {
-      this.bodyWindow.update(anchor, xOff, yOff, getMeasuredWidth(), getMeasuredHeight())
-      if (builder.isVisibleOverlay) {
-        overlayBinding.balloonOverlayView.forceInvalidate()
-      }
-    }
-  }
-
-  /** updates popup and arrow position of the popup based on a new target anchor view. */
-  @MainThread
-  private inline fun update(anchor: View, crossinline block: () -> Unit) {
-    if (isShowing) {
-      initializeArrow(anchor)
-      block()
-    }
+    update(placement = BalloonPlacement(anchor = anchor, xOff = xOff, yOff = yOff))
   }
 
   /** dismiss the popup menu. */

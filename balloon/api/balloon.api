@@ -190,6 +190,26 @@ public final class com/skydoves/balloon/Balloon : androidx/lifecycle/DefaultLife
 	public final fun update (Landroid/view/View;I)V
 	public final fun update (Landroid/view/View;II)V
 	public static synthetic fun update$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public final fun updateAlign (Lcom/skydoves/balloon/BalloonAlign;Landroid/view/View;)V
+	public final fun updateAlign (Lcom/skydoves/balloon/BalloonAlign;Landroid/view/View;I)V
+	public final fun updateAlign (Lcom/skydoves/balloon/BalloonAlign;Landroid/view/View;II)V
+	public static synthetic fun updateAlign$default (Lcom/skydoves/balloon/Balloon;Lcom/skydoves/balloon/BalloonAlign;Landroid/view/View;IIILjava/lang/Object;)V
+	public final fun updateAlignBottom (Landroid/view/View;)V
+	public final fun updateAlignBottom (Landroid/view/View;I)V
+	public final fun updateAlignBottom (Landroid/view/View;II)V
+	public static synthetic fun updateAlignBottom$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public final fun updateAlignEnd (Landroid/view/View;)V
+	public final fun updateAlignEnd (Landroid/view/View;I)V
+	public final fun updateAlignEnd (Landroid/view/View;II)V
+	public static synthetic fun updateAlignEnd$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public final fun updateAlignStart (Landroid/view/View;)V
+	public final fun updateAlignStart (Landroid/view/View;I)V
+	public final fun updateAlignStart (Landroid/view/View;II)V
+	public static synthetic fun updateAlignStart$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public final fun updateAlignTop (Landroid/view/View;)V
+	public final fun updateAlignTop (Landroid/view/View;I)V
+	public final fun updateAlignTop (Landroid/view/View;II)V
+	public static synthetic fun updateAlignTop$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
 	public final fun updateSizeOfBalloonCard (II)V
 }
 

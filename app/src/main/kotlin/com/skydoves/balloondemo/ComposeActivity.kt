@@ -127,7 +127,7 @@ class ComposeActivity : ComponentActivity() {
         ) {
           Button(
             modifier = Modifier.size(160.dp, 60.dp),
-            onClick = { balloonWindow2?.showAlignTop() },
+            onClick = { balloonWindow2?.showAlignBottom() },
           ) {
             Text(text = "wrap balloon")
           }
