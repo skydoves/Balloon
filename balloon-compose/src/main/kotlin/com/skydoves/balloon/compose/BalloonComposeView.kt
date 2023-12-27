@@ -222,6 +222,26 @@ internal class BalloonComposeView(
     yOff: Int,
   ): Balloon = balloon.relayShowAlign(align, balloon, anchorView, xOff, yOff)
 
+  override fun updateAlignTop(xOff: Int, yOff: Int) {
+    balloon.updateAlignTop(anchorView, xOff, yOff)
+  }
+
+  override fun updateAlignBottom(xOff: Int, yOff: Int) {
+    balloon.updateAlignBottom(anchorView, xOff, yOff)
+  }
+
+  override fun updateAlignEnd(xOff: Int, yOff: Int) {
+    balloon.updateAlignEnd(anchorView, xOff, yOff)
+  }
+
+  override fun updateAlignStart(xOff: Int, yOff: Int) {
+    balloon.updateAlignStart(anchorView, xOff, yOff)
+  }
+
+  override fun updateAlign(align: BalloonAlign, xOff: Int, yOff: Int) {
+    balloon.updateAlign(align, anchorView, xOff, yOff)
+  }
+
   override fun update(xOff: Int, yOff: Int): Unit = balloon.update(anchorView, xOff, yOff)
 
   override fun showAlign(

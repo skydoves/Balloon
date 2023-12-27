@@ -403,6 +403,47 @@ public interface BalloonWindow {
   ): Balloon
 
   /**
+   * Update the balloon on an [anchorView] as the top alignment with x-off and y-off.
+   *
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  public fun updateAlignTop(xOff: Int = 0, yOff: Int = 0)
+
+  /**
+   * Update the balloon on an [anchorView] as the bottom alignment with x-off and y-off.
+   *
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  public fun updateAlignBottom(xOff: Int = 0, yOff: Int = 0)
+
+  /**
+   * Update the balloon on an [anchorView] as the end alignment with x-off and y-off.
+   *
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  public fun updateAlignEnd(xOff: Int = 0, yOff: Int = 0)
+
+  /**
+   * Update the balloon on an [anchorView] as the start alignment with x-off and y-off.
+   *
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  public fun updateAlignStart(xOff: Int = 0, yOff: Int = 0)
+
+  /**
+   * Update the balloon on an [anchorView] as the bottom alignment with x-off and y-off.
+   *
+   * @param align Decides where the balloon should be placed.
+   * @param xOff A horizontal offset from the anchor in pixels.
+   * @param yOff A vertical offset from the anchor in pixels.
+   */
+  public fun updateAlign(align: BalloonAlign, xOff: Int = 0, yOff: Int = 0)
+
+  /**
    * updates popup and arrow position of the popup based on
    * a new target anchor view with additional x-off and y-off.
    *
