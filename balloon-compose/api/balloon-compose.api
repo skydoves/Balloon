@@ -86,6 +86,11 @@ public abstract interface class com/skydoves/balloon/compose/BalloonWindow {
 	public abstract fun showAsDropDown (II)V
 	public abstract fun showAtCenter (IILcom/skydoves/balloon/BalloonCenterAlign;)V
 	public abstract fun update (II)V
+	public abstract fun updateAlign (Lcom/skydoves/balloon/BalloonAlign;II)V
+	public abstract fun updateAlignBottom (II)V
+	public abstract fun updateAlignEnd (II)V
+	public abstract fun updateAlignStart (II)V
+	public abstract fun updateAlignTop (II)V
 	public abstract fun updateSizeOfBalloonCard (II)V
 }
 
@@ -116,6 +121,11 @@ public final class com/skydoves/balloon/compose/BalloonWindow$DefaultImpls {
 	public static synthetic fun showAsDropDown$default (Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
 	public static synthetic fun showAtCenter$default (Lcom/skydoves/balloon/compose/BalloonWindow;IILcom/skydoves/balloon/BalloonCenterAlign;ILjava/lang/Object;)V
 	public static synthetic fun update$default (Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
+	public static synthetic fun updateAlign$default (Lcom/skydoves/balloon/compose/BalloonWindow;Lcom/skydoves/balloon/BalloonAlign;IIILjava/lang/Object;)V
+	public static synthetic fun updateAlignBottom$default (Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
+	public static synthetic fun updateAlignEnd$default (Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
+	public static synthetic fun updateAlignStart$default (Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
+	public static synthetic fun updateAlignTop$default (Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
 }
 
 public final class com/skydoves/balloon/compose/ComposableSingletons$BalloonComposeViewKt {
