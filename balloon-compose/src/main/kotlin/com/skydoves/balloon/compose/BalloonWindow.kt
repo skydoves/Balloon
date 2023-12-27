@@ -19,6 +19,7 @@ package com.skydoves.balloon.compose
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.Stable
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.ArrowOrientationRules
 import com.skydoves.balloon.Balloon
@@ -36,9 +37,10 @@ import com.skydoves.balloon.showAlignTop
 import com.skydoves.balloon.showAsDropDown
 import com.skydoves.balloon.showAtCenter
 
-/**
+/**qw
  * BalloonWindow is an interface that define all executable behaviors of the balloon's window.
  */
+@Stable
 public interface BalloonWindow {
 
   public val anchorView: View

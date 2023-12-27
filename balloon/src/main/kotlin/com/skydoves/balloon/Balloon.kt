@@ -806,10 +806,8 @@ public class Balloon private constructor(
           measureTextWidth(binding.balloonText, binding.balloonCard)
         }
         this.binding.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-        if (!builder.isComposableContent) {
-          this.bodyWindow.width = getMeasuredWidth()
-          this.bodyWindow.height = getMeasuredHeight()
-        }
+        this.bodyWindow.width = getMeasuredWidth()
+        this.bodyWindow.height = getMeasuredHeight()
         this.binding.balloonText.layoutParams = FrameLayout.LayoutParams(
           FrameLayout.LayoutParams.MATCH_PARENT,
           FrameLayout.LayoutParams.MATCH_PARENT,
