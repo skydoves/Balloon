@@ -43,7 +43,7 @@ Add the dependency below to your **module**'s `build.gradle` file:
 
 ```kotlin
 dependencies {
-    implementation("com.github.skydoves:balloon:1.6.3")
+    implementation("com.github.skydoves:balloon:1.6.4")
 }
 ```
 
@@ -66,7 +66,7 @@ repositories {
 Next, add the below dependency to your **module**'s `build.gradle` file.
 ```kotlin
 dependencies {
-    implementation("com.github.skydoves:balloon:1.6.4-SNAPSHOT")
+    implementation("com.github.skydoves:balloon:1.6.5-SNAPSHOT")
 }
 ```
 
