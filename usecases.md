@@ -32,10 +32,6 @@ If your project uses Balloon, let me know by creating a new issue or PR! 🤗
 
 <img src="https://user-images.githubusercontent.com/24237865/134317734-b085c662-72a4-40e0-af77-8cc87ce79451.png" width="19%">
 
-## [heydealer](https://play.google.com/store/apps/details?id=kr.perfectree.heydealer&hl=ko&gl=US)
-
-<img src="https://user-images.githubusercontent.com/24237865/134317950-4cf6480b-c88e-4d65-99b6-350d77e5433f.png" width="19%">
-
 ## [INDmoney](https://play.google.com/store/apps/details?id=in.indwealth&hl=ko&gl=US)
 
 <img src="https://user-images.githubusercontent.com/24237865/148674155-7583307b-8c0b-4cdd-83e0-2c45548a0a76.png" width="32%">
@@ -43,6 +39,18 @@ If your project uses Balloon, let me know by creating a new issue or PR! 🤗
 ## [c6Bank](https://play.google.com/store/apps/details?id=com.c6bank.app)
 
 <img src="https://user-images.githubusercontent.com/24237865/165957064-7ea8f095-00f9-410d-8a3a-47aed7669590.png" width="33%">
+
+## [heydealer](https://play.google.com/store/apps/details?id=kr.perfectree.heydealer&hl=ko&gl=US)
+
+<img src="https://user-images.githubusercontent.com/24237865/134317950-4cf6480b-c88e-4d65-99b6-350d77e5433f.png" width="19%">
+
+## [UPbit](https://play.google.com/store/apps/details?id=com.dunamu.exchange&gl=us)
+
+<img src="https://github.com/skydoves/Balloon/assets/24237865/bb9f8d39-d885-4095-aed8-f7fa9625dcd2" width="21%">
+
+## [firfin](https://play.google.com/store/apps/details?id=family.firfin.app&gl=us)
+
+<img src="https://github.com/skydoves/Balloon/assets/24237865/383a41e9-9a54-41a3-a59f-05c7413f09fd" width="21%">
 
 ## [muzmatch](https://play.google.com/store/apps/details?id=com.muzmatch.muzmatchapp&hl=ko&gl=US)
 
