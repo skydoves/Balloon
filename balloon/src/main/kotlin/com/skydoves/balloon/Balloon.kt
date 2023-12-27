@@ -177,6 +177,10 @@ public class Balloon private constructor(
     ViewGroup.LayoutParams.MATCH_PARENT,
   )
 
+  /** Denotes the align of the currently displaying balloon. */
+  public var currentAlign: BalloonAlign? = null
+    private set
+
   /** Denotes the popup is showing or not. */
   public var isShowing: Boolean = false
     private set
@@ -269,41 +273,48 @@ public class Balloon private constructor(
 
         adjustArrowOrientationByRules(anchor)
 
-        when (builder.arrowOrientation.getRTLSupportOrientation(builder.isRtlLayout)) {
-          ArrowOrientation.BOTTOM -> {
-            rotation = 180f
-            x = getArrowConstraintPositionX(anchor)
-            y = binding.balloonCard.y + binding.balloonCard.height - SIZE_ARROW_BOUNDARY
-            ViewCompat.setElevation(this, builder.arrowElevation)
-            runOnAfterSDK23 {
-              foreground = getArrowForeground(x, binding.balloonCard.height.toFloat())
-            }
-          }
+        updateArrow(anchor)
 
-          ArrowOrientation.TOP -> {
-            rotation = 0f
-            x = getArrowConstraintPositionX(anchor)
-            y = binding.balloonCard.y - builder.arrowSize + SIZE_ARROW_BOUNDARY
-            runOnAfterSDK23 { foreground = getArrowForeground(x, 0f) }
-          }
+        visible(builder.isVisibleArrow)
+      }
+    }
+  }
 
-          ArrowOrientation.START -> {
-            rotation = -90f
-            x = binding.balloonCard.x - builder.arrowSize + SIZE_ARROW_BOUNDARY
-            y = getArrowConstraintPositionY(anchor)
-            runOnAfterSDK23 { foreground = getArrowForeground(0f, y) }
-          }
-
-          ArrowOrientation.END -> {
-            rotation = 90f
-            x = binding.balloonCard.x + binding.balloonCard.width - SIZE_ARROW_BOUNDARY
-            y = getArrowConstraintPositionY(anchor)
-            runOnAfterSDK23 {
-              foreground = getArrowForeground(binding.balloonCard.width.toFloat(), y)
-            }
+  private fun updateArrow(anchor: View) {
+    with(binding.balloonArrow) {
+      when (builder.arrowOrientation.getRTLSupportOrientation(builder.isRtlLayout)) {
+        ArrowOrientation.BOTTOM -> {
+          rotation = 180f
+          x = getArrowConstraintPositionX(anchor)
+          y = binding.balloonCard.y + binding.balloonCard.height - SIZE_ARROW_BOUNDARY
+          ViewCompat.setElevation(this, builder.arrowElevation)
+          runOnAfterSDK23 {
+            foreground = getArrowForeground(x, binding.balloonCard.height.toFloat())
           }
         }
-        visible(builder.isVisibleArrow)
+
+        ArrowOrientation.TOP -> {
+          rotation = 0f
+          x = getArrowConstraintPositionX(anchor)
+          y = binding.balloonCard.y - builder.arrowSize + SIZE_ARROW_BOUNDARY
+          runOnAfterSDK23 { foreground = getArrowForeground(x, 0f) }
+        }
+
+        ArrowOrientation.START -> {
+          rotation = -90f
+          x = binding.balloonCard.x - builder.arrowSize + SIZE_ARROW_BOUNDARY
+          y = getArrowConstraintPositionY(anchor)
+          runOnAfterSDK23 { foreground = getArrowForeground(0f, y) }
+        }
+
+        ArrowOrientation.END -> {
+          rotation = 90f
+          x = binding.balloonCard.x + binding.balloonCard.width - SIZE_ARROW_BOUNDARY
+          y = getArrowConstraintPositionY(anchor)
+          runOnAfterSDK23 {
+            foreground = getArrowForeground(binding.balloonCard.width.toFloat(), y)
+          }
+        }
       }
     }
   }
@@ -794,6 +805,7 @@ public class Balloon private constructor(
         }
 
         this.isShowing = true
+        this.currentAlign = placement.align
 
         val dismissDelay = this.builder.autoDismissDuration
         if (dismissDelay != NO_LONG_VALUE) {
@@ -1531,7 +1543,7 @@ public class Balloon private constructor(
   @MainThread
   private fun update(placement: BalloonPlacement) {
     if (isShowing) {
-      initializeArrow(placement.anchor)
+      updateArrow(placement.anchor)
 
       val (xOff, yOff) = calculateOffset(placement)
       this.bodyWindow.update(
@@ -1555,13 +1567,15 @@ public class Balloon private constructor(
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    */
-  @JvmOverloads
-  @Deprecated(
-    "Use updateAlign instead.",
-    replaceWith = ReplaceWith("updateAlign(BalloonAlign.Top, anchor, xOff, yOff)"),
-  )
   public fun update(anchor: View, xOff: Int = 0, yOff: Int = 0) {
-    update(placement = BalloonPlacement(anchor = anchor, xOff = xOff, yOff = yOff))
+    update(
+      placement = BalloonPlacement(
+        anchor = anchor,
+        xOff = xOff,
+        yOff = yOff,
+        type = PlacementType.CENTER,
+      ),
+    )
   }
 
   /** dismiss the popup menu. */
@@ -1569,6 +1583,7 @@ public class Balloon private constructor(
     if (this.isShowing) {
       val dismissWindow: () -> Unit = {
         this.isShowing = false
+        this.currentAlign = null
         this.bodyWindow.dismiss()
         this.overlayWindow.dismiss()
         this.handler.removeCallbacks(autoDismissRunnable)

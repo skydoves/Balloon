@@ -90,6 +90,7 @@ public final class com/skydoves/balloon/Balloon : androidx/lifecycle/DefaultLife
 	public final fun getBalloonArrowView ()Landroid/view/View;
 	public final fun getBodyWindow ()Landroid/widget/PopupWindow;
 	public final fun getContentView ()Landroid/view/ViewGroup;
+	public final fun getCurrentAlign ()Lcom/skydoves/balloon/BalloonAlign;
 	public final fun getMeasuredHeight ()I
 	public final fun getMeasuredWidth ()I
 	public final fun getOverlayWindow ()Landroid/widget/PopupWindow;
@@ -186,8 +187,6 @@ public final class com/skydoves/balloon/Balloon : androidx/lifecycle/DefaultLife
 	public final fun showAtCenter (Landroid/view/View;II)V
 	public final fun showAtCenter (Landroid/view/View;IILcom/skydoves/balloon/BalloonCenterAlign;)V
 	public static synthetic fun showAtCenter$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IILcom/skydoves/balloon/BalloonCenterAlign;ILjava/lang/Object;)V
-	public final fun update (Landroid/view/View;)V
-	public final fun update (Landroid/view/View;I)V
 	public final fun update (Landroid/view/View;II)V
 	public static synthetic fun update$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
 	public final fun updateAlign (Lcom/skydoves/balloon/BalloonAlign;Landroid/view/View;)V

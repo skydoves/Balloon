@@ -242,10 +242,6 @@ internal class BalloonComposeView(
     balloon.updateAlign(align, anchorView, xOff, yOff)
   }
 
-  @Deprecated(
-    "Use updateAlign instead.",
-    replaceWith = ReplaceWith("updateAlign(BalloonAlign.Top, xOff, yOff)"),
-  )
   override fun update(xOff: Int, yOff: Int): Unit = balloon.update(anchorView, xOff, yOff)
 
   override fun showAlign(

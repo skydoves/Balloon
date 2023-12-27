@@ -450,10 +450,6 @@ public interface BalloonWindow {
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    */
-  @Deprecated(
-    "Use updateAlign instead.",
-    replaceWith = ReplaceWith("updateAlign(BalloonAlign.Top, xOff, yOff)"),
-  )
   public fun update(xOff: Int = 0, yOff: Int = 0)
 
   /** updates the size of the balloon card. */
