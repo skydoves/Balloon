@@ -61,6 +61,7 @@ android {
 }
 
 baselineProfile {
+  baselineProfileOutputDir = "."
   filter {
     include("com.skydoves.balloon.compose.**")
   }
