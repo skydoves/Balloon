@@ -706,13 +706,13 @@ Add the dependency below to your **module**'s `build.gradle` file:
 
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:balloon-compose:$version"
+    implementation("com.github.skydoves:balloon-compose:$version")
 }
 ```
 
 ### Balloon Composable
 
-You can display tooltips with `Balloon` composable function and `rememberBalloonBuilder` like the below:
+You can create and display tooltips using the `Balloon` composable function along with the `rememberBalloonBuilder`, as demonstrated in the following example:
 
 ```kotlin
 // create and remember a builder of Balloon.
@@ -749,7 +749,7 @@ Balloon(
 
 ### BalloonWindow
 
-`BalloonWindow` is an interface that defines all executable behaviors of the balloon's window, such as showing, dismissing, updating, and setting listeners. You will get an instance of `BalloonWindow` inside of the `content` parameter of `Balloon` composable function like the below:
+`BalloonWindow` is an interface defining all executable behaviors for a balloon's window, including showing, dismissing, updating, and setting up listeners. You can obtain an instance of `BalloonWindow` within the `content` parameter of the `Balloon` composable function, as illustrated in the example below:
 
 ```kotlin
 Balloon(
@@ -772,6 +772,56 @@ Balloon(
   ..
 }
 ```
+
+You can also acquire the `BalloonWindow` by utilizing the `onBalloonWindowInitialized` lambda parameter in the `Balloon` composable. This parameter will be invoked just once when the `BalloonWindow` is fully prepared and ready for use:
+
+```kotlon
+var balloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+
+Balloon(
+  builder = builder,
+  onBalloonWindowInitialized = { balloonWindow = it },
+  balloonContent = {
+    Text(text = "Now you can edit your profile!")
+  },
+) {
+  Button(
+    modifier = Modifier.size(160.dp, 60.dp),
+    onClick = { balloonWindow?.showAlignTop() },
+  ) {
+    Text(text = "showAlignTop")
+  }
+}
+```
+
+The `onBalloonWindowInitialized` lambda paramter is useful when you need to hold an instance of the `BalloonWindow` as a state, and utilize it out of the `Balloon` composable function.
+
+
+### Auto-Display Balloon on Layout Ready
+
+To automatically show a Balloon when your layout is drawn, a common requirement in numerous applications, you can use the `onComposedAnchor` parameter within the `Balloon` composable function.
+
+```kotlin
+var balloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+
+Balloon(
+  builder = builder,
+  onBalloonWindowInitialized = { balloonWindow = it },
+  onComposedAnchor = { balloonWindow?.showAlignTop() },
+  balloonContent = {
+    Text(text = "Now you can edit your profile!")
+  },
+) {
+  Button(
+    modifier = Modifier.size(160.dp, 60.dp),
+    onClick = { balloonWindow?.showAlignTop() },
+  ) {
+    Text(text = "showAlignTop")
+  }
+}
+```
+
+As you can see in the example above, you can use `onComposedAnchor` with the `onBalloonWindowInitialized` lambda to obtain the `BalloonWindow` and display your balloon sequentially after rendering your composable layout.
 
 ### Compose Extensions
 
