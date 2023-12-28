@@ -775,7 +775,7 @@ Balloon(
 
 You can also acquire the `BalloonWindow` by utilizing the `onBalloonWindowInitialized` lambda parameter in the `Balloon` composable. This parameter will be invoked just once when the `BalloonWindow` is fully prepared and ready for use:
 
-```kotlon
+```kotlin
 var balloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
 
 Balloon(
