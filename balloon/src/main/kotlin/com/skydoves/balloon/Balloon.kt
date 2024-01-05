@@ -63,6 +63,7 @@ import androidx.annotation.MainThread
 import androidx.annotation.Px
 import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
+import androidx.compose.runtime.Stable
 import androidx.core.view.ViewCompat
 import androidx.core.view.forEach
 import androidx.core.view.get
@@ -1900,6 +1901,7 @@ public class Balloon private constructor(
   }
 
   /** Builder class for creating [Balloon]. */
+  @Stable
   @BalloonInlineDsl
   public class Builder(private val context: Context) {
     @Px
@@ -3159,6 +3161,7 @@ public class Balloon private constructor(
    *
    * @see [Lazy Initialization](https://github.com/skydoves/Balloon#lazy-initialization)
    */
+  @Stable
   public abstract class Factory {
 
     /**
