@@ -2,7 +2,7 @@
 agp = "8.2.2"
 dokka = "1.9.10"
 kotlin = "1.9.22"
-kotlinBinaryCompatibility = "0.13.2"
+kotlinBinaryCompatibility = "0.14.0"
 jvmTarget = "11"
 nexusPlugin = "0.26.0"
 androidxComposeBom = "2024.01.00"

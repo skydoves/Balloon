@@ -943,12 +943,6 @@ public final class com/skydoves/balloon/animations/BalloonRotateDirection : java
 public abstract interface annotation class com/skydoves/balloon/annotations/InternalBalloonApi : java/lang/annotation/Annotation {
 }
 
-public final class com/skydoves/balloon/extensions/GlobalExtensionKt {
-}
-
-public final class com/skydoves/balloon/extensions/ViewExtensionKt {
-}
-
 public final class com/skydoves/balloon/overlay/BalloonAnchorOverlayView : android/view/View {
 	public fun <init> (Landroid/content/Context;)V
 	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;)V
