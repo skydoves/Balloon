@@ -18,9 +18,7 @@ package com.skydoves.balloon.extensions
 
 import android.app.Activity
 import android.content.Context
-import android.content.ContextWrapper
 import android.graphics.drawable.Drawable
-import androidx.activity.ComponentActivity
 import androidx.annotation.DimenRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
@@ -60,15 +58,3 @@ internal fun Context.contextDrawable(resource: Int): Drawable? {
 internal val Context.isFinishing: Boolean
   @JvmSynthetic inline get() = this is Activity && this.isFinishing
 
-/** returns an activity from a context. */
-@JvmSynthetic
-internal fun Context.getActivity(): ComponentActivity? {
-  var context = this
-  while (context is ContextWrapper) {
-    if (context is ComponentActivity) {
-      return context
-    }
-    context = context.baseContext
-  }
-  return null
-}
