@@ -68,7 +68,7 @@ internal class ViewBalloonLazy<out T : Balloon.Factory>(
                 } else {
                   fragment
                 }
-                instance = factory.create(fragment.requireActivity(), lifecycle)
+                instance = factory.create(fragment.requireContext(), lifecycle)
                 cached = instance
               } else {
                 throw IllegalArgumentException(
