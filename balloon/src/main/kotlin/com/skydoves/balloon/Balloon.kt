@@ -97,7 +97,6 @@ import com.skydoves.balloon.extensions.getSumOfIntrinsicWidth
 import com.skydoves.balloon.extensions.getViewPointOnScreen
 import com.skydoves.balloon.extensions.isAPILevelHigherThan23
 import com.skydoves.balloon.extensions.isExistHorizontalDrawable
-import com.skydoves.balloon.extensions.isFinishing
 import com.skydoves.balloon.extensions.px2Sp
 import com.skydoves.balloon.extensions.runOnAfterSDK22
 import com.skydoves.balloon.extensions.runOnAfterSDK23
@@ -908,13 +907,10 @@ public class Balloon private constructor(
       // If the balloon is already destroyed depending on the lifecycle,
       // We should not allow showing the popupWindow, it's related to `relay()` method. (#46)
       !destroyed &&
-      // We should check the current Activity is running.
-      // If the Activity is finishing, we can't attach the popupWindow to the Activity's window. (#92)
-      !context.isFinishing &&
       // We should check the contentView is already attached to the decorView or backgroundView in the popupWindow.
       // Sometimes there is a concurrency issue between show and dismiss the popupWindow. (#149)
       bodyWindow.contentView.parent == null &&
-      // we should check the anchor view is attached to the parent's window.
+      // we should check the anchor view is attached to the parent's window. (#92)
       ViewCompat.isAttachedToWindow(anchor)
   }
 
