@@ -3,3 +3,4 @@ root = true
 # Most of the standard properties are supported
 indent_size=2
 max_line_length=100
+trim_trailing_whitespace = true

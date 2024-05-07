@@ -1487,8 +1487,23 @@ public class Balloon private constructor(
    * @param yOff A vertical offset from the anchor in pixels.
    */
   @JvmOverloads
-  public fun updateAlignTop(anchor: View, xOff: Int = 0, yOff: Int = 0) {
-    update(BalloonPlacement(anchor = anchor, align = BalloonAlign.TOP, xOff = xOff, yOff = yOff))
+  public fun updateAlignTop(
+    anchor: View,
+    xOff: Int = 0,
+    yOff: Int = 0,
+    width: Int = getMeasuredWidth(),
+    height: Int = getMeasuredHeight(),
+  ) {
+    update(
+      BalloonPlacement(
+        anchor = anchor,
+        align = BalloonAlign.TOP,
+        xOff = xOff,
+        yOff = yOff,
+        width = width,
+        height = height,
+      ),
+    )
   }
 
   /**
@@ -1499,8 +1514,23 @@ public class Balloon private constructor(
    * @param yOff A vertical offset from the anchor in pixels.
    */
   @JvmOverloads
-  public fun updateAlignBottom(anchor: View, xOff: Int = 0, yOff: Int = 0) {
-    update(BalloonPlacement(anchor = anchor, align = BalloonAlign.BOTTOM, xOff = xOff, yOff = yOff))
+  public fun updateAlignBottom(
+    anchor: View,
+    xOff: Int = 0,
+    yOff: Int = 0,
+    width: Int = getMeasuredWidth(),
+    height: Int = getMeasuredHeight(),
+  ) {
+    update(
+      BalloonPlacement(
+        anchor = anchor,
+        align = BalloonAlign.BOTTOM,
+        xOff = xOff,
+        yOff = yOff,
+        width = width,
+        height = height,
+      ),
+    )
   }
 
   /**
@@ -1511,8 +1541,23 @@ public class Balloon private constructor(
    * @param yOff A vertical offset from the anchor in pixels.
    */
   @JvmOverloads
-  public fun updateAlignEnd(anchor: View, xOff: Int = 0, yOff: Int = 0) {
-    update(BalloonPlacement(anchor = anchor, align = BalloonAlign.END, xOff = xOff, yOff = yOff))
+  public fun updateAlignEnd(
+    anchor: View,
+    xOff: Int = 0,
+    yOff: Int = 0,
+    width: Int = getMeasuredWidth(),
+    height: Int = getMeasuredHeight(),
+  ) {
+    update(
+      BalloonPlacement(
+        anchor = anchor,
+        align = BalloonAlign.END,
+        xOff = xOff,
+        yOff = yOff,
+        width = width,
+        height = height,
+      ),
+    )
   }
 
   /**
@@ -1523,8 +1568,23 @@ public class Balloon private constructor(
    * @param yOff A vertical offset from the anchor in pixels.
    */
   @JvmOverloads
-  public fun updateAlignStart(anchor: View, xOff: Int = 0, yOff: Int = 0) {
-    update(BalloonPlacement(anchor = anchor, align = BalloonAlign.START, xOff = xOff, yOff = yOff))
+  public fun updateAlignStart(
+    anchor: View,
+    xOff: Int = 0,
+    yOff: Int = 0,
+    width: Int = getMeasuredWidth(),
+    height: Int = getMeasuredHeight(),
+  ) {
+    update(
+      BalloonPlacement(
+        anchor = anchor,
+        align = BalloonAlign.START,
+        xOff = xOff,
+        yOff = yOff,
+        width = width,
+        height = height,
+      ),
+    )
   }
 
   /**
@@ -1536,8 +1596,24 @@ public class Balloon private constructor(
    * @param yOff A vertical offset from the anchor in pixels.
    */
   @JvmOverloads
-  public fun updateAlign(align: BalloonAlign, anchor: View, xOff: Int = 0, yOff: Int = 0) {
-    update(BalloonPlacement(anchor = anchor, align = align, xOff = xOff, yOff = yOff))
+  public fun updateAlign(
+    align: BalloonAlign,
+    anchor: View,
+    xOff: Int = 0,
+    yOff: Int = 0,
+    width: Int = getMeasuredWidth(),
+    height: Int = getMeasuredHeight(),
+  ) {
+    update(
+      BalloonPlacement(
+        anchor = anchor,
+        align = align,
+        xOff = xOff,
+        yOff = yOff,
+        width = width,
+        height = height,
+      ),
+    )
   }
 
   /** updates popup and arrow position of the popup based on the given [placement]. */
@@ -1551,8 +1627,8 @@ public class Balloon private constructor(
         placement.anchor,
         xOff,
         yOff,
-        getMeasuredWidth(),
-        getMeasuredHeight(),
+        placement.width,
+        placement.height,
       )
       if (builder.isVisibleOverlay) {
         overlayBinding.balloonOverlayView.forceInvalidate()
@@ -1568,13 +1644,21 @@ public class Balloon private constructor(
    * @param xOff A horizontal offset from the anchor in pixels.
    * @param yOff A vertical offset from the anchor in pixels.
    */
-  public fun update(anchor: View, xOff: Int = 0, yOff: Int = 0) {
+  public fun update(
+    anchor: View,
+    xOff: Int = 0,
+    yOff: Int = 0,
+    width: Int = getMeasuredWidth(),
+    height: Int = getMeasuredHeight(),
+  ) {
     update(
       placement = BalloonPlacement(
         anchor = anchor,
         xOff = xOff,
         yOff = yOff,
         type = PlacementType.CENTER,
+        width = width,
+        height = height,
       ),
     )
   }
