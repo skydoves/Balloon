@@ -28,4 +28,6 @@ public data class BalloonPlacement(
   val xOff: Int = 0,
   val yOff: Int = 0,
   val type: PlacementType = PlacementType.ALIGNMENT,
+  val width: Int = 0,
+  val height: Int = 0,
 )
