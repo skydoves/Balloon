@@ -187,28 +187,38 @@ public final class com/skydoves/balloon/Balloon : androidx/lifecycle/DefaultLife
 	public final fun showAtCenter (Landroid/view/View;II)V
 	public final fun showAtCenter (Landroid/view/View;IILcom/skydoves/balloon/BalloonCenterAlign;)V
 	public static synthetic fun showAtCenter$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IILcom/skydoves/balloon/BalloonCenterAlign;ILjava/lang/Object;)V
-	public final fun update (Landroid/view/View;II)V
-	public static synthetic fun update$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public final fun update (Landroid/view/View;IIII)V
+	public static synthetic fun update$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIIIILjava/lang/Object;)V
 	public final fun updateAlign (Lcom/skydoves/balloon/BalloonAlign;Landroid/view/View;)V
 	public final fun updateAlign (Lcom/skydoves/balloon/BalloonAlign;Landroid/view/View;I)V
 	public final fun updateAlign (Lcom/skydoves/balloon/BalloonAlign;Landroid/view/View;II)V
-	public static synthetic fun updateAlign$default (Lcom/skydoves/balloon/Balloon;Lcom/skydoves/balloon/BalloonAlign;Landroid/view/View;IIILjava/lang/Object;)V
+	public final fun updateAlign (Lcom/skydoves/balloon/BalloonAlign;Landroid/view/View;III)V
+	public final fun updateAlign (Lcom/skydoves/balloon/BalloonAlign;Landroid/view/View;IIII)V
+	public static synthetic fun updateAlign$default (Lcom/skydoves/balloon/Balloon;Lcom/skydoves/balloon/BalloonAlign;Landroid/view/View;IIIIILjava/lang/Object;)V
 	public final fun updateAlignBottom (Landroid/view/View;)V
 	public final fun updateAlignBottom (Landroid/view/View;I)V
 	public final fun updateAlignBottom (Landroid/view/View;II)V
-	public static synthetic fun updateAlignBottom$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public final fun updateAlignBottom (Landroid/view/View;III)V
+	public final fun updateAlignBottom (Landroid/view/View;IIII)V
+	public static synthetic fun updateAlignBottom$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIIIILjava/lang/Object;)V
 	public final fun updateAlignEnd (Landroid/view/View;)V
 	public final fun updateAlignEnd (Landroid/view/View;I)V
 	public final fun updateAlignEnd (Landroid/view/View;II)V
-	public static synthetic fun updateAlignEnd$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public final fun updateAlignEnd (Landroid/view/View;III)V
+	public final fun updateAlignEnd (Landroid/view/View;IIII)V
+	public static synthetic fun updateAlignEnd$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIIIILjava/lang/Object;)V
 	public final fun updateAlignStart (Landroid/view/View;)V
 	public final fun updateAlignStart (Landroid/view/View;I)V
 	public final fun updateAlignStart (Landroid/view/View;II)V
-	public static synthetic fun updateAlignStart$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public final fun updateAlignStart (Landroid/view/View;III)V
+	public final fun updateAlignStart (Landroid/view/View;IIII)V
+	public static synthetic fun updateAlignStart$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIIIILjava/lang/Object;)V
 	public final fun updateAlignTop (Landroid/view/View;)V
 	public final fun updateAlignTop (Landroid/view/View;I)V
 	public final fun updateAlignTop (Landroid/view/View;II)V
-	public static synthetic fun updateAlignTop$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public final fun updateAlignTop (Landroid/view/View;III)V
+	public final fun updateAlignTop (Landroid/view/View;IIII)V
+	public static synthetic fun updateAlignTop$default (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIIIILjava/lang/Object;)V
 	public final fun updateSizeOfBalloonCard (II)V
 }
 
@@ -712,21 +722,25 @@ public final class com/skydoves/balloon/BalloonPersistence$Companion {
 }
 
 public final class com/skydoves/balloon/BalloonPlacement {
-	public fun <init> (Landroid/view/View;Ljava/util/List;Lcom/skydoves/balloon/BalloonAlign;IILcom/skydoves/balloon/PlacementType;)V
-	public synthetic fun <init> (Landroid/view/View;Ljava/util/List;Lcom/skydoves/balloon/BalloonAlign;IILcom/skydoves/balloon/PlacementType;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Landroid/view/View;Ljava/util/List;Lcom/skydoves/balloon/BalloonAlign;IILcom/skydoves/balloon/PlacementType;II)V
+	public synthetic fun <init> (Landroid/view/View;Ljava/util/List;Lcom/skydoves/balloon/BalloonAlign;IILcom/skydoves/balloon/PlacementType;IIILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Landroid/view/View;
 	public final fun component2 ()Ljava/util/List;
 	public final fun component3 ()Lcom/skydoves/balloon/BalloonAlign;
 	public final fun component4 ()I
 	public final fun component5 ()I
 	public final fun component6 ()Lcom/skydoves/balloon/PlacementType;
-	public final fun copy (Landroid/view/View;Ljava/util/List;Lcom/skydoves/balloon/BalloonAlign;IILcom/skydoves/balloon/PlacementType;)Lcom/skydoves/balloon/BalloonPlacement;
-	public static synthetic fun copy$default (Lcom/skydoves/balloon/BalloonPlacement;Landroid/view/View;Ljava/util/List;Lcom/skydoves/balloon/BalloonAlign;IILcom/skydoves/balloon/PlacementType;ILjava/lang/Object;)Lcom/skydoves/balloon/BalloonPlacement;
+	public final fun component7 ()I
+	public final fun component8 ()I
+	public final fun copy (Landroid/view/View;Ljava/util/List;Lcom/skydoves/balloon/BalloonAlign;IILcom/skydoves/balloon/PlacementType;II)Lcom/skydoves/balloon/BalloonPlacement;
+	public static synthetic fun copy$default (Lcom/skydoves/balloon/BalloonPlacement;Landroid/view/View;Ljava/util/List;Lcom/skydoves/balloon/BalloonAlign;IILcom/skydoves/balloon/PlacementType;IIILjava/lang/Object;)Lcom/skydoves/balloon/BalloonPlacement;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAlign ()Lcom/skydoves/balloon/BalloonAlign;
 	public final fun getAnchor ()Landroid/view/View;
+	public final fun getHeight ()I
 	public final fun getSubAnchors ()Ljava/util/List;
 	public final fun getType ()Lcom/skydoves/balloon/PlacementType;
+	public final fun getWidth ()I
 	public final fun getXOff ()I
 	public final fun getYOff ()I
 	public fun hashCode ()I
