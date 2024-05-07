@@ -51,7 +51,6 @@ import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.skydoves.balloon.Balloon
-import com.skydoves.balloon.BalloonAlign
 import java.lang.Integer.max
 import java.util.UUID
 
@@ -158,13 +157,6 @@ public fun Balloon(
 
   Box(
     modifier = modifier
-      .onGloballyPositioned {
-        balloonComposeView.updateAlign(
-          align = balloonComposeView.balloon.currentAlign ?: BalloonAlign.BOTTOM,
-          xOff = 0,
-          yOff = 0,
-        )
-      }
       .onSizeChanged {
         anchorView.updateLayoutParams {
           width = it.width
