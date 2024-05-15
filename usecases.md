@@ -6,6 +6,7 @@ If your project uses Balloon, let me know by creating a new issue or PR! 🤗
 <p align="center">
 <img width="33%" src="https://user-images.githubusercontent.com/24237865/148673977-dba2e44c-c2fb-4fb4-a648-e26e8541e865.png" />
 <img width="33%" src="https://user-images.githubusercontent.com/24237865/148674038-62fbbe7f-13a8-41e6-97a5-922d4e1749f2.png" />
+<img width="30.5%" src="https://github.com/skydoves/Balloon/assets/24237865/9bdb738d-38f0-4f29-b419-185e74f21721" />
 </p>
 
 ## [PayPal](https://play.google.com/store/apps/details?id=com.paypal.android.p2pmobile)
@@ -23,6 +24,10 @@ If your project uses Balloon, let me know by creating a new issue or PR! 🤗
 ## [MyJio](https://play.google.com/store/apps/details?id=com.jio.myjio)
 
 <img src="https://user-images.githubusercontent.com/24237865/178970330-9c6509e7-2f18-4a18-b0f7-f335e2bf05ef.png" width="21%">
+
+## [Zepeto](https://play.google.com/store/apps/details?id=me.zepeto.main)
+
+<img src="https://github.com/skydoves/Balloon/assets/24237865/fe297d8d-cfb8-4617-9050-2103219d7c8f" width="21%">
 
 ## [PeduliLindungi](https://play.google.com/store/apps/details?id=com.telkom.tracencare)
 
