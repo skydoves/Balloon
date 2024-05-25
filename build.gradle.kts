@@ -18,6 +18,7 @@ plugins {
   alias(libs.plugins.android.library) apply false
   alias(libs.plugins.kotlin.android) apply false
   alias(libs.plugins.baseline.profile) apply false
+  alias(libs.plugins.compose.compiler) apply false
   alias(libs.plugins.nexus.plugin)
   alias(libs.plugins.spotless)
   alias(libs.plugins.dokka)

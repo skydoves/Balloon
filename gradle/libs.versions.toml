@@ -1,12 +1,11 @@
 [versions]
 agp = "8.4.0"
 dokka = "1.9.20"
-kotlin = "1.9.23"
+kotlin = "2.0.0"
 kotlinBinaryCompatibility = "0.14.0"
 jvmTarget = "11"
 nexusPlugin = "0.26.0"
 androidxComposeBom = "2024.05.00"
-androidxComposeCompiler = "1.5.11"
 androidxComposeConstraintLayout = "1.0.1"
 androidxMaterial = "1.12.0"
 androidxAppcompat = "1.6.1"
@@ -26,6 +25,7 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 android-test = { id = "com.android.test", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 nexus-plugin = { id = "com.vanniktech.maven.publish", version.ref = "nexusPlugin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 baseline-profile = { id = "androidx.baselineprofile", version.ref = "androidxMacroBenchmark" }
