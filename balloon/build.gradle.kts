@@ -73,11 +73,13 @@ baselineProfile {
   }
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-  kotlinOptions.freeCompilerArgs += listOf(
-    "-Xexplicit-api=strict",
-    "-opt-in=com.skydoves.balloon.annotations.InternalBalloonApi",
-  )
+kotlin {
+  compilerOptions {
+    freeCompilerArgs.addAll(
+      "-Xexplicit-api=strict",
+      "-opt-in=com.skydoves.balloon.annotations.InternalBalloonApi",
+    )
+  }
 }
 
 tasks.withType(JavaCompile::class.java).configureEach {
