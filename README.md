@@ -10,7 +10,7 @@
   <a href="https://www.linkedin.com/feed/update/urn:li:activity:6881990083344519168/"><img alt="LinkedIn" src="https://skydoves.github.io/badges/linkedin-developers.svg"/></a><br>
   <a href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"/></a>
   <a href="https://android-arsenal.com/api?level=21"><img alt="API" src="https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat"/></a>
-  <a href="https://github.com/skydoves/Balloon/actions"><img alt="Build Status" src="https://github.com/skydoves/Balloon/workflows/Android%20CI/badge.svg"/></a> 
+  <a href="https://github.com/skydoves/Balloon/actions"><img alt="Build Status" src="https://github.com/skydoves/Balloon/workflows/Android%20CI/badge.svg"/></a>
   <a href="https://medium.com/swlh/a-lightweight-tooltip-popup-for-android-ef9484a992d7"><img alt="Medium" src="https://skydoves.github.io/badges/Story-Medium.svg"/></a>
   <a href="https://github.com/skydoves"><img alt="Profile" src="https://skydoves.github.io/badges/skydoves.svg"/></a>
   <a href="https://skydoves.github.io/libraries/balloon/html/balloon/com.skydoves.balloon/index.html"><img alt="Dokka" src="https://skydoves.github.io/badges/dokka-balloon.svg"/></a>
@@ -43,11 +43,11 @@ Add the dependency below to your **module**'s `build.gradle` file:
 
 ```kotlin
 dependencies {
-    implementation("com.github.skydoves:balloon:1.6.4")
+    implementation("com.github.skydoves:balloon:1.6.5")
 }
 ```
 
-## SNAPSHOT 
+## SNAPSHOT
 [![Balloon](https://img.shields.io/static/v1?label=snapshot&message=balloon&logo=apache%20maven&color=C71A36)](https://oss.sonatype.org/content/repositories/snapshots/com/github/skydoves/balloon/) <br>
 
 <details>
@@ -131,7 +131,7 @@ You can create an instance of the Balloon with Java by using the `Balloon.Builde
 <details>
  <summary>Keep reading for more details</summary>
 
-You can create an instance of the Balloon as the following example below: 
+You can create an instance of the Balloon as the following example below:
 ```java
 Balloon balloon = new Balloon.Builder(context)
     .setArrowSize(10)
@@ -225,7 +225,7 @@ lifecycleScope.launch {
   awaitBalloons {
     // dismissing of any balloon dismisses all of them. Default behaviour
     dismissSequentially = false
-    
+
     textView.alignTop(balloonAlignTop)
     textView.alignStart(balloonAlignStart)
     textView.alignEnd(balloonAlignEnd)
@@ -317,7 +317,7 @@ We can decide the position of the arrow depending on the aligning rules with the
 We can decide the orientation of the arrow depending on the aligning rules with the `ArrowOrientationRules`.<br>
 ```kotlin
 // Align depending on the position of an anchor.
-// For example, `arrowOrientation` is ArrowOrientation.TOP and 
+// For example, `arrowOrientation` is ArrowOrientation.TOP and
 // we want to show up the balloon under an anchor using the `Balloon.showAlignBottom`.
 // However, if there is not enough free space to place the tooltip at the bottom of the anchor,
 // tooltips will be placed top of the anchor and the orientation of the arrow will be `ArrowOrientation.BOTTOM`.
@@ -416,7 +416,7 @@ We can customize the icon on the balloon.
 
 ### IconForm
 `IconForm` has some attributes for `ImageView` to customize the icon of the Balloon. You can create the `IconForm` instance and reuse it on multiple Balloons.
- 
+
 ```kotlin
 val iconForm = IconForm.Builder(context)
   .setDrawable(ContextCompat.getDrawable(context, R.drawable.arrow))
@@ -427,8 +427,8 @@ val iconForm = IconForm.Builder(context)
 
 val balloon = Balloon.Builder(context)
   .setIconForm(iconForm)
-  ...  
-``` 
+  ...
+```
 
 <details>
  <summary>Create IconForm with Kotlin DSL</summary>
@@ -490,7 +490,7 @@ balloon.setOnBalloonClickListener(new OnBalloonClickListener() {
     // doSomething;
   }
 });
-    
+
 balloon.setOnBalloonDismissListener(new OnBalloonDismissListener() {
   @Override
   public void onBalloonDismiss() {
@@ -539,7 +539,7 @@ val balloon = Balloon.Builder(context)
 That's all. If you need to get Views or need some interactions, you can get your custom layout with the `getContentView()` method from your instance of the Balloon.
 
 ```kotlin
-val button: Button = 
+val button: Button =
   balloon.getContentView().findViewById(R.id.button_edit)
 button.setOnClickListener {
   Toast.makeText(context, "Edit", Toast.LENGTH_SHORT).show()
@@ -626,7 +626,7 @@ We can show up an overlay over the whole screen except an anchor view.
 ```kotlin
 balloon.setIsVisibleOverlay(true) // sets the visibility of the overlay for highlighting an anchor.
 balloon.setOverlayColorResource(R.color.overlay) // background color of the overlay using a color resource.
-balloon.setOverlayPadding(6f) // sets a padding value of the overlay shape internally.  
+balloon.setOverlayPadding(6f) // sets a padding value of the overlay shape internally.
 balloon.setOverlayPaddingColorResource(R.color.colorPrimary) // sets color of the overlay padding using a color resource.
 balloon.setBalloonOverlayAnimation(BalloonOverlayAnimation.FADE) // default is fade.
 balloon.setDismissWhenOverlayClicked(false) // disable dismissing the balloon when the overlay is clicked.
