@@ -45,7 +45,7 @@ jobs:
 
       # Sets gradle up
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v3.4.1
+        uses: gradle/gradle-build-action@v3.4.0
 
       # Grants execute permission to gradle (safety step)
       - name: Grant Permissions to gradlew
