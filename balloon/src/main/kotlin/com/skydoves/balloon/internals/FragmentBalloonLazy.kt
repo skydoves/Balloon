@@ -53,7 +53,7 @@ internal class FragmentBalloonLazy<out T : Balloon.Factory>(
       } else {
         fragment
       }
-      val instance = factory.create(fragment.requireActivity(), lifecycle)
+      val instance = factory.create(fragment.requireContext(), lifecycle)
       cached = instance
 
       return instance
