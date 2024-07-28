@@ -43,34 +43,9 @@ Add the dependency below to your **module**'s `build.gradle` file:
 
 ```kotlin
 dependencies {
-    implementation("com.github.skydoves:balloon:1.6.5")
+    implementation("com.github.skydoves:balloon:1.6.6")
 }
 ```
-
-## SNAPSHOT
-[![Balloon](https://img.shields.io/static/v1?label=snapshot&message=balloon&logo=apache%20maven&color=C71A36)](https://oss.sonatype.org/content/repositories/snapshots/com/github/skydoves/balloon/) <br>
-
-<details>
- <summary>See how to import the snapshot</summary>
-
-### Including the SNAPSHOT
-Snapshots of the current development version of Balloon are available, which track [the latest versions](https://oss.sonatype.org/content/repositories/snapshots/com/github/skydoves/balloon/).
-
-To import snapshot versions on your project, add the code snippet below on your gradle file.
-```kotlin
-repositories {
-   maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
-}
-```
-
-Next, add the below dependency to your **module**'s `build.gradle` file.
-```kotlin
-dependencies {
-    implementation("com.github.skydoves:balloon:1.6.5-SNAPSHOT")
-}
-```
-
-</details>
 
 ## How to Use
 Balloon supports both Kotlin and Java projects, so you can reference it by your language.
