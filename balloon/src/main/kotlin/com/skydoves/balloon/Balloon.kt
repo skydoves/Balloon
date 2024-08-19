@@ -1885,7 +1885,7 @@ public class Balloon private constructor(
   }
 
   /**
-   * Measures the width of a [TextView] and set the measured with.
+   * Measures the width of a [TextView], including horizontal padding, and sets the measured width.
    * If the width of the parent XML layout is the `WRAP_CONTENT`, and the width of [TextView]
    * in the parent layout is `WRAP_CONTENT`, this method will measure the size of the width exactly.
    *
@@ -1897,12 +1897,12 @@ public class Balloon private constructor(
       if (compoundDrawablesRelative.isExistHorizontalDrawable()) {
         minHeight = compoundDrawablesRelative.getIntrinsicHeight()
         measuredTextWidth +=
-          compoundDrawablesRelative.getSumOfIntrinsicWidth() + sumOfCompoundPadding
+          compoundDrawablesRelative.getSumOfIntrinsicWidth()
       } else if (compoundDrawables.isExistHorizontalDrawable()) {
         minHeight = compoundDrawables.getIntrinsicHeight()
-        measuredTextWidth += compoundDrawables.getSumOfIntrinsicWidth() + sumOfCompoundPadding
+        measuredTextWidth += compoundDrawables.getSumOfIntrinsicWidth()
       }
-      maxWidth = getMeasuredTextWidth(measuredTextWidth, rootView)
+      maxWidth = getMeasuredTextWidth(measuredTextWidth + sumOfCompoundPadding, rootView)
     }
   }
 
