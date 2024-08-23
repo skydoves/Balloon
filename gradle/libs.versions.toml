@@ -1,8 +1,8 @@
 [versions]
 agp = "8.5.2"
 dokka = "1.9.20"
-kotlin = "2.0.0"
-kotlinBinaryCompatibility = "0.14.0"
+kotlin = "2.0.20"
+kotlinBinaryCompatibility = "0.16.3"
 jvmTarget = "11"
 nexusPlugin = "0.29.0"
 androidxComposeBom = "2024.08.00"
