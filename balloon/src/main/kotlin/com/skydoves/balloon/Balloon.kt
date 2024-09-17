@@ -680,6 +680,7 @@ public class Balloon private constructor(
         overlayPosition = builder.overlayPosition
         balloonOverlayShape = builder.overlayShape
         overlayPaddingColor = builder.overlayPaddingColor
+        overlayPaddingShader = builder.overlayPaddingShader
         overlayWindow.isClippingEnabled = false
       }
     }
@@ -2219,6 +2220,9 @@ public class Balloon private constructor(
     public var overlayPaddingColor: Int = Color.TRANSPARENT
 
     @set:JvmSynthetic
+    public var overlayPaddingShader: Shader? = null
+
+    @set:JvmSynthetic
     public var overlayPosition: Point? = null
 
     @set:JvmSynthetic
@@ -2957,6 +2961,11 @@ public class Balloon private constructor(
     /** sets color of the overlay padding using a color resource. */
     public fun setOverlayPaddingColorResource(@ColorRes value: Int): Builder = apply {
       this.overlayPaddingColor = context.contextColor(value)
+    }
+
+    /** sets shader of the overlay padding that will be used by an internal painter. */
+    public fun setOverlayPaddingShader(shader: Shader): Builder = apply {
+      this.overlayPaddingShader = shader
     }
 
     /** sets a specific position of the overlay shape. */
