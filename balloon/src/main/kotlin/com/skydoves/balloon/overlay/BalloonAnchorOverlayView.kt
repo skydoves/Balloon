@@ -27,6 +27,7 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
 import android.graphics.RectF
+import android.graphics.Shader
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
@@ -57,6 +58,9 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
   /** padding color of the overlay shape. */
   @get:ColorInt
   public var overlayPaddingColor: Int by viewProperty(Color.TRANSPARENT)
+
+  /** shader of the overlay padding's painter. */
+  public var overlayPaddingShader: Shader? by viewProperty(null)
 
   /** padding value of the internal overlay shape. */
   @get:Px
@@ -130,6 +134,7 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
       color = overlayPaddingColor
       style = Paint.Style.STROKE
       strokeWidth = overlayPadding
+      shader = overlayPaddingShader
     }
 
     if (anchorViewList.isNullOrEmpty()) {

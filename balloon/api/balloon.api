@@ -297,6 +297,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun getOverlayGravity ()I
 	public final fun getOverlayPadding ()F
 	public final fun getOverlayPaddingColor ()I
+	public final fun getOverlayPaddingShader ()Landroid/graphics/Shader;
 	public final fun getOverlayPosition ()Landroid/graphics/Point;
 	public final fun getOverlayShape ()Lcom/skydoves/balloon/overlay/BalloonOverlayShape;
 	public final fun getPaddingBottom ()I
@@ -526,6 +527,8 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final synthetic fun setOverlayPaddingColor (I)V
 	public final fun setOverlayPaddingColorResource (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setOverlayPaddingResource (I)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setOverlayPaddingShader (Landroid/graphics/Shader;)Lcom/skydoves/balloon/Balloon$Builder;
+	public final synthetic fun setOverlayPaddingShader (Landroid/graphics/Shader;)V
 	public final fun setOverlayPosition (Landroid/graphics/Point;)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setOverlayPosition (Landroid/graphics/Point;)V
 	public final fun setOverlayShape (Lcom/skydoves/balloon/overlay/BalloonOverlayShape;)Lcom/skydoves/balloon/Balloon$Builder;
@@ -969,6 +972,7 @@ public final class com/skydoves/balloon/overlay/BalloonAnchorOverlayView : andro
 	public final fun getOverlayColor ()I
 	public final fun getOverlayPadding ()F
 	public final fun getOverlayPaddingColor ()I
+	public final fun getOverlayPaddingShader ()Landroid/graphics/Shader;
 	public final fun getOverlayPosition ()Landroid/graphics/Point;
 	public final fun setAnchorView (Landroid/view/View;)V
 	public final fun setAnchorViewList (Ljava/util/List;)V
@@ -976,6 +980,7 @@ public final class com/skydoves/balloon/overlay/BalloonAnchorOverlayView : andro
 	public final fun setOverlayColor (I)V
 	public final fun setOverlayPadding (F)V
 	public final fun setOverlayPaddingColor (I)V
+	public final fun setOverlayPaddingShader (Landroid/graphics/Shader;)V
 	public final fun setOverlayPosition (Landroid/graphics/Point;)V
 }
 
