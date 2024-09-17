@@ -919,8 +919,11 @@ public class Balloon private constructor(
     // Sometimes there is a concurrency issue between show and dismiss the popupWindow. (#149)
     if (bodyWindow.contentView.parent != null) return false
 
-    // we should check the anchor view is attached to the parent's window.
-    return ViewCompat.isAttachedToWindow(anchor)
+    // We should check if the anchor view's window token is valid.
+    if (!anchor.windowToken.isBinderAlive) return false
+
+    // We should check the anchor view is attached to the parent's window.
+    return anchor.isAttachedToWindow
   }
 
   private fun showOverlayWindow(anchor: View, subAnchors: List<View>) {
