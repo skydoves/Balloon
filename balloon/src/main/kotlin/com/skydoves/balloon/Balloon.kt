@@ -1834,7 +1834,10 @@ public class Balloon private constructor(
       view.performClick()
       val rect = Rect()
       anchor.getGlobalVisibleRect(rect)
-      if (rect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+      if (event.action == MotionEvent.ACTION_UP || event.action == MotionEvent.ACTION_MOVE) {
+        anchor.rootView.dispatchTouchEvent(event)
+        true
+      } else if (rect.contains(event.rawX.toInt(), event.rawY.toInt())) {
         anchor.rootView.dispatchTouchEvent(event)
         true
       } else {
