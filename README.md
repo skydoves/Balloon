@@ -44,7 +44,7 @@ Add the dependency below to your **module**'s `build.gradle` file:
 
 ```kotlin
 dependencies {
-    implementation("com.github.skydoves:balloon:1.6.7")
+    implementation("com.github.skydoves:balloon:1.6.8")
 }
 ```
 
