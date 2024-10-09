@@ -36,6 +36,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.IntSize
@@ -106,6 +107,19 @@ public fun Balloon(
         }
       }
     }
+  }
+
+  if (LocalInspectionMode.current) {
+    val balloonWindow = BalloonComposeView(
+      anchorView = anchorView,
+      isComposableContent = true,
+      builder = builder,
+      balloonID = id,
+    )
+    Box(modifier = modifier) {
+      content.invoke(balloonWindow)
+    }
+    return
   }
 
   LaunchedEffect(Unit) {
