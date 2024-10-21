@@ -920,10 +920,10 @@ public class Balloon private constructor(
     if (bodyWindow.contentView.parent != null) return false
 
     // We should check if the anchor view's window token is valid.
-    if (!anchor.windowToken.isBinderAlive) return false
+    if (!anchor.isAttachedToWindow) return false
 
-    // We should check the anchor view is attached to the parent's window.
-    return anchor.isAttachedToWindow
+    // We should check the anchor view is attached to the parent's window. (#730)
+    return anchor.windowToken.isBinderAlive
   }
 
   private fun showOverlayWindow(anchor: View, subAnchors: List<View>) {
