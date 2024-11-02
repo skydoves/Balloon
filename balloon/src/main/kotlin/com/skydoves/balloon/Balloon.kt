@@ -1905,7 +1905,10 @@ public class Balloon private constructor(
       }
 
       builder.width != BalloonSizeSpec.WRAP -> builder.width.coerceAtMost(displayWidth)
-      else -> binding.root.measuredWidth.coerceIn(builder.minWidth, builder.maxWidth)
+      else ->
+        binding.root.measuredWidth
+          .coerceIn(builder.minWidth, builder.maxWidth)
+          .coerceAtMost(displayWidth)
     }
   }
 
