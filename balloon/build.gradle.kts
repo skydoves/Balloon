@@ -93,7 +93,5 @@ dependencies {
   implementation(libs.androidx.lifecycle)
   implementation(libs.androidx.annotation)
 
-  compileOnly(libs.compose.stable.marker)
-
   baselineProfile(project(":benchmark"))
 }
