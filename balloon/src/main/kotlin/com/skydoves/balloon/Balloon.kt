@@ -1827,16 +1827,31 @@ public class Balloon private constructor(
     )
   }
 
+  /** remembers the last pressed action event to pass it after move the touch-up points. */
+  private var passedEventActionDownEvent: Pair<MotionEvent, Boolean>? = null
+
   private fun passTouchEventToAnchor(anchor: View) {
     if (!this.builder.passTouchEventToAnchor) return
     setOnBalloonOverlayTouchListener { view, event ->
       view.performClick()
       val rect = Rect()
       anchor.getGlobalVisibleRect(rect)
-      if (event.action == MotionEvent.ACTION_UP || event.action == MotionEvent.ACTION_MOVE) {
-        anchor.rootView.dispatchTouchEvent(event)
+
+      if (event.action == MotionEvent.ACTION_DOWN) {
+        passedEventActionDownEvent = event to rect.contains(
+          event.rawX.toInt(),
+          event.rawY.toInt(),
+        )
+      }
+
+      val passedEventActionDownEvents = passedEventActionDownEvent?.first
+      val passedEventActionDownInvokable = passedEventActionDownEvent?.second ?: false
+
+      if (passedEventActionDownInvokable && (event.action == MotionEvent.ACTION_UP)
+      ) {
+        anchor.rootView.dispatchTouchEvent(passedEventActionDownEvents!!)
         true
-      } else if (rect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+      } else if (passedEventActionDownInvokable) {
         anchor.rootView.dispatchTouchEvent(event)
         true
       } else {
