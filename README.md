@@ -282,11 +282,11 @@ We can decide the position of the arrow depending on the aligning rules with the
 ```kotlin
 // Align the arrow position depending on an anchor.
 // if `arrowPosition` is 0.5, the arrow will be located in the middle of an anchor.
-.setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR) // default
+.setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
 
 // Align the arrow position depending on the balloon popup body.
 // if `arrowPosition` is 0.5, he arrow will be located in the middle of the tooltip.
-.setArrowPositionRules(ArrowPositionRules.ALIGN_BALLOON)
+.setArrowPositionRules(ArrowPositionRules.ALIGN_BALLOON) // default
 ```
 
 #### ArrowOrientationRules
