@@ -1958,7 +1958,7 @@ public class Balloon private constructor(
     } else {
       0 + builder.marginRight + builder.marginLeft + (builder.arrowSize * 2)
     }
-    val maxTextWidth = builder.maxWidth - spaces
+    val maxTextWidth = (builder.maxWidth - spaces).coerceAtMost(displayWidth)
 
     return when {
       builder.widthRatio != NO_Float_VALUE ->
