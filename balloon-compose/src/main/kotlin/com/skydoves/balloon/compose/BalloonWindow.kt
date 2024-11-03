@@ -37,7 +37,7 @@ import com.skydoves.balloon.showAlignTop
 import com.skydoves.balloon.showAsDropDown
 import com.skydoves.balloon.showAtCenter
 
-/**qw
+/**
  * BalloonWindow is an interface that define all executable behaviors of the balloon's window.
  */
 @Stable
