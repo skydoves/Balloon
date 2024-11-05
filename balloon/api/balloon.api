@@ -262,6 +262,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun getDismissWhenTouchMargin ()Z
 	public final fun getDismissWhenTouchOutside ()Z
 	public final fun getElevation ()F
+	public final fun getEnableAutoSized ()Z
 	public final fun getHeight ()I
 	public final fun getIconColor ()I
 	public final fun getIconContentDescription ()Ljava/lang/CharSequence;
@@ -280,9 +281,11 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun getMarginLeft ()I
 	public final fun getMarginRight ()I
 	public final fun getMarginTop ()I
+	public final fun getMaxAutoSizeTextSize ()F
 	public final fun getMaxWidth ()I
 	public final fun getMaxWidthRatio ()F
 	public final fun getMeasuredWidth ()I
+	public final fun getMinAutoSizeTextSize ()F
 	public final fun getMinWidth ()I
 	public final fun getMinWidthRatio ()F
 	public final fun getMovementMethod ()Landroid/text/method/MovementMethod;
@@ -420,6 +423,8 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final synthetic fun setElevation (F)V
 	public final fun setElevation (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setElevationResource (I)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setEnableAutoSized (Z)Lcom/skydoves/balloon/Balloon$Builder;
+	public final synthetic fun setEnableAutoSized (Z)V
 	public final fun setFocusable (Z)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setFocusable (Z)V
 	public final fun setHeight (I)Lcom/skydoves/balloon/Balloon$Builder;
@@ -483,6 +488,8 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun setMarginTopResource (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setMarginVertical (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setMarginVerticalResource (I)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setMaxAutoSizeTextSize (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final synthetic fun setMaxAutoSizeTextSize (F)V
 	public final fun setMaxWidth (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setMaxWidth (I)V
 	public final fun setMaxWidthRatio (F)Lcom/skydoves/balloon/Balloon$Builder;
@@ -490,6 +497,8 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun setMaxWidthResource (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setMeasuredWidth (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setMeasuredWidth (I)V
+	public final fun setMinAutoSizeTextSize (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final synthetic fun setMinAutoSizeTextSize (F)V
 	public final fun setMinWidth (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setMinWidth (I)V
 	public final fun setMinWidthRatio (F)Lcom/skydoves/balloon/Balloon$Builder;
@@ -865,7 +874,10 @@ public final class com/skydoves/balloon/PlacementType : java/lang/Enum {
 
 public final class com/skydoves/balloon/TextForm {
 	public synthetic fun <init> (Lcom/skydoves/balloon/TextForm$Builder;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getEnableAutoSized ()Z
 	public final fun getIncludeFontPadding ()Z
+	public final fun getMaxAutoSizeTextSize ()F
+	public final fun getMinAutoSizeTextSize ()F
 	public final fun getMovementMethod ()Landroid/text/method/MovementMethod;
 	public final fun getText ()Ljava/lang/CharSequence;
 	public final fun getTextColor ()I
@@ -882,7 +894,10 @@ public final class com/skydoves/balloon/TextForm$Builder {
 	public fun <init> (Landroid/content/Context;)V
 	public final fun build ()Lcom/skydoves/balloon/TextForm;
 	public final fun getContext ()Landroid/content/Context;
+	public final fun getEnableAutoSized ()Z
 	public final fun getIncludeFontPadding ()Z
+	public final fun getMaxAutoSizeTextSize ()F
+	public final fun getMinAutoSizeTextSize ()F
 	public final fun getMovementMethod ()Landroid/text/method/MovementMethod;
 	public final fun getText ()Ljava/lang/CharSequence;
 	public final fun getTextColor ()I
@@ -893,8 +908,14 @@ public final class com/skydoves/balloon/TextForm$Builder {
 	public final fun getTextSize ()F
 	public final fun getTextTypeface ()I
 	public final fun getTextTypefaceObject ()Landroid/graphics/Typeface;
+	public final fun setEnableAutoSized (Z)Lcom/skydoves/balloon/TextForm$Builder;
+	public final synthetic fun setEnableAutoSized (Z)V
 	public final fun setIncludeFontPadding (Z)Lcom/skydoves/balloon/TextForm$Builder;
 	public final synthetic fun setIncludeFontPadding (Z)V
+	public final fun setMaxAutoSizeTextSize (F)Lcom/skydoves/balloon/TextForm$Builder;
+	public final synthetic fun setMaxAutoSizeTextSize (F)V
+	public final fun setMinAutoSizeTextSize (F)Lcom/skydoves/balloon/TextForm$Builder;
+	public final synthetic fun setMinAutoSizeTextSize (F)V
 	public final fun setMovementMethod (Landroid/text/method/MovementMethod;)Lcom/skydoves/balloon/TextForm$Builder;
 	public final synthetic fun setMovementMethod (Landroid/text/method/MovementMethod;)V
 	public final fun setText (Ljava/lang/CharSequence;)Lcom/skydoves/balloon/TextForm$Builder;
