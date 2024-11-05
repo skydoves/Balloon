@@ -61,6 +61,12 @@ public class TextForm private constructor(
   @Sp
   public val textSize: Float = builder.textSize
 
+  public val enableAutoSized: Boolean = builder.enableAutoSized
+
+  public val minAutoSizeTextSize: Float = builder.minAutoSizeTextSize
+
+  public val maxAutoSizeTextSize: Float = builder.maxAutoSizeTextSize
+
   @ColorInt
   public val textColor: Int = builder.textColor
 
@@ -89,6 +95,15 @@ public class TextForm private constructor(
     @Sp
     @set:JvmSynthetic
     public var textSize: Float = 12f
+
+    @set:JvmSynthetic
+    public var enableAutoSized: Boolean = true
+
+    @set:JvmSynthetic
+    public var minAutoSizeTextSize: Float = textSize
+
+    @set:JvmSynthetic
+    public var maxAutoSizeTextSize: Float = textSize + 1
 
     @ColorInt
     @set:JvmSynthetic
@@ -120,6 +135,21 @@ public class TextForm private constructor(
 
     /** sets the content text of the form. */
     public fun setText(value: CharSequence): Builder = apply { this.text = value }
+
+    /** Enables or disables the auto-sized text. */
+    public fun setEnableAutoSized(value: Boolean): Builder = apply {
+      this.enableAutoSized = value
+    }
+
+    /** Sets the minimum auto-sized text size. */
+    public fun setMinAutoSizeTextSize(@Sp value: Float): Builder = apply {
+      this.minAutoSizeTextSize = value
+    }
+
+    /** Sets the maximum auto-sized text size. */
+    public fun setMaxAutoSizeTextSize(@Sp value: Float): Builder = apply {
+      this.maxAutoSizeTextSize = value
+    }
 
     /** sets the content text of the form using string resource. */
     public fun setTextResource(@StringRes value: Int): Builder = apply {

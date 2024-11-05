@@ -639,6 +639,9 @@ public class Balloon private constructor(
           setTextLineSpacing(builder.textLineSpacing)
           setTextLetterSpacing(builder.textLetterSpacing)
           setMovementMethod(builder.movementMethod)
+          setEnableAutoSized(builder.enableAutoSized)
+          setMinAutoSizeTextSize(builder.minAutoSizeTextSize)
+          setMaxAutoSizeTextSize(builder.maxAutoSizeTextSize)
         },
       )
       measureTextWidth(this, binding.balloonCard)
@@ -2164,6 +2167,15 @@ public class Balloon private constructor(
     public var textSize: Float = 12f
 
     @set:JvmSynthetic
+    public var enableAutoSized: Boolean = false
+
+    @set:JvmSynthetic
+    public var minAutoSizeTextSize: Float = textSize
+
+    @set:JvmSynthetic
+    public var maxAutoSizeTextSize: Float = textSize + 1
+
+    @set:JvmSynthetic
     public var textTypeface: Int = Typeface.NORMAL
 
     @set:JvmSynthetic
@@ -2812,6 +2824,21 @@ public class Balloon private constructor(
     /** sets the size of the main text content using dimension resource. */
     public fun setTextSizeResource(@DimenRes value: Int): Builder = apply {
       this.textSize = context.px2Sp(context.dimen(value))
+    }
+
+    /** Enables or disables the auto-sized text. */
+    public fun setEnableAutoSized(value: Boolean): Builder = apply {
+      this.enableAutoSized = value
+    }
+
+    /** Sets the minimum auto-sized text size. */
+    public fun setMinAutoSizeTextSize(@Sp value: Float): Builder = apply {
+      this.minAutoSizeTextSize = value
+    }
+
+    /** Sets the maximum auto-sized text size. */
+    public fun setMaxAutoSizeTextSize(@Sp value: Float): Builder = apply {
+      this.maxAutoSizeTextSize = value
     }
 
     /** sets the typeface of the main text content. */

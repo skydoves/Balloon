@@ -259,11 +259,25 @@ balloon.setPaddingTop(12) // sets 12dp padding to content's top.
 ### Margin
 If the location of the balloon according to the anchor would be located at the boundaries on the screen,<br>
 the balloon will be stick to the end of the screen. In this case, we can give horizontal margins to the balloon.
+
 ```kotlin
 .setMargin(12) // sets the margin on the balloon all directions.
 .setMarginLeft(14) // sets the left margin on the balloon.
 .setMarginRight(14) // sets the right margin on the balloon.
 ```
+
+### Auto-sized text
+
+You can set auto-sized text based on the balloon's window size, specifying minimum and maximum text sizes, as shown in the example below:
+
+```kotlin
+.setTextSize(15f)
+.setMinAutoSizeTextSize(14f)
+.setMaxAutoSizeTextSize(18f)
+.setEnableAutoSized(true)
+```
+
+> Note: Ensure that the maximum auto text size is set to a value higher than the minimum auto text size.
 
 ### Arrow Composition
 We can customize the arrow on the Balloon with various methods. For more details, check out the [Balloon.Builder](https://skydoves.github.io/libraries/balloon/html/balloon/com.skydoves.balloon/-balloon/-builder/index.html).
@@ -322,9 +336,11 @@ We can customize the text on the Balloon.
 ```
 
 If your text includes HTML tags, you can render the text by enabling HTML option with `setTextIsHtml` method.
+
 ```java
 .setTextIsHtml(true)
 ```
+
 This method will parse the text with the `Html.fromHtml(text)` internally.
 
 ### TextForm

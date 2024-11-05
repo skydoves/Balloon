@@ -23,6 +23,7 @@ import android.text.Spanned
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.text.HtmlCompat
+import androidx.core.widget.TextViewCompat
 import com.skydoves.balloon.IconForm
 import com.skydoves.balloon.IconGravity
 import com.skydoves.balloon.TextForm
@@ -46,6 +47,15 @@ internal fun TextView.applyTextForm(textForm: TextForm) {
   textForm.textLetterSpacing?.let { letterSpacing = it }
   textForm.textTypeface?.let { typeface = it } ?: setTypeface(typeface, textForm.textStyle)
   textForm.movementMethod?.let { movementMethod = it }
+  if (textForm.enableAutoSized) {
+    TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(
+      this,
+      textForm.minAutoSizeTextSize.toInt(),
+      textForm.maxAutoSizeTextSize.toInt(),
+      1,
+      TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM,
+    )
+  }
 }
 
 private fun fromHtml(text: String): Spanned? {
@@ -72,14 +82,17 @@ internal fun VectorTextView.applyIconForm(iconForm: IconForm) {
           drawableStart = iconForm.drawable
           drawableStartRes = iconForm.drawableRes
         }
+
         IconGravity.TOP -> {
           drawableTop = iconForm.drawable
           drawableTopRes = iconForm.drawableRes
         }
+
         IconGravity.BOTTOM -> {
           drawableBottom = iconForm.drawable
           drawableBottomRes = iconForm.drawableRes
         }
+
         IconGravity.END -> {
           drawableEnd = iconForm.drawable
           drawableEndRes = iconForm.drawableRes
