@@ -95,4 +95,5 @@ dependencies {
   implementation(libs.androidx.annotation)
 
   baselineProfile(project(":benchmark"))
+  dokkaPlugin(libs.android.documentation.plugin)
 }

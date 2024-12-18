@@ -1,5 +1,6 @@
 [versions]
 agp = "8.7.3"
+androidDocumentationPlugin = "2.0.0"
 dokka = "2.0.0"
 kotlin = "2.0.20"
 kotlinBinaryCompatibility = "0.16.3"
@@ -33,6 +34,7 @@ kotlin-binary-compatibility = { id = "org.jetbrains.kotlinx.binary-compatibility
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 
 [libraries]
+android-documentation-plugin = { module = "org.jetbrains.dokka:android-documentation-plugin", version.ref = "androidDocumentationPlugin" }
 androidx-material = { module = "com.google.android.material:material", version.ref = "androidxMaterial" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppcompat" }
 androidx-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "androidxFragment" }
