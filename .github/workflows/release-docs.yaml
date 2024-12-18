@@ -9,7 +9,7 @@ on:
 jobs:
   publish_dokka:
     name: Dokka docs
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Check out code
         uses: actions/checkout@v4.2.2
