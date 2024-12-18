@@ -13,8 +13,6 @@
 // limitations under the License.
 
 import com.skydoves.balloon.Configuration
-import org.jetbrains.dokka.DokkaConfiguration.Visibility
-import org.jetbrains.dokka.gradle.DokkaTaskPartial
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {

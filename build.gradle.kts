@@ -19,10 +19,10 @@ plugins {
   alias(libs.plugins.kotlin.android) apply false
   alias(libs.plugins.baseline.profile) apply false
   alias(libs.plugins.compose.compiler) apply false
-  alias(libs.plugins.dokka)
   alias(libs.plugins.nexus.plugin)
   alias(libs.plugins.spotless)
   alias(libs.plugins.kotlin.binary.compatibility)
+  alias(libs.plugins.dokka)
 }
 
 apiValidation {
