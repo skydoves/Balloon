@@ -25,6 +25,6 @@ jobs:
       - name: Deploy to GitHub pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.DOCUSAURUS_GH_TOKEN }}
+          github_token: ${{ secrets.DOKKA_GH_TOKEN }}
           publish_dir: ./build/dokka/htmlMultiModule
           publish_branch: gh-pages
