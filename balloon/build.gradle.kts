@@ -13,6 +13,8 @@
 // limitations under the License.
 
 import com.skydoves.balloon.Configuration
+import org.jetbrains.dokka.DokkaConfiguration.Visibility
+import org.jetbrains.dokka.gradle.DokkaTaskPartial
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -79,6 +81,14 @@ kotlin {
     freeCompilerArgs.addAll(
       "-Xexplicit-api=strict",
       "-opt-in=com.skydoves.balloon.annotations.InternalBalloonApi",
+    )
+  }
+}
+
+tasks.withType<DokkaTaskPartial>().configureEach {
+  dokkaSourceSets.configureEach {
+    documentedVisibilities.set(
+      setOf(Visibility.PUBLIC)
     )
   }
 }
