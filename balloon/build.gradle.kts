@@ -20,6 +20,7 @@ plugins {
   id(libs.plugins.kotlin.android.get().pluginId)
   id(libs.plugins.nexus.plugin.get().pluginId)
   id(libs.plugins.baseline.profile.get().pluginId)
+  id(libs.plugins.dokka.get().pluginId)
 }
 
 apply(from = "${rootDir}/scripts/publish-module.gradle.kts")
