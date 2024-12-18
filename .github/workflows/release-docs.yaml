@@ -1,0 +1,30 @@
+name: ReleaseDocs
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  publish_dokka:
+    name: Dokka docs
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3.1.0
+        with:
+          ref: main
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3.6.0
+        with:
+          distribution: adopt
+          java-version: 17
+      - name: Generate Dokka HTML docs
+        run: ./gradlew dokkaHtmlMultimodule
+      - name: Deploy to GitHub pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.DOCUSAURUS_GH_TOKEN }}
+          publish_dir: ./build/dokka/htmlMultiModule
+          publish_branch: gh-pages
