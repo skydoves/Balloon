@@ -683,8 +683,8 @@ We can implement the rotate animation like the example below:
 
 ## Balloon builder methods
 For more details, you can check out the documentations below:
-- [Balloon documentations](https://skydoves.github.io/libraries/balloon/html/balloon/com.skydoves.balloon/-balloon/index.html)
-- [Builder documentations](https://skydoves.github.io/libraries/balloon/html/balloon/com.skydoves.balloon/-balloon/-builder/index.html)
+- [Balloon documentations](https://skydoves.github.io/Balloon/balloon/com.skydoves.balloon/-balloon/index.html)
+- [Builder documentations](https://skydoves.github.io/Balloon/balloon/com.skydoves.balloon/-balloon/-builder/index.html)
 
 <img align="right" width="130px" src="https://user-images.githubusercontent.com/24237865/210227682-cbc03479-8625-4213-b907-4f15217f91ba.png"/>
 
