@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Check out code
-        uses: actions/checkout@v3.6.0
+        uses: actions/checkout@v4.2.2
         with:
           ref: main
       - name: Set up JDK 17
