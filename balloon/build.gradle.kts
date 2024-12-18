@@ -85,14 +85,6 @@ kotlin {
   }
 }
 
-tasks.withType<DokkaTaskPartial>().configureEach {
-  dokkaSourceSets.configureEach {
-    documentedVisibilities.set(
-      setOf(Visibility.PUBLIC)
-    )
-  }
-}
-
 tasks.withType(JavaCompile::class.java).configureEach {
   this.targetCompatibility = libs.versions.jvmTarget.get()
   this.sourceCompatibility = libs.versions.jvmTarget.get()
