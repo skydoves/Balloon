@@ -1,4 +1,6 @@
 import com.skydoves.balloon.Configuration
+import org.jetbrains.dokka.gradle.DokkaTask
+import java.net.URL
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -55,6 +57,19 @@ android {
 
   lint {
     abortOnError = false
+  }
+}
+
+tasks.withType<DokkaTask>().configureEach {
+  dokkaSourceSets {
+    named("main") {
+      moduleName.set("balloon-compose")
+      includes.from("README.md")
+      sourceLink {
+        remoteUrl.set(URL("https://github.com/skydoves/balloon"))
+        remoteLineSuffix.set("#L")
+      }
+    }
   }
 }
 

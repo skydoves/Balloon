@@ -13,6 +13,8 @@
 // limitations under the License.
 
 import com.skydoves.balloon.Configuration
+import org.jetbrains.dokka.gradle.DokkaTask
+import java.net.URL
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -80,6 +82,19 @@ kotlin {
       "-Xexplicit-api=strict",
       "-opt-in=com.skydoves.balloon.annotations.InternalBalloonApi",
     )
+  }
+}
+
+tasks.withType<DokkaTask>().configureEach {
+  dokkaSourceSets {
+    named("main") {
+      moduleName.set("balloon")
+      includes.from("README.md")
+      sourceLink {
+        remoteUrl.set(URL("https://github.com/skydoves/balloon"))
+        remoteLineSuffix.set("#L")
+      }
+    }
   }
 }
 
