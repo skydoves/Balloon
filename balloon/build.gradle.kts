@@ -47,6 +47,7 @@ android {
 
   defaultConfig {
     minSdk = Configuration.minSdk
+    consumerProguardFiles("consumer-rules.pro")
   }
 
   resourcePrefix = "balloon"
