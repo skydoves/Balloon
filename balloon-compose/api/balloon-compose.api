@@ -130,7 +130,6 @@ public final class com/skydoves/balloon/compose/BalloonWindow$DefaultImpls {
 
 public final class com/skydoves/balloon/compose/ComposableSingletons$BalloonComposeViewKt {
 	public static final field INSTANCE Lcom/skydoves/balloon/compose/ComposableSingletons$BalloonComposeViewKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function3;
 	public fun <init> ()V
 	public final fun getLambda-1$balloon_compose_release ()Lkotlin/jvm/functions/Function3;
 }
