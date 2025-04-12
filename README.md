@@ -299,7 +299,7 @@ We can decide the position of the arrow depending on the aligning rules with the
 .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
 
 // Align the arrow position depending on the balloon popup body.
-// if `arrowPosition` is 0.5, he arrow will be located in the middle of the tooltip.
+// if `arrowPosition` is 0.5, the arrow will be located in the middle of the tooltip.
 .setArrowPositionRules(ArrowPositionRules.ALIGN_BALLOON) // default
 ```
 
@@ -348,7 +348,7 @@ This method will parse the text with the `Html.fromHtml(text)` internally.
 
 ```kotlin
 val textForm = TextForm.Builder(context)
-  .setText("Edit you profile here!")
+  .setText("Edit your profile here!")
   .setTextColorResource(R.color.white_87)
   .setTextSize(14f)
   .setTextTypeface(Typeface.BOLD)
