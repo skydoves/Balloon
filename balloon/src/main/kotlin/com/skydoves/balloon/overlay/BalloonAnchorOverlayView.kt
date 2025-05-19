@@ -31,9 +31,10 @@ import android.graphics.Shader
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
-import androidx.annotation.Px
 import com.skydoves.balloon.extensions.dimen
 import com.skydoves.balloon.internals.viewProperty
+import androidx.core.graphics.createBitmap
+import com.skydoves.balloon.BalloonOverlayPadding
 
 /**
  * BalloonAnchorOverlayView is an overlay view for highlighting an anchor
@@ -63,8 +64,7 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
   public var overlayPaddingShader: Shader? by viewProperty(null)
 
   /** padding value of the internal overlay shape. */
-  @get:Px
-  public var overlayPadding: Float by viewProperty(0f)
+  public var overlayPadding: BalloonOverlayPadding by viewProperty(BalloonOverlayPadding())
 
   /** specific position of the overlay shape. */
   public var overlayPosition: Point? by viewProperty(null)
@@ -114,7 +114,7 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
       localBitmap.recycle()
     }
 
-    localBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+    localBitmap = createBitmap(width, height)
     bitmap = localBitmap
 
     val canvas = Canvas(localBitmap)
@@ -133,7 +133,7 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
     paddingColorPaint.apply {
       color = overlayPaddingColor
       style = Paint.Style.STROKE
-      strokeWidth = overlayPadding
+      strokeWidth = overlayPadding.top
       shader = overlayPaddingShader
     }
 
@@ -154,21 +154,27 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
       anchor.getGlobalVisibleRect(rect)
       val anchorRect = overlayPosition?.let { position ->
         RectF(
-          position.x - overlayPadding,
-          position.y - overlayPadding + getStatusBarHeight(),
-          position.x + anchor.width + overlayPadding,
-          position.y + anchor.height + overlayPadding + getStatusBarHeight(),
+          position.x - overlayPadding.left,
+          position.y - overlayPadding.top + getStatusBarHeight(),
+          position.x + anchor.width + overlayPadding.right,
+          position.y + anchor.height + overlayPadding.bottom + getStatusBarHeight(),
         )
       } ?: RectF(
-        rect.left - overlayPadding,
-        rect.top - overlayPadding,
-        rect.right + overlayPadding,
-        rect.bottom + overlayPadding,
+        rect.left - overlayPadding.left,
+        rect.top - overlayPadding.top,
+        rect.right + overlayPadding.right,
+        rect.bottom + overlayPadding.bottom,
       )
 
-      val halfOfOverlayPadding = overlayPadding / 2
+      val halfOverlayPadding = BalloonOverlayPadding(
+        top = overlayPadding.top / 2,
+        bottom = overlayPadding.bottom / 2,
+        left = overlayPadding.left / 2,
+        right = overlayPadding.right / 2
+      )
+
       val anchorPaddingRect = RectF(anchorRect).apply {
-        inset(halfOfOverlayPadding, halfOfOverlayPadding)
+        inset(halfOverlayPadding.left, halfOverlayPadding.top)
       }
 
       when (val overlay = balloonOverlayShape) {
@@ -189,21 +195,22 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
             canvas.drawCircle(
               anchorPaddingRect.centerX(),
               anchorPaddingRect.centerY(),
-              radius - halfOfOverlayPadding,
+              radius - overlayPadding.top / 2,
               paddingColorPaint,
             )
           }
           overlay.radiusRes?.let { radiusRes ->
+            val resolvedRadius = context.dimen(radiusRes)
             canvas.drawCircle(
               anchorRect.centerX(),
               anchorRect.centerY(),
-              context.dimen(radiusRes),
+              resolvedRadius,
               paint,
             )
             canvas.drawCircle(
               anchorPaddingRect.centerX(),
               anchorPaddingRect.centerY(),
-              context.dimen(radiusRes) - halfOfOverlayPadding,
+              resolvedRadius - overlayPadding.top / 2,
               paddingColorPaint,
             )
           }
@@ -214,22 +221,24 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
             canvas.drawRoundRect(anchorRect, radiusPair.first, radiusPair.second, paint)
             canvas.drawRoundRect(
               anchorPaddingRect,
-              radiusPair.first - halfOfOverlayPadding,
-              radiusPair.second - halfOfOverlayPadding,
+              radiusPair.first - overlayPadding.left / 2,
+              radiusPair.second - overlayPadding.top / 2,
               paddingColorPaint,
             )
           }
           overlay.radiusResPair?.let { radiusResPair ->
+            val radiusX = context.dimen(radiusResPair.first)
+            val radiusY = context.dimen(radiusResPair.second)
             canvas.drawRoundRect(
               anchorRect,
-              context.dimen(radiusResPair.first),
-              context.dimen(radiusResPair.second),
+              radiusX,
+              radiusY,
               paint,
             )
             canvas.drawRoundRect(
               anchorPaddingRect,
-              context.dimen(radiusResPair.first) - halfOfOverlayPadding,
-              context.dimen(radiusResPair.second) - halfOfOverlayPadding,
+              radiusX - overlayPadding.left / 2,
+              radiusY - overlayPadding.top / 2,
               paddingColorPaint,
             )
           }
