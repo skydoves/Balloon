@@ -63,9 +63,12 @@ import androidx.annotation.MainThread
 import androidx.annotation.Px
 import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
+import androidx.core.graphics.createBitmap
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.ViewCompat
 import androidx.core.view.forEach
 import androidx.core.view.get
+import androidx.core.view.isNotEmpty
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -121,9 +124,6 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.math.max
 import kotlin.math.roundToInt
-import androidx.core.graphics.createBitmap
-import androidx.core.graphics.drawable.toDrawable
-import androidx.core.view.isNotEmpty
 
 @DslMarker
 internal annotation class BalloonInlineDsl
@@ -3003,7 +3003,7 @@ public class Balloon private constructor(
       @Dp left: Float = 0f,
       @Dp top: Float = 0f,
       @Dp right: Float = 0f,
-      @Dp bottom: Float = 0f
+      @Dp bottom: Float = 0f,
     ): Builder = apply {
       this.overlayPadding = BalloonOverlayPadding(left.dp, top.dp, right.dp, bottom.dp)
     }

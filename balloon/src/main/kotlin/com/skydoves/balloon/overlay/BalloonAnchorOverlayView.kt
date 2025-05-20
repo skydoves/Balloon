@@ -31,10 +31,10 @@ import android.graphics.Shader
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
-import com.skydoves.balloon.extensions.dimen
-import com.skydoves.balloon.internals.viewProperty
 import androidx.core.graphics.createBitmap
 import com.skydoves.balloon.BalloonOverlayPadding
+import com.skydoves.balloon.extensions.dimen
+import com.skydoves.balloon.internals.viewProperty
 
 /**
  * BalloonAnchorOverlayView is an overlay view for highlighting an anchor
@@ -170,7 +170,7 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
         top = overlayPadding.top / 2,
         bottom = overlayPadding.bottom / 2,
         left = overlayPadding.left / 2,
-        right = overlayPadding.right / 2
+        right = overlayPadding.right / 2,
       )
 
       val anchorPaddingRect = RectF(anchorRect).apply {
