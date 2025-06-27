@@ -111,6 +111,7 @@ import com.skydoves.balloon.internals.unaryMinus
 import com.skydoves.balloon.overlay.BalloonOverlayAnimation
 import com.skydoves.balloon.overlay.BalloonOverlayOval
 import com.skydoves.balloon.overlay.BalloonOverlayShape
+import com.skydoves.balloon.radius.RadiusLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -316,6 +317,59 @@ public class Balloon private constructor(
           }
         }
       }
+    }
+  }
+
+  private fun updateCardArrowPosition(anchor: View) {
+    val balloonCard = binding.balloonCard
+    val balloonLocation = IntArray(2)
+    val anchorLocation = IntArray(2)
+
+    balloonCard.getLocationOnScreen(balloonLocation)
+    anchor.getLocationOnScreen(anchorLocation)
+
+    val orientation = builder.arrowOrientation.getRTLSupportOrientation(builder.isRtlLayout)
+
+    val ratio = when (orientation) {
+      ArrowOrientation.TOP, ArrowOrientation.BOTTOM -> {
+        when (builder.arrowPositionRules) {
+          ArrowPositionRules.ALIGN_ANCHOR -> {
+            // Use arrowPosition to determine position within anchor
+            val anchorPositionX = anchorLocation[0] + (anchor.width * builder.arrowPosition)
+            val balloonLeft = balloonLocation[0].toFloat()
+            val relativeX = anchorPositionX - balloonLeft
+            (relativeX / balloonCard.width.toFloat()).coerceIn(0f, 1f)
+          }
+
+          ArrowPositionRules.ALIGN_BALLOON -> {
+            builder.arrowPosition.coerceIn(0f, 1f)
+          }
+        }
+      }
+
+      ArrowOrientation.START, ArrowOrientation.END -> {
+        when (builder.arrowPositionRules) {
+          ArrowPositionRules.ALIGN_ANCHOR -> {
+            // Use arrowPosition to determine position within anchor
+            val anchorPositionY = anchorLocation[1] + (anchor.height * builder.arrowPosition)
+            val balloonTop = balloonLocation[1].toFloat()
+            val relativeY = anchorPositionY - balloonTop
+            (relativeY / balloonCard.height.toFloat()).coerceIn(0f, 1f)
+          }
+
+          ArrowPositionRules.ALIGN_BALLOON -> {
+            builder.arrowPosition.coerceIn(0f, 1f)
+          }
+        }
+      }
+    }
+
+    (balloonCard as? RadiusLayout)?.let { layout ->
+      layout.arrowPositionRatio = ratio
+      layout.arrowOrientation = orientation
+
+      layout.rebuildPath()
+      layout.updateEffectivePadding()
     }
   }
 
@@ -545,11 +599,59 @@ public class Balloon private constructor(
     with(binding.balloonCard) {
       alpha = builder.alpha
       radius = builder.cornerRadius
-      ViewCompat.setElevation(this, builder.elevation)
-      background = builder.backgroundDrawable ?: GradientDrawable().apply {
-        setColor(builder.backgroundColor)
-        cornerRadius = builder.cornerRadius
+      // Radius and elevation are applied to the RadiusLayout directly
+      (this as? RadiusLayout)?.let { layout ->
+        layout.radius = builder.cornerRadius // Radius is still set, used by path creation
+        ViewCompat.setElevation(layout, builder.elevation)
+
+        // --- Determine the drawing mode for RadiusLayout ---
+        layout.drawCustomShape = builder.isClipArrowEnabled // If true, RadiusLayout handles all drawing
+
+        if (builder.isClipArrowEnabled) {
+          // If isClipArrowEnabled is true, RadiusLayout will draw its own shape
+          layout.arrowHeight = builder.arrowSize.toFloat() * 2f
+          layout.arrowWidth = builder.arrowSize.toFloat()
+
+          // --- Handle Custom Background Drawable for the combined shape ---
+          if (builder.backgroundDrawable != null) {
+            layout.customShapeBackgroundDrawable = builder.backgroundDrawable
+            // When a custom drawable is used, it provides the FILL content.
+            // RadiusLayout's fillPaint color can be made transparent, as the drawable will cover it.
+            layout.fillPaint.color = 0 // Make fill transparent, as the drawable will provide the background
+          } else {
+            // No custom drawable, so RadiusLayout draws with solid color
+            layout.customShapeBackgroundDrawable = null // Clear any previous custom drawable
+            layout.fillPaint.color = builder.backgroundColor
+          }
+
+          // --- ALWAYS configure RadiusLayout's strokePaint here if a stroke is desired ---
+          // This ensures the stroke is drawn by RadiusLayout on the custom path,
+          // regardless of whether a custom backgroundDrawable is provided for the fill.
+          builder.balloonStroke?.let { stroke ->
+            layout.strokePaint.apply {
+              strokeWidth = stroke.thickness * 1.5f // Use builder's stroke thickness
+              color = stroke.color
+            }
+          } ?: run {
+            layout.strokePaint.strokeWidth = 0f // No stroke if not provided in builder
+          }
+
+        } else {
+          // --- Old mode: ImageView arrow, RadiusLayout acts as a regular FrameLayout with rounded background ---
+          // Reset RadiusLayout's custom drawing properties to default
+          layout.customShapeBackgroundDrawable = null
+          layout.fillPaint.color = 0 // Reset fill paint to transparent
+          layout.strokePaint.strokeWidth = 0f // Reset stroke to 0
+
+          // For this mode, set the standard Android View background
+          background = builder.backgroundDrawable ?: GradientDrawable().apply {
+            setColor(builder.backgroundColor)
+            cornerRadius = builder.cornerRadius
+          }
+        }
       }
+      // Apply padding. RadiusLayout's setPadding will now internally adjust for the arrow
+      // if drawCustomShape is true. Otherwise, it just passes padding to super.
       setPadding(
         builder.paddingLeft,
         builder.paddingTop,
@@ -558,6 +660,39 @@ public class Balloon private constructor(
       )
     }
   }
+
+//  private fun initializeBackground() {
+//    with(binding.balloonCard) {
+//      alpha = builder.alpha
+//      radius = builder.cornerRadius
+//      ViewCompat.setElevation(this, builder.elevation)
+//      if (builder.isClipArrowEnabled) {
+//        arrowHeight = builder.arrowSize.toFloat()
+//        radius = builder.cornerRadius
+//
+//        paint.apply{
+//          color = builder.backgroundColor
+//        }
+//        builder.balloonStroke?.let {
+//          strokePaint.apply {
+//            strokeWidth = it.thickness
+//            color = it.color
+//          }
+//        }
+//      } else {
+//        background = builder.backgroundDrawable ?: GradientDrawable().apply {
+//          setColor(builder.backgroundColor)
+//          cornerRadius = builder.cornerRadius
+//        }
+//      }
+//      setPadding(
+//        builder.paddingLeft,
+//        builder.paddingTop,
+//        builder.paddingRight,
+//        builder.paddingBottom,
+//      )
+//    }
+//  }
 
   private fun initializeBalloonWindow() {
     with(this.bodyWindow) {
@@ -828,7 +963,19 @@ public class Balloon private constructor(
           FrameLayout.LayoutParams.MATCH_PARENT,
           FrameLayout.LayoutParams.MATCH_PARENT,
         )
-        initializeArrow(mainAnchor)
+
+        if (!builder.isClipArrowEnabled) {
+          initializeArrow(mainAnchor)
+        } else {
+          binding.balloonCard.post {
+            onBalloonInitializedListener?.onBalloonInitialized(getContentView())
+
+            adjustArrowOrientationByRules(mainAnchor)
+
+            updateCardArrowPosition(mainAnchor)
+          }
+        }
+
         initializeBalloonContent()
 
         applyBalloonOverlayAnimation()
@@ -1630,7 +1777,11 @@ public class Balloon private constructor(
   @MainThread
   private fun update(placement: BalloonPlacement) {
     if (isShowing) {
-      updateArrow(placement.anchor)
+      if (builder.isClipArrowEnabled) {
+        updateCardArrowPosition(placement.anchor)
+      } else {
+        updateArrow(placement.anchor)
+      }
 
       val (xOff, yOff) = calculateOffset(placement)
       this.bodyWindow.update(
@@ -2373,6 +2524,22 @@ public class Balloon private constructor(
 
     @set:JvmSynthetic
     public var isComposableContent: Boolean = false
+
+    @set:JvmSynthetic
+    public var isClipArrowEnabled: Boolean = false
+
+    @set:JvmSynthetic
+    public var balloonStroke: BalloonStroke? = null
+
+    /** sets whether the arrow should be drawn on the balloon. */
+    public fun setEnableClipArrow(value: Boolean): Builder = apply {
+      this.isClipArrowEnabled = value
+    }
+
+    /** sets stroke properties of balloon*/
+    public fun setBalloonStroke(@ColorInt color: Int, @Dp thickness: Float): Builder = apply {
+      this.balloonStroke = BalloonStroke(color, thickness)
+    }
 
     /** sets the width size. */
     public fun setWidth(@Dp value: Int): Builder = apply {
