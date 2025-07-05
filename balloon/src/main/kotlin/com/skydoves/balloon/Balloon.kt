@@ -34,7 +34,6 @@ import android.graphics.Rect
 import android.graphics.Shader
 import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Handler
@@ -64,9 +63,12 @@ import androidx.annotation.MainThread
 import androidx.annotation.Px
 import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
+import androidx.core.graphics.createBitmap
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.ViewCompat
 import androidx.core.view.forEach
 import androidx.core.view.get
+import androidx.core.view.isNotEmpty
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -376,10 +378,7 @@ public class Balloon private constructor(
   /** Returns [BitmapDrawable] that will be used for the foreground of the arrow. */
   private fun ImageView.getArrowForeground(x: Float, y: Float): BitmapDrawable? {
     return if (builder.arrowColorMatchBalloon && isAPILevelHigherThan23()) {
-      BitmapDrawable(
-        resources,
-        adjustArrowColorByMatchingCardBackground(this, x, y),
-      )
+      adjustArrowColorByMatchingCardBackground(this, x, y).toDrawable(resources)
     } else {
       null
     }
@@ -418,7 +417,7 @@ public class Balloon private constructor(
     val endColor = colors.second
 
     val updatedBitmap =
-      Bitmap.createBitmap(oldBitmap.width, oldBitmap.height, Bitmap.Config.ARGB_8888)
+      createBitmap(oldBitmap.width, oldBitmap.height)
     val canvas = Canvas(updatedBitmap)
     canvas.drawBitmap(oldBitmap, 0f, 0f, null)
     val paint = Paint()
@@ -477,7 +476,7 @@ public class Balloon private constructor(
   }
 
   private fun drawableToBitmap(drawable: Drawable, width: Int, height: Int): Bitmap {
-    val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+    val bitmap = createBitmap(width, height)
     val canvas = Canvas(bitmap)
     drawable.setBounds(0, 0, canvas.width, canvas.height)
     drawable.draw(canvas)
@@ -698,7 +697,7 @@ public class Balloon private constructor(
     with(this.bodyWindow) {
       isOutsideTouchable = true
       isFocusable = builder.isFocusable
-      setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+      setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
       elevation = builder.elevation
       setIsAttachedInDecor(builder.isAttachedInDecor)
     }
@@ -1422,7 +1421,7 @@ public class Balloon private constructor(
   ): Balloon = relay(
     balloon,
   ) {
-    it.showAlignRight(anchor, xOff, yOff)
+    it.showAlignEnd(anchor, xOff, yOff)
   }
 
   /**
@@ -1523,7 +1522,7 @@ public class Balloon private constructor(
     xOff: Int = 0,
     yOff: Int = 0,
   ): Balloon =
-    relay(balloon) { it.showAlignLeft(anchor, xOff, yOff) }
+    relay(balloon) { it.showAlignStart(anchor, xOff, yOff) }
 
   /**
    * Shows the balloon on an anchor view as the start alignment with x-off and y-off
@@ -1847,7 +1846,7 @@ public class Balloon private constructor(
   @InternalBalloonApi
   public fun updateSizeOfBalloonCard(width: Int, height: Int) {
     builder.setMeasuredWidth(width)
-    if (binding.balloonCard.childCount != 0) {
+    if (binding.balloonCard.isNotEmpty()) {
       val child = binding.balloonCard[0]
       child.updateLayoutParams {
         this.width = width
@@ -2398,7 +2397,7 @@ public class Balloon private constructor(
 
     @Px
     @set:JvmSynthetic
-    public var overlayPadding: Float = 0f
+    public var overlayPadding: BalloonOverlayPadding = BalloonOverlayPadding()
 
     @ColorInt
     @set:JvmSynthetic
@@ -3162,12 +3161,24 @@ public class Balloon private constructor(
     }
 
     /** sets a padding value of the overlay shape internally. */
-    public fun setOverlayPadding(@Dp value: Float): Builder =
-      apply { this.overlayPadding = value.dp }
+    public fun setOverlayPadding(@Dp value: Float): Builder = apply {
+      this.overlayPadding = BalloonOverlayPadding(value.dp, value.dp, value.dp, value.dp)
+    }
 
-    /** sets a padding value of the overlay shape internally using dimension resource.. */
+    /** sets directional padding on the overlay shape. */
+    public fun setOverlayPadding(
+      @Dp left: Float = 0f,
+      @Dp top: Float = 0f,
+      @Dp right: Float = 0f,
+      @Dp bottom: Float = 0f,
+    ): Builder = apply {
+      this.overlayPadding = BalloonOverlayPadding(left.dp, top.dp, right.dp, bottom.dp)
+    }
+
+    /** Sets a uniform padding for the overlay shape using a dimension resource. */
     public fun setOverlayPaddingResource(@DimenRes value: Int): Builder = apply {
-      this.overlayPadding = context.dimen(value)
+      val padding = context.dimen(value)
+      this.overlayPadding = BalloonOverlayPadding(padding, padding, padding, padding)
     }
 
     /** sets color of the overlay padding. */
