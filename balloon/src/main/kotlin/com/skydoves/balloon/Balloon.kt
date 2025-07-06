@@ -604,7 +604,8 @@ public class Balloon private constructor(
         ViewCompat.setElevation(layout, builder.elevation)
 
         // --- Determine the drawing mode for RadiusLayout ---
-        layout.drawCustomShape = builder.isClipArrowEnabled // If true, RadiusLayout handles all drawing
+        // If true, RadiusLayout handles all drawing
+        layout.drawCustomShape = builder.isClipArrowEnabled
 
         if (builder.isClipArrowEnabled) {
           // If isClipArrowEnabled is true, RadiusLayout will draw its own shape
@@ -615,8 +616,10 @@ public class Balloon private constructor(
           if (builder.backgroundDrawable != null) {
             layout.customShapeBackgroundDrawable = builder.backgroundDrawable
             // When a custom drawable is used, it provides the FILL content.
-            // RadiusLayout's fillPaint color can be made transparent, as the drawable will cover it.
-            layout.fillPaint.color = 0 // Make fill transparent, as the drawable will provide the background
+            // RadiusLayout's fillPaint color can be made transparent, as the drawable
+            // will cover it.
+            // Make fill transparent, as the drawable will provide the background
+            layout.fillPaint.color = 0
           } else {
             // No custom drawable, so RadiusLayout draws with solid color
             layout.customShapeBackgroundDrawable = null // Clear any previous custom drawable
@@ -634,9 +637,9 @@ public class Balloon private constructor(
           } ?: run {
             layout.strokePaint.strokeWidth = 0f // No stroke if not provided in builder
           }
-
         } else {
-          // --- Old mode: ImageView arrow, RadiusLayout acts as a regular FrameLayout with rounded background ---
+          // --- Old mode: ImageView arrow, RadiusLayout acts as a regular FrameLayout with
+          // rounded background ---
           // Reset RadiusLayout's custom drawing properties to default
           layout.customShapeBackgroundDrawable = null
           layout.fillPaint.color = 0 // Reset fill paint to transparent

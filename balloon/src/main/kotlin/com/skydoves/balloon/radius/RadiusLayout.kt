@@ -118,13 +118,29 @@ public class RadiusLayout @JvmOverloads constructor(
 
   public fun updateEffectivePadding() {
     val effectiveLeft =
-      basePaddingLeft + if (arrowOrientation == ArrowOrientation.START) arrowHeight.toInt() else 0
+      basePaddingLeft + if (arrowOrientation == ArrowOrientation.START) {
+        arrowHeight.toInt()
+      } else {
+        0
+      }
     val effectiveTop =
-      basePaddingTop + if (arrowOrientation == ArrowOrientation.TOP) arrowHeight.toInt() else 0
+      basePaddingTop + if (arrowOrientation == ArrowOrientation.TOP) {
+        arrowHeight.toInt()
+      } else {
+        0
+      }
     val effectiveRight =
-      basePaddingRight + if (arrowOrientation == ArrowOrientation.END) arrowHeight.toInt() else 0
+      basePaddingRight + if (arrowOrientation == ArrowOrientation.END) {
+        arrowHeight.toInt()
+      } else {
+        0
+      }
     val effectiveBottom =
-      basePaddingBottom + if (arrowOrientation == ArrowOrientation.BOTTOM) arrowHeight.toInt() else 0
+      basePaddingBottom + if (arrowOrientation == ArrowOrientation.BOTTOM) {
+        arrowHeight.toInt()
+      } else {
+        0
+      }
 
     super.setPadding(effectiveLeft, effectiveTop, effectiveRight, effectiveBottom)
   }
@@ -152,15 +168,28 @@ public class RadiusLayout @JvmOverloads constructor(
       return
     }
 
-    /** The path accounts for halfStroke in its dimensions, defining the center-line of the stroke.*/
-    val rectLeft =
-      if (arrowOrientation == ArrowOrientation.START) arrowHeight + halfStroke else halfStroke
-    val rectTop =
-      if (arrowOrientation == ArrowOrientation.TOP) arrowHeight + halfStroke else halfStroke
-    val rectRight =
-      if (arrowOrientation == ArrowOrientation.END) width - arrowHeight - halfStroke else width - halfStroke
-    val rectBottom =
-      if (arrowOrientation == ArrowOrientation.BOTTOM) height - arrowHeight - halfStroke else height - halfStroke
+    /** The path accounts for halfStroke in its dimensions,
+     * defining the center-line of the stroke.*/
+    val rectLeft = if (arrowOrientation == ArrowOrientation.START) {
+      arrowHeight + halfStroke
+    } else {
+      halfStroke
+    }
+    val rectTop = if (arrowOrientation == ArrowOrientation.TOP) {
+      arrowHeight + halfStroke
+    } else {
+      halfStroke
+    }
+    val rectRight = if (arrowOrientation == ArrowOrientation.END) {
+      width - arrowHeight - halfStroke
+    } else {
+      width - halfStroke
+    }
+    val rectBottom = if (arrowOrientation == ArrowOrientation.BOTTOM) {
+      height - arrowHeight - halfStroke
+    } else {
+      height - halfStroke
+    }
 
     val centerX = (width * arrowPositionRatio)
       .coerceIn(arrowWidth / 2f + halfStroke, width - arrowWidth / 2f - halfStroke)
