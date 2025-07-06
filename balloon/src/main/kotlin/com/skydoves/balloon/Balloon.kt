@@ -660,39 +660,6 @@ public class Balloon private constructor(
     }
   }
 
-//  private fun initializeBackground() {
-//    with(binding.balloonCard) {
-//      alpha = builder.alpha
-//      radius = builder.cornerRadius
-//      ViewCompat.setElevation(this, builder.elevation)
-//      if (builder.isClipArrowEnabled) {
-//        arrowHeight = builder.arrowSize.toFloat()
-//        radius = builder.cornerRadius
-//
-//        paint.apply{
-//          color = builder.backgroundColor
-//        }
-//        builder.balloonStroke?.let {
-//          strokePaint.apply {
-//            strokeWidth = it.thickness
-//            color = it.color
-//          }
-//        }
-//      } else {
-//        background = builder.backgroundDrawable ?: GradientDrawable().apply {
-//          setColor(builder.backgroundColor)
-//          cornerRadius = builder.cornerRadius
-//        }
-//      }
-//      setPadding(
-//        builder.paddingLeft,
-//        builder.paddingTop,
-//        builder.paddingRight,
-//        builder.paddingBottom,
-//      )
-//    }
-//  }
-
   private fun initializeBalloonWindow() {
     with(this.bodyWindow) {
       isOutsideTouchable = true
