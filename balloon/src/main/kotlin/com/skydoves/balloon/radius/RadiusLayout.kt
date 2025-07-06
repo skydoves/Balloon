@@ -25,6 +25,9 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import com.skydoves.balloon.ArrowOrientation
 
+/**
+ * RadiusLayout clips four directions of inner layouts depending on the radius size.
+ */
 public class RadiusLayout @JvmOverloads constructor(
   context: Context,
   attrs: AttributeSet? = null,
