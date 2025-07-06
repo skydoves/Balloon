@@ -2498,7 +2498,7 @@ public class Balloon private constructor(
     public var balloonStroke: BalloonStroke? = null
 
     /** sets whether the arrow should be drawn on the balloon. */
-    public fun setEnableClipArrow(value: Boolean): Builder = apply {
+    public fun setIsClipArrowEnabled(value: Boolean): Builder = apply {
       this.isClipArrowEnabled = value
     }
 
