@@ -792,6 +792,8 @@ public final class com/skydoves/balloon/BalloonSizeSpec {
 }
 
 public final class com/skydoves/balloon/BalloonStroke {
+	public static final field Companion Lcom/skydoves/balloon/BalloonStroke$Companion;
+	public static final field STROKE_THICKNESS_MULTIPLIER F
 	public fun <init> (IF)V
 	public synthetic fun <init> (IFILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()I
@@ -803,6 +805,9 @@ public final class com/skydoves/balloon/BalloonStroke {
 	public final fun getThickness ()F
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/skydoves/balloon/BalloonStroke$Companion {
 }
 
 public final class com/skydoves/balloon/DeferredBalloon {
@@ -1094,9 +1099,7 @@ public final class com/skydoves/balloon/radius/RadiusLayout : android/widget/Fra
 	public final fun getArrowWidth ()F
 	public final fun getCustomShapeBackgroundDrawable ()Landroid/graphics/drawable/Drawable;
 	public final fun getDrawCustomShape ()Z
-	public final fun getFillPaint ()Landroid/graphics/Paint;
 	public final fun getRadius ()F
-	public final fun getStrokePaint ()Landroid/graphics/Paint;
 	public final fun rebuildPath ()V
 	public final fun setArrowHeight (F)V
 	public final fun setArrowOrientation (Lcom/skydoves/balloon/ArrowOrientation;)V
@@ -1104,8 +1107,10 @@ public final class com/skydoves/balloon/radius/RadiusLayout : android/widget/Fra
 	public final fun setArrowWidth (F)V
 	public final fun setCustomShapeBackgroundDrawable (Landroid/graphics/drawable/Drawable;)V
 	public final fun setDrawCustomShape (Z)V
+	public final fun setFillColor (I)V
 	public fun setPadding (IIII)V
 	public final fun setRadius (F)V
+	public final fun setStroke (FI)V
 	public final fun updateEffectivePadding ()V
 }
 

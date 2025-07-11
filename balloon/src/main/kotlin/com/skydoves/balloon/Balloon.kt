@@ -322,7 +322,14 @@ public class Balloon private constructor(
     }
   }
 
-  private fun updateCardArrowPosition(anchor: View) {
+  /**
+   * Updates the arrow position on the RadiusLayout based on the anchor position.
+   * This method calculates the appropriate arrow position ratio and updates the
+   * RadiusLayout properties when isClipArrowEnabled is true.
+   *
+   * @param anchor The anchor view to align the arrow with
+   */
+  private fun updateBalloonCardArrowPosition(anchor: View) {
     val balloonCard = binding.balloonCard
     val balloonLocation = IntArray(2)
     val anchorLocation = IntArray(2)
@@ -615,37 +622,24 @@ public class Balloon private constructor(
           // --- Handle Custom Background Drawable for the combined shape ---
           if (builder.backgroundDrawable != null) {
             layout.customShapeBackgroundDrawable = builder.backgroundDrawable
-            // When a custom drawable is used, it provides the FILL content.
-            // RadiusLayout's fillPaint color can be made transparent, as the drawable
-            // will cover it.
-            // Make fill transparent, as the drawable will provide the background
-            layout.fillPaint.color = 0
+            layout.setFillColor(Color.TRANSPARENT)
           } else {
-            // No custom drawable, so RadiusLayout draws with solid color
-            layout.customShapeBackgroundDrawable = null // Clear any previous custom drawable
-            layout.fillPaint.color = builder.backgroundColor
+            layout.customShapeBackgroundDrawable = null
+            layout.setFillColor(builder.backgroundColor)
           }
 
           // --- ALWAYS configure RadiusLayout's strokePaint here if a stroke is desired ---
           // This ensures the stroke is drawn by RadiusLayout on the custom path,
           // regardless of whether a custom backgroundDrawable is provided for the fill.
           builder.balloonStroke?.let { stroke ->
-            layout.strokePaint.apply {
-              strokeWidth = stroke.thickness * 1.5f // Use builder's stroke thickness
-              color = stroke.color
-            }
+            layout.setStroke(thickness = stroke.thickness, color = stroke.color)
           } ?: run {
-            layout.strokePaint.strokeWidth = 0f // No stroke if not provided in builder
+            // No stroke if not provided in builder
+            layout.setStroke(thickness = 0f, color = Color.TRANSPARENT)
           }
         } else {
           // --- Old mode: ImageView arrow, RadiusLayout acts as a regular FrameLayout with
           // rounded background ---
-          // Reset RadiusLayout's custom drawing properties to default
-          layout.customShapeBackgroundDrawable = null
-          layout.fillPaint.color = 0 // Reset fill paint to transparent
-          layout.strokePaint.strokeWidth = 0f // Reset stroke to 0
-
-          // For this mode, set the standard Android View background
           background = builder.backgroundDrawable ?: GradientDrawable().apply {
             setColor(builder.backgroundColor)
             cornerRadius = builder.cornerRadius
@@ -941,7 +935,7 @@ public class Balloon private constructor(
 
             adjustArrowOrientationByRules(mainAnchor)
 
-            updateCardArrowPosition(mainAnchor)
+            updateBalloonCardArrowPosition(mainAnchor)
           }
         }
 
@@ -1747,7 +1741,7 @@ public class Balloon private constructor(
   private fun update(placement: BalloonPlacement) {
     if (isShowing) {
       if (builder.isClipArrowEnabled) {
-        updateCardArrowPosition(placement.anchor)
+        updateBalloonCardArrowPosition(placement.anchor)
       } else {
         updateArrow(placement.anchor)
       }
@@ -2500,12 +2494,22 @@ public class Balloon private constructor(
     @set:JvmSynthetic
     public var balloonStroke: BalloonStroke? = null
 
-    /** sets whether the arrow should be drawn on the balloon. */
+    /**
+     * Sets whether the arrow should be drawn as part of the balloon background shape.
+     * When enabled, the arrow is integrated into the balloon's RadiusLayout background
+     * and supports stroke drawing. When disabled, uses the legacy separate arrow ImageView.
+     * Default is false for backward compatibility.
+     */
     public fun setIsClipArrowEnabled(value: Boolean): Builder = apply {
       this.isClipArrowEnabled = value
     }
 
-    /** sets stroke properties of balloon*/
+    /**
+     * Sets the stroke (outline) properties for the balloon.
+     * Only works when isClipArrowEnabled is true.
+     * @param color The color of the stroke
+     * @param thickness The thickness of the stroke in dp
+     **/
     public fun setBalloonStroke(@ColorInt color: Int, @Dp thickness: Float): Builder = apply {
       this.balloonStroke = BalloonStroke(color, thickness)
     }

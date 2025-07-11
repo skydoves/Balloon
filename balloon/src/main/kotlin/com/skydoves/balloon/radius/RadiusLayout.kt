@@ -24,6 +24,7 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import com.skydoves.balloon.ArrowOrientation
+import com.skydoves.balloon.BalloonStroke.Companion.STROKE_THICKNESS_MULTIPLIER
 
 /**
  * RadiusLayout clips four directions of inner layouts depending on the radius size.
@@ -39,14 +40,25 @@ public class RadiusLayout @JvmOverloads constructor(
   }
 
   private val path = Path()
-  public val fillPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
-  public val strokePaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+  private val fillPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
+  private val strokePaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
     style = Paint.Style.STROKE
     strokeJoin = Paint.Join.MITER // Ensure sharp corners for stroke
   }
 
   private val halfStroke: Float
     get() = if (strokePaint.strokeWidth > 0) strokePaint.strokeWidth / 2f else 0f
+
+  public fun setFillColor(color: Int) {
+    fillPaint.color = color
+    invalidate()
+  }
+
+  public fun setStroke(thickness: Float, color: Int) {
+    strokePaint.strokeWidth = thickness * STROKE_THICKNESS_MULTIPLIER
+    strokePaint.color = color
+    invalidate()
+  }
 
   public var customShapeBackgroundDrawable: Drawable? = null
     set(value) {

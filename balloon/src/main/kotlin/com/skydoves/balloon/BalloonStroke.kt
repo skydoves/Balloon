@@ -22,4 +22,13 @@ import com.skydoves.balloon.annotations.Dp
 public data class BalloonStroke(
   @ColorInt public val color: Int,
   @Dp public val thickness: Float = 1f,
-)
+) {
+  public companion object {
+    /**
+     * The stroke looks visually thinner due to how it's drawn over the path,
+     * so we multiply thickness to compensate for better visibility.
+     * this is a workaround for the issue.
+     **/
+    public const val STROKE_THICKNESS_MULTIPLIER: Float = 1.5f
+  }
+}
