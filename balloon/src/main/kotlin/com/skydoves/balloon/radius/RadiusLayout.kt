@@ -138,14 +138,26 @@ public class RadiusLayout @JvmOverloads constructor(
     val protrusion = arrowHeight * 0.5f
     val extra = protrusion + halfStroke
 
-    val effectiveLeft = basePaddingLeft + if (arrowOrientation == ArrowOrientation.START)
-      extra.toInt() else 0
-    val effectiveTop = basePaddingTop + if (arrowOrientation == ArrowOrientation.TOP)
-      extra.toInt() else 0
-    val effectiveRight = basePaddingRight + if (arrowOrientation == ArrowOrientation.END)
-      extra.toInt() else 0
-    val effectiveBottom = basePaddingBottom + if (arrowOrientation == ArrowOrientation.BOTTOM)
-      extra.toInt() else 0
+    val effectiveLeft = basePaddingLeft + if (arrowOrientation == ArrowOrientation.START) {
+      extra.toInt()
+    } else {
+      0
+    }
+    val effectiveTop = basePaddingTop + if (arrowOrientation == ArrowOrientation.TOP) {
+      extra.toInt()
+    } else {
+      0
+    }
+    val effectiveRight = basePaddingRight + if (arrowOrientation == ArrowOrientation.END) {
+      extra.toInt()
+    } else {
+      0
+    }
+    val effectiveBottom = basePaddingBottom + if (arrowOrientation == ArrowOrientation.BOTTOM) {
+      extra.toInt()
+    } else {
+      0
+    }
 
     super.setPadding(effectiveLeft, effectiveTop, effectiveRight, effectiveBottom)
   }
@@ -156,7 +168,9 @@ public class RadiusLayout @JvmOverloads constructor(
       rewind()
       addRoundRect(
         RectF(0f, 0f, w.toFloat(), h.toFloat()),
-        radius, radius, Path.Direction.CW
+        radius,
+        radius,
+        Path.Direction.CW,
       )
     }
     if (drawCustomShape) {

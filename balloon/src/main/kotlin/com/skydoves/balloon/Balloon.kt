@@ -984,11 +984,15 @@ public class Balloon private constructor(
       BalloonAlign.BOTTOM ->
         builder.supportRtlLayoutFactor * (halfAnchorWidth - halfBalloonWidth + xOff) to yOff
 
-      BalloonAlign.START -> builder.supportRtlLayoutFactor * (-getMeasuredWidth() + protrusion + xOff) to
-        -(halfBalloonHeight + halfAnchorHeight) + yOff
+      BalloonAlign.START -> builder.supportRtlLayoutFactor * (
+        -getMeasuredWidth() +
+          protrusion + xOff
+        ) to -(halfBalloonHeight + halfAnchorHeight) + yOff
 
-      BalloonAlign.END -> builder.supportRtlLayoutFactor * (anchor.measuredWidth - protrusion + xOff) to
-        -(halfBalloonHeight + halfAnchorHeight) + yOff
+      BalloonAlign.END -> builder.supportRtlLayoutFactor * (
+        anchor.measuredWidth -
+          protrusion + xOff
+        ) to -(halfBalloonHeight + halfAnchorHeight) + yOff
     }
   }
 
