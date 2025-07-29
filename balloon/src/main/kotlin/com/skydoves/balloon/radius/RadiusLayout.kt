@@ -20,11 +20,13 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.BalloonStroke.Companion.STROKE_THICKNESS_MULTIPLIER
+import com.skydoves.balloon.internals.viewProperty
 
 /**
  * RadiusLayout clips four directions of inner layouts depending on the radius size.
@@ -95,9 +97,9 @@ public class RadiusLayout @JvmOverloads constructor(
     }
   }
 
-  public var radius: Float = 20f
+  public var radius: Float by viewProperty(0f)
 
-  public var arrowHeight: Float = 40f
+  public var arrowHeight: Float = 0f
     set(value) {
       if (field != value) {
         field = value
@@ -106,7 +108,7 @@ public class RadiusLayout @JvmOverloads constructor(
       }
     }
 
-  public var arrowWidth: Float = 40f
+  public var arrowWidth: Float = 0f
     set(value) {
       if (field != value) {
         field = value
@@ -132,106 +134,77 @@ public class RadiusLayout @JvmOverloads constructor(
     }
 
   public fun updateEffectivePadding() {
-    val effectiveLeft =
-      basePaddingLeft + if (arrowOrientation == ArrowOrientation.START) {
-        arrowHeight.toInt()
-      } else {
-        0
-      }
-    val effectiveTop =
-      basePaddingTop + if (arrowOrientation == ArrowOrientation.TOP) {
-        arrowHeight.toInt()
-      } else {
-        0
-      }
-    val effectiveRight =
-      basePaddingRight + if (arrowOrientation == ArrowOrientation.END) {
-        arrowHeight.toInt()
-      } else {
-        0
-      }
-    val effectiveBottom =
-      basePaddingBottom + if (arrowOrientation == ArrowOrientation.BOTTOM) {
-        arrowHeight.toInt()
-      } else {
-        0
-      }
+    if (!drawCustomShape) return
+    val protrusion = arrowHeight * 0.5f
+    val extra = protrusion + halfStroke
+
+    val effectiveLeft = basePaddingLeft + if (arrowOrientation == ArrowOrientation.START)
+      extra.toInt() else 0
+    val effectiveTop = basePaddingTop + if (arrowOrientation == ArrowOrientation.TOP)
+      extra.toInt() else 0
+    val effectiveRight = basePaddingRight + if (arrowOrientation == ArrowOrientation.END)
+      extra.toInt() else 0
+    val effectiveBottom = basePaddingBottom + if (arrowOrientation == ArrowOrientation.BOTTOM)
+      extra.toInt() else 0
 
     super.setPadding(effectiveLeft, effectiveTop, effectiveRight, effectiveBottom)
   }
 
-  override fun onAttachedToWindow() {
-    super.onAttachedToWindow()
-    if (drawCustomShape) {
-      rebuildPath()
-      updateEffectivePadding()
-    }
-  }
-
   override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
     super.onSizeChanged(w, h, oldw, oldh)
+    path.apply {
+      rewind()
+      addRoundRect(
+        RectF(0f, 0f, w.toFloat(), h.toFloat()),
+        radius, radius, Path.Direction.CW
+      )
+    }
     if (drawCustomShape) {
       rebuildPath()
       updateEffectivePadding()
       customShapeBackgroundDrawable?.setBounds(0, 0, w, h)
+      requestLayout()
     }
   }
 
   public fun rebuildPath() {
     path.reset()
-    if (!drawCustomShape || width == 0 || height == 0) {
-      return
-    }
+    if (!drawCustomShape || width == 0 || height == 0) return
 
-    /** The path accounts for halfStroke in its dimensions,
-     * defining the center-line of the stroke.*/
-    val rectLeft = if (arrowOrientation == ArrowOrientation.START) {
-      arrowHeight + halfStroke
-    } else {
-      halfStroke
-    }
-    val rectTop = if (arrowOrientation == ArrowOrientation.TOP) {
-      arrowHeight + halfStroke
-    } else {
-      halfStroke
-    }
-    val rectRight = if (arrowOrientation == ArrowOrientation.END) {
-      width - arrowHeight - halfStroke
-    } else {
-      width - halfStroke
-    }
-    val rectBottom = if (arrowOrientation == ArrowOrientation.BOTTOM) {
-      height - arrowHeight - halfStroke
-    } else {
-      height - halfStroke
-    }
+    val protrusion = arrowHeight * 0.5f
+    val extra = protrusion + halfStroke
+
+    val rectLeft = if (arrowOrientation == ArrowOrientation.START) extra else halfStroke
+    val rectTop = if (arrowOrientation == ArrowOrientation.TOP) extra else halfStroke
+    val rectRight =
+      if (arrowOrientation == ArrowOrientation.END) width - extra else width - halfStroke
+    val rectBottom =
+      if (arrowOrientation == ArrowOrientation.BOTTOM) height - extra else height - halfStroke
 
     val centerX = (width * arrowPositionRatio)
       .coerceIn(arrowWidth / 2f + halfStroke, width - arrowWidth / 2f - halfStroke)
     val centerY = (height * arrowPositionRatio)
       .coerceIn(arrowWidth / 2f + halfStroke, height - arrowWidth / 2f - halfStroke)
 
-    val arrowProtrusion = arrowHeight * 0.5f // Factor for arrow sharpness.
-
     when (arrowOrientation) {
       ArrowOrientation.TOP -> {
-        val tipY = rectTop - arrowProtrusion
-        path.moveTo(radius + rectLeft, rectTop)
-        path.lineTo(centerX - arrowWidth / 2f, rectTop)
-        path.lineTo(centerX, tipY)
+        val tipY = rectTop - protrusion
+        path.moveTo(rectLeft + radius, rectBottom)
+        path.lineTo(rectRight - radius, rectBottom)
+        path.quadTo(rectRight, rectBottom, rectRight, rectBottom - radius)
+        path.lineTo(rectRight, rectTop + radius)
+        path.quadTo(rectRight, rectTop, rectRight - radius, rectTop)
         path.lineTo(centerX + arrowWidth / 2f, rectTop)
-        path.lineTo(rectRight - radius, rectTop)
-        path.quadTo(rectRight, rectTop, rectRight, rectTop + radius)
-        path.lineTo(rectRight, rectBottom - radius)
-        path.quadTo(rectRight, rectBottom, rectRight - radius, rectBottom)
-        path.lineTo(rectLeft + radius, rectBottom)
-        path.quadTo(rectLeft, rectBottom, rectLeft, rectBottom - radius)
-        path.lineTo(rectLeft, rectTop + radius)
-        path.quadTo(rectLeft, rectTop, rectLeft + radius, rectTop)
+        path.lineTo(centerX, tipY)
+        path.lineTo(centerX - arrowWidth / 2f, rectTop)
+        path.lineTo(rectLeft + radius, rectTop)
+        path.quadTo(rectLeft, rectTop, rectLeft, rectTop + radius)
+        path.lineTo(rectLeft, rectBottom - radius)
+        path.quadTo(rectLeft, rectBottom, rectLeft + radius, rectBottom)
       }
 
       ArrowOrientation.BOTTOM -> {
-        val tipY = rectBottom + arrowProtrusion
+        val tipY = rectBottom + protrusion
         path.moveTo(radius + rectLeft, rectTop)
         path.lineTo(rectRight - radius, rectTop)
         path.quadTo(rectRight, rectTop, rectRight, rectTop + radius)
@@ -247,8 +220,8 @@ public class RadiusLayout @JvmOverloads constructor(
       }
 
       ArrowOrientation.START -> {
-        val tipX = rectLeft - arrowProtrusion
-        path.moveTo(radius + rectLeft, rectTop)
+        val tipX = rectLeft - protrusion
+        path.moveTo(rectLeft + radius, rectTop)
         path.lineTo(rectRight - radius, rectTop)
         path.quadTo(rectRight, rectTop, rectRight, rectTop + radius)
         path.lineTo(rectRight, rectBottom - radius)
@@ -263,8 +236,8 @@ public class RadiusLayout @JvmOverloads constructor(
       }
 
       ArrowOrientation.END -> {
-        val tipX = rectRight + arrowProtrusion
-        path.moveTo(radius + halfStroke, rectTop)
+        val tipX = rectRight + protrusion
+        path.moveTo(rectLeft + radius, rectTop)
         path.lineTo(rectRight - radius, rectTop)
         path.quadTo(rectRight, rectTop, rectRight, rectTop + radius)
         path.lineTo(rectRight, centerY - arrowWidth / 2f)

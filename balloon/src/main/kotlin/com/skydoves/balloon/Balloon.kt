@@ -619,6 +619,8 @@ public class Balloon private constructor(
           layout.arrowHeight = builder.arrowSize.toFloat() * 2f
           layout.arrowWidth = builder.arrowSize.toFloat()
 
+          layout.arrowOrientation = builder.arrowOrientation
+
           // --- Handle Custom Background Drawable for the combined shape ---
           if (builder.backgroundDrawable != null) {
             layout.customShapeBackgroundDrawable = builder.backgroundDrawable
@@ -972,18 +974,20 @@ public class Balloon private constructor(
     val xOff = placement.xOff
     val yOff = placement.yOff
 
+    val protrusion = if (builder.isClipArrowEnabled) builder.arrowSize else 0
+
     return when (placement.align) {
       BalloonAlign.TOP ->
         builder.supportRtlLayoutFactor * (halfAnchorWidth - halfBalloonWidth + xOff) to
-          -(getMeasuredHeight() + anchor.measuredHeight) + yOff
+          -(getMeasuredHeight() + anchor.measuredHeight - protrusion) + yOff
 
       BalloonAlign.BOTTOM ->
         builder.supportRtlLayoutFactor * (halfAnchorWidth - halfBalloonWidth + xOff) to yOff
 
-      BalloonAlign.START -> builder.supportRtlLayoutFactor * (-getMeasuredWidth() + xOff) to
+      BalloonAlign.START -> builder.supportRtlLayoutFactor * (-getMeasuredWidth() + protrusion + xOff) to
         -(halfBalloonHeight + halfAnchorHeight) + yOff
 
-      BalloonAlign.END -> builder.supportRtlLayoutFactor * (anchor.measuredWidth + xOff) to
+      BalloonAlign.END -> builder.supportRtlLayoutFactor * (anchor.measuredWidth - protrusion + xOff) to
         -(halfBalloonHeight + halfAnchorHeight) + yOff
     }
   }
