@@ -253,6 +253,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun getBalloonOverlayAnimation ()Lcom/skydoves/balloon/overlay/BalloonOverlayAnimation;
 	public final fun getBalloonOverlayAnimationStyle ()I
 	public final fun getBalloonRotateAnimation ()Lcom/skydoves/balloon/animations/BalloonRotateAnimation;
+	public final fun getBalloonStroke ()Lcom/skydoves/balloon/BalloonStroke;
 	public final fun getCircularDuration ()J
 	public final fun getCornerRadius ()F
 	public final fun getDismissWhenClicked ()Z
@@ -325,6 +326,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun getWidth ()I
 	public final fun getWidthRatio ()F
 	public final fun isAttachedInDecor ()Z
+	public final fun isClipArrowEnabled ()Z
 	public final fun isComposableContent ()Z
 	public final fun isFocusable ()Z
 	public final fun isRtlLayout ()Z
@@ -402,8 +404,11 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final synthetic fun setBalloonOverlayAnimationStyle (I)V
 	public final synthetic fun setBalloonRotateAnimation (Lcom/skydoves/balloon/animations/BalloonRotateAnimation;)V
 	public final fun setBalloonRotationAnimation (Lcom/skydoves/balloon/animations/BalloonRotateAnimation;)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setBalloonStroke (IF)Lcom/skydoves/balloon/Balloon$Builder;
+	public final synthetic fun setBalloonStroke (Lcom/skydoves/balloon/BalloonStroke;)V
 	public final fun setCircularDuration (J)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setCircularDuration (J)V
+	public final synthetic fun setClipArrowEnabled (Z)V
 	public final synthetic fun setComposableContent (Z)V
 	public final fun setCornerRadius (F)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setCornerRadius (F)V
@@ -457,6 +462,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun setIncludeFontPadding (Z)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setIncludeFontPadding (Z)V
 	public final fun setIsAttachedInDecor (Z)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setIsClipArrowEnabled (Z)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setIsComposableContent (Z)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setIsStatusBarVisible (Z)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setIsVisibleArrow (Z)Lcom/skydoves/balloon/Balloon$Builder;
@@ -785,6 +791,25 @@ public final class com/skydoves/balloon/BalloonSizeSpec {
 	public static final field WRAP I
 }
 
+public final class com/skydoves/balloon/BalloonStroke {
+	public static final field Companion Lcom/skydoves/balloon/BalloonStroke$Companion;
+	public static final field STROKE_THICKNESS_MULTIPLIER F
+	public fun <init> (IF)V
+	public synthetic fun <init> (IFILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()I
+	public final fun component2 ()F
+	public final fun copy (IF)Lcom/skydoves/balloon/BalloonStroke;
+	public static synthetic fun copy$default (Lcom/skydoves/balloon/BalloonStroke;IFILjava/lang/Object;)Lcom/skydoves/balloon/BalloonStroke;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getColor ()I
+	public final fun getThickness ()F
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/skydoves/balloon/BalloonStroke$Companion {
+}
+
 public final class com/skydoves/balloon/DeferredBalloon {
 	public fun <init> (Lcom/skydoves/balloon/Balloon;Lcom/skydoves/balloon/BalloonPlacement;)V
 	public final fun component1 ()Lcom/skydoves/balloon/Balloon;
@@ -1068,8 +1093,25 @@ public final class com/skydoves/balloon/radius/RadiusLayout : android/widget/Fra
 	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;)V
 	public fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;I)V
 	public synthetic fun <init> (Landroid/content/Context;Landroid/util/AttributeSet;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getArrowHeight ()F
+	public final fun getArrowOrientation ()Lcom/skydoves/balloon/ArrowOrientation;
+	public final fun getArrowPositionRatio ()F
+	public final fun getArrowWidth ()F
+	public final fun getCustomShapeBackgroundDrawable ()Landroid/graphics/drawable/Drawable;
+	public final fun getDrawCustomShape ()Z
 	public final fun getRadius ()F
+	public final fun rebuildPath ()V
+	public final fun setArrowHeight (F)V
+	public final fun setArrowOrientation (Lcom/skydoves/balloon/ArrowOrientation;)V
+	public final fun setArrowPositionRatio (F)V
+	public final fun setArrowWidth (F)V
+	public final fun setCustomShapeBackgroundDrawable (Landroid/graphics/drawable/Drawable;)V
+	public final fun setDrawCustomShape (Z)V
+	public final fun setFillColor (I)V
+	public fun setPadding (IIII)V
 	public final fun setRadius (F)V
+	public final fun setStroke (FI)V
+	public final fun updateEffectivePadding ()V
 }
 
 public final class com/skydoves/balloon/vectortext/VectorTextView : androidx/appcompat/widget/AppCompatTextView {
