@@ -113,6 +113,7 @@ import com.skydoves.balloon.internals.unaryMinus
 import com.skydoves.balloon.overlay.BalloonOverlayAnimation
 import com.skydoves.balloon.overlay.BalloonOverlayOval
 import com.skydoves.balloon.overlay.BalloonOverlayShape
+import com.skydoves.balloon.radius.RadiusLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -318,6 +319,66 @@ public class Balloon private constructor(
           }
         }
       }
+    }
+  }
+
+  /**
+   * Updates the arrow position on the RadiusLayout based on the anchor position.
+   * This method calculates the appropriate arrow position ratio and updates the
+   * RadiusLayout properties when isClipArrowEnabled is true.
+   *
+   * @param anchor The anchor view to align the arrow with
+   */
+  private fun updateBalloonCardArrowPosition(anchor: View) {
+    val balloonCard = binding.balloonCard
+    val balloonLocation = IntArray(2)
+    val anchorLocation = IntArray(2)
+
+    balloonCard.getLocationOnScreen(balloonLocation)
+    anchor.getLocationOnScreen(anchorLocation)
+
+    val orientation = builder.arrowOrientation.getRTLSupportOrientation(builder.isRtlLayout)
+
+    val ratio = when (orientation) {
+      ArrowOrientation.TOP, ArrowOrientation.BOTTOM -> {
+        when (builder.arrowPositionRules) {
+          ArrowPositionRules.ALIGN_ANCHOR -> {
+            // Use arrowPosition to determine position within anchor
+            val anchorPositionX = anchorLocation[0] + (anchor.width * builder.arrowPosition)
+            val balloonLeft = balloonLocation[0].toFloat()
+            val relativeX = anchorPositionX - balloonLeft
+            (relativeX / balloonCard.width.toFloat()).coerceIn(0f, 1f)
+          }
+
+          ArrowPositionRules.ALIGN_BALLOON -> {
+            builder.arrowPosition.coerceIn(0f, 1f)
+          }
+        }
+      }
+
+      ArrowOrientation.START, ArrowOrientation.END -> {
+        when (builder.arrowPositionRules) {
+          ArrowPositionRules.ALIGN_ANCHOR -> {
+            // Use arrowPosition to determine position within anchor
+            val anchorPositionY = anchorLocation[1] + (anchor.height * builder.arrowPosition)
+            val balloonTop = balloonLocation[1].toFloat()
+            val relativeY = anchorPositionY - balloonTop
+            (relativeY / balloonCard.height.toFloat()).coerceIn(0f, 1f)
+          }
+
+          ArrowPositionRules.ALIGN_BALLOON -> {
+            builder.arrowPosition.coerceIn(0f, 1f)
+          }
+        }
+      }
+    }
+
+    (balloonCard as? RadiusLayout)?.let { layout ->
+      layout.arrowPositionRatio = ratio
+      layout.arrowOrientation = orientation
+
+      layout.rebuildPath()
+      layout.updateEffectivePadding()
     }
   }
 
@@ -544,11 +605,51 @@ public class Balloon private constructor(
     with(binding.balloonCard) {
       alpha = builder.alpha
       radius = builder.cornerRadius
-      ViewCompat.setElevation(this, builder.elevation)
-      background = builder.backgroundDrawable ?: GradientDrawable().apply {
-        setColor(builder.backgroundColor)
-        cornerRadius = builder.cornerRadius
+      // Radius and elevation are applied to the RadiusLayout directly
+      (this as? RadiusLayout)?.let { layout ->
+        layout.radius = builder.cornerRadius // Radius is still set, used by path creation
+        ViewCompat.setElevation(layout, builder.elevation)
+
+        // --- Determine the drawing mode for RadiusLayout ---
+        // If true, RadiusLayout handles all drawing
+        layout.drawCustomShape = builder.isClipArrowEnabled
+
+        if (builder.isClipArrowEnabled) {
+          // If isClipArrowEnabled is true, RadiusLayout will draw its own shape
+          layout.arrowHeight = builder.arrowSize.toFloat() * 2f
+          layout.arrowWidth = builder.arrowSize.toFloat()
+
+          layout.arrowOrientation = builder.arrowOrientation
+
+          // --- Handle Custom Background Drawable for the combined shape ---
+          if (builder.backgroundDrawable != null) {
+            layout.customShapeBackgroundDrawable = builder.backgroundDrawable
+            layout.setFillColor(Color.TRANSPARENT)
+          } else {
+            layout.customShapeBackgroundDrawable = null
+            layout.setFillColor(builder.backgroundColor)
+          }
+
+          // --- ALWAYS configure RadiusLayout's strokePaint here if a stroke is desired ---
+          // This ensures the stroke is drawn by RadiusLayout on the custom path,
+          // regardless of whether a custom backgroundDrawable is provided for the fill.
+          builder.balloonStroke?.let { stroke ->
+            layout.setStroke(thickness = stroke.thickness, color = stroke.color)
+          } ?: run {
+            // No stroke if not provided in builder
+            layout.setStroke(thickness = 0f, color = Color.TRANSPARENT)
+          }
+        } else {
+          // --- Old mode: ImageView arrow, RadiusLayout acts as a regular FrameLayout with
+          // rounded background ---
+          background = builder.backgroundDrawable ?: GradientDrawable().apply {
+            setColor(builder.backgroundColor)
+            cornerRadius = builder.cornerRadius
+          }
+        }
       }
+      // Apply padding. RadiusLayout's setPadding will now internally adjust for the arrow
+      // if drawCustomShape is true. Otherwise, it just passes padding to super.
       setPadding(
         builder.paddingLeft,
         builder.paddingTop,
@@ -827,7 +928,19 @@ public class Balloon private constructor(
           FrameLayout.LayoutParams.MATCH_PARENT,
           FrameLayout.LayoutParams.MATCH_PARENT,
         )
-        initializeArrow(mainAnchor)
+
+        if (!builder.isClipArrowEnabled) {
+          initializeArrow(mainAnchor)
+        } else {
+          binding.balloonCard.post {
+            onBalloonInitializedListener?.onBalloonInitialized(getContentView())
+
+            adjustArrowOrientationByRules(mainAnchor)
+
+            updateBalloonCardArrowPosition(mainAnchor)
+          }
+        }
+
         initializeBalloonContent()
 
         applyBalloonOverlayAnimation()
@@ -861,19 +974,25 @@ public class Balloon private constructor(
     val xOff = placement.xOff
     val yOff = placement.yOff
 
+    val protrusion = if (builder.isClipArrowEnabled) builder.arrowSize else 0
+
     return when (placement.align) {
       BalloonAlign.TOP ->
         builder.supportRtlLayoutFactor * (halfAnchorWidth - halfBalloonWidth + xOff) to
-          -(getMeasuredHeight() + anchor.measuredHeight) + yOff
+          -(getMeasuredHeight() + anchor.measuredHeight - protrusion) + yOff
 
       BalloonAlign.BOTTOM ->
         builder.supportRtlLayoutFactor * (halfAnchorWidth - halfBalloonWidth + xOff) to yOff
 
-      BalloonAlign.START -> builder.supportRtlLayoutFactor * (-getMeasuredWidth() + xOff) to
-        -(halfBalloonHeight + halfAnchorHeight) + yOff
+      BalloonAlign.START -> builder.supportRtlLayoutFactor * (
+        -getMeasuredWidth() +
+          protrusion + xOff
+        ) to -(halfBalloonHeight + halfAnchorHeight) + yOff
 
-      BalloonAlign.END -> builder.supportRtlLayoutFactor * (anchor.measuredWidth + xOff) to
-        -(halfBalloonHeight + halfAnchorHeight) + yOff
+      BalloonAlign.END -> builder.supportRtlLayoutFactor * (
+        anchor.measuredWidth -
+          protrusion + xOff
+        ) to -(halfBalloonHeight + halfAnchorHeight) + yOff
     }
   }
 
@@ -1629,7 +1748,11 @@ public class Balloon private constructor(
   @MainThread
   private fun update(placement: BalloonPlacement) {
     if (isShowing) {
-      updateArrow(placement.anchor)
+      if (builder.isClipArrowEnabled) {
+        updateBalloonCardArrowPosition(placement.anchor)
+      } else {
+        updateArrow(placement.anchor)
+      }
 
       val (xOff, yOff) = calculateOffset(placement)
       this.bodyWindow.update(
@@ -2372,6 +2495,32 @@ public class Balloon private constructor(
 
     @set:JvmSynthetic
     public var isComposableContent: Boolean = false
+
+    @set:JvmSynthetic
+    public var isClipArrowEnabled: Boolean = false
+
+    @set:JvmSynthetic
+    public var balloonStroke: BalloonStroke? = null
+
+    /**
+     * Sets whether the arrow should be drawn as part of the balloon background shape.
+     * When enabled, the arrow is integrated into the balloon's RadiusLayout background
+     * and supports stroke drawing. When disabled, uses the legacy separate arrow ImageView.
+     * Default is false for backward compatibility.
+     */
+    public fun setIsClipArrowEnabled(value: Boolean): Builder = apply {
+      this.isClipArrowEnabled = value
+    }
+
+    /**
+     * Sets the stroke (outline) properties for the balloon.
+     * Only works when isClipArrowEnabled is true.
+     * @param color The color of the stroke
+     * @param thickness The thickness of the stroke in dp
+     **/
+    public fun setBalloonStroke(@ColorInt color: Int, @Dp thickness: Float): Builder = apply {
+      this.balloonStroke = BalloonStroke(color, thickness)
+    }
 
     /** sets the width size. */
     public fun setWidth(@Dp value: Int): Builder = apply {
