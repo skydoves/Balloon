@@ -694,13 +694,13 @@ public class Balloon private constructor(
     val elevation = builder.elevation.toInt()
     with(binding.balloonContent) {
       when (builder.arrowOrientation) {
-        ArrowOrientation.START -> setPadding(paddingSize, 0, paddingSize, 0)
-        ArrowOrientation.END -> setPadding(paddingSize, 0, paddingSize, 0)
+        ArrowOrientation.START -> setPadding(paddingSize, elevation, paddingSize, elevation)
+        ArrowOrientation.END -> setPadding(paddingSize, elevation, paddingSize, elevation)
         ArrowOrientation.TOP ->
-          setPadding(0, paddingSize, 0, paddingSize.coerceAtLeast(elevation))
+          setPadding(elevation, paddingSize, elevation, paddingSize.coerceAtLeast(elevation))
 
         ArrowOrientation.BOTTOM ->
-          setPadding(0, paddingSize, 0, paddingSize.coerceAtLeast(elevation))
+          setPadding(elevation, paddingSize, elevation, paddingSize.coerceAtLeast(elevation))
       }
     }
   }
