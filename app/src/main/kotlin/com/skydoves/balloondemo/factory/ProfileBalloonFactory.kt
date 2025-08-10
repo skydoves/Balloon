@@ -17,6 +17,8 @@
 package com.skydoves.balloondemo.factory
 
 import android.content.Context
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.LifecycleOwner
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.ArrowPositionRules
@@ -40,6 +42,7 @@ class ProfileBalloonFactory : Balloon.Factory() {
       setArrowPosition(0.5f)
       setCornerRadius(6f)
       setElevation(6)
+      setBalloonStroke(color = Color.White.toArgb(), thickness = 6f)
       setBackgroundDrawableResource(R.drawable.background_gradient)
       setArrowColorMatchBalloon(true)
       setBalloonAnimation(BalloonAnimation.CIRCULAR)
