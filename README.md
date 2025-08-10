@@ -26,7 +26,7 @@
 ## Who's using Balloon?
 **👉 [Check out who's using Balloon](/usecases.md)**
 
-Balloon hits **+500,000 downloads every month** around the globe! :balloon:
+Balloon hits **+800,000 downloads every month** around the globe! :balloon:
 
 ![globe](https://user-images.githubusercontent.com/24237865/196018576-a9c87534-81a2-4618-8519-0024b67964bf.png)
 
@@ -537,6 +537,22 @@ button.setOnClickListener {
   Toast.makeText(context, "Edit", Toast.LENGTH_SHORT).show()
   balloon.dismiss()
 }
+```
+
+<img alt="Image" src="https://github.com/user-attachments/assets/c188b987-7fb1-4877-ae8e-2ba486e9cea1" align="right" width="310px" />
+
+### Stroke
+
+You can apply a custom stroke to the balloon container and its arrow using the code below:
+
+```kotlin
+val balloon = Balloon.Builder(context)
+  ..
+  .setBalloonStroke(
+        color = Color.White.toArgb(),
+        thickness = 4f,
+      )
+  .build()
 ```
 
 ### Persistence
