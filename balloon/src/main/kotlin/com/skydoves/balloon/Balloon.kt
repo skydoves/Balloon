@@ -2519,6 +2519,7 @@ public class Balloon private constructor(
      * @param thickness The thickness of the stroke in dp
      **/
     public fun setBalloonStroke(@ColorInt color: Int, @Dp thickness: Float): Builder = apply {
+      this.isClipArrowEnabled = true // For now, this will be enabled by default
       this.balloonStroke = BalloonStroke(color, thickness)
     }
 
