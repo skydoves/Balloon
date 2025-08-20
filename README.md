@@ -36,6 +36,12 @@ Balloon hits **+800,000 downloads every month** around the globe! :balloon:
 
 If you want to use Balloon in your Jetpack Compose project, check out the **[Balloon in Jetpack Compose](https://github.com/skydoves/Balloon#balloon-in-jetpack-compose-1)** guidelines. You can also check out the blog post **[Tooltips for Jetpack Compose: Improve User Experience to the Next Level](https://medium.com/@skydoves/tooltips-for-jetpack-compose-improve-user-experience-to-the-next-level-68791ab8e07f)** for more details.
 
+## Sponsors 💝
+
+<a href="https://www.coderabbit.ai/?utm_source=github&utm_medium=referral&utm_content=&utm_campaign=Jaewoong_github_2025" target="_blank"> <img width="300" alt="coderabbit" src="https://www.coderabbit.ai/_next/image?url=https%3A%2F%2Fvictorious-bubble-f69a016683.media.strapiapp.com%2FCr_logo_dark_f656abe8e3.png&w=384&q=75" /></a>
+
+<a href="https://getstream.io/chat/sdk/android/?utm_source=github&utm_medium=referral&utm_content=&utm_campaign=Jaewoong_github_2025" target="_blank"> <img width="260" alt="stream" src="https://github.com/user-attachments/assets/87a69228-4fef-4f48-ad98-1e2c606c5b7e" /></a>
+
 ## Including in your project
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/balloon.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22balloon%22)
 
