@@ -25,18 +25,30 @@ public final class com/skydoves/balloon/ArrowPositionRules : java/lang/Enum {
 }
 
 public abstract interface class com/skydoves/balloon/AwaitBalloonsDsl {
-	public abstract fun alignBottom (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public fun alignBottom (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
 	public abstract fun alignBottom (Lcom/skydoves/balloon/Balloon;Landroid/view/View;II)V
-	public abstract fun alignEnd (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public static synthetic fun alignBottom$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Landroid/view/View;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)V
+	public static synthetic fun alignBottom$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public fun alignEnd (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
 	public abstract fun alignEnd (Lcom/skydoves/balloon/Balloon;Landroid/view/View;II)V
-	public abstract fun alignStart (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public static synthetic fun alignEnd$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Landroid/view/View;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)V
+	public static synthetic fun alignEnd$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public fun alignStart (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
 	public abstract fun alignStart (Lcom/skydoves/balloon/Balloon;Landroid/view/View;II)V
-	public abstract fun alignTop (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public static synthetic fun alignStart$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Landroid/view/View;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)V
+	public static synthetic fun alignStart$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public fun alignTop (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
 	public abstract fun alignTop (Lcom/skydoves/balloon/Balloon;Landroid/view/View;II)V
-	public abstract fun asDropDown (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
+	public static synthetic fun alignTop$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Landroid/view/View;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)V
+	public static synthetic fun alignTop$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public fun asDropDown (Landroid/view/View;Lcom/skydoves/balloon/Balloon;II)V
 	public abstract fun asDropDown (Lcom/skydoves/balloon/Balloon;Landroid/view/View;II)V
-	public abstract fun atCenter (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IILcom/skydoves/balloon/BalloonCenterAlign;)V
+	public static synthetic fun asDropDown$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Landroid/view/View;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)V
+	public static synthetic fun asDropDown$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Lcom/skydoves/balloon/Balloon;Landroid/view/View;IIILjava/lang/Object;)V
+	public fun atCenter (Landroid/view/View;Lcom/skydoves/balloon/Balloon;IILcom/skydoves/balloon/BalloonCenterAlign;)V
 	public abstract fun atCenter (Lcom/skydoves/balloon/Balloon;Landroid/view/View;IILcom/skydoves/balloon/BalloonCenterAlign;)V
+	public static synthetic fun atCenter$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Landroid/view/View;Lcom/skydoves/balloon/Balloon;IILcom/skydoves/balloon/BalloonCenterAlign;ILjava/lang/Object;)V
+	public static synthetic fun atCenter$default (Lcom/skydoves/balloon/AwaitBalloonsDsl;Lcom/skydoves/balloon/Balloon;Landroid/view/View;IILcom/skydoves/balloon/BalloonCenterAlign;ILjava/lang/Object;)V
 	public abstract fun getDismissSequentially ()Z
 	public abstract fun setDismissSequentially (Z)V
 }
@@ -95,8 +107,12 @@ public final class com/skydoves/balloon/Balloon : androidx/lifecycle/DefaultLife
 	public final fun getMeasuredWidth ()I
 	public final fun getOverlayWindow ()Landroid/widget/PopupWindow;
 	public final fun isShowing ()Z
+	public fun onCreate (Landroidx/lifecycle/LifecycleOwner;)V
 	public fun onDestroy (Landroidx/lifecycle/LifecycleOwner;)V
 	public fun onPause (Landroidx/lifecycle/LifecycleOwner;)V
+	public fun onResume (Landroidx/lifecycle/LifecycleOwner;)V
+	public fun onStart (Landroidx/lifecycle/LifecycleOwner;)V
+	public fun onStop (Landroidx/lifecycle/LifecycleOwner;)V
 	public final fun relayShowAlign (Lcom/skydoves/balloon/BalloonAlign;Lcom/skydoves/balloon/Balloon;Landroid/view/View;)Lcom/skydoves/balloon/Balloon;
 	public final fun relayShowAlign (Lcom/skydoves/balloon/BalloonAlign;Lcom/skydoves/balloon/Balloon;Landroid/view/View;I)Lcom/skydoves/balloon/Balloon;
 	public final fun relayShowAlign (Lcom/skydoves/balloon/BalloonAlign;Lcom/skydoves/balloon/Balloon;Landroid/view/View;II)Lcom/skydoves/balloon/Balloon;
