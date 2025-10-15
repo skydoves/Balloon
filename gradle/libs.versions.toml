@@ -1,6 +1,6 @@
 [versions]
 agp = "8.13.0"
-dokka = "2.0.0"
+dokka = "2.1.0"
 kotlin = "2.2.20"
 kotlinBinaryCompatibility = "0.18.1"
 jvmTarget = "11"
