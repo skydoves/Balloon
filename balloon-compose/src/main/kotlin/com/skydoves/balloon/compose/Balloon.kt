@@ -162,6 +162,7 @@ public fun Balloon(
               width = calculatedWidth,
               height = coordinates.size.height,
             )
+            if (size.width <= 0 || size.height <= 0) return@onGloballyPositioned
             balloonComposeView.updateSizeOfBalloonCard(size)
             balloonComposeView.balloonLayoutInfo.value = BalloonLayoutInfo(
               x = coordinates.positionInWindow().x,
