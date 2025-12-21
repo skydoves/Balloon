@@ -312,6 +312,7 @@ internal class BalloonComposeView(
   override fun getBalloonArrowView(): View = balloon.getBalloonArrowView()
 
   internal fun updateSizeOfBalloonCard(size: IntSize) {
+    if (size.width <= 0 || size.height <= 0) return
     balloon.updateSizeOfBalloonCard(width = size.width, height = size.height)
     updateLayoutParams {
       width = size.width
