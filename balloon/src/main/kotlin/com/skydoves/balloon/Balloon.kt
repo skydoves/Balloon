@@ -250,13 +250,34 @@ public class Balloon private constructor(
       builder.arrowAlignAnchorPadding
   }
 
+  private fun getMinArrowPositionForWidth(): Float {
+    return (builder.effectiveArrowWidth.toFloat() * builder.arrowAlignAnchorPaddingRatio) +
+      builder.arrowAlignAnchorPadding
+  }
+
+  private fun getMinArrowPositionForHeight(): Float {
+    return (builder.effectiveArrowHeight.toFloat() * builder.arrowAlignAnchorPaddingRatio) +
+      builder.arrowAlignAnchorPadding
+  }
+
   private fun getDoubleArrowSize(): Int {
     return builder.arrowSize * 2
   }
 
+  private fun getDoubleArrowWidth(): Int {
+    return builder.effectiveArrowWidth * 2
+  }
+
+  private fun getDoubleArrowHeight(): Int {
+    return builder.effectiveArrowHeight * 2
+  }
+
   private fun initializeArrow(anchor: View) {
     with(binding.balloonArrow) {
-      layoutParams = FrameLayout.LayoutParams(builder.arrowSize, builder.arrowSize)
+      layoutParams = FrameLayout.LayoutParams(
+        builder.effectiveArrowWidth,
+        builder.effectiveArrowHeight,
+      )
       alpha = builder.alpha
       builder.arrowDrawable?.let { setImageDrawable(it) }
       setPadding(
@@ -299,13 +320,13 @@ public class Balloon private constructor(
         ArrowOrientation.TOP -> {
           rotation = 0f
           x = getArrowConstraintPositionX(anchor)
-          y = binding.balloonCard.y - builder.arrowSize + SIZE_ARROW_BOUNDARY
+          y = binding.balloonCard.y - builder.effectiveArrowHeight + SIZE_ARROW_BOUNDARY
           runOnAfterSDK23 { foreground = getArrowForeground(x, 0f) }
         }
 
         ArrowOrientation.START -> {
           rotation = -90f
-          x = binding.balloonCard.x - builder.arrowSize + SIZE_ARROW_BOUNDARY
+          x = binding.balloonCard.x - builder.effectiveArrowWidth + SIZE_ARROW_BOUNDARY
           y = getArrowConstraintPositionY(anchor)
           runOnAfterSDK23 { foreground = getArrowForeground(0f, y) }
         }
@@ -530,15 +551,15 @@ public class Balloon private constructor(
   private fun getArrowConstraintPositionX(anchor: View): Float {
     val balloonX: Int = binding.balloonContent.getViewPointOnScreen().x
     val anchorX: Int = anchor.getViewPointOnScreen().x
-    val minPosition = getMinArrowPosition()
+    val minPosition = getMinArrowPositionForWidth()
     val maxPosition = (
       getMeasuredWidth() - minPosition -
         builder.marginRight - builder.marginLeft
       )
+    val arrowHalf = builder.arrowHalfWidth
     return when (builder.arrowPositionRules) {
       ArrowPositionRules.ALIGN_BALLOON -> (
-        binding.balloonWrapper.width * builder.arrowPosition -
-          builder.arrowHalfSize
+        binding.balloonWrapper.width * builder.arrowPosition - arrowHalf
         )
 
       ArrowPositionRules.ALIGN_ANCHOR -> {
@@ -547,21 +568,21 @@ public class Balloon private constructor(
           balloonX + getMeasuredWidth() < anchorX -> maxPosition
           else -> {
             val position =
-              (anchor.width) * builder.arrowPosition + anchorX - balloonX - builder.arrowHalfSize
+              (anchor.width) * builder.arrowPosition + anchorX - balloonX - arrowHalf
 
             val tipArrowPosition = anchorX + (anchor.width) * builder.arrowPosition
-            if ((tipArrowPosition - builder.arrowHalfSize) <= balloonX) {
+            if ((tipArrowPosition - arrowHalf) <= balloonX) {
               return 0.0f // + builder.cornerRadius
             }
-            if ((tipArrowPosition - builder.arrowHalfSize) > balloonX) {
+            if ((tipArrowPosition - arrowHalf) > balloonX) {
               if (anchor.width <= getMeasuredWidth() - builder.marginRight - builder.marginLeft) {
-                return tipArrowPosition - builder.arrowHalfSize - balloonX
+                return tipArrowPosition - arrowHalf - balloonX
               }
             }
 
             when {
-              position <= getDoubleArrowSize() -> minPosition
-              position > getMeasuredWidth() - getDoubleArrowSize() -> maxPosition
+              position <= getDoubleArrowWidth() -> minPosition
+              position > getMeasuredWidth() - getDoubleArrowWidth() -> maxPosition
               else -> position
             }
           }
@@ -574,13 +595,12 @@ public class Balloon private constructor(
     val statusBarHeight = anchor.getStatusBarHeight(builder.isStatusBarVisible)
     val balloonY: Int = binding.balloonContent.getViewPointOnScreen().y - statusBarHeight
     val anchorY: Int = anchor.getViewPointOnScreen().y - statusBarHeight
-    val minPosition = getMinArrowPosition()
+    val minPosition = getMinArrowPositionForHeight()
     val maxPosition = getMeasuredHeight() - minPosition - builder.marginTop - builder.marginBottom
-    val arrowHalfSize = builder.arrowSize / 2
+    val arrowHalf = builder.arrowHalfHeight
     return when (builder.arrowPositionRules) {
       ArrowPositionRules.ALIGN_BALLOON -> (
-        binding.balloonWrapper.height * builder.arrowPosition -
-          arrowHalfSize
+        binding.balloonWrapper.height * builder.arrowPosition - arrowHalf
         )
 
       ArrowPositionRules.ALIGN_ANCHOR -> {
@@ -589,10 +609,10 @@ public class Balloon private constructor(
           balloonY + getMeasuredHeight() < anchorY -> maxPosition
           else -> {
             val position =
-              (anchor.height) * builder.arrowPosition + anchorY - balloonY - arrowHalfSize
+              (anchor.height) * builder.arrowPosition + anchorY - balloonY - arrowHalf
             when {
-              position <= getDoubleArrowSize() -> minPosition
-              position > getMeasuredHeight() - getDoubleArrowSize() -> maxPosition
+              position <= getDoubleArrowHeight() -> minPosition
+              position > getMeasuredHeight() - getDoubleArrowHeight() -> maxPosition
               else -> position
             }
           }
@@ -616,8 +636,8 @@ public class Balloon private constructor(
 
         if (builder.isClipArrowEnabled) {
           // If isClipArrowEnabled is true, RadiusLayout will draw its own shape
-          layout.arrowHeight = builder.arrowSize.toFloat() * 2f
-          layout.arrowWidth = builder.arrowSize.toFloat()
+          layout.arrowHeight = builder.effectiveArrowHeight.toFloat()
+          layout.arrowWidth = builder.effectiveArrowWidth.toFloat()
 
           layout.arrowOrientation = builder.arrowOrientation
 
@@ -693,17 +713,17 @@ public class Balloon private constructor(
   }
 
   private fun initializeBalloonContent() {
-    val paddingSize = builder.arrowSize - SIZE_ARROW_BOUNDARY
     val elevation = builder.elevation.toInt()
     with(binding.balloonContent) {
       when (builder.arrowOrientation) {
-        ArrowOrientation.START -> setPadding(paddingSize, elevation, paddingSize, elevation)
-        ArrowOrientation.END -> setPadding(paddingSize, elevation, paddingSize, elevation)
-        ArrowOrientation.TOP ->
+        ArrowOrientation.START, ArrowOrientation.END -> {
+          val paddingSize = builder.effectiveArrowWidth - SIZE_ARROW_BOUNDARY
+          setPadding(paddingSize, elevation, paddingSize, elevation)
+        }
+        ArrowOrientation.TOP, ArrowOrientation.BOTTOM -> {
+          val paddingSize = builder.effectiveArrowHeight - SIZE_ARROW_BOUNDARY
           setPadding(elevation, paddingSize, elevation, paddingSize.coerceAtLeast(elevation))
-
-        ArrowOrientation.BOTTOM ->
-          setPadding(elevation, paddingSize, elevation, paddingSize.coerceAtLeast(elevation))
+        }
       }
     }
   }
@@ -979,24 +999,25 @@ public class Balloon private constructor(
     val xOff = placement.xOff
     val yOff = placement.yOff
 
-    val protrusion = if (builder.isClipArrowEnabled) builder.arrowSize else 0
+    val verticalProtrusion = if (builder.isClipArrowEnabled) builder.effectiveArrowHeight else 0
+    val horizontalProtrusion = if (builder.isClipArrowEnabled) builder.effectiveArrowWidth else 0
 
     return when (placement.align) {
       BalloonAlign.TOP ->
         builder.supportRtlLayoutFactor * (halfAnchorWidth - halfBalloonWidth + xOff) to
-          -(getMeasuredHeight() + anchor.measuredHeight - protrusion) + yOff
+          -(getMeasuredHeight() + anchor.measuredHeight - verticalProtrusion) + yOff
 
       BalloonAlign.BOTTOM ->
         builder.supportRtlLayoutFactor * (halfAnchorWidth - halfBalloonWidth + xOff) to yOff
 
       BalloonAlign.START -> builder.supportRtlLayoutFactor * (
         -getMeasuredWidth() +
-          protrusion + xOff
+          horizontalProtrusion + xOff
         ) to -(halfBalloonHeight + halfAnchorHeight) + yOff
 
       BalloonAlign.END -> builder.supportRtlLayoutFactor * (
         anchor.measuredWidth -
-          protrusion + xOff
+          horizontalProtrusion + xOff
         ) to -(halfBalloonHeight + halfAnchorHeight) + yOff
     }
   }
@@ -2130,7 +2151,7 @@ public class Balloon private constructor(
     val spaces = rootView.paddingLeft + rootView.paddingRight + if (builder.iconDrawable != null) {
       builder.iconWidth + builder.iconSpace
     } else {
-      0 + builder.marginRight + builder.marginLeft + (builder.arrowSize * 2)
+      0 + builder.marginRight + builder.marginLeft + (builder.effectiveArrowWidth * 2)
     }
     val maxTextWidth = (builder.maxWidth - spaces).coerceAtMost(displayWidth)
 
@@ -2267,9 +2288,37 @@ public class Balloon private constructor(
     @set:JvmSynthetic
     public var arrowSize: Int = 12.dp
 
+    @Px
+    @set:JvmSynthetic
+    public var arrowWidth: Int = NO_INT_VALUE
+
+    @Px
+    @set:JvmSynthetic
+    public var arrowHeight: Int = NO_INT_VALUE
+
+    /** Returns the effective arrow width, falling back to arrowSize if not explicitly set. */
+    public val effectiveArrowWidth: Int
+      @JvmSynthetic @Px
+      get() = if (arrowWidth != NO_INT_VALUE) arrowWidth else arrowSize
+
+    /** Returns the effective arrow height, falling back to arrowSize if not explicitly set. */
+    public val effectiveArrowHeight: Int
+      @JvmSynthetic @Px
+      get() = if (arrowHeight != NO_INT_VALUE) arrowHeight else arrowSize
+
     public val arrowHalfSize: Float
       @JvmSynthetic @Px
       inline get() = arrowSize * 0.5f
+
+    /** Returns half of the effective arrow width. */
+    public val arrowHalfWidth: Float
+      @JvmSynthetic @Px
+      get() = effectiveArrowWidth * 0.5f
+
+    /** Returns half of the effective arrow height. */
+    public val arrowHalfHeight: Float
+      @JvmSynthetic @Px
+      get() = effectiveArrowHeight * 0.5f
 
     @FloatRange(from = 0.0, to = 1.0)
     @set:JvmSynthetic
@@ -2857,6 +2906,36 @@ public class Balloon private constructor(
       this.arrowSize = context.dimenPixel(value)
     }
 
+    /** sets the width of the arrow. */
+    public fun setArrowWidth(@Dp value: Int): Builder = apply {
+      this.arrowWidth =
+        if (value == BalloonSizeSpec.WRAP) {
+          BalloonSizeSpec.WRAP
+        } else {
+          value.dp
+        }
+    }
+
+    /** sets the width of the arrow using dimension resource. */
+    public fun setArrowWidthResource(@DimenRes value: Int): Builder = apply {
+      this.arrowWidth = context.dimenPixel(value)
+    }
+
+    /** sets the height of the arrow. */
+    public fun setArrowHeight(@Dp value: Int): Builder = apply {
+      this.arrowHeight =
+        if (value == BalloonSizeSpec.WRAP) {
+          BalloonSizeSpec.WRAP
+        } else {
+          value.dp
+        }
+    }
+
+    /** sets the height of the arrow using dimension resource. */
+    public fun setArrowHeightResource(@DimenRes value: Int): Builder = apply {
+      this.arrowHeight = context.dimenPixel(value)
+    }
+
     /** sets the arrow position by popup size ration. The popup size depends on [arrowOrientation]. */
     public fun setArrowPosition(
       @FloatRange(from = 0.0, to = 1.0) value: Float,
@@ -2889,8 +2968,18 @@ public class Balloon private constructor(
     /** sets a custom drawable of the arrow. */
     public fun setArrowDrawable(value: Drawable?): Builder = apply {
       this.arrowDrawable = value?.mutate()
-      if (value != null && arrowSize == BalloonSizeSpec.WRAP) {
-        arrowSize = max(value.intrinsicWidth, value.intrinsicHeight)
+      if (value != null) {
+        // If arrowWidth/arrowHeight are not explicitly set, use the drawable's intrinsic dimensions
+        if (arrowWidth == NO_INT_VALUE && value.intrinsicWidth > 0) {
+          arrowWidth = value.intrinsicWidth
+        }
+        if (arrowHeight == NO_INT_VALUE && value.intrinsicHeight > 0) {
+          arrowHeight = value.intrinsicHeight
+        }
+        // For backward compatibility, also update arrowSize if it was WRAP
+        if (arrowSize == BalloonSizeSpec.WRAP) {
+          arrowSize = max(value.intrinsicWidth, value.intrinsicHeight)
+        }
       }
     }
 

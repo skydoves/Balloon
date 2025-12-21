@@ -249,7 +249,10 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun getArrowColorMatchBalloon ()Z
 	public final fun getArrowDrawable ()Landroid/graphics/drawable/Drawable;
 	public final fun getArrowElevation ()F
+	public final synthetic fun getArrowHalfHeight ()F
 	public final synthetic fun getArrowHalfSize ()F
+	public final synthetic fun getArrowHalfWidth ()F
+	public final fun getArrowHeight ()I
 	public final fun getArrowLeftPadding ()I
 	public final fun getArrowOrientation ()Lcom/skydoves/balloon/ArrowOrientation;
 	public final fun getArrowOrientationRules ()Lcom/skydoves/balloon/ArrowOrientationRules;
@@ -258,6 +261,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun getArrowRightPadding ()I
 	public final fun getArrowSize ()I
 	public final fun getArrowTopPadding ()I
+	public final fun getArrowWidth ()I
 	public final fun getAutoDismissDuration ()J
 	public final fun getBackgroundColor ()I
 	public final fun getBackgroundDrawable ()Landroid/graphics/drawable/Drawable;
@@ -278,6 +282,8 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun getDismissWhenShowAgain ()Z
 	public final fun getDismissWhenTouchMargin ()Z
 	public final fun getDismissWhenTouchOutside ()Z
+	public final synthetic fun getEffectiveArrowHeight ()I
+	public final synthetic fun getEffectiveArrowWidth ()I
 	public final fun getElevation ()F
 	public final fun getEnableAutoSized ()Z
 	public final fun getHeight ()I
@@ -372,6 +378,9 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final synthetic fun setArrowElevation (F)V
 	public final fun setArrowElevation (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setArrowElevationResource (I)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setArrowHeight (I)Lcom/skydoves/balloon/Balloon$Builder;
+	public final synthetic fun setArrowHeight (I)V
+	public final fun setArrowHeightResource (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setArrowLeftPadding (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setArrowLeftPadding (I)V
 	public final fun setArrowLeftPaddingResource (I)Lcom/skydoves/balloon/Balloon$Builder;
@@ -392,6 +401,9 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun setArrowTopPadding (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setArrowTopPadding (I)V
 	public final fun setArrowTopPaddingResource (I)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setArrowWidth (I)Lcom/skydoves/balloon/Balloon$Builder;
+	public final synthetic fun setArrowWidth (I)V
+	public final fun setArrowWidthResource (I)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setAttachedInDecor (Z)V
 	public final fun setAutoDismissDuration (J)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setAutoDismissDuration (J)V
