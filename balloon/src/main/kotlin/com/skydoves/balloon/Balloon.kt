@@ -647,6 +647,9 @@ public class Balloon private constructor(
             cornerRadius = builder.cornerRadius
           }
         }
+        // Clear any theme-applied background tint to ensure the specified backgroundColor
+        // is used instead of being overridden by the theme's android:backgroundTint (issue #800).
+        ViewCompat.setBackgroundTintList(this, null)
       }
       // Apply padding. RadiusLayout's setPadding will now internally adjust for the arrow
       // if drawCustomShape is true. Otherwise, it just passes padding to super.
