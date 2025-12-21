@@ -754,6 +754,12 @@ private fun LazyColumnDemo(onToast: (String) -> Unit) {
     "Rich Animations" to "Supports elastic, fade, circular, and more",
     "Overlay Support" to "Highlight anchors with customizable shapes",
     "Arrow Positioning" to "Flexible arrow placement and orientation",
+    "Lifecycle Aware" to "Automatically handles lifecycle events",
+    "Compose Support" to "Native Jetpack Compose integration",
+    "Custom Content" to "Support for custom composable content",
+    "Persistence" to "Show once or count-based display options",
+    "Accessibility" to "Full accessibility support built-in",
+    "RTL Support" to "Right-to-left layout support included",
   )
 
   val itemBalloonBuilder = rememberBalloonBuilder {
@@ -772,14 +778,60 @@ private fun LazyColumnDemo(onToast: (String) -> Unit) {
     setDismissWhenTouchOutside(false)
   }
 
+  val headerBalloonBuilder = rememberBalloonBuilder {
+    setArrowSize(10)
+    setArrowPosition(0.5f)
+    setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+    setArrowOrientation(ArrowOrientation.TOP)
+    setWidth(BalloonSizeSpec.WRAP)
+    setHeight(BalloonSizeSpec.WRAP)
+    setPadding(16)
+    setCornerRadius(12f)
+    setBackgroundColor(Purple.hashCode())
+    setBalloonAnimation(BalloonAnimation.CIRCULAR)
+    setDismissWhenTouchOutside(true)
+  }
+
   LazyColumn(
     modifier = Modifier
       .fillMaxWidth()
-      .height(250.dp)
+      .height(500.dp)
       .clip(RoundedCornerShape(12.dp))
       .background(Color(0xFF3A383A)),
-    verticalArrangement = Arrangement.spacedBy(1.dp),
   ) {
+    // Header section - similar to main layout's profile section
+    item {
+      LazyColumnHeader(
+        builder = headerBalloonBuilder,
+        onToast = onToast,
+      )
+    }
+
+    // Divider
+    item {
+      Spacer(
+        modifier = Modifier
+          .fillMaxWidth()
+          .height(1.dp)
+          .background(Color(0xFF4A484A)),
+      )
+    }
+
+    // Section title
+    item {
+      Text(
+        text = "Features",
+        color = White93,
+        fontSize = 16.sp,
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier
+          .fillMaxWidth()
+          .background(Background)
+          .padding(horizontal = 16.dp, vertical = 12.dp),
+      )
+    }
+
+    // List items
     itemsIndexed(items) { index, (title, description) ->
       ListItemWithBalloon(
         index = index,
@@ -788,7 +840,119 @@ private fun LazyColumnDemo(onToast: (String) -> Unit) {
         builder = itemBalloonBuilder,
         onToast = onToast,
       )
+      if (index < items.lastIndex) {
+        Spacer(
+          modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(Color(0xFF3A383A)),
+        )
+      }
     }
+  }
+}
+
+@Composable
+private fun LazyColumnHeader(
+  builder: com.skydoves.balloon.Balloon.Builder,
+  onToast: (String) -> Unit,
+) {
+  var balloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+
+  Balloon(
+    builder = builder,
+    onBalloonWindowInitialized = { balloonWindow = it },
+    balloonContent = {
+      Column(
+        modifier = Modifier.padding(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+      ) {
+        Text(
+          text = "Balloon Library",
+          color = Color.White,
+          fontSize = 16.sp,
+          fontWeight = FontWeight.Bold,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+          text = "Tap items below to see\ntooltips in action!",
+          color = Color.White.copy(alpha = 0.9f),
+          fontSize = 14.sp,
+          textAlign = TextAlign.Center,
+        )
+      }
+    },
+  ) {
+    Column(
+      modifier = Modifier
+        .fillMaxWidth()
+        .background(Background)
+        .clickable { balloonWindow?.showAlignBottom() }
+        .padding(16.dp),
+      horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+      // Profile-like header
+      Box(
+        modifier = Modifier
+          .size(64.dp)
+          .clip(CircleShape)
+          .background(
+            Brush.linearGradient(listOf(Purple, Pink)),
+          ),
+        contentAlignment = Alignment.Center,
+      ) {
+        Icon(
+          imageVector = Icons.Default.Settings,
+          contentDescription = null,
+          tint = Color.White,
+          modifier = Modifier.size(32.dp),
+        )
+      }
+
+      Spacer(modifier = Modifier.height(12.dp))
+
+      Text(
+        text = "Balloon Demo",
+        color = White93,
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Bold,
+      )
+
+      Text(
+        text = "Tap to learn more",
+        color = White56,
+        fontSize = 14.sp,
+      )
+
+      Spacer(modifier = Modifier.height(16.dp))
+
+      // Stats row similar to main layout
+      Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+      ) {
+        LazyColumnStatItem(count = "11", label = "Features")
+        LazyColumnStatItem(count = "5+", label = "Animations")
+        LazyColumnStatItem(count = "100%", label = "Compose")
+      }
+    }
+  }
+}
+
+@Composable
+private fun LazyColumnStatItem(count: String, label: String) {
+  Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Text(
+      text = count,
+      color = White93,
+      fontSize = 16.sp,
+      fontWeight = FontWeight.Bold,
+    )
+    Text(
+      text = label,
+      color = White56,
+      fontSize = 12.sp,
+    )
   }
 }
 
