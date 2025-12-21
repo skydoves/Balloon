@@ -38,7 +38,7 @@ Add the dependency below to your module's `build.gradle` file:
 
     ```groovy
     dependencies {
-        implementation "com.github.skydoves:balloon:$version"
+        implementation("com.github.skydoves:balloon:$version")
     }
     ```
 
@@ -56,7 +56,7 @@ For Jetpack Compose, add the compose dependency:
 
     ```groovy
     dependencies {
-        implementation "com.github.skydoves:balloon-compose:$version"
+        implementation("com.github.skydoves:balloon-compose:$version")
     }
     ```
 

@@ -8,7 +8,7 @@ Add the Compose dependency to your `build.gradle`:
 
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:balloon-compose:$version"
+    implementation("com.github.skydoves:balloon-compose:$version")
 }
 ```
 
