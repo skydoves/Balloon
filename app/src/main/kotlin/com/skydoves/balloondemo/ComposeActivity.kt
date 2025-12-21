@@ -35,6 +35,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -160,6 +162,11 @@ private fun ComposeActivityContent(
 
       // Position Demos
       PositionDemos(onToast = onToast)
+
+      Spacer(modifier = Modifier.height(24.dp))
+
+      // LazyColumn Demo
+      LazyColumnDemo(onToast = onToast)
 
       Spacer(modifier = Modifier.height(100.dp))
     }
@@ -724,6 +731,144 @@ private fun PositionDemos(onToast: (String) -> Unit) {
           fontWeight = FontWeight.Medium,
         )
       }
+    }
+  }
+}
+
+@Composable
+private fun LazyColumnDemo(onToast: (String) -> Unit) {
+  Text(
+    text = "LazyColumn with Balloons",
+    color = White70,
+    fontSize = 14.sp,
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(bottom = 8.dp),
+  )
+
+  val items = listOf(
+    "Compose Balloon" to "A modern tooltip library for Jetpack Compose",
+    "Easy Integration" to "Simple API with powerful customization options",
+    "Rich Animations" to "Supports elastic, fade, circular, and more",
+    "Overlay Support" to "Highlight anchors with customizable shapes",
+    "Arrow Positioning" to "Flexible arrow placement and orientation",
+  )
+
+  val itemBalloonBuilder = rememberBalloonBuilder {
+    setArrowSize(10)
+    setArrowPosition(0.5f)
+    setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+    setArrowOrientation(ArrowOrientation.TOP)
+    setWidth(BalloonSizeSpec.WRAP)
+    setHeight(BalloonSizeSpec.WRAP)
+    setPadding(12)
+    setMarginHorizontal(16)
+    setCornerRadius(8f)
+    setBackgroundColor(SkyBlue.hashCode())
+    setBalloonAnimation(BalloonAnimation.ELASTIC)
+    setDismissWhenClicked(true)
+    setDismissWhenTouchOutside(false)
+  }
+
+  LazyColumn(
+    modifier = Modifier
+      .fillMaxWidth()
+      .height(250.dp)
+      .clip(RoundedCornerShape(12.dp))
+      .background(Color(0xFF3A383A)),
+    verticalArrangement = Arrangement.spacedBy(1.dp),
+  ) {
+    itemsIndexed(items) { index, (title, description) ->
+      ListItemWithBalloon(
+        index = index,
+        title = title,
+        description = description,
+        builder = itemBalloonBuilder,
+        onToast = onToast,
+      )
+    }
+  }
+}
+
+@Composable
+private fun ListItemWithBalloon(
+  index: Int,
+  title: String,
+  description: String,
+  builder: com.skydoves.balloon.Balloon.Builder,
+  onToast: (String) -> Unit,
+) {
+  var balloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+
+  Balloon(
+    builder = builder,
+    onBalloonWindowInitialized = { balloonWindow = it },
+    balloonContent = {
+      Column(modifier = Modifier.padding(4.dp)) {
+        Text(
+          text = title,
+          color = Color.White,
+          fontSize = 14.sp,
+          fontWeight = FontWeight.Bold,
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+          text = description,
+          color = Color.White.copy(alpha = 0.9f),
+          fontSize = 12.sp,
+        )
+      }
+    },
+  ) {
+    Row(
+      modifier = Modifier
+        .fillMaxWidth()
+        .background(Background)
+        .clickable {
+          balloonWindow?.showAlignBottom()
+          onToast("Item ${index + 1}: $title")
+        }
+        .padding(horizontal = 16.dp, vertical = 14.dp),
+      verticalAlignment = Alignment.CenterVertically,
+    ) {
+      Box(
+        modifier = Modifier
+          .size(36.dp)
+          .clip(RoundedCornerShape(8.dp))
+          .background(
+            Brush.linearGradient(
+              listOf(SkyBlue, Purple),
+            ),
+          ),
+        contentAlignment = Alignment.Center,
+      ) {
+        Text(
+          text = "${index + 1}",
+          color = Color.White,
+          fontSize = 14.sp,
+          fontWeight = FontWeight.Bold,
+        )
+      }
+      Spacer(modifier = Modifier.width(12.dp))
+      Column(modifier = Modifier.weight(1f)) {
+        Text(
+          text = title,
+          color = White93,
+          fontSize = 14.sp,
+          fontWeight = FontWeight.Medium,
+        )
+        Text(
+          text = "Tap to see details",
+          color = White56,
+          fontSize = 12.sp,
+        )
+      }
+      Icon(
+        imageVector = Icons.Default.Settings,
+        contentDescription = null,
+        tint = White56,
+        modifier = Modifier.size(20.dp),
+      )
     }
   }
 }
