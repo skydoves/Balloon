@@ -21,10 +21,10 @@ jobs:
           distribution: adopt
           java-version: 17
       - name: Generate Dokka HTML docs
-        run: ./gradlew dokkaHtmlMultimodule
+        run: ./gradlew dokkaGenerate
       - name: Deploy to GitHub pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build/dokka/htmlMultiModule
+          publish_dir: ./build/dokka/html
           publish_branch: gh-pages
