@@ -60,6 +60,24 @@ import java.util.UUID
  * @param balloonContent the content to be displayed inside the balloon.
  * @param content the main content of the screen. You should use the [BalloonWindow] to control balloon.
  */
+@Deprecated(
+  message = "Use Modifier.balloon() with rememberBalloonState() instead for a more flexible API.",
+  replaceWith = ReplaceWith(
+    expression = """
+      val balloonState = rememberBalloonState(builder)
+      YourComposable(
+        modifier = Modifier.balloon(balloonState) { balloonContent() },
+        onClick = { balloonState.showAlignTop() }
+      )
+    """,
+    imports = [
+      "com.skydoves.balloon.compose.rememberBalloonState",
+      "com.skydoves.balloon.compose.balloon",
+    ],
+  ),
+  level = DeprecationLevel.WARNING,
+)
+@Suppress("DEPRECATION")
 @Composable
 public fun Balloon(
   modifier: Modifier = Modifier,

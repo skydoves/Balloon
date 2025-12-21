@@ -176,41 +176,16 @@ internal class BalloonComposeView(
   override fun relayShowAlignBottom(balloon: Balloon, xOff: Int, yOff: Int): Balloon =
     balloon.relayShowAlignBottom(balloon, anchorView, xOff, yOff)
 
-  @Deprecated("Use showAlignEnd instead.", replaceWith = ReplaceWith("showAlignEnd(xOff, yOff)"))
-  override fun showAlignRight(xOff: Int, yOff: Int): Unit =
-    balloon.showAlignRight(anchorView, xOff, yOff)
-
   override fun showAlignEnd(xOff: Int, yOff: Int) {
     balloon.showAlignEnd(anchorView, xOff, yOff)
   }
 
-  @Deprecated(
-    "Use relayShowAlignEnd instead.",
-    replaceWith = ReplaceWith("relayShowAlignEnd(balloon, xOff, yOff)"),
-  )
-  override fun relayShowAlignRight(balloon: Balloon, xOff: Int, yOff: Int): Balloon =
-    balloon.relayShowAlignRight(balloon, anchorView, xOff, yOff)
-
   override fun relayShowAlignEnd(balloon: Balloon, xOff: Int, yOff: Int): Balloon =
     balloon.relayShowAlignEnd(balloon, anchorView, xOff, yOff)
-
-  @Deprecated(
-    "Use showAlignStart instead.",
-    replaceWith = ReplaceWith("showAlignStart(xOff, yOff)"),
-  )
-  override fun showAlignLeft(xOff: Int, yOff: Int): Unit =
-    balloon.showAlignLeft(anchorView, xOff, yOff)
 
   override fun showAlignStart(xOff: Int, yOff: Int) {
     balloon.showAlignStart(anchorView, xOff, yOff)
   }
-
-  @Deprecated(
-    "Use relayShowAlignStart instead.",
-    replaceWith = ReplaceWith("relayShowAlignStart(balloon, xOff, yOff)"),
-  )
-  override fun relayShowAlignLeft(balloon: Balloon, xOff: Int, yOff: Int): Balloon =
-    balloon.relayShowAlignLeft(balloon, anchorView, xOff, yOff)
 
   override fun relayShowAlignStart(balloon: Balloon, xOff: Int, yOff: Int): Balloon =
     balloon.relayShowAlignStart(balloon, anchorView, xOff, yOff)

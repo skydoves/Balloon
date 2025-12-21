@@ -27,6 +27,11 @@ import com.skydoves.balloon.PlacementType
 /**
  * A DSL for showing multiple balloons at the same time.
  */
+@Deprecated(
+  message = "Use BalloonState with Modifier.balloon() instead.",
+  level = DeprecationLevel.WARNING,
+)
+@Suppress("DEPRECATION")
 public interface AwaitBalloonWindowsDsl {
   /**
    *  Set true to dismiss balloons sequentially. False by default.
@@ -68,6 +73,7 @@ public interface AwaitBalloonWindowsDsl {
   public fun BalloonWindow.alignBottom(xOff: Int = 0, yOff: Int = 0)
 }
 
+@Suppress("DEPRECATION")
 private class AwaitBalloonWindowsDslImpl : AwaitBalloonWindowsDsl {
   override var dismissSequentially: Boolean = false
   private val _balloons = mutableListOf<DeferredBalloon>()
