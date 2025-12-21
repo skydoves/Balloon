@@ -1108,7 +1108,11 @@ public final class com/skydoves/balloon/overlay/BalloonOverlayRect : com/skydove
 
 public final class com/skydoves/balloon/overlay/BalloonOverlayRoundRect : com/skydoves/balloon/overlay/BalloonOverlayShape {
 	public fun <init> (FF)V
+	public fun <init> (FFFF)V
 	public fun <init> (II)V
+	public fun <init> (IIII)V
+	public final fun getCornerRadii ()[F
+	public final fun getCornerRadiiRes ()[I
 	public final fun getRadiusPair ()Lkotlin/Pair;
 	public final fun getRadiusResPair ()Lkotlin/Pair;
 }
