@@ -426,7 +426,9 @@ private fun EditProfileSection(onToast: (String) -> Unit) {
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-          text =  "Now you can edit your profile1 profile2 profile3 profile4 really long text so we can test stuff Now you can edit your profile1 profile2 profile3 profile4 really long text so we can test stuff",
+          text = "Now you can edit your profile1 profile2 profile3 profile4 " +
+            "really long text so we can test stuff Now you can edit your " +
+            "profile1 profile2 profile3 profile4 really long text so we can test stuff",
           color = Color.White,
           fontSize = 14.sp,
         )
