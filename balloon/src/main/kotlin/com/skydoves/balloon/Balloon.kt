@@ -924,7 +924,9 @@ public class Balloon private constructor(
         } else {
           measureTextWidth(binding.balloonText, binding.balloonCard)
         }
-        this.binding.root.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        val widthMeasureSpec = getWidthMeasureSpec()
+        val heightMeasureSpec = getHeightMeasureSpec()
+        this.binding.root.measure(widthMeasureSpec, heightMeasureSpec)
         this.bodyWindow.width = getMeasuredWidth()
         this.bodyWindow.height = getMeasuredHeight()
         this.binding.balloonText.layoutParams = FrameLayout.LayoutParams(
@@ -2013,6 +2015,50 @@ public class Balloon private constructor(
   public fun setIsAttachedInDecor(value: Boolean): Balloon = apply {
     runOnAfterSDK22 {
       this.bodyWindow.isAttachedInDecor = value
+    }
+  }
+
+  /**
+   * Creates a width MeasureSpec based on the builder's width configuration.
+   * Uses EXACTLY mode for fixed widths/ratios, and AT_MOST for wrap content
+   * to properly constrain nested layouts with layout_weight (issue #770).
+   */
+  private fun getWidthMeasureSpec(): Int {
+    val displayWidth = displaySize.x
+    return when {
+      builder.widthRatio != NO_Float_VALUE ->
+        View.MeasureSpec.makeMeasureSpec(
+          (displayWidth * builder.widthRatio).toInt(),
+          View.MeasureSpec.EXACTLY,
+        )
+
+      builder.width != BalloonSizeSpec.WRAP ->
+        View.MeasureSpec.makeMeasureSpec(
+          builder.width.coerceAtMost(displayWidth),
+          View.MeasureSpec.EXACTLY,
+        )
+
+      else ->
+        View.MeasureSpec.makeMeasureSpec(
+          builder.maxWidth.coerceAtMost(displayWidth),
+          View.MeasureSpec.AT_MOST,
+        )
+    }
+  }
+
+  /**
+   * Creates a height MeasureSpec based on the builder's height configuration.
+   * Uses EXACTLY mode for fixed heights, and AT_MOST for wrap content to properly
+   * measure nested layouts with wrap_content children and margins (issue #770).
+   */
+  private fun getHeightMeasureSpec(): Int {
+    val displayHeight = displaySize.y
+    return when {
+      builder.height != BalloonSizeSpec.WRAP ->
+        View.MeasureSpec.makeMeasureSpec(builder.height, View.MeasureSpec.EXACTLY)
+
+      else ->
+        View.MeasureSpec.makeMeasureSpec(displayHeight, View.MeasureSpec.AT_MOST)
     }
   }
 
