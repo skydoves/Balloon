@@ -157,11 +157,6 @@ public class BalloonState internal constructor(
   override fun relayShowAlignBottom(balloon: Balloon, xOff: Int, yOff: Int): Balloon =
     _balloonWindow?.relayShowAlignBottom(balloon, xOff, yOff) ?: balloon
 
-  @Deprecated("Use showAlignEnd instead.", replaceWith = ReplaceWith("showAlignEnd(xOff, yOff)"))
-  override fun showAlignRight(xOff: Int, yOff: Int) {
-    _balloonWindow?.showAlignRight(xOff, yOff)
-  }
-
   override fun showAlignEnd(xOff: Int, yOff: Int) {
     _balloonWindow?.showAlignEnd(xOff, yOff)
   }
@@ -170,23 +165,8 @@ public class BalloonState internal constructor(
     _balloonWindow?.awaitAlignEnd(xOff, yOff)
   }
 
-  @Deprecated(
-    "Use relayShowAlignEnd instead.",
-    replaceWith = ReplaceWith("relayShowAlignEnd(balloon, xOff, yOff)"),
-  )
-  override fun relayShowAlignRight(balloon: Balloon, xOff: Int, yOff: Int): Balloon =
-    _balloonWindow?.relayShowAlignRight(balloon, xOff, yOff) ?: balloon
-
   override fun relayShowAlignEnd(balloon: Balloon, xOff: Int, yOff: Int): Balloon =
     _balloonWindow?.relayShowAlignEnd(balloon, xOff, yOff) ?: balloon
-
-  @Deprecated(
-    "Use showAlignStart instead.",
-    replaceWith = ReplaceWith("showAlignStart(xOff, yOff)"),
-  )
-  override fun showAlignLeft(xOff: Int, yOff: Int) {
-    _balloonWindow?.showAlignLeft(xOff, yOff)
-  }
 
   override fun showAlignStart(xOff: Int, yOff: Int) {
     _balloonWindow?.showAlignStart(xOff, yOff)
@@ -195,13 +175,6 @@ public class BalloonState internal constructor(
   override suspend fun awaitAlignStart(xOff: Int, yOff: Int) {
     _balloonWindow?.awaitAlignStart(xOff, yOff)
   }
-
-  @Deprecated(
-    "Use relayShowAlignStart instead.",
-    replaceWith = ReplaceWith("relayShowAlignStart(balloon, xOff, yOff)"),
-  )
-  override fun relayShowAlignLeft(balloon: Balloon, xOff: Int, yOff: Int): Balloon =
-    _balloonWindow?.relayShowAlignLeft(balloon, xOff, yOff) ?: balloon
 
   override fun relayShowAlignStart(balloon: Balloon, xOff: Int, yOff: Int): Balloon =
     _balloonWindow?.relayShowAlignStart(balloon, xOff, yOff) ?: balloon

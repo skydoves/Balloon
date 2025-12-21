@@ -1380,22 +1380,6 @@ public class Balloon private constructor(
     relay(balloon) { it.showAlignBottom(anchor, xOff, yOff) }
 
   /**
-   * Shows the balloon on an anchor view as the right alignment with x-off and y-off.
-   *
-   * @param anchor A target view which popup will be shown to.
-   * @param xOff A horizontal offset from the anchor in pixels.
-   * @param yOff A vertical offset from the anchor in pixels.
-   */
-  @JvmOverloads
-  @Deprecated(
-    message = "Use showAlignEnd instead.",
-    replaceWith = ReplaceWith("showAlignEnd(anchor, xOff, yOff)"),
-  )
-  public fun showAlignRight(anchor: View, xOff: Int = 0, yOff: Int = 0) {
-    show(BalloonPlacement(anchor = anchor, align = BalloonAlign.END, xOff = xOff, yOff = yOff))
-  }
-
-  /**
    * Shows the balloon on an anchor view as the end alignment with x-off and y-off.
    *
    * @param anchor A target view which popup will be shown to.
@@ -1427,36 +1411,6 @@ public class Balloon private constructor(
   }
 
   /**
-   * Shows the balloon on an anchor view as the right alignment with x-off and y-off
-   * and shows the next balloon sequentially.
-   * This function returns the next balloon.
-   *
-   * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
-   * @param anchor A target view which popup will be shown to.
-   * @param xOff A horizontal offset from the anchor in pixels.
-   * @param yOff A vertical offset from the anchor in pixels.
-   *
-   * @return A next [balloon].
-   *
-   * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
-   */
-  @JvmOverloads
-  @Deprecated(
-    message = "Use relayShowAlignEnd instead.",
-    replaceWith = ReplaceWith("relayShowAlignEnd(balloon, anchor, xOff, yOff)"),
-  )
-  public fun relayShowAlignRight(
-    balloon: Balloon,
-    anchor: View,
-    xOff: Int = 0,
-    yOff: Int = 0,
-  ): Balloon = relay(
-    balloon,
-  ) {
-    it.showAlignEnd(anchor, xOff, yOff)
-  }
-
-  /**
    * Shows the balloon on an anchor view as the end alignment with x-off and y-off
    * and shows the next balloon sequentially.
    * This function returns the next balloon.
@@ -1483,22 +1437,6 @@ public class Balloon private constructor(
   }
 
   /**
-   * Shows the balloon on an anchor view as the left alignment with x-off and y-off.
-   *
-   * @param anchor A target view which popup will be shown to.
-   * @param xOff A horizontal offset from the anchor in pixels.
-   * @param yOff A vertical offset from the anchor in pixels.
-   */
-  @JvmOverloads
-  @Deprecated(
-    message = "Use showAlignStart instead.",
-    replaceWith = ReplaceWith("showAlignStart(anchor, xOff, yOff)"),
-  )
-  public fun showAlignLeft(anchor: View, xOff: Int = 0, yOff: Int = 0) {
-    show(BalloonPlacement(anchor = anchor, align = BalloonAlign.START, xOff = xOff, yOff = yOff))
-  }
-
-  /**
    * Shows the balloon on an anchor view as the start alignment with x-off and y-off.
    *
    * @param anchor A target view which popup will be shown to.
@@ -1511,7 +1449,7 @@ public class Balloon private constructor(
   }
 
   /**
-   * Coroutine alternative for [showAlignLeft]. This method suspends until the popup is displayed.
+   * Coroutine alternative for [showAlignStart]. This method suspends until the popup is displayed.
    * Can be used to show popups sequentially without using relay methods.
    *
    * @param anchor A target view which popup will be shown to.
@@ -1528,33 +1466,6 @@ public class Balloon private constructor(
       ),
     )
   }
-
-  /**
-   * Shows the balloon on an anchor view as the left alignment with x-off and y-off
-   * and shows the next balloon sequentially.
-   * This function returns the next balloon.
-   *
-   * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
-   * @param anchor A target view which popup will be shown to.
-   * @param xOff A horizontal offset from the anchor in pixels.
-   * @param yOff A vertical offset from the anchor in pixels.
-   *
-   * @return A next [balloon].
-   *
-   * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
-   */
-  @JvmOverloads
-  @Deprecated(
-    message = "Use relayShowAlignStart instead.",
-    replaceWith = ReplaceWith("relayShowAlignStart(balloon, anchor, xOff, yOff)"),
-  )
-  public fun relayShowAlignLeft(
-    balloon: Balloon,
-    anchor: View,
-    xOff: Int = 0,
-    yOff: Int = 0,
-  ): Balloon =
-    relay(balloon) { it.showAlignStart(anchor, xOff, yOff) }
 
   /**
    * Shows the balloon on an anchor view as the start alignment with x-off and y-off

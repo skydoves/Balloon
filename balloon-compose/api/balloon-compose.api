@@ -68,8 +68,6 @@ public final class com/skydoves/balloon/compose/BalloonState : com/skydoves/ball
 	public fun relayShowAlign (Lcom/skydoves/balloon/BalloonAlign;Lcom/skydoves/balloon/Balloon;II)Lcom/skydoves/balloon/Balloon;
 	public fun relayShowAlignBottom (Lcom/skydoves/balloon/Balloon;II)Lcom/skydoves/balloon/Balloon;
 	public fun relayShowAlignEnd (Lcom/skydoves/balloon/Balloon;II)Lcom/skydoves/balloon/Balloon;
-	public fun relayShowAlignLeft (Lcom/skydoves/balloon/Balloon;II)Lcom/skydoves/balloon/Balloon;
-	public fun relayShowAlignRight (Lcom/skydoves/balloon/Balloon;II)Lcom/skydoves/balloon/Balloon;
 	public fun relayShowAlignStart (Lcom/skydoves/balloon/Balloon;II)Lcom/skydoves/balloon/Balloon;
 	public fun relayShowAlignTop (Lcom/skydoves/balloon/Balloon;II)Lcom/skydoves/balloon/Balloon;
 	public fun relayShowAsDropDown (Lcom/skydoves/balloon/Balloon;II)Lcom/skydoves/balloon/Balloon;
@@ -92,8 +90,6 @@ public final class com/skydoves/balloon/compose/BalloonState : com/skydoves/ball
 	public fun showAlign (Lcom/skydoves/balloon/BalloonAlign;Landroid/view/View;Ljava/util/List;II)V
 	public fun showAlignBottom (II)V
 	public fun showAlignEnd (II)V
-	public fun showAlignLeft (II)V
-	public fun showAlignRight (II)V
 	public fun showAlignStart (II)V
 	public fun showAlignTop (II)V
 	public fun showAsDropDown (II)V
@@ -141,10 +137,6 @@ public abstract interface class com/skydoves/balloon/compose/BalloonWindow {
 	public static synthetic fun relayShowAlignBottom$default (Lcom/skydoves/balloon/compose/BalloonWindow;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
 	public abstract fun relayShowAlignEnd (Lcom/skydoves/balloon/Balloon;II)Lcom/skydoves/balloon/Balloon;
 	public static synthetic fun relayShowAlignEnd$default (Lcom/skydoves/balloon/compose/BalloonWindow;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
-	public abstract fun relayShowAlignLeft (Lcom/skydoves/balloon/Balloon;II)Lcom/skydoves/balloon/Balloon;
-	public static synthetic fun relayShowAlignLeft$default (Lcom/skydoves/balloon/compose/BalloonWindow;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
-	public abstract fun relayShowAlignRight (Lcom/skydoves/balloon/Balloon;II)Lcom/skydoves/balloon/Balloon;
-	public static synthetic fun relayShowAlignRight$default (Lcom/skydoves/balloon/compose/BalloonWindow;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
 	public abstract fun relayShowAlignStart (Lcom/skydoves/balloon/Balloon;II)Lcom/skydoves/balloon/Balloon;
 	public static synthetic fun relayShowAlignStart$default (Lcom/skydoves/balloon/compose/BalloonWindow;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
 	public abstract fun relayShowAlignTop (Lcom/skydoves/balloon/Balloon;II)Lcom/skydoves/balloon/Balloon;
@@ -174,10 +166,6 @@ public abstract interface class com/skydoves/balloon/compose/BalloonWindow {
 	public static synthetic fun showAlignBottom$default (Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
 	public abstract fun showAlignEnd (II)V
 	public static synthetic fun showAlignEnd$default (Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
-	public abstract fun showAlignLeft (II)V
-	public static synthetic fun showAlignLeft$default (Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
-	public abstract fun showAlignRight (II)V
-	public static synthetic fun showAlignRight$default (Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
 	public abstract fun showAlignStart (II)V
 	public static synthetic fun showAlignStart$default (Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
 	public abstract fun showAlignTop (II)V
@@ -212,8 +200,6 @@ public final class com/skydoves/balloon/compose/BalloonWindow$DefaultImpls {
 	public static synthetic fun relayShowAlign$default (Lcom/skydoves/balloon/compose/BalloonWindow;Lcom/skydoves/balloon/BalloonAlign;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
 	public static synthetic fun relayShowAlignBottom$default (Lcom/skydoves/balloon/compose/BalloonWindow;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
 	public static synthetic fun relayShowAlignEnd$default (Lcom/skydoves/balloon/compose/BalloonWindow;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
-	public static synthetic fun relayShowAlignLeft$default (Lcom/skydoves/balloon/compose/BalloonWindow;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
-	public static synthetic fun relayShowAlignRight$default (Lcom/skydoves/balloon/compose/BalloonWindow;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
 	public static synthetic fun relayShowAlignStart$default (Lcom/skydoves/balloon/compose/BalloonWindow;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
 	public static synthetic fun relayShowAlignTop$default (Lcom/skydoves/balloon/compose/BalloonWindow;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
 	public static synthetic fun relayShowAsDropDown$default (Lcom/skydoves/balloon/compose/BalloonWindow;Lcom/skydoves/balloon/Balloon;IIILjava/lang/Object;)Lcom/skydoves/balloon/Balloon;
@@ -221,8 +207,6 @@ public final class com/skydoves/balloon/compose/BalloonWindow$DefaultImpls {
 	public static synthetic fun showAlign$default (Lcom/skydoves/balloon/compose/BalloonWindow;Lcom/skydoves/balloon/BalloonAlign;Landroid/view/View;Ljava/util/List;IIILjava/lang/Object;)V
 	public static synthetic fun showAlignBottom$default (Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
 	public static synthetic fun showAlignEnd$default (Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
-	public static synthetic fun showAlignLeft$default (Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
-	public static synthetic fun showAlignRight$default (Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
 	public static synthetic fun showAlignStart$default (Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
 	public static synthetic fun showAlignTop$default (Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V
 	public static synthetic fun showAsDropDown$default (Lcom/skydoves/balloon/compose/BalloonWindow;IIILjava/lang/Object;)V

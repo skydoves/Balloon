@@ -79,38 +79,16 @@ public suspend fun View.awaitAlignBottom(balloon: Balloon, xOff: Int = 0, yOff: 
   balloon.awaitAlignBottom(this, xOff, yOff)
 }
 
-/** shows the balloon on an anchor view as the right alignment with x-off and y-off. */
-@JvmOverloads
-@JvmSynthetic
-@Deprecated(
-  message = "Use showAlignEnd instead.",
-  replaceWith = ReplaceWith("showAlignEnd(balloon, xOff, yOff)"),
-)
-public fun View.showAlignRight(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
-  balloon { balloon.showAlignRight(this, xOff, yOff) }
-}
-
-/** shows the balloon on an anchor view as the right alignment with x-off and y-off. */
+/** shows the balloon on an anchor view as the end alignment with x-off and y-off. */
 @JvmOverloads
 @JvmSynthetic
 public fun View.showAlignEnd(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
   balloon { balloon.showAlignEnd(this, xOff, yOff) }
 }
 
-/** shows the balloon on an anchor view as the right alignment with x-off and y-off. */
+/** shows the balloon on an anchor view as the end alignment with x-off and y-off. */
 public suspend fun View.awaitAlignEnd(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
   balloon.awaitAlignEnd(this, xOff, yOff)
-}
-
-/** shows the balloon on an anchor view as the left alignment with x-off and y-off. */
-@JvmOverloads
-@JvmSynthetic
-@Deprecated(
-  message = "Use showAlignStart instead.",
-  replaceWith = ReplaceWith("showAlignStart(balloon, xOff, yOff)"),
-)
-public fun View.showAlignLeft(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
-  balloon { balloon.showAlignLeft(this, xOff, yOff) }
 }
 
 /** shows the balloon on an anchor view as the start alignment with x-off and y-off. */
@@ -120,7 +98,7 @@ public fun View.showAlignStart(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
   balloon { balloon.showAlignStart(this, xOff, yOff) }
 }
 
-/** shows the balloon on an anchor view as the left alignment with x-off and y-off. */
+/** shows the balloon on an anchor view as the start alignment with x-off and y-off. */
 public suspend fun View.awaitAlignStart(balloon: Balloon, xOff: Int = 0, yOff: Int = 0) {
   balloon.awaitAlignStart(this, xOff, yOff)
 }

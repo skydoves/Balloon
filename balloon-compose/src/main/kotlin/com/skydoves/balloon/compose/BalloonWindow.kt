@@ -206,18 +206,6 @@ public interface BalloonWindow {
   ): Balloon
 
   /**
-   * Shows the balloon on an anchor view as the right alignment with x-off and y-off.
-   *
-   * @param xOff A horizontal offset from the anchor in pixels.
-   * @param yOff A vertical offset from the anchor in pixels.
-   */
-  @Deprecated(
-    message = "Use showAlignEnd instead.",
-    replaceWith = ReplaceWith("showAlignEnd(xOff, yOff)"),
-  )
-  public fun showAlignRight(xOff: Int = 0, yOff: Int = 0)
-
-  /**
    * Shows the balloon on an anchor view as the end alignment with x-off and y-off.
    *
    * @param xOff A horizontal offset from the anchor in pixels.
@@ -233,29 +221,6 @@ public interface BalloonWindow {
    * @param yOff A vertical offset from the anchor in pixels.
    */
   public suspend fun awaitAlignEnd(xOff: Int = 0, yOff: Int = 0)
-
-  /**
-   * Shows the balloon on an anchor view as the right alignment with x-off and y-off
-   * and shows the next balloon sequentially.
-   * This function returns the next balloon.
-   *
-   * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
-   * @param xOff A horizontal offset from the anchor in pixels.
-   * @param yOff A vertical offset from the anchor in pixels.
-   *
-   * @return A next [balloon].
-   *
-   * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
-   */
-  @Deprecated(
-    message = "Use relayShowAlignEnd instead.",
-    replaceWith = ReplaceWith("relayShowAlignEnd(balloon, xOff, yOff)"),
-  )
-  public fun relayShowAlignRight(
-    balloon: Balloon,
-    xOff: Int = 0,
-    yOff: Int = 0,
-  ): Balloon
 
   /**
    * Shows the balloon on an anchor view as the end alignment with x-off and y-off
@@ -277,18 +242,6 @@ public interface BalloonWindow {
   ): Balloon
 
   /**
-   * Shows the balloon on an anchor view as the left alignment with x-off and y-off.
-   *
-   * @param xOff A horizontal offset from the anchor in pixels.
-   * @param yOff A vertical offset from the anchor in pixels.
-   */
-  @Deprecated(
-    message = "Use showAlignStart instead.",
-    replaceWith = ReplaceWith("showAlignStart(xOff, yOff)"),
-  )
-  public fun showAlignLeft(xOff: Int = 0, yOff: Int = 0)
-
-  /**
    * Shows the balloon on an anchor view as the start alignment with x-off and y-off.
    *
    * @param xOff A horizontal offset from the anchor in pixels.
@@ -304,29 +257,6 @@ public interface BalloonWindow {
    * @param yOff A vertical offset from the anchor in pixels.
    */
   public suspend fun awaitAlignStart(xOff: Int = 0, yOff: Int = 0)
-
-  /**
-   * Shows the balloon on an anchor view as the left alignment with x-off and y-off
-   * and shows the next balloon sequentially.
-   * This function returns the next balloon.
-   *
-   * @param balloon A next [Balloon] that will be shown sequentially after dismissing this popup.
-   * @param xOff A horizontal offset from the anchor in pixels.
-   * @param yOff A vertical offset from the anchor in pixels.
-   *
-   * @return A next [balloon].
-   *
-   * @see [Show sequentially](https://github.com/skydoves/Balloon#show-sequentially)
-   */
-  @Deprecated(
-    message = "Use relayShowAlignStart instead.",
-    replaceWith = ReplaceWith("relayShowAlignStart(balloon, xOff, yOff)"),
-  )
-  public fun relayShowAlignLeft(
-    balloon: Balloon,
-    xOff: Int = 0,
-    yOff: Int = 0,
-  ): Balloon
 
   /**
    * Shows the balloon on an anchor view as the start alignment with x-off and y-off
