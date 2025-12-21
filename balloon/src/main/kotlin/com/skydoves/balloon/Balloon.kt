@@ -647,7 +647,13 @@ public class Balloon private constructor(
             layout.setFillColor(Color.TRANSPARENT)
           } else {
             layout.customShapeBackgroundDrawable = null
-            layout.setFillColor(builder.backgroundColor)
+            // Use arrowColor if explicitly set, otherwise use backgroundColor (issue #856)
+            val fillColor = if (builder.arrowColor != NO_INT_VALUE) {
+              builder.arrowColor
+            } else {
+              builder.backgroundColor
+            }
+            layout.setFillColor(fillColor)
           }
 
           // --- ALWAYS configure RadiusLayout's strokePaint here if a stroke is desired ---
@@ -665,6 +671,13 @@ public class Balloon private constructor(
           background = builder.backgroundDrawable ?: GradientDrawable().apply {
             setColor(builder.backgroundColor)
             cornerRadius = builder.cornerRadius
+            // Apply stroke/border in non-clipped mode as well (issue #856)
+            builder.balloonStroke?.let { stroke ->
+              setStroke(
+                (stroke.thickness * BalloonStroke.STROKE_THICKNESS_MULTIPLIER).toInt(),
+                stroke.color,
+              )
+            }
           }
         }
         // Clear any theme-applied background tint to ensure the specified backgroundColor
