@@ -76,7 +76,9 @@ import com.skydoves.balloon.BalloonHighlightAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.compose.Balloon
 import com.skydoves.balloon.compose.BalloonWindow
+import com.skydoves.balloon.compose.balloon
 import com.skydoves.balloon.compose.rememberBalloonBuilder
+import com.skydoves.balloon.compose.rememberBalloonState
 import com.skydoves.balloon.overlay.BalloonOverlayOval
 import com.skydoves.balloon.overlay.BalloonOverlayRoundRect
 
@@ -162,6 +164,11 @@ private fun ComposeActivityContent(
 
       // Position Demos
       PositionDemos(onToast = onToast)
+
+      Spacer(modifier = Modifier.height(24.dp))
+
+      // Modifier API Demo (New!)
+      ModifierDemo(onToast = onToast)
 
       Spacer(modifier = Modifier.height(24.dp))
 
@@ -733,6 +740,102 @@ private fun PositionDemos(onToast: (String) -> Unit) {
           fontWeight = FontWeight.Medium,
         )
       }
+    }
+  }
+}
+
+@Composable
+private fun ModifierDemo(onToast: (String) -> Unit) {
+  Text(
+    text = "Modifier API (New!)",
+    color = White70,
+    fontSize = 14.sp,
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(bottom = 8.dp),
+  )
+
+  Text(
+    text = "Use Modifier.balloon() instead of wrapping content",
+    color = White56,
+    fontSize = 12.sp,
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(bottom = 12.dp),
+  )
+
+  // Create balloon builder
+  val modifierBalloonBuilder = rememberBalloonBuilder {
+    setArrowSize(10)
+    setArrowPosition(0.5f)
+    setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+    setArrowOrientation(ArrowOrientation.BOTTOM)
+    setWidth(BalloonSizeSpec.WRAP)
+    setHeight(BalloonSizeSpec.WRAP)
+    setPadding(12)
+    setCornerRadius(8f)
+    setBackgroundColor(Orange.hashCode())
+    setBalloonAnimation(BalloonAnimation.ELASTIC)
+    setDismissWhenClicked(true)
+  }
+
+  // Use rememberBalloonState instead of storing BalloonWindow manually
+  val balloonState = rememberBalloonState(modifierBalloonBuilder)
+
+  Row(
+    modifier = Modifier.fillMaxWidth(),
+    horizontalArrangement = Arrangement.spacedBy(8.dp),
+  ) {
+    // Example using the new Modifier.balloon() API
+    Box(
+      modifier = Modifier
+        .weight(1f)
+        .height(60.dp)
+        .clip(RoundedCornerShape(8.dp))
+        .background(
+          Brush.horizontalGradient(listOf(Orange, Pink)),
+        )
+        .balloon(balloonState) {
+          // Balloon content as trailing lambda
+          Column(modifier = Modifier.padding(4.dp)) {
+            Text(
+              text = "Modifier API!",
+              color = Color.White,
+              fontSize = 14.sp,
+              fontWeight = FontWeight.Bold,
+            )
+            Text(
+              text = "No wrapping needed",
+              color = Color.White.copy(alpha = 0.8f),
+              fontSize = 12.sp,
+            )
+          }
+        }
+        .clickable { balloonState.showAlignTop() },
+      contentAlignment = Alignment.Center,
+    ) {
+      Text(
+        text = "Modifier.balloon()",
+        color = Color.White,
+        fontSize = 12.sp,
+        fontWeight = FontWeight.Medium,
+      )
+    }
+
+    // Show button for the balloon
+    Button(
+      onClick = { balloonState.showAlignTop() },
+      modifier = Modifier
+        .weight(1f)
+        .height(60.dp),
+      colors = ButtonDefaults.buttonColors(backgroundColor = Orange),
+      shape = RoundedCornerShape(8.dp),
+    ) {
+      Text(
+        text = "Show Balloon",
+        color = Color.White,
+        fontSize = 12.sp,
+      )
     }
   }
 }

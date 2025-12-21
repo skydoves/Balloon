@@ -24,7 +24,7 @@ package com.skydoves.balloon.compose
  * @property width the width size of the composable.
  * @property height the height size of the composable.
  */
-internal data class BalloonLayoutInfo constructor(
+internal data class BalloonLayoutInfo(
   val x: Float,
   val y: Float,
   val width: Int,
