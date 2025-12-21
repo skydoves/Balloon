@@ -18,6 +18,7 @@ package com.skydoves.balloon.compose
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -137,6 +138,24 @@ public fun Balloon(
       remember { with(density) { (builder.paddingLeft + builder.marginLeft).toDp() } }
     val paddingEnd =
       remember { with(density) { (builder.paddingRight + builder.marginRight).toDp() } }
+    // Calculate width constraint from widthRatio or maxWidthRatio if set (issue #779)
+    // Note: This is the OUTER width (including padding). The .padding() modifier applied
+    // before .widthIn() will reduce the actual content area by paddingStart + paddingEnd.
+    val contentMaxWidth = remember {
+      when {
+        builder.widthRatio > 0f -> (screenWidth * builder.widthRatio).toInt()
+        builder.maxWidthRatio > 0f -> (screenWidth * builder.maxWidthRatio).toInt()
+        else -> Int.MAX_VALUE
+      }
+    }
+    // Calculate the max width modifier to apply before measurement (issue #779)
+    val contentMaxWidthDp = remember {
+      if (contentMaxWidth != Int.MAX_VALUE) {
+        with(density) { contentMaxWidth.toDp() }
+      } else {
+        null
+      }
+    }
     Popup(
       properties = PopupProperties(
         dismissOnBackPress = false,
@@ -146,21 +165,44 @@ public fun Balloon(
       Box(
         modifier = Modifier
           .alpha(0f)
+          // Apply width constraint FIRST, then padding INSIDE it (issue #779)
+          // This ensures: total width = contentMaxWidth, content width = contentMaxWidth - padding
+          .then(
+            if (contentMaxWidthDp != null) {
+              Modifier.widthIn(max = contentMaxWidthDp)
+            } else {
+              Modifier
+            },
+          )
           .padding(start = paddingStart, end = paddingEnd)
           .onGloballyPositioned { coordinates ->
             val originalSize = coordinates.size
-            val calculatedWidth =
-              if (screenWidth * builder.widthRatio != 0f) {
-                (
-                  screenWidth * builder.widthRatio -
-                    with(density) { builder.marginRight.dp.toPx() } -
-                    with(density) { builder.marginLeft.dp.toPx() }
-                  ).toInt()
-              } else if (originalSize.width > screenWidth) {
-                screenWidth
-              } else {
-                originalSize.width
+            val margins = with(density) {
+              builder.marginRight.dp.toPx() + builder.marginLeft.dp.toPx()
+            }.toInt()
+            val calculatedWidth = when {
+              // Fixed width ratio takes priority
+              builder.widthRatio > 0f -> {
+                (screenWidth * builder.widthRatio - margins).toInt()
               }
+              // Apply minWidthRatio and/or maxWidthRatio constraints if set (issue #779)
+              builder.minWidthRatio > 0f || builder.maxWidthRatio > 0f -> {
+                val minWidth = if (builder.minWidthRatio > 0f) {
+                  (screenWidth * builder.minWidthRatio - margins).toInt()
+                } else {
+                  0
+                }
+                val maxWidth = if (builder.maxWidthRatio > 0f) {
+                  (screenWidth * builder.maxWidthRatio - margins).toInt()
+                } else {
+                  screenWidth
+                }
+                originalSize.width.coerceIn(minWidth, maxWidth)
+              }
+              // Default: constrain to screen width
+              originalSize.width > screenWidth -> screenWidth
+              else -> originalSize.width
+            }
             val size = IntSize(
               width = calculatedWidth,
               height = coordinates.size.height,
@@ -175,7 +217,7 @@ public fun Balloon(
             )
           },
       ) {
-        balloonContent?.invoke()
+        balloonContent.invoke()
       }
     }
   }
