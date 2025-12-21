@@ -1,0 +1,71 @@
+site_name: Balloon
+site_description: 'Modernized and sophisticated tooltips, fully customizable with an arrow and animations on Android.'
+site_author: 'Jaewoong (skydoves)'
+site_url: 'https://github.com/skydoves/Balloon'
+edit_uri: 'tree/main/docs/'
+remote_branch: gh-pages
+
+docs_dir: docs
+
+# Navigation
+nav:
+  - 'Overview': index.md
+  - 'Getting Started': getting-started.md
+  - 'Showing Balloon': showing.md
+  - 'Arrow': arrow.md
+  - 'Text and Icon': text-icon.md
+  - 'Customization': customization.md
+  - 'Overlay': overlay.md
+  - 'Animation': animation.md
+  - 'Listeners': listeners.md
+  - 'Persistence': persistence.md
+  - 'Jetpack Compose':
+    - 'Overview': compose/overview.md
+    - 'BalloonState': compose/balloon-state.md
+    - 'Compose Extensions': compose/extensions.md
+  - 'Sponsor': sponsor.md
+
+# Repository
+repo_name: 'Balloon'
+repo_url: 'https://github.com/skydoves/Balloon'
+
+# Configuration
+theme:
+  name: 'material'
+  language: 'en'
+  icon:
+    logo: material/tooltip-outline
+
+  palette:
+    primary: 'blue'
+    accent: 'blue'
+    scheme: slate
+
+  font:
+    text: 'Roboto'
+    code: 'JetBrains Mono'
+
+  features:
+    - content.tabs.link
+    - content.code.copy
+    - content.code.annotate
+
+extra:
+  analytics:
+    provider: google
+    property: G-1SBY14Q79E
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - attr_list
+  - codehilite:
+      guess_lang: false
+  - footnotes
+  - toc:
+      permalink: true
+  - pymdownx.betterem
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
