@@ -34,12 +34,48 @@ public object BalloonOverlayOval : BalloonOverlayShape()
 public class BalloonOverlayRoundRect private constructor(
   public val radiusPair: Pair<Float, Float>? = null,
   public val radiusResPair: Pair<Int, Int>? = null,
+  /** Individual corner radii: [topStart, topEnd, bottomEnd, bottomStart] */
+  public val cornerRadii: FloatArray? = null,
+  /** Individual corner radii as dimension resources: [topStart, topEnd, bottomEnd, bottomStart] */
+  @DimenRes public val cornerRadiiRes: IntArray? = null,
 ) : BalloonOverlayShape() {
+
+  /** Creates a round rect with uniform corner radius. */
   public constructor(radiusX: Float, radiusY: Float) : this(radiusPair = Pair(radiusX, radiusY))
+
+  /** Creates a round rect with uniform corner radius using dimension resources. */
   public constructor(
     @DimenRes radiusXRes: Int,
     @DimenRes radiusYRes: Int,
   ) : this(radiusResPair = Pair(radiusXRes, radiusYRes))
+
+  /**
+   * Creates a round rect with individual corner radii.
+   * @param topStart Top-start corner radius
+   * @param topEnd Top-end corner radius
+   * @param bottomEnd Bottom-end corner radius
+   * @param bottomStart Bottom-start corner radius
+   */
+  public constructor(
+    topStart: Float,
+    topEnd: Float,
+    bottomEnd: Float,
+    bottomStart: Float,
+  ) : this(cornerRadii = floatArrayOf(topStart, topEnd, bottomEnd, bottomStart))
+
+  /**
+   * Creates a round rect with individual corner radii using dimension resources.
+   * @param topStartRes Top-start corner radius resource
+   * @param topEndRes Top-end corner radius resource
+   * @param bottomEndRes Bottom-end corner radius resource
+   * @param bottomStartRes Bottom-start corner radius resource
+   */
+  public constructor(
+    @DimenRes topStartRes: Int,
+    @DimenRes topEndRes: Int,
+    @DimenRes bottomEndRes: Int,
+    @DimenRes bottomStartRes: Int,
+  ) : this(cornerRadiiRes = intArrayOf(topStartRes, topEndRes, bottomEndRes, bottomStartRes))
 }
 
 /** draw a Circle for overlaying over an anchor. */
