@@ -50,6 +50,15 @@ public fun rememberBalloonBuilder(
  * @param initialValue The initial state of [BalloonWindow].
  * @param key The key that may trigger recomposition.
  */
+@Deprecated(
+  message = "Use rememberBalloonState() instead for a more flexible API.",
+  replaceWith = ReplaceWith(
+    expression = "rememberBalloonState(builder)",
+    imports = ["com.skydoves.balloon.compose.rememberBalloonState"],
+  ),
+  level = DeprecationLevel.WARNING,
+)
+@Suppress("DEPRECATION")
 @Composable
 @BalloonDsl
 public fun rememberBalloonWindow(

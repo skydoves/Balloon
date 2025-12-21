@@ -79,6 +79,7 @@ public fun rememberBalloonState(
  * ```
  */
 @Stable
+@Suppress("DEPRECATION")
 public class BalloonState internal constructor(
   private val context: Context,
   internal val builder: Balloon.Builder,

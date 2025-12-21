@@ -54,8 +54,6 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -74,8 +72,6 @@ import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonHighlightAnimation
 import com.skydoves.balloon.BalloonSizeSpec
-import com.skydoves.balloon.compose.Balloon
-import com.skydoves.balloon.compose.BalloonWindow
 import com.skydoves.balloon.compose.balloon
 import com.skydoves.balloon.compose.rememberBalloonBuilder
 import com.skydoves.balloon.compose.rememberBalloonState
@@ -199,7 +195,7 @@ private fun TopAppBar(onToast: (String) -> Unit) {
     setDismissWhenClicked(true)
   }
 
-  var menuBalloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+  val menuBalloonState = rememberBalloonState(menuBalloonBuilder)
 
   Row(
     modifier = Modifier
@@ -217,33 +213,30 @@ private fun TopAppBar(onToast: (String) -> Unit) {
       modifier = Modifier.padding(start = 8.dp),
     )
 
-    Balloon(
-      builder = menuBalloonBuilder,
-      onBalloonWindowInitialized = { menuBalloonWindow = it },
-      balloonContent = {
+    IconButton(
+      onClick = { menuBalloonState.showAlignBottom() },
+      modifier = Modifier.balloon(menuBalloonState) {
         Column(modifier = Modifier.padding(4.dp)) {
           MenuItem(icon = Icons.Default.Home, text = "Home") {
-            menuBalloonWindow?.dismiss()
+            menuBalloonState.dismiss()
             onToast("Home clicked")
           }
           MenuItem(icon = Icons.Default.Person, text = "Profile") {
-            menuBalloonWindow?.dismiss()
+            menuBalloonState.dismiss()
             onToast("Profile clicked")
           }
           MenuItem(icon = Icons.Default.Settings, text = "Settings") {
-            menuBalloonWindow?.dismiss()
+            menuBalloonState.dismiss()
             onToast("Settings clicked")
           }
         }
       },
     ) {
-      IconButton(onClick = { menuBalloonWindow?.showAlignBottom() }) {
-        Icon(
-          imageVector = Icons.AutoMirrored.Filled.List,
-          contentDescription = "Menu",
-          tint = White93,
-        )
-      }
+      Icon(
+        imageVector = Icons.AutoMirrored.Filled.List,
+        contentDescription = "Menu",
+        tint = White93,
+      )
     }
   }
 }
@@ -292,85 +285,81 @@ private fun ProfileSection(onToast: (String) -> Unit) {
     setDismissWhenTouchOutside(true)
   }
 
-  var profileBalloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+  val profileBalloonState = rememberBalloonState(profileBalloonBuilder)
 
-  Balloon(
-    builder = profileBalloonBuilder,
-    onBalloonWindowInitialized = { profileBalloonWindow = it },
-    balloonContent = {
-      Column(
-        modifier = Modifier.padding(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-      ) {
-        Text(
-          text = "Welcome!",
-          color = Color.White,
-          fontSize = 16.sp,
-          fontWeight = FontWeight.Bold,
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-          text = "Tap to view your profile details\nand customize your settings.",
-          color = Color.White.copy(alpha = 0.9f),
-          fontSize = 14.sp,
-          textAlign = TextAlign.Center,
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        Button(
-          onClick = {
-            profileBalloonWindow?.dismiss()
-            onToast("View Profile clicked")
-          },
-          colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-          shape = RoundedCornerShape(20.dp),
-        ) {
-          Text(text = "View Profile", color = SkyBlue, fontSize = 12.sp)
-        }
-      }
-    },
+  Column(
+    horizontalAlignment = Alignment.CenterHorizontally,
+    modifier = Modifier,
   ) {
-    Column(
-      horizontalAlignment = Alignment.CenterHorizontally,
-      modifier = Modifier.clickable { profileBalloonWindow?.showAlignBottom() },
+    Image(
+      painter = painterResource(id = R.drawable.sample0),
+      contentDescription = "Profile",
+      contentScale = ContentScale.Crop,
+      modifier = Modifier
+        .size(85.dp)
+        .clip(CircleShape)
+        .border(3.dp, SkyBlue, CircleShape)
+        .balloon(profileBalloonState) {
+          Column(
+            modifier = Modifier.padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+          ) {
+            Text(
+              text = "Welcome!",
+              color = Color.White,
+              fontSize = 16.sp,
+              fontWeight = FontWeight.Bold,
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+              text = "Tap to view your profile details\nand customize your settings.",
+              color = Color.White.copy(alpha = 0.9f),
+              fontSize = 14.sp,
+              textAlign = TextAlign.Center,
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Button(
+              onClick = {
+                profileBalloonState.dismiss()
+                onToast("View Profile clicked")
+              },
+              colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
+              shape = RoundedCornerShape(20.dp),
+            ) {
+              Text(text = "View Profile", color = SkyBlue, fontSize = 12.sp)
+            }
+          }
+        }
+        .clickable { profileBalloonState.showAlignBottom() },
+    )
+
+    Spacer(modifier = Modifier.height(12.dp))
+
+    Text(
+      text = "skydoves",
+      color = White93,
+      fontSize = 16.sp,
+      fontWeight = FontWeight.Bold,
+    )
+
+    Text(
+      text = "Android Developer & Open Source Enthusiast",
+      color = White56,
+      fontSize = 14.sp,
+      textAlign = TextAlign.Center,
+      modifier = Modifier.padding(horizontal = 32.dp),
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    // Stats Row
+    Row(
+      modifier = Modifier.fillMaxWidth(),
+      horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
-      Image(
-        painter = painterResource(id = R.drawable.sample0),
-        contentDescription = "Profile",
-        contentScale = ContentScale.Crop,
-        modifier = Modifier
-          .size(85.dp)
-          .clip(CircleShape)
-          .border(3.dp, SkyBlue, CircleShape),
-      )
-
-      Spacer(modifier = Modifier.height(12.dp))
-
-      Text(
-        text = "skydoves",
-        color = White93,
-        fontSize = 16.sp,
-        fontWeight = FontWeight.Bold,
-      )
-
-      Text(
-        text = "Android Developer & Open Source Enthusiast",
-        color = White56,
-        fontSize = 14.sp,
-        textAlign = TextAlign.Center,
-        modifier = Modifier.padding(horizontal = 32.dp),
-      )
-
-      Spacer(modifier = Modifier.height(16.dp))
-
-      // Stats Row
-      Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-      ) {
-        StatItem(count = "32", label = "Posts")
-        StatItem(count = "2.3K", label = "Followers")
-        StatItem(count = "21", label = "Following")
-      }
+      StatItem(count = "32", label = "Posts")
+      StatItem(count = "2.3K", label = "Followers")
+      StatItem(count = "21", label = "Following")
     }
   }
 }
@@ -415,45 +404,40 @@ private fun EditProfileSection(onToast: (String) -> Unit) {
     setDismissWhenOverlayClicked(true)
   }
 
-  var editBalloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+  val editBalloonState = rememberBalloonState(editBalloonBuilder)
 
-  Balloon(
-    builder = editBalloonBuilder,
-    onBalloonWindowInitialized = { editBalloonWindow = it },
-    balloonContent = {
-      Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(4.dp),
-      ) {
-        Icon(
-          imageVector = Icons.Default.Edit,
-          contentDescription = null,
-          tint = Color.White,
-          modifier = Modifier.size(18.dp),
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-          text = "Now you can edit your profile1 profile2 profile3 profile4 " +
-            "really long text so we can test stuff Now you can edit your " +
-            "profile1 profile2 profile3 profile4 really long text so we can test stuff",
-          color = Color.White,
-          fontSize = 14.sp,
-        )
-      }
-    },
+  Button(
+    onClick = { editBalloonState.showAlignTop() },
+    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
+    shape = RoundedCornerShape(20.dp),
+    modifier = Modifier
+      .fillMaxWidth()
+      .height(44.dp)
+      .border(1.dp, SkyBlue, RoundedCornerShape(20.dp))
+      .balloon(editBalloonState) {
+        Row(
+          verticalAlignment = Alignment.CenterVertically,
+          modifier = Modifier.padding(4.dp),
+        ) {
+          Icon(
+            imageVector = Icons.Default.Edit,
+            contentDescription = null,
+            tint = Color.White,
+            modifier = Modifier.size(18.dp),
+          )
+          Spacer(modifier = Modifier.width(8.dp))
+          Text(
+            text = "Now you can edit your profile1 profile2 profile3 profile4 " +
+              "really long text so we can test stuff Now you can edit your " +
+              "profile1 profile2 profile3 profile4 really long text so we can test stuff",
+            color = Color.White,
+            fontSize = 14.sp,
+          )
+        }
+      },
+    elevation = ButtonDefaults.elevation(0.dp),
   ) {
-    Button(
-      onClick = { editBalloonWindow?.showAlignTop() },
-      colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-      shape = RoundedCornerShape(20.dp),
-      modifier = Modifier
-        .fillMaxWidth()
-        .height(44.dp)
-        .border(1.dp, SkyBlue, RoundedCornerShape(20.dp)),
-      elevation = ButtonDefaults.elevation(0.dp),
-    ) {
-      Text(text = "Edit Profile", color = SkyBlue)
-    }
+    Text(text = "Edit Profile", color = SkyBlue)
   }
 }
 
@@ -513,28 +497,23 @@ private fun AnimationDemoButton(
     setDismissWhenClicked(true)
   }
 
-  var balloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+  val balloonState = rememberBalloonState(builder)
 
-  Balloon(
-    modifier = modifier,
-    builder = builder,
-    onBalloonWindowInitialized = { balloonWindow = it },
-    balloonContent = {
-      Text(
-        text = "$text Animation",
-        color = Color.White,
-        fontSize = 13.sp,
-      )
-    },
+  Button(
+    onClick = { balloonState.showAlignTop() },
+    colors = ButtonDefaults.buttonColors(backgroundColor = color),
+    shape = RoundedCornerShape(8.dp),
+    modifier = modifier
+      .fillMaxWidth()
+      .balloon(balloonState) {
+        Text(
+          text = "$text Animation",
+          color = Color.White,
+          fontSize = 13.sp,
+        )
+      },
   ) {
-    Button(
-      onClick = { balloonWindow?.showAlignTop() },
-      colors = ButtonDefaults.buttonColors(backgroundColor = color),
-      shape = RoundedCornerShape(8.dp),
-      modifier = Modifier.fillMaxWidth(),
-    ) {
-      Text(text = text, color = Color.White, fontSize = 12.sp)
-    }
+    Text(text = text, color = Color.White, fontSize = 12.sp)
   }
 }
 
@@ -595,28 +574,23 @@ private fun HighlightDemoButton(
     setDismissWhenClicked(true)
   }
 
-  var balloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+  val balloonState = rememberBalloonState(builder)
 
-  Balloon(
-    modifier = modifier,
-    builder = builder,
-    onBalloonWindowInitialized = { balloonWindow = it },
-    balloonContent = {
-      Text(
-        text = "$text effect!",
-        color = Color.White,
-        fontSize = 13.sp,
-      )
-    },
+  Button(
+    onClick = { balloonState.showAlignTop() },
+    colors = ButtonDefaults.buttonColors(backgroundColor = color),
+    shape = RoundedCornerShape(8.dp),
+    modifier = modifier
+      .fillMaxWidth()
+      .balloon(balloonState) {
+        Text(
+          text = "$text effect!",
+          color = Color.White,
+          fontSize = 13.sp,
+        )
+      },
   ) {
-    Button(
-      onClick = { balloonWindow?.showAlignTop() },
-      colors = ButtonDefaults.buttonColors(backgroundColor = color),
-      shape = RoundedCornerShape(8.dp),
-      modifier = Modifier.fillMaxWidth(),
-    ) {
-      Text(text = text, color = Color.White, fontSize = 12.sp)
-    }
+    Text(text = text, color = Color.White, fontSize = 12.sp)
   }
 }
 
@@ -649,97 +623,85 @@ private fun PositionDemos(onToast: (String) -> Unit) {
     setDismissWhenOverlayClicked(true)
   }
 
-  var overlayBalloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+  val overlayBalloonState = rememberBalloonState(overlayBuilder)
+
+  // Round Rect Overlay Demo
+  val roundRectBuilder = rememberBalloonBuilder {
+    setArrowSize(10)
+    setArrowPosition(0.5f)
+    setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+    setWidth(BalloonSizeSpec.WRAP)
+    setHeight(BalloonSizeSpec.WRAP)
+    setPadding(12)
+    setCornerRadius(8f)
+    setBackgroundColor(Teal.hashCode())
+    setBalloonAnimation(BalloonAnimation.ELASTIC)
+    setIsVisibleOverlay(true)
+    setOverlayColor(Overlay.hashCode())
+    setOverlayPadding(8f)
+    setOverlayShape(BalloonOverlayRoundRect(12f, 12f))
+    setBalloonHighlightAnimation(BalloonHighlightAnimation.HEARTBEAT)
+    setDismissWhenClicked(true)
+    setDismissWhenOverlayClicked(true)
+  }
+
+  val roundRectBalloonState = rememberBalloonState(roundRectBuilder)
 
   Row(
     modifier = Modifier.fillMaxWidth(),
     horizontalArrangement = Arrangement.spacedBy(8.dp),
   ) {
     // Oval Overlay Demo
-    Balloon(
-      modifier = Modifier.weight(1f),
-      builder = overlayBuilder,
-      onBalloonWindowInitialized = { overlayBalloonWindow = it },
-      balloonContent = {
-        Text(
-          text = "Oval overlay shape!",
-          color = Color.White,
-          fontSize = 13.sp,
+    Box(
+      modifier = Modifier
+        .weight(1f)
+        .height(60.dp)
+        .clip(RoundedCornerShape(8.dp))
+        .background(
+          Brush.horizontalGradient(listOf(Purple, Pink)),
         )
-      },
-    ) {
-      Box(
-        modifier = Modifier
-          .fillMaxWidth()
-          .height(60.dp)
-          .clip(RoundedCornerShape(8.dp))
-          .background(
-            Brush.horizontalGradient(listOf(Purple, Pink)),
+        .balloon(overlayBalloonState) {
+          Text(
+            text = "Oval overlay shape!",
+            color = Color.White,
+            fontSize = 13.sp,
           )
-          .clickable { overlayBalloonWindow?.showAlignTop() },
-        contentAlignment = Alignment.Center,
-      ) {
-        Text(
-          text = "Oval Overlay",
-          color = Color.White,
-          fontSize = 12.sp,
-          fontWeight = FontWeight.Medium,
-        )
-      }
+        }
+        .clickable { overlayBalloonState.showAlignTop() },
+      contentAlignment = Alignment.Center,
+    ) {
+      Text(
+        text = "Oval Overlay",
+        color = Color.White,
+        fontSize = 12.sp,
+        fontWeight = FontWeight.Medium,
+      )
     }
 
-    // Round Rect Overlay Demo
-    val roundRectBuilder = rememberBalloonBuilder {
-      setArrowSize(10)
-      setArrowPosition(0.5f)
-      setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
-      setWidth(BalloonSizeSpec.WRAP)
-      setHeight(BalloonSizeSpec.WRAP)
-      setPadding(12)
-      setCornerRadius(8f)
-      setBackgroundColor(Teal.hashCode())
-      setBalloonAnimation(BalloonAnimation.ELASTIC)
-      setIsVisibleOverlay(true)
-      setOverlayColor(Overlay.hashCode())
-      setOverlayPadding(8f)
-      setOverlayShape(BalloonOverlayRoundRect(12f, 12f))
-      setBalloonHighlightAnimation(BalloonHighlightAnimation.HEARTBEAT)
-      setDismissWhenClicked(true)
-      setDismissWhenOverlayClicked(true)
-    }
-
-    var roundRectBalloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
-
-    Balloon(
-      modifier = Modifier.weight(1f),
-      builder = roundRectBuilder,
-      onBalloonWindowInitialized = { roundRectBalloonWindow = it },
-      balloonContent = {
-        Text(
-          text = "Rounded rectangle!",
-          color = Color.White,
-          fontSize = 13.sp,
+    Box(
+      modifier = Modifier
+        .weight(1f)
+        .height(60.dp)
+        .clip(RoundedCornerShape(8.dp))
+        .background(
+          Brush.horizontalGradient(listOf(Teal, SkyBlue)),
         )
-      },
-    ) {
-      Box(
-        modifier = Modifier
-          .fillMaxWidth()
-          .height(60.dp)
-          .clip(RoundedCornerShape(8.dp))
-          .background(
-            Brush.horizontalGradient(listOf(Teal, SkyBlue)),
+        .balloon(roundRectBalloonState) {
+          Text(
+            text = "Rounded rectangle!",
+            color = Color.White,
+            fontSize = 13.sp,
           )
-          .clickable { roundRectBalloonWindow?.showAlignTop() },
-        contentAlignment = Alignment.Center,
-      ) {
-        Text(
-          text = "RoundRect Overlay",
-          color = Color.White,
-          fontSize = 12.sp,
-          fontWeight = FontWeight.Medium,
-        )
-      }
+        }
+        .clickable { roundRectBalloonState.showAlignTop() },
+      contentAlignment = Alignment.Center,
+    ) {
+      Text(
+        text = "RoundRect Overlay",
+        color = Color.White,
+        fontSize = 12.sp,
+        fontWeight = FontWeight.Medium,
+      )
     }
   }
 }
@@ -960,84 +922,79 @@ private fun LazyColumnHeader(
   builder: com.skydoves.balloon.Balloon.Builder,
   onToast: (String) -> Unit,
 ) {
-  var balloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+  val balloonState = rememberBalloonState(builder)
 
-  Balloon(
-    builder = builder,
-    onBalloonWindowInitialized = { balloonWindow = it },
-    balloonContent = {
-      Column(
-        modifier = Modifier.padding(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-      ) {
-        Text(
-          text = "Balloon Library",
-          color = Color.White,
-          fontSize = 16.sp,
-          fontWeight = FontWeight.Bold,
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-          text = "Tap items below to see\ntooltips in action!",
-          color = Color.White.copy(alpha = 0.9f),
-          fontSize = 14.sp,
-          textAlign = TextAlign.Center,
-        )
+  Column(
+    modifier = Modifier
+      .fillMaxWidth()
+      .background(Background)
+      .balloon(balloonState) {
+        Column(
+          modifier = Modifier.padding(8.dp),
+          horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+          Text(
+            text = "Balloon Library",
+            color = Color.White,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+          )
+          Spacer(modifier = Modifier.height(8.dp))
+          Text(
+            text = "Tap items below to see\ntooltips in action!",
+            color = Color.White.copy(alpha = 0.9f),
+            fontSize = 14.sp,
+            textAlign = TextAlign.Center,
+          )
+        }
       }
-    },
+      .clickable { balloonState.showAlignBottom() }
+      .padding(16.dp),
+    horizontalAlignment = Alignment.CenterHorizontally,
   ) {
-    Column(
+    // Profile-like header
+    Box(
       modifier = Modifier
-        .fillMaxWidth()
-        .background(Background)
-        .clickable { balloonWindow?.showAlignBottom() }
-        .padding(16.dp),
-      horizontalAlignment = Alignment.CenterHorizontally,
+        .size(64.dp)
+        .clip(CircleShape)
+        .background(
+          Brush.linearGradient(listOf(Purple, Pink)),
+        ),
+      contentAlignment = Alignment.Center,
     ) {
-      // Profile-like header
-      Box(
-        modifier = Modifier
-          .size(64.dp)
-          .clip(CircleShape)
-          .background(
-            Brush.linearGradient(listOf(Purple, Pink)),
-          ),
-        contentAlignment = Alignment.Center,
-      ) {
-        Icon(
-          imageVector = Icons.Default.Settings,
-          contentDescription = null,
-          tint = Color.White,
-          modifier = Modifier.size(32.dp),
-        )
-      }
-
-      Spacer(modifier = Modifier.height(12.dp))
-
-      Text(
-        text = "Balloon Demo",
-        color = White93,
-        fontSize = 18.sp,
-        fontWeight = FontWeight.Bold,
+      Icon(
+        imageVector = Icons.Default.Settings,
+        contentDescription = null,
+        tint = Color.White,
+        modifier = Modifier.size(32.dp),
       )
+    }
 
-      Text(
-        text = "Tap to learn more",
-        color = White56,
-        fontSize = 14.sp,
-      )
+    Spacer(modifier = Modifier.height(12.dp))
 
-      Spacer(modifier = Modifier.height(16.dp))
+    Text(
+      text = "Balloon Demo",
+      color = White93,
+      fontSize = 18.sp,
+      fontWeight = FontWeight.Bold,
+    )
 
-      // Stats row similar to main layout
-      Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-      ) {
-        LazyColumnStatItem(count = "11", label = "Features")
-        LazyColumnStatItem(count = "5+", label = "Animations")
-        LazyColumnStatItem(count = "100%", label = "Compose")
-      }
+    Text(
+      text = "Tap to learn more",
+      color = White56,
+      fontSize = 14.sp,
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    // Stats row similar to main layout
+    Row(
+      modifier = Modifier.fillMaxWidth(),
+      horizontalArrangement = Arrangement.SpaceEvenly,
+    ) {
+      LazyColumnStatItem(count = "11", label = "Features")
+      LazyColumnStatItem(count = "5+", label = "Animations")
+      LazyColumnStatItem(count = "100%", label = "Compose")
     }
   }
 }
@@ -1067,78 +1024,73 @@ private fun ListItemWithBalloon(
   builder: com.skydoves.balloon.Balloon.Builder,
   onToast: (String) -> Unit,
 ) {
-  var balloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+  val balloonState = rememberBalloonState(builder)
 
-  Balloon(
-    builder = builder,
-    onBalloonWindowInitialized = { balloonWindow = it },
-    balloonContent = {
-      Column(modifier = Modifier.padding(4.dp)) {
-        Text(
-          text = title,
-          color = Color.White,
-          fontSize = 14.sp,
-          fontWeight = FontWeight.Bold,
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-          text = description,
-          color = Color.White.copy(alpha = 0.9f),
-          fontSize = 12.sp,
-        )
-      }
-    },
-  ) {
-    Row(
-      modifier = Modifier
-        .fillMaxWidth()
-        .background(Background)
-        .clickable {
-          balloonWindow?.showAlignBottom()
-          onToast("Item ${index + 1}: $title")
+  Row(
+    modifier = Modifier
+      .fillMaxWidth()
+      .background(Background)
+      .balloon(balloonState) {
+        Column(modifier = Modifier.padding(4.dp)) {
+          Text(
+            text = title,
+            color = Color.White,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+          )
+          Spacer(modifier = Modifier.height(4.dp))
+          Text(
+            text = description,
+            color = Color.White.copy(alpha = 0.9f),
+            fontSize = 12.sp,
+          )
         }
-        .padding(horizontal = 16.dp, vertical = 14.dp),
-      verticalAlignment = Alignment.CenterVertically,
-    ) {
-      Box(
-        modifier = Modifier
-          .size(36.dp)
-          .clip(RoundedCornerShape(8.dp))
-          .background(
-            Brush.linearGradient(
-              listOf(SkyBlue, Purple),
-            ),
+      }
+      .clickable {
+        balloonState.showAlignBottom()
+        onToast("Item ${index + 1}: $title")
+      }
+      .padding(horizontal = 16.dp, vertical = 14.dp),
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
+    Box(
+      modifier = Modifier
+        .size(36.dp)
+        .clip(RoundedCornerShape(8.dp))
+        .background(
+          Brush.linearGradient(
+            listOf(SkyBlue, Purple),
           ),
-        contentAlignment = Alignment.Center,
-      ) {
-        Text(
-          text = "${index + 1}",
-          color = Color.White,
-          fontSize = 14.sp,
-          fontWeight = FontWeight.Bold,
-        )
-      }
-      Spacer(modifier = Modifier.width(12.dp))
-      Column(modifier = Modifier.weight(1f)) {
-        Text(
-          text = title,
-          color = White93,
-          fontSize = 14.sp,
-          fontWeight = FontWeight.Medium,
-        )
-        Text(
-          text = "Tap to see details",
-          color = White56,
-          fontSize = 12.sp,
-        )
-      }
-      Icon(
-        imageVector = Icons.Default.Settings,
-        contentDescription = null,
-        tint = White56,
-        modifier = Modifier.size(20.dp),
+        ),
+      contentAlignment = Alignment.Center,
+    ) {
+      Text(
+        text = "${index + 1}",
+        color = Color.White,
+        fontSize = 14.sp,
+        fontWeight = FontWeight.Bold,
       )
     }
+    Spacer(modifier = Modifier.width(12.dp))
+    Column(modifier = Modifier.weight(1f)) {
+      Text(
+        text = title,
+        color = White93,
+        fontSize = 14.sp,
+        fontWeight = FontWeight.Medium,
+      )
+      Text(
+        text = "Tap to see details",
+        color = White56,
+        fontSize = 12.sp,
+      )
+    }
+    Icon(
+      imageVector = Icons.Default.Settings,
+      contentDescription = null,
+      tint = White56,
+      modifier = Modifier.size(20.dp),
+    )
   }
 }
 
@@ -1198,41 +1150,36 @@ private fun BottomNavItem(
   tagText: String,
   onToast: (String) -> Unit,
 ) {
-  var balloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+  val balloonState = rememberBalloonState(builder)
 
-  Balloon(
-    builder = builder,
-    onBalloonWindowInitialized = { balloonWindow = it },
-    balloonContent = {
-      Text(
-        text = tagText,
-        color = Background,
-        fontSize = 12.sp,
-        fontWeight = FontWeight.Medium,
-      )
-    },
+  Column(
+    horizontalAlignment = Alignment.CenterHorizontally,
+    modifier = Modifier
+      .balloon(balloonState) {
+        Text(
+          text = tagText,
+          color = Background,
+          fontSize = 12.sp,
+          fontWeight = FontWeight.Medium,
+        )
+      }
+      .clickable {
+        balloonState.showAlignTop()
+        onToast("$label clicked")
+      }
+      .padding(horizontal = 16.dp, vertical = 4.dp),
   ) {
-    Column(
-      horizontalAlignment = Alignment.CenterHorizontally,
-      modifier = Modifier
-        .clickable {
-          balloonWindow?.showAlignTop()
-          onToast("$label clicked")
-        }
-        .padding(horizontal = 16.dp, vertical = 4.dp),
-    ) {
-      Icon(
-        imageVector = icon,
-        contentDescription = label,
-        tint = White93,
-        modifier = Modifier.size(24.dp),
-      )
-      Spacer(modifier = Modifier.height(2.dp))
-      Text(
-        text = label,
-        color = White93,
-        fontSize = 10.sp,
-      )
-    }
+    Icon(
+      imageVector = icon,
+      contentDescription = label,
+      tint = White93,
+      modifier = Modifier.size(24.dp),
+    )
+    Spacer(modifier = Modifier.height(2.dp))
+    Text(
+      text = label,
+      color = White93,
+      fontSize = 10.sp,
+    )
   }
 }

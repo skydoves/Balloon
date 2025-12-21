@@ -16,8 +16,10 @@
 
 package com.skydoves.balloon.compose
 
+import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -28,13 +30,8 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.layout.Measurable
-import androidx.compose.ui.layout.MeasureResult
-import androidx.compose.ui.layout.MeasureScope
-import androidx.compose.ui.node.LayoutModifierNode
-import androidx.compose.ui.node.ModifierNodeElement
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.platform.InspectorInfo
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -43,6 +40,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
@@ -54,21 +52,17 @@ import java.util.UUID
 /**
  * A modifier that attaches a balloon tooltip to the composable.
  *
- * This modifier allows you to add balloon tooltips using a modifier chain pattern
- * instead of wrapping content with the [Balloon] composable.
+ * This modifier allows you to add balloon tooltips using a modifier chain pattern.
  *
  * Example usage:
  * ```
  * val balloonState = rememberBalloonState(builder)
  *
- * Text("Click me")
- *   .balloon(balloonState) {
- *     Text("Tooltip content")
- *   }
- *
- * // Show balloon
- * Button(onClick = { balloonState.showAlignTop() }) {
- *   Text("Show")
+ * Button(
+ *   onClick = { balloonState.showAlignTop() },
+ *   modifier = Modifier.balloon(balloonState) { Text("Tooltip") }
+ * ) {
+ *   Text("Show Balloon")
  * }
  * ```
  *
@@ -96,12 +90,19 @@ public fun Modifier.balloon(
 
   val id = rememberSaveable { UUID.randomUUID() }
 
-  // Create anchor view
+  // Get the decor view to add our invisible anchor
+  val decorView = remember(context) {
+    (context as? Activity)?.window?.decorView as? ViewGroup
+  }
+
+  // Create an invisible anchor view that will be added to the decor view
   val anchorView = remember {
-    ComposeView(context).also { composeView ->
-      composeView.setViewTreeLifecycleOwner(lifecycleOwner)
-      composeView.setViewTreeViewModelStoreOwner(viewModelStoreOwner)
-      composeView.setViewTreeSavedStateRegistryOwner(savedStateRegistryOwner)
+    View(context).apply {
+      // Make it invisible but still part of the hierarchy
+      visibility = View.INVISIBLE
+      setViewTreeLifecycleOwner(lifecycleOwner)
+      setViewTreeViewModelStoreOwner(viewModelStoreOwner)
+      setViewTreeSavedStateRegistryOwner(savedStateRegistryOwner)
     }
   }
 
@@ -133,10 +134,21 @@ public fun Modifier.balloon(
     balloonComposeView
   }
 
-  // Handle disposal
-  DisposableEffect(key) {
+  // Add anchor view to decor view and handle disposal
+  DisposableEffect(key, decorView) {
+    // Add the anchor view to the decor view
+    decorView?.addView(
+      anchorView,
+      FrameLayout.LayoutParams(0, 0).apply {
+        leftMargin = 0
+        topMargin = 0
+      },
+    )
+
     onDispose {
       balloonComposeView.dispose()
+      // Remove anchor view from decor view
+      decorView?.removeView(anchorView)
       anchorView.apply {
         setViewTreeSavedStateRegistryOwner(null)
         setViewTreeLifecycleOwner(null)
@@ -199,64 +211,17 @@ public fun Modifier.balloon(
     )
   }
 
-  // Use Modifier.Node for size tracking
-  return this then BalloonAnchorElement(anchorView)
-}
+  // Track position and size using onGloballyPositioned
+  return this.onGloballyPositioned { coordinates ->
+    val position = coordinates.positionInWindow()
+    val size = coordinates.size
 
-/**
- * ModifierNodeElement for balloon anchor size tracking.
- */
-private data class BalloonAnchorElement(
-  private val anchorView: View,
-) : ModifierNodeElement<BalloonAnchorNode>() {
-
-  override fun create(): BalloonAnchorNode = BalloonAnchorNode(anchorView)
-
-  override fun update(node: BalloonAnchorNode) {
-    node.anchorView = anchorView
-  }
-
-  override fun InspectorInfo.inspectableProperties() {
-    name = "balloonAnchor"
-  }
-}
-
-/**
- * Modifier.Node for tracking anchor size and updating the anchor view.
- */
-private class BalloonAnchorNode(
-  var anchorView: View,
-) : Modifier.Node(), LayoutModifierNode {
-
-  private var lastSize: IntSize = IntSize.Zero
-
-  override fun MeasureScope.measure(
-    measurable: Measurable,
-    constraints: Constraints,
-  ): MeasureResult {
-    val placeable = measurable.measure(constraints)
-    val newSize = IntSize(placeable.width, placeable.height)
-
-    // Update anchor view size if changed
-    if (newSize != lastSize) {
-      lastSize = newSize
-      updateAnchorSize(newSize)
-    }
-
-    return layout(placeable.width, placeable.height) {
-      placeable.place(0, 0)
-    }
-  }
-
-  private fun updateAnchorSize(size: IntSize) {
-    val params = anchorView.layoutParams
-    if (params != null) {
-      params.width = size.width
-      params.height = size.height
-      anchorView.layoutParams = params
-    } else {
-      // Create new layout params if none exist
-      anchorView.layoutParams = ViewGroup.LayoutParams(size.width, size.height)
+    // Update the anchor view's position and size in the decor view
+    anchorView.updateLayoutParams<FrameLayout.LayoutParams> {
+      width = size.width
+      height = size.height
+      leftMargin = position.x.toInt()
+      topMargin = position.y.toInt()
     }
   }
 }

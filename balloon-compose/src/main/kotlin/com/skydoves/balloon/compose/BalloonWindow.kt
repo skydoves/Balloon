@@ -40,6 +40,14 @@ import com.skydoves.balloon.showAtCenter
 /**
  * BalloonWindow is an interface that define all executable behaviors of the balloon's window.
  */
+@Deprecated(
+  message = "Use BalloonState with Modifier.balloon() instead for a more flexible API.",
+  replaceWith = ReplaceWith(
+    expression = "BalloonState",
+    imports = ["com.skydoves.balloon.compose.BalloonState"],
+  ),
+  level = DeprecationLevel.WARNING,
+)
 @Stable
 public interface BalloonWindow {
 

@@ -16,7 +16,6 @@ import com.skydoves.balloon.Configuration
 import org.jetbrains.dokka.gradle.DokkaTask
 import java.net.URL
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   id(libs.plugins.android.library.get().pluginId)
   id(libs.plugins.kotlin.android.get().pluginId)
