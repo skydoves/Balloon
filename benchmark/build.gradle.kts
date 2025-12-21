@@ -32,6 +32,12 @@ android {
   }
 }
 
+kotlin {
+  compilerOptions {
+    jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+  }
+}
+
 // This is the plugin configuration. Everything is optional. Defaults are in the
 // comments. In this example, you use the GMD added earlier and disable connected devices.
 baselineProfile {

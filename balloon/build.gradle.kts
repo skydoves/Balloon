@@ -61,10 +61,6 @@ android {
     targetCompatibility = JavaVersion.VERSION_11
   }
 
-  kotlinOptions {
-    jvmTarget = libs.versions.jvmTarget.get()
-  }
-
   lint {
     abortOnError = false
   }
@@ -79,6 +75,7 @@ baselineProfile {
 
 kotlin {
   compilerOptions {
+    jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
     freeCompilerArgs.addAll(
       "-Xexplicit-api=strict",
       "-opt-in=com.skydoves.balloon.annotations.InternalBalloonApi",

@@ -39,10 +39,6 @@ android {
     targetCompatibility = JavaVersion.VERSION_17
   }
 
-  kotlinOptions {
-    jvmTarget = "17"
-  }
-
   buildFeatures {
     viewBinding = true
     compose = true
@@ -58,6 +54,12 @@ android {
       signingConfig = signingConfigs.getByName("debug")
       matchingFallbacks += listOf("release")
     }
+  }
+}
+
+kotlin {
+  compilerOptions {
+    jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
   }
 }
 
