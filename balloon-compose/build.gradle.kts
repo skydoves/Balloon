@@ -100,6 +100,9 @@ dependencies {
   implementation(libs.androidx.compose.runtime)
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.lifecycle)
+  implementation(libs.androidx.lifecycle.runtime.compose)
+  implementation(libs.androidx.lifecycle.viewmodel.compose)
+  implementation(libs.androidx.savedstate.compose)
 
   baselineProfile(project(":benchmark"))
   dokkaPlugin(libs.android.documentation.plugin)

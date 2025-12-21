@@ -37,7 +37,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
@@ -45,11 +44,11 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import androidx.core.view.updateLayoutParams
-import androidx.lifecycle.findViewTreeLifecycleOwner
-import androidx.lifecycle.findViewTreeViewModelStoreOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
-import androidx.savedstate.findViewTreeSavedStateRegistryOwner
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.savedstate.compose.LocalSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.skydoves.balloon.Balloon
 import java.lang.Integer.max
@@ -76,12 +75,16 @@ public fun Balloon(
   content: @Composable (BalloonWindow) -> Unit,
 ) {
   val context = LocalContext.current
-  val view = LocalView.current
+  // Use composition locals to get properly-scoped owners that respect navigation destinations.
+  // This fixes memory leaks when Balloon is used inside NavHost destinations (issue #879).
+  val lifecycleOwner = LocalLifecycleOwner.current
+  val viewModelStoreOwner = LocalViewModelStoreOwner.current
+  val savedStateRegistryOwner = LocalSavedStateRegistryOwner.current
   val anchorView = remember {
     ComposeView(context).also { composeView ->
-      composeView.setViewTreeLifecycleOwner(view.findViewTreeLifecycleOwner())
-      composeView.setViewTreeViewModelStoreOwner(view.findViewTreeViewModelStoreOwner())
-      composeView.setViewTreeSavedStateRegistryOwner(view.findViewTreeSavedStateRegistryOwner())
+      composeView.setViewTreeLifecycleOwner(lifecycleOwner)
+      composeView.setViewTreeViewModelStoreOwner(viewModelStoreOwner)
+      composeView.setViewTreeSavedStateRegistryOwner(savedStateRegistryOwner)
     }.apply {
       post { onComposedAnchor.invoke(this) }
     }
