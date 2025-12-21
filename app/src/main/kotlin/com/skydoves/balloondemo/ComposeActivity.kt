@@ -17,26 +17,57 @@
 package com.skydoves.balloondemo
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonHighlightAnimation
@@ -44,6 +75,7 @@ import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.compose.Balloon
 import com.skydoves.balloon.compose.BalloonWindow
 import com.skydoves.balloon.compose.rememberBalloonBuilder
+import com.skydoves.balloon.overlay.BalloonOverlayOval
 import com.skydoves.balloon.overlay.BalloonOverlayRoundRect
 
 class ComposeActivity : ComponentActivity() {
@@ -52,119 +84,741 @@ class ComposeActivity : ComponentActivity() {
     super.onCreate(savedInstanceState)
 
     setContent {
-      val builder = rememberBalloonBuilder {
-        setArrowSize(10)
-        setWidth(BalloonSizeSpec.WRAP)
-        setHeight(BalloonSizeSpec.WRAP)
-        setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
-        setArrowPosition(0.5f)
-        setPadding(12)
-        setMarginHorizontal(12)
-        setTextSize(15f)
-        setCornerRadius(8f)
-        setBackgroundColorResource(R.color.skyBlue)
-        setBalloonAnimation(BalloonAnimation.ELASTIC)
-        setIsVisibleOverlay(true)
-        setOverlayColorResource(R.color.overlay)
-        setOverlayPaddingResource(R.dimen.editBalloonOverlayPadding)
-        setBalloonHighlightAnimation(BalloonHighlightAnimation.SHAKE)
-        setOverlayShape(
-          BalloonOverlayRoundRect(
-            R.dimen.editBalloonOverlayRadius,
-            R.dimen.editBalloonOverlayRadius,
-          ),
+      ComposeActivityContent(
+        onToast = { message ->
+          Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+        },
+      )
+    }
+  }
+}
+
+// Color definitions
+private val Background = Color(0xFF2B292B)
+private val SkyBlue = Color(0xFF57A8D8)
+private val Pink = Color(0xFFC51162)
+private val White93 = Color(0xEDF8F8F8)
+private val White70 = Color(0xB2FFFFFF)
+private val White56 = Color(0x8EFFFFFF)
+private val Overlay = Color(0xBF000000)
+private val Purple = Color(0xFF9C27B0)
+private val Teal = Color(0xFF009688)
+private val Orange = Color(0xFFFF5722)
+
+@Composable
+private fun ComposeActivityContent(
+  onToast: (String) -> Unit,
+) {
+  Column(
+    modifier = Modifier
+      .fillMaxSize()
+      .background(Background),
+  ) {
+    // Top App Bar with Menu Balloon
+    TopAppBar(onToast = onToast)
+
+    // Scrollable Content
+    Column(
+      modifier = Modifier
+        .weight(1f)
+        .verticalScroll(rememberScrollState())
+        .padding(horizontal = 16.dp),
+      horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+      Spacer(modifier = Modifier.height(24.dp))
+
+      // Profile Section with Profile Balloon
+      ProfileSection(onToast = onToast)
+
+      Spacer(modifier = Modifier.height(24.dp))
+
+      // Edit Profile Button with Overlay Balloon
+      EditProfileSection(onToast = onToast)
+
+      Spacer(modifier = Modifier.height(32.dp))
+
+      // Demo Section Title
+      Text(
+        text = "Balloon Demos",
+        color = White93,
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier.fillMaxWidth(),
+      )
+
+      Spacer(modifier = Modifier.height(16.dp))
+
+      // Animation Demos
+      AnimationDemos(onToast = onToast)
+
+      Spacer(modifier = Modifier.height(24.dp))
+
+      // Highlight Animation Demos
+      HighlightAnimationDemos(onToast = onToast)
+
+      Spacer(modifier = Modifier.height(24.dp))
+
+      // Position Demos
+      PositionDemos(onToast = onToast)
+
+      Spacer(modifier = Modifier.height(100.dp))
+    }
+
+    // Bottom Navigation with Tag Balloon
+    BottomNavigation(onToast = onToast)
+  }
+}
+
+@Composable
+private fun TopAppBar(onToast: (String) -> Unit) {
+  val menuBalloonBuilder = rememberBalloonBuilder {
+    setArrowSize(10)
+    setArrowPosition(0.85f)
+    setArrowPositionRules(ArrowPositionRules.ALIGN_BALLOON)
+    setArrowOrientation(ArrowOrientation.TOP)
+    setWidth(BalloonSizeSpec.WRAP)
+    setHeight(BalloonSizeSpec.WRAP)
+    setPadding(12)
+    setCornerRadius(8f)
+    setBackgroundColor(White93.hashCode())
+    setBalloonAnimation(BalloonAnimation.FADE)
+    setDismissWhenClicked(true)
+  }
+
+  var menuBalloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+
+  Row(
+    modifier = Modifier
+      .fillMaxWidth()
+      .background(Pink)
+      .padding(horizontal = 8.dp, vertical = 12.dp),
+    horizontalArrangement = Arrangement.SpaceBetween,
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
+    Text(
+      text = "Balloon Compose",
+      color = White93,
+      fontSize = 20.sp,
+      fontWeight = FontWeight.Bold,
+      modifier = Modifier.padding(start = 8.dp),
+    )
+
+    Balloon(
+      builder = menuBalloonBuilder,
+      onBalloonWindowInitialized = { menuBalloonWindow = it },
+      balloonContent = {
+        Column(modifier = Modifier.padding(4.dp)) {
+          MenuItem(icon = Icons.Default.Home, text = "Home") {
+            menuBalloonWindow?.dismiss()
+            onToast("Home clicked")
+          }
+          MenuItem(icon = Icons.Default.Person, text = "Profile") {
+            menuBalloonWindow?.dismiss()
+            onToast("Profile clicked")
+          }
+          MenuItem(icon = Icons.Default.Settings, text = "Settings") {
+            menuBalloonWindow?.dismiss()
+            onToast("Settings clicked")
+          }
+        }
+      },
+    ) {
+      IconButton(onClick = { menuBalloonWindow?.showAlignBottom() }) {
+        Icon(
+          imageVector = Icons.AutoMirrored.Filled.List,
+          contentDescription = "Menu",
+          tint = White93,
         )
-        setDismissWhenClicked(true)
       }
+    }
+  }
+}
 
-      var balloonWindow1: BalloonWindow? by remember { mutableStateOf(null) }
-      var balloonWindow2: BalloonWindow? by remember { mutableStateOf(null) }
-      var balloonWindow3: BalloonWindow? by remember { mutableStateOf(null) }
+@Composable
+private fun MenuItem(
+  icon: ImageVector,
+  text: String,
+  onClick: () -> Unit,
+) {
+  Row(
+    modifier = Modifier
+      .fillMaxWidth()
+      .clickable(onClick = onClick)
+      .padding(horizontal = 16.dp, vertical = 12.dp),
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
+    Icon(
+      imageVector = icon,
+      contentDescription = null,
+      tint = Background,
+      modifier = Modifier.size(20.dp),
+    )
+    Spacer(modifier = Modifier.width(12.dp))
+    Text(
+      text = text,
+      color = Background,
+      fontSize = 14.sp,
+    )
+  }
+}
 
-      Box(modifier = Modifier.fillMaxSize()) {
-        Balloon(
-          modifier = Modifier
-            .padding(20.dp)
-            .align(Alignment.Center),
-          builder = builder,
-          onBalloonWindowInitialized = { balloonWindow1 = it },
-          onComposedAnchor = { balloonWindow1?.showAlignTop() },
-          balloonContent = {
-            Text(
-              text = "Now you can edit your profile1 profile2 profile3 profile4",
-              textAlign = TextAlign.Center,
-              color = Color.White,
-            )
+@Composable
+private fun ProfileSection(onToast: (String) -> Unit) {
+  val profileBalloonBuilder = rememberBalloonBuilder {
+    setArrowSize(10)
+    setArrowPosition(0.5f)
+    setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+    setArrowOrientation(ArrowOrientation.TOP)
+    setWidth(BalloonSizeSpec.WRAP)
+    setHeight(BalloonSizeSpec.WRAP)
+    setPadding(16)
+    setCornerRadius(12f)
+    setBackgroundColor(SkyBlue.hashCode())
+    setBalloonAnimation(BalloonAnimation.CIRCULAR)
+    setDismissWhenTouchOutside(true)
+  }
+
+  var profileBalloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+
+  Balloon(
+    builder = profileBalloonBuilder,
+    onBalloonWindowInitialized = { profileBalloonWindow = it },
+    balloonContent = {
+      Column(
+        modifier = Modifier.padding(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+      ) {
+        Text(
+          text = "Welcome!",
+          color = Color.White,
+          fontSize = 16.sp,
+          fontWeight = FontWeight.Bold,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+          text = "Tap to view your profile details\nand customize your settings.",
+          color = Color.White.copy(alpha = 0.9f),
+          fontSize = 14.sp,
+          textAlign = TextAlign.Center,
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        Button(
+          onClick = {
+            profileBalloonWindow?.dismiss()
+            onToast("View Profile clicked")
           },
+          colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
+          shape = RoundedCornerShape(20.dp),
         ) {
-          Button(
-            modifier = Modifier.size(160.dp, 60.dp),
-            onClick = { balloonWindow1?.showAlignTop() },
-          ) {
-            Text(text = "showAlignTop")
-          }
-        }
-
-        Balloon(
-          modifier = Modifier
-            .padding(20.dp)
-            .align(Alignment.TopStart),
-          builder = builder,
-          onBalloonWindowInitialized = { balloonWindow2 = it },
-          balloonContent = {
-            Text(
-              text = "Now you can edit your profile!",
-              textAlign = TextAlign.Center,
-              color = Color.White,
-            )
-          },
-        ) { balloonWindow ->
-          Button(
-            modifier = Modifier.size(160.dp, 60.dp),
-            onClick = { balloonWindow2?.showAlignTop() },
-          ) {
-            Text(text = "wrap balloon")
-          }
-        }
-
-        Balloon(
-          modifier = Modifier
-            .padding(20.dp)
-            .align(Alignment.TopEnd),
-          builder = builder,
-          onBalloonWindowInitialized = { balloonWindow3 = it },
-          balloonContent = {
-            Box(modifier = Modifier.fillMaxWidth()) {
-              Box(
-                modifier = Modifier
-                  .size(50.dp)
-                  .align(Alignment.CenterStart)
-                  .background(Color.Blue),
-              )
-              Box(
-                modifier = Modifier
-                  .size(50.dp)
-                  .align(Alignment.Center)
-                  .background(Color.Blue),
-              )
-              Box(
-                modifier = Modifier
-                  .size(50.dp)
-                  .border(2.dp, Color.Red)
-                  .align(Alignment.CenterEnd)
-                  .background(Color.Blue),
-              )
-            }
-          },
-        ) { balloonWindow ->
-          Button(
-            modifier = Modifier.size(160.dp, 60.dp),
-            onClick = { balloonWindow3?.showAlignBottom() },
-          ) {
-            Text(text = "alignments")
-          }
+          Text(text = "View Profile", color = SkyBlue, fontSize = 12.sp)
         }
       }
+    },
+  ) {
+    Column(
+      horizontalAlignment = Alignment.CenterHorizontally,
+      modifier = Modifier.clickable { profileBalloonWindow?.showAlignBottom() },
+    ) {
+      Image(
+        painter = painterResource(id = R.drawable.sample0),
+        contentDescription = "Profile",
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+          .size(85.dp)
+          .clip(CircleShape)
+          .border(3.dp, SkyBlue, CircleShape),
+      )
+
+      Spacer(modifier = Modifier.height(12.dp))
+
+      Text(
+        text = "skydoves",
+        color = White93,
+        fontSize = 16.sp,
+        fontWeight = FontWeight.Bold,
+      )
+
+      Text(
+        text = "Android Developer & Open Source Enthusiast",
+        color = White56,
+        fontSize = 14.sp,
+        textAlign = TextAlign.Center,
+        modifier = Modifier.padding(horizontal = 32.dp),
+      )
+
+      Spacer(modifier = Modifier.height(16.dp))
+
+      // Stats Row
+      Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+      ) {
+        StatItem(count = "32", label = "Posts")
+        StatItem(count = "2.3K", label = "Followers")
+        StatItem(count = "21", label = "Following")
+      }
+    }
+  }
+}
+
+@Composable
+private fun StatItem(count: String, label: String) {
+  Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Text(
+      text = count,
+      color = White93,
+      fontSize = 16.sp,
+      fontWeight = FontWeight.Bold,
+    )
+    Text(
+      text = label,
+      color = White56,
+      fontSize = 12.sp,
+    )
+  }
+}
+
+@Composable
+private fun EditProfileSection(onToast: (String) -> Unit) {
+  val editBalloonBuilder = rememberBalloonBuilder {
+    setArrowSize(10)
+    setArrowPosition(0.5f)
+    setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+    setWidth(BalloonSizeSpec.WRAP)
+    setHeight(BalloonSizeSpec.WRAP)
+    setPadding(12)
+    setMarginHorizontal(12)
+    setTextSize(15f)
+    setCornerRadius(8f)
+    setBackgroundColor(SkyBlue.hashCode())
+    setBalloonAnimation(BalloonAnimation.ELASTIC)
+    setIsVisibleOverlay(true)
+    setOverlayColor(Overlay.hashCode())
+    setOverlayPadding(8f)
+    setBalloonHighlightAnimation(BalloonHighlightAnimation.SHAKE)
+    setOverlayShape(BalloonOverlayRoundRect(12f, 12f))
+    setDismissWhenClicked(true)
+    setDismissWhenOverlayClicked(true)
+  }
+
+  var editBalloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+
+  Balloon(
+    builder = editBalloonBuilder,
+    onBalloonWindowInitialized = { editBalloonWindow = it },
+    balloonContent = {
+      Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(4.dp),
+      ) {
+        Icon(
+          imageVector = Icons.Default.Edit,
+          contentDescription = null,
+          tint = Color.White,
+          modifier = Modifier.size(18.dp),
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+          text = "You can edit your profile now!",
+          color = Color.White,
+          fontSize = 14.sp,
+        )
+      }
+    },
+  ) {
+    Button(
+      onClick = { editBalloonWindow?.showAlignTop() },
+      colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
+      shape = RoundedCornerShape(20.dp),
+      modifier = Modifier
+        .fillMaxWidth()
+        .height(44.dp)
+        .border(1.dp, SkyBlue, RoundedCornerShape(20.dp)),
+      elevation = ButtonDefaults.elevation(0.dp),
+    ) {
+      Text(text = "Edit Profile", color = SkyBlue)
+    }
+  }
+}
+
+@Composable
+private fun AnimationDemos(onToast: (String) -> Unit) {
+  Text(
+    text = "Entry Animations",
+    color = White70,
+    fontSize = 14.sp,
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(bottom = 8.dp),
+  )
+
+  Row(
+    modifier = Modifier.fillMaxWidth(),
+    horizontalArrangement = Arrangement.spacedBy(8.dp),
+  ) {
+    AnimationDemoButton(
+      text = "Elastic",
+      color = SkyBlue,
+      animation = BalloonAnimation.ELASTIC,
+      modifier = Modifier.weight(1f),
+    )
+    AnimationDemoButton(
+      text = "Fade",
+      color = Purple,
+      animation = BalloonAnimation.FADE,
+      modifier = Modifier.weight(1f),
+    )
+    AnimationDemoButton(
+      text = "Overshoot",
+      color = Teal,
+      animation = BalloonAnimation.OVERSHOOT,
+      modifier = Modifier.weight(1f),
+    )
+  }
+}
+
+@Composable
+private fun AnimationDemoButton(
+  text: String,
+  color: Color,
+  animation: BalloonAnimation,
+  modifier: Modifier = Modifier,
+) {
+  val builder = rememberBalloonBuilder {
+    setArrowSize(10)
+    setArrowPosition(0.5f)
+    setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+    setWidth(BalloonSizeSpec.WRAP)
+    setHeight(BalloonSizeSpec.WRAP)
+    setPadding(12)
+    setCornerRadius(8f)
+    setBackgroundColor(color.hashCode())
+    setBalloonAnimation(animation)
+    setDismissWhenClicked(true)
+  }
+
+  var balloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+
+  Balloon(
+    modifier = modifier,
+    builder = builder,
+    onBalloonWindowInitialized = { balloonWindow = it },
+    balloonContent = {
+      Text(
+        text = "$text Animation",
+        color = Color.White,
+        fontSize = 13.sp,
+      )
+    },
+  ) {
+    Button(
+      onClick = { balloonWindow?.showAlignTop() },
+      colors = ButtonDefaults.buttonColors(backgroundColor = color),
+      shape = RoundedCornerShape(8.dp),
+      modifier = Modifier.fillMaxWidth(),
+    ) {
+      Text(text = text, color = Color.White, fontSize = 12.sp)
+    }
+  }
+}
+
+@Composable
+private fun HighlightAnimationDemos(onToast: (String) -> Unit) {
+  Text(
+    text = "Highlight Animations",
+    color = White70,
+    fontSize = 14.sp,
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(bottom = 8.dp),
+  )
+
+  Row(
+    modifier = Modifier.fillMaxWidth(),
+    horizontalArrangement = Arrangement.spacedBy(8.dp),
+  ) {
+    HighlightDemoButton(
+      text = "Heartbeat",
+      color = Pink,
+      highlightAnimation = BalloonHighlightAnimation.HEARTBEAT,
+      modifier = Modifier.weight(1f),
+    )
+    HighlightDemoButton(
+      text = "Shake",
+      color = Orange,
+      highlightAnimation = BalloonHighlightAnimation.SHAKE,
+      modifier = Modifier.weight(1f),
+    )
+    HighlightDemoButton(
+      text = "Breath",
+      color = Teal,
+      highlightAnimation = BalloonHighlightAnimation.BREATH,
+      modifier = Modifier.weight(1f),
+    )
+  }
+}
+
+@Composable
+private fun HighlightDemoButton(
+  text: String,
+  color: Color,
+  highlightAnimation: BalloonHighlightAnimation,
+  modifier: Modifier = Modifier,
+) {
+  val builder = rememberBalloonBuilder {
+    setArrowSize(10)
+    setArrowPosition(0.5f)
+    setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+    setWidth(BalloonSizeSpec.WRAP)
+    setHeight(BalloonSizeSpec.WRAP)
+    setPadding(12)
+    setCornerRadius(8f)
+    setBackgroundColor(color.hashCode())
+    setBalloonAnimation(BalloonAnimation.FADE)
+    setBalloonHighlightAnimation(highlightAnimation)
+    setDismissWhenClicked(true)
+  }
+
+  var balloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+
+  Balloon(
+    modifier = modifier,
+    builder = builder,
+    onBalloonWindowInitialized = { balloonWindow = it },
+    balloonContent = {
+      Text(
+        text = "$text effect!",
+        color = Color.White,
+        fontSize = 13.sp,
+      )
+    },
+  ) {
+    Button(
+      onClick = { balloonWindow?.showAlignTop() },
+      colors = ButtonDefaults.buttonColors(backgroundColor = color),
+      shape = RoundedCornerShape(8.dp),
+      modifier = Modifier.fillMaxWidth(),
+    ) {
+      Text(text = text, color = Color.White, fontSize = 12.sp)
+    }
+  }
+}
+
+@Composable
+private fun PositionDemos(onToast: (String) -> Unit) {
+  Text(
+    text = "Positioning & Overlay",
+    color = White70,
+    fontSize = 14.sp,
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(bottom = 8.dp),
+  )
+
+  val overlayBuilder = rememberBalloonBuilder {
+    setArrowSize(10)
+    setArrowPosition(0.5f)
+    setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+    setWidth(BalloonSizeSpec.WRAP)
+    setHeight(BalloonSizeSpec.WRAP)
+    setPadding(12)
+    setCornerRadius(8f)
+    setBackgroundColor(Purple.hashCode())
+    setBalloonAnimation(BalloonAnimation.ELASTIC)
+    setIsVisibleOverlay(true)
+    setOverlayColor(Overlay.hashCode())
+    setOverlayPadding(12f)
+    setOverlayShape(BalloonOverlayOval)
+    setDismissWhenClicked(true)
+    setDismissWhenOverlayClicked(true)
+  }
+
+  var overlayBalloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+
+  Row(
+    modifier = Modifier.fillMaxWidth(),
+    horizontalArrangement = Arrangement.spacedBy(8.dp),
+  ) {
+    // Oval Overlay Demo
+    Balloon(
+      modifier = Modifier.weight(1f),
+      builder = overlayBuilder,
+      onBalloonWindowInitialized = { overlayBalloonWindow = it },
+      balloonContent = {
+        Text(
+          text = "Oval overlay shape!",
+          color = Color.White,
+          fontSize = 13.sp,
+        )
+      },
+    ) {
+      Box(
+        modifier = Modifier
+          .fillMaxWidth()
+          .height(60.dp)
+          .clip(RoundedCornerShape(8.dp))
+          .background(
+            Brush.horizontalGradient(listOf(Purple, Pink)),
+          )
+          .clickable { overlayBalloonWindow?.showAlignTop() },
+        contentAlignment = Alignment.Center,
+      ) {
+        Text(
+          text = "Oval Overlay",
+          color = Color.White,
+          fontSize = 12.sp,
+          fontWeight = FontWeight.Medium,
+        )
+      }
+    }
+
+    // Round Rect Overlay Demo
+    val roundRectBuilder = rememberBalloonBuilder {
+      setArrowSize(10)
+      setArrowPosition(0.5f)
+      setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+      setWidth(BalloonSizeSpec.WRAP)
+      setHeight(BalloonSizeSpec.WRAP)
+      setPadding(12)
+      setCornerRadius(8f)
+      setBackgroundColor(Teal.hashCode())
+      setBalloonAnimation(BalloonAnimation.ELASTIC)
+      setIsVisibleOverlay(true)
+      setOverlayColor(Overlay.hashCode())
+      setOverlayPadding(8f)
+      setOverlayShape(BalloonOverlayRoundRect(12f, 12f))
+      setBalloonHighlightAnimation(BalloonHighlightAnimation.HEARTBEAT)
+      setDismissWhenClicked(true)
+      setDismissWhenOverlayClicked(true)
+    }
+
+    var roundRectBalloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+
+    Balloon(
+      modifier = Modifier.weight(1f),
+      builder = roundRectBuilder,
+      onBalloonWindowInitialized = { roundRectBalloonWindow = it },
+      balloonContent = {
+        Text(
+          text = "Rounded rectangle!",
+          color = Color.White,
+          fontSize = 13.sp,
+        )
+      },
+    ) {
+      Box(
+        modifier = Modifier
+          .fillMaxWidth()
+          .height(60.dp)
+          .clip(RoundedCornerShape(8.dp))
+          .background(
+            Brush.horizontalGradient(listOf(Teal, SkyBlue)),
+          )
+          .clickable { roundRectBalloonWindow?.showAlignTop() },
+        contentAlignment = Alignment.Center,
+      ) {
+        Text(
+          text = "RoundRect Overlay",
+          color = Color.White,
+          fontSize = 12.sp,
+          fontWeight = FontWeight.Medium,
+        )
+      }
+    }
+  }
+}
+
+@Composable
+private fun BottomNavigation(onToast: (String) -> Unit) {
+  val tagBalloonBuilder = rememberBalloonBuilder {
+    setArrowSize(10)
+    setArrowPosition(0.5f)
+    setArrowOrientation(ArrowOrientation.BOTTOM)
+    setWidth(BalloonSizeSpec.WRAP)
+    setHeight(BalloonSizeSpec.WRAP)
+    setPadding(8)
+    setCornerRadius(4f)
+    setBackgroundColor(White93.hashCode())
+    setBalloonAnimation(BalloonAnimation.FADE)
+    setBalloonHighlightAnimation(BalloonHighlightAnimation.HEARTBEAT)
+    setDismissWhenClicked(true)
+    setAutoDismissDuration(2000L)
+  }
+
+  Row(
+    modifier = Modifier
+      .fillMaxWidth()
+      .background(Pink)
+      .padding(vertical = 8.dp),
+    horizontalArrangement = Arrangement.SpaceEvenly,
+  ) {
+    BottomNavItem(
+      icon = Icons.Default.Home,
+      label = "Home",
+      builder = tagBalloonBuilder,
+      tagText = "Home",
+      onToast = onToast,
+    )
+    BottomNavItem(
+      icon = Icons.Default.Person,
+      label = "Profile",
+      builder = tagBalloonBuilder,
+      tagText = "Profile",
+      onToast = onToast,
+    )
+    BottomNavItem(
+      icon = Icons.Default.Settings,
+      label = "Settings",
+      builder = tagBalloonBuilder,
+      tagText = "Settings",
+      onToast = onToast,
+    )
+  }
+}
+
+@Composable
+private fun BottomNavItem(
+  icon: ImageVector,
+  label: String,
+  builder: com.skydoves.balloon.Balloon.Builder,
+  tagText: String,
+  onToast: (String) -> Unit,
+) {
+  var balloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+
+  Balloon(
+    builder = builder,
+    onBalloonWindowInitialized = { balloonWindow = it },
+    balloonContent = {
+      Text(
+        text = tagText,
+        color = Background,
+        fontSize = 12.sp,
+        fontWeight = FontWeight.Medium,
+      )
+    },
+  ) {
+    Column(
+      horizontalAlignment = Alignment.CenterHorizontally,
+      modifier = Modifier
+        .clickable {
+          balloonWindow?.showAlignTop()
+          onToast("$label clicked")
+        }
+        .padding(horizontal = 16.dp, vertical = 4.dp),
+    ) {
+      Icon(
+        imageVector = icon,
+        contentDescription = label,
+        tint = White93,
+        modifier = Modifier.size(24.dp),
+      )
+      Spacer(modifier = Modifier.height(2.dp))
+      Text(
+        text = label,
+        color = White93,
+        fontSize = 10.sp,
+      )
     }
   }
 }
