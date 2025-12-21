@@ -173,6 +173,11 @@ private class AwaitBalloonWindowsDslImpl : AwaitBalloonWindowsDsl {
 /**
  * Awaits for multiple balloons to be shown at the same time.
  */
+@Deprecated(
+  message = "Use BalloonState with Modifier.balloon() instead.",
+  level = DeprecationLevel.WARNING,
+)
+@Suppress("DEPRECATION")
 public suspend fun awaitBalloonWindows(block: AwaitBalloonWindowsDsl.() -> Unit) {
   val balloons = AwaitBalloonWindowsDslImpl().run {
     block()

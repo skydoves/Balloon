@@ -34,7 +34,7 @@ Balloon hits **+800,000 downloads every month** around the globe! :balloon:
 
 ## Balloon in Jetpack Compose
 
-If you want to use Balloon in your Jetpack Compose project, check out the **[Balloon in Jetpack Compose](https://github.com/skydoves/Balloon#balloon-in-jetpack-compose-1)** guidelines. You can also check out the blog post **[Tooltips for Jetpack Compose: Improve User Experience to the Next Level](https://medium.com/@skydoves/tooltips-for-jetpack-compose-improve-user-experience-to-the-next-level-68791ab8e07f)** for more details.
+If you want to use Balloon in your Jetpack Compose project, check out the **[Balloon in Jetpack Compose](https://github.com/skydoves/Balloon#balloon-in-jetpack-compose-1)** section. You can also check out the blog post **[Tooltips for Jetpack Compose: Improve User Experience to the Next Level](https://medium.com/@skydoves/tooltips-for-jetpack-compose-improve-user-experience-to-the-next-level-68791ab8e07f)** for more details.
 
 ## 💝 Sponsors
 
@@ -169,7 +169,7 @@ balloon.dismiss()
 balloon.dismissWithDelay(1000L) // dismisses 1000 milliseconds later when the popup is shown
 ```
 
-We can dismiss automatically with delay after the Balloon is showing up with the `setAutoDismissDuration` method..
+We can dismiss automatically with a delay after the Balloon is shown using the `setAutoDismissDuration` method.
 
 ```kotlin
 Balloon.Builder(context)
@@ -200,7 +200,7 @@ coroutineScope.launch {
 > Note: The `relayShow__` and `await__` methods overwrite the `setOnDismissListener` internally, so you can't use the `setOnDismissListener` at the same time.
 
 #### Parallel Displaying
-We can show multiple balloons at the same with sequential behaviour.
+We can show multiple balloons at the same time with sequential behavior.
 ```kotlin
 lifecycleScope.launch {
   // shows balloons at the same time
@@ -372,7 +372,7 @@ You can create an instance of the `TextForm` with Kotlin DSL as the example belo
 
 ```kotlin
 val textForm = textForm(context) {
-  setText("Edit you profile here!")
+  setText("Edit your profile here!")
   setTextColorResource(R.color.white_87)
   setTextSize(14f)
   setTextTypeface(Typeface.BOLD)
@@ -391,7 +391,7 @@ You can create an instance of the `TextForm` with Java as the example below:
 
 ```java
 TextForm textForm = new TextForm.Builder(context)
-  .setText("Edit you profile here!")
+  .setText("Edit your profile here!")
   .setTextColorResource(R.color.white_87)
   .setTextSize(14f)
   .setTextTypeface(Typeface.BOLD)
@@ -517,7 +517,7 @@ You can build the Balloon with your own layout as the following example:
 
 <img src="https://user-images.githubusercontent.com/24237865/61226019-aba41d80-a75c-11e9-9362-52e4742244b5.gif" align="right" width="310px"/>
 
-First, create your XML layout file like `layout_custom_profile` on your taste and set it on the  with `setLayout` method.
+First, create your XML layout file like `layout_custom_profile` to your taste and set it with the `setLayout` method.
 
 ```kotlin
 val balloon = Balloon.Builder(context)
@@ -712,7 +712,7 @@ For more details, you can check out the documentations below:
 
 ## Balloon in Jetpack Compose
 
-Balloon allows you to display tooltips in Jetpack Compose easily.
+Balloon allows you to display tooltips in Jetpack Compose easily using the `Modifier.balloon()` API.
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/balloon.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22balloon%22)
 
@@ -724,12 +724,12 @@ dependencies {
 }
 ```
 
-### Balloon Composable
+### Modifier.balloon
 
-You can create and display tooltips using the `Balloon` composable function along with the `rememberBalloonBuilder`, as demonstrated in the following example:
+You can create and display tooltips using the `Modifier.balloon()` extension along with `rememberBalloonState()`, as demonstrated in the following example:
 
 ```kotlin
-// create and remember a builder of Balloon.
+// Create and remember a builder for the Balloon.
 val builder = rememberBalloonBuilder {
   setArrowSize(10)
   setArrowPosition(0.5f)
@@ -743,103 +743,106 @@ val builder = rememberBalloonBuilder {
   setBalloonAnimation(BalloonAnimation.ELASTIC)
 }
 
-Balloon(
-  modifier = Modifier.align(Alignment.Center),
-  builder = builder,
-  balloonContent = {
-    Text(text = "Now you can edit your profile!")
-  }
-) { balloonWindow ->
-    Button(
-      modifier = Modifier.size(120.dp, 75.dp),
-      onClick = {
-        balloonWindow.showAlignTop() // display your balloon.
-     }
-    ) {
-      Text(text = "showAlignTop")
-    }
-}
-```
+// Create and remember the balloon state.
+val balloonState = rememberBalloonState(builder)
 
-### BalloonWindow
-
-`BalloonWindow` is an interface defining all executable behaviors for a balloon's window, including showing, dismissing, updating, and setting up listeners. You can obtain an instance of `BalloonWindow` within the `content` parameter of the `Balloon` composable function, as illustrated in the example below:
-
-```kotlin
-Balloon(
-  ..
-) { balloonWindow ->
-    Button(
-      modifier = Modifier.size(120.dp, 75.dp),
-      onClick = {
-        balloonWindow.showAtCenter() // display your balloon.
-     }
-    ) {
-      Text(text = "showAtCenter")
-    }
-}
-
-Balloon(
-  builder = builder,
-  balloonContent = null
-) { balloonWindow ->
-  ..
-}
-```
-
-You can also acquire the `BalloonWindow` by utilizing the `onBalloonWindowInitialized` lambda parameter in the `Balloon` composable. This parameter will be invoked just once when the `BalloonWindow` is fully prepared and ready for use:
-
-```kotlin
-var balloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
-
-Balloon(
-  builder = builder,
-  onBalloonWindowInitialized = { balloonWindow = it },
-  balloonContent = {
-    Text(text = "Now you can edit your profile!")
-  },
+Button(
+  modifier = Modifier
+    .align(Alignment.Center)
+    .balloon(balloonState) {
+      Text(text = "Now you can edit your profile!")
+    },
+  onClick = { balloonState.showAlignTop() },
 ) {
-  Button(
-    modifier = Modifier.size(160.dp, 60.dp),
-    onClick = { balloonWindow?.showAlignTop() },
-  ) {
-    Text(text = "showAlignTop")
-  }
+  Text(text = "Show Balloon")
 }
 ```
 
-The `onBalloonWindowInitialized` lambda paramter is useful when you need to hold an instance of the `BalloonWindow` as a state, and utilize it out of the `Balloon` composable function.
+### BalloonState
 
+`BalloonState` is a state holder for managing balloon display and interactions. It provides control over the balloon lifecycle, including showing, dismissing, updating, and setting up listeners. You can create an instance using `rememberBalloonState()`:
+
+```kotlin
+val balloonState = rememberBalloonState(builder)
+
+// Show the balloon
+balloonState.showAlignTop()
+balloonState.showAlignBottom()
+balloonState.showAlignStart()
+balloonState.showAlignEnd()
+balloonState.showAtCenter()
+
+// Dismiss the balloon
+balloonState.dismiss()
+
+// Check if the balloon is showing
+if (balloonState.isShowing) {
+  // ...
+}
+```
+
+### Various Balloon Positions
+
+You can display the balloon in different positions relative to the anchor composable:
+
+```kotlin
+val balloonState = rememberBalloonState(builder)
+
+Column {
+  Button(
+    modifier = Modifier.balloon(balloonState) { Text("Tooltip content") },
+    onClick = { balloonState.showAlignTop() }, // Shows above the button
+  ) {
+    Text(text = "Show Top")
+  }
+
+  Button(
+    modifier = Modifier.balloon(balloonState) { Text("Tooltip content") },
+    onClick = { balloonState.showAlignBottom() }, // Shows below the button
+  ) {
+    Text(text = "Show Bottom")
+  }
+
+  Button(
+    modifier = Modifier.balloon(balloonState) { Text("Tooltip content") },
+    onClick = { balloonState.showAlignStart() }, // Shows at the start of the button
+  ) {
+    Text(text = "Show Start")
+  }
+
+  Button(
+    modifier = Modifier.balloon(balloonState) { Text("Tooltip content") },
+    onClick = { balloonState.showAlignEnd() }, // Shows at the end of the button
+  ) {
+    Text(text = "Show End")
+  }
+}
+```
 
 ### Auto-Display Balloon on Layout Ready
 
-To automatically show a Balloon when your layout is drawn, a common requirement in numerous applications, you can use the `onComposedAnchor` parameter within the `Balloon` composable function.
+To automatically show a Balloon when your layout is drawn, you can use `LaunchedEffect`:
 
 ```kotlin
-var balloonWindow: BalloonWindow? by remember { mutableStateOf(null) }
+val balloonState = rememberBalloonState(builder)
 
-Balloon(
-  builder = builder,
-  onBalloonWindowInitialized = { balloonWindow = it },
-  onComposedAnchor = { balloonWindow?.showAlignTop() },
-  balloonContent = {
+LaunchedEffect(Unit) {
+  balloonState.showAlignTop()
+}
+
+Button(
+  modifier = Modifier.balloon(balloonState) {
     Text(text = "Now you can edit your profile!")
   },
+  onClick = { balloonState.showAlignTop() },
 ) {
-  Button(
-    modifier = Modifier.size(160.dp, 60.dp),
-    onClick = { balloonWindow?.showAlignTop() },
-  ) {
-    Text(text = "showAlignTop")
-  }
+  Text(text = "Show Balloon")
 }
 ```
 
-As you can see in the example above, you can use `onComposedAnchor` with the `onBalloonWindowInitialized` lambda to obtain the `BalloonWindow` and display your balloon sequentially after rendering your composable layout.
-
 ### Compose Extensions
 
-The `balloon-compose` package provides useful compose extensions, such as setting a color with `androidx.compose.ui.graphics.Color` like the below:
+The `balloon-compose` package provides useful Compose extensions, such as setting a color with `androidx.compose.ui.graphics.Color`:
 
 ```kotlin
 val builder = rememberBalloonBuilder {
@@ -853,13 +856,34 @@ val builder = rememberBalloonBuilder {
   setMarginHorizontal(12)
   setTextSize(15f)
   setCornerRadius(8f)
-  setTextColor(Color.White) // set text color with compose color.
-  setBackgroundColor(Color.White) // set background color with compose color.
+  setTextColor(Color.White) // Set text color with Compose color.
+  setBackgroundColor(Color.White) // Set background color with Compose color.
   setIconDrawableResource(R.drawable.ic_edit)
 }
 ```
 
-> **Note**: If you want to use the default form of balloon (icon + text), you should pass a null value to the `balloonContent` parameter of your Balloon composable.
+### Listening to Balloon Events
+
+You can set listeners on the `BalloonState` to respond to balloon events:
+
+```kotlin
+val balloonState = rememberBalloonState(builder)
+
+// Set click listener
+balloonState.setOnBalloonClickListener {
+  // Handle balloon click
+}
+
+// Set dismiss listener
+balloonState.setOnBalloonDismissListener {
+  // Handle balloon dismiss
+}
+
+// Set outside touch listener
+balloonState.setOnBalloonOutsideTouchListener { view, event ->
+  // Handle outside touch
+}
+```
 
 ## Find this library useful? :heart:
 Support it by joining __[stargazers](https://github.com/skydoves/balloon/stargazers)__ for this repository. :star: <br>
