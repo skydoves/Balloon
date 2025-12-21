@@ -22,6 +22,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Path
 import android.graphics.Point
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
@@ -217,6 +218,36 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
         }
 
         is BalloonOverlayRoundRect -> {
+          // Handle individual corner radii
+          overlay.cornerRadii?.let { radii ->
+            drawRoundRectWithCorners(canvas, anchorRect, radii, paint)
+            val paddingRadii = floatArrayOf(
+              (radii[0] - overlayPadding.left / 2).coerceAtLeast(0f),
+              (radii[1] - overlayPadding.right / 2).coerceAtLeast(0f),
+              (radii[2] - overlayPadding.right / 2).coerceAtLeast(0f),
+              (radii[3] - overlayPadding.left / 2).coerceAtLeast(0f),
+            )
+            drawRoundRectWithCorners(canvas, anchorPaddingRect, paddingRadii, paddingColorPaint)
+            return@let
+          }
+          overlay.cornerRadiiRes?.let { radiiRes ->
+            val radii = floatArrayOf(
+              context.dimen(radiiRes[0]),
+              context.dimen(radiiRes[1]),
+              context.dimen(radiiRes[2]),
+              context.dimen(radiiRes[3]),
+            )
+            drawRoundRectWithCorners(canvas, anchorRect, radii, paint)
+            val paddingRadii = floatArrayOf(
+              (radii[0] - overlayPadding.left / 2).coerceAtLeast(0f),
+              (radii[1] - overlayPadding.right / 2).coerceAtLeast(0f),
+              (radii[2] - overlayPadding.right / 2).coerceAtLeast(0f),
+              (radii[3] - overlayPadding.left / 2).coerceAtLeast(0f),
+            )
+            drawRoundRectWithCorners(canvas, anchorPaddingRect, paddingRadii, paddingColorPaint)
+            return@let
+          }
+          // Handle uniform corner radii (original behavior)
           overlay.radiusPair?.let { radiusPair ->
             canvas.drawRoundRect(anchorRect, radiusPair.first, radiusPair.second, paint)
             canvas.drawRoundRect(
@@ -245,6 +276,38 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
         }
       }
     }
+  }
+
+  /**
+   * Draws a rounded rectangle with individual corner radii.
+   * @param canvas The canvas to draw on
+   * @param rect The rectangle bounds
+   * @param cornerRadii Array of 4 corner radii: [topStart, topEnd, bottomEnd, bottomStart]
+   * @param paint The paint to use for drawing
+   */
+  private fun drawRoundRectWithCorners(
+    canvas: Canvas,
+    rect: RectF,
+    cornerRadii: FloatArray,
+    paint: Paint,
+  ) {
+    // Convert 4 corner radii to 8 radii (x, y pairs for each corner)
+    // Order: [topLeft.x, topLeft.y, topRight.x, topRight.y,
+    //         bottomRight.x, bottomRight.y, bottomLeft.x, bottomLeft.y]
+    val radii = floatArrayOf(
+      cornerRadii[0],
+      cornerRadii[0], // top-left (topStart)
+      cornerRadii[1],
+      cornerRadii[1], // top-right (topEnd)
+      cornerRadii[2],
+      cornerRadii[2], // bottom-right (bottomEnd)
+      cornerRadii[3],
+      cornerRadii[3], // bottom-left (bottomStart)
+    )
+    val path = Path().apply {
+      addRoundRect(rect, radii, Path.Direction.CW)
+    }
+    canvas.drawPath(path, paint)
   }
 
   private fun getStatusBarHeight(): Int {
