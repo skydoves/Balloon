@@ -29,4 +29,18 @@
   <color name="white_93">#edf8f8f8</color>
   <color name="skyBlue">#57A8D8</color>
   <color name="yellow">#FBC02D</color>
+
+  <!-- Additional colors for demo -->
+  <color name="purple">#9C27B0</color>
+  <color name="purple_light">#CE93D8</color>
+  <color name="teal">#009688</color>
+  <color name="teal_light">#80CBC4</color>
+  <color name="orange">#FF5722</color>
+  <color name="orange_light">#FFAB91</color>
+  <color name="green">#4CAF50</color>
+  <color name="green_light">#A5D6A7</color>
+  <color name="indigo">#3F51B5</color>
+  <color name="indigo_light">#9FA8DA</color>
+  <color name="gradient_start">#667eea</color>
+  <color name="gradient_end">#764ba2</color>
 </resources>

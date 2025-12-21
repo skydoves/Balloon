@@ -26,16 +26,18 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme"
     tools:ignore="GoogleAppIndexingWarning">
-    <activity android:name=".CustomActivity" />
-    <activity android:name=".MainActivity" />
     <activity
-      android:name=".ComposeActivity"
-      android:exported="true"
-      android:theme="@style/AppTheme.NoActionBar">
+      android:name=".LauncherActivity"
+      android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+    <activity android:name=".MainActivity" />
+    <activity android:name=".CustomActivity" />
+    <activity
+      android:name=".ComposeActivity"
+      android:theme="@style/AppTheme.NoActionBar" />
   </application>
 </manifest>
