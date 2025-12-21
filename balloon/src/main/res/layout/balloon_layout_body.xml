@@ -25,7 +25,8 @@
     android:id="@+id/balloon_wrapper"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="true"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
     tools:ignore="UselessParent">
 
     <FrameLayout
