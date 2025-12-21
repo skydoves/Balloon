@@ -391,7 +391,7 @@ private fun EditProfileSection(onToast: (String) -> Unit) {
     setArrowSize(10)
     setArrowPosition(0.5f)
     setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
-    setWidth(BalloonSizeSpec.WRAP)
+    setWidthRatio(0.6f)
     setHeight(BalloonSizeSpec.WRAP)
     setPadding(12)
     setMarginHorizontal(12)
@@ -426,7 +426,7 @@ private fun EditProfileSection(onToast: (String) -> Unit) {
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-          text = "You can edit your profile now!",
+          text =  "Now you can edit your profile1 profile2 profile3 profile4 really long text so we can test stuff Now you can edit your profile1 profile2 profile3 profile4 really long text so we can test stuff",
           color = Color.White,
           fontSize = 14.sp,
         )
