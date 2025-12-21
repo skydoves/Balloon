@@ -722,6 +722,27 @@ public class Balloon private constructor(
         builder.marginRight,
         builder.marginBottom,
       )
+      // Disable focus to prevent focus highlight on D-pad navigation (issue #258)
+      isFocusable = false
+      isFocusableInTouchMode = false
+      if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        defaultFocusHighlightEnabled = false
+      }
+    }
+    // Also disable focus on the root and content views
+    with(binding.root) {
+      isFocusable = false
+      isFocusableInTouchMode = false
+      if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        defaultFocusHighlightEnabled = false
+      }
+    }
+    with(binding.balloonCard) {
+      isFocusable = false
+      isFocusableInTouchMode = false
+      if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        defaultFocusHighlightEnabled = false
+      }
     }
   }
 
