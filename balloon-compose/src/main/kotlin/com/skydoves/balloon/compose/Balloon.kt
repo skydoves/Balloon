@@ -17,8 +17,6 @@
 package com.skydoves.balloon.compose
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -28,22 +26,19 @@ import androidx.compose.runtime.rememberCompositionContext
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.compose.ui.window.Popup
-import androidx.compose.ui.window.PopupProperties
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.setViewTreeLifecycleOwner
@@ -130,113 +125,80 @@ public fun Balloon(
     onBalloonWindowInitialized.invoke(balloonComposeView)
   }
 
-  if (isComposableContent && balloonComposeView.balloonLayoutInfo.value == null) {
-    val configuration = LocalConfiguration.current
-    val density = LocalDensity.current
-    val screenWidth = remember { with(density) { configuration.screenWidthDp.dp.toPx() }.toInt() }
-    val paddingStart =
-      remember { with(density) { (builder.paddingLeft + builder.marginLeft).toDp() } }
-    val paddingEnd =
-      remember { with(density) { (builder.paddingRight + builder.marginRight).toDp() } }
-    // Calculate width constraint from widthRatio or maxWidthRatio if set (issue #779)
-    // Note: This is the OUTER width (including padding). The .padding() modifier applied
-    // before .widthIn() will reduce the actual content area by paddingStart + paddingEnd.
-    val contentMaxWidth = remember {
-      when {
-        builder.widthRatio > 0f -> (screenWidth * builder.widthRatio).toInt()
-        builder.maxWidthRatio > 0f -> (screenWidth * builder.maxWidthRatio).toInt()
-        else -> Int.MAX_VALUE
-      }
-    }
-    // Calculate the max width modifier to apply before measurement (issue #779)
-    val contentMaxWidthDp = remember {
-      if (contentMaxWidth != Int.MAX_VALUE) {
-        with(density) { contentMaxWidth.toDp() }
-      } else {
-        null
-      }
-    }
-    Popup(
-      properties = PopupProperties(
-        dismissOnBackPress = false,
-        dismissOnClickOutside = false,
-      ),
-    ) {
-      Box(
-        modifier = Modifier
-          .alpha(0f)
-          // Apply width constraint FIRST, then padding INSIDE it (issue #779)
-          // This ensures: total width = contentMaxWidth, content width = contentMaxWidth - padding
-          .then(
-            if (contentMaxWidthDp != null) {
-              Modifier.widthIn(max = contentMaxWidthDp)
-            } else {
-              Modifier
-            },
-          )
-          .padding(start = paddingStart, end = paddingEnd)
-          .onGloballyPositioned { coordinates ->
-            val originalSize = coordinates.size
-            val margins = with(density) {
-              builder.marginRight.dp.toPx() + builder.marginLeft.dp.toPx()
-            }.toInt()
-            val calculatedWidth = when {
-              // Fixed width ratio takes priority
-              builder.widthRatio > 0f -> {
-                (screenWidth * builder.widthRatio - margins).toInt()
-              }
-              // Apply minWidthRatio and/or maxWidthRatio constraints if set (issue #779)
-              builder.minWidthRatio > 0f || builder.maxWidthRatio > 0f -> {
-                val minWidth = if (builder.minWidthRatio > 0f) {
-                  (screenWidth * builder.minWidthRatio - margins).toInt()
-                } else {
-                  0
-                }
-                val maxWidth = if (builder.maxWidthRatio > 0f) {
-                  (screenWidth * builder.maxWidthRatio - margins).toInt()
-                } else {
-                  screenWidth
-                }
-                originalSize.width.coerceIn(minWidth, maxWidth)
-              }
-              // Default: constrain to screen width
-              originalSize.width > screenWidth -> screenWidth
-              else -> originalSize.width
-            }
-            val size = IntSize(
-              width = calculatedWidth,
-              height = coordinates.size.height,
-            )
-            if (size.width <= 0 || size.height <= 0) return@onGloballyPositioned
-            balloonComposeView.updateSizeOfBalloonCard(size)
-            balloonComposeView.balloonLayoutInfo.value = BalloonLayoutInfo(
-              x = coordinates.positionInWindow().x,
-              y = coordinates.positionInWindow().y,
-              width = size.width,
-              height = size.height,
-            )
-          },
-      ) {
+  val configuration = LocalConfiguration.current
+  val density = LocalDensity.current
+  val screenWidth = remember { with(density) { configuration.screenWidthDp.dp.toPx() }.toInt() }
+
+  // Use SubcomposeLayout to measure balloon content without creating a Popup window.
+  // This fixes the black screen issue during SplashScreen (issue #786).
+  SubcomposeLayout(modifier = modifier) { constraints ->
+    // Calculate width constraints for balloon content (issue #779)
+    val horizontalPadding = builder.paddingLeft + builder.paddingRight +
+      builder.marginLeft + builder.marginRight
+    val maxContentWidth = when {
+      builder.widthRatio > 0f ->
+        (screenWidth * builder.widthRatio - horizontalPadding).toInt()
+      builder.maxWidthRatio > 0f ->
+        (screenWidth * builder.maxWidthRatio - horizontalPadding).toInt()
+      else -> constraints.maxWidth - horizontalPadding
+    }.coerceAtLeast(0)
+
+    // Measure balloon content if needed (only when content exists and size not yet calculated)
+    if (isComposableContent && balloonComposeView.balloonLayoutInfo.value == null) {
+      val balloonContentConstraints = Constraints(
+        minWidth = 0,
+        maxWidth = maxContentWidth.coerceAtMost(constraints.maxWidth),
+        minHeight = 0,
+        maxHeight = constraints.maxHeight,
+      )
+      val balloonPlaceables = subcompose("balloon_measurement") {
+        // balloonContent is guaranteed non-null here since isComposableContent is true
         balloonContent.invoke()
+      }.map { it.measure(balloonContentConstraints) }
+
+      if (balloonPlaceables.isNotEmpty()) {
+        val measuredWidth = balloonPlaceables.maxOf { it.width }
+        val measuredHeight = balloonPlaceables.maxOf { it.height }
+
+        if (measuredWidth > 0 && measuredHeight > 0) {
+          // The size should be the content size only - the balloon View applies padding externally.
+          // Don't add padding here as it would be applied twice.
+          val size = IntSize(width = measuredWidth, height = measuredHeight)
+          balloonComposeView.updateSizeOfBalloonCard(size)
+          balloonComposeView.balloonLayoutInfo.value = BalloonLayoutInfo(
+            x = 0f,
+            y = 0f,
+            width = size.width,
+            height = size.height,
+          )
+        }
       }
     }
-  }
 
-  Box(
-    modifier = modifier
-      .onSizeChanged {
-        anchorView.updateLayoutParams {
-          width = it.width
-          height = it.height
-        }
-      },
-  ) {
-    AndroidView(
-      modifier = Modifier.matchParentSize(),
-      factory = { anchorView },
-    )
+    // Measure and place the main content
+    val mainPlaceables = subcompose("balloon_content") {
+      Box(
+        modifier = Modifier.onSizeChanged {
+          anchorView.updateLayoutParams {
+            width = it.width
+            height = it.height
+          }
+        },
+      ) {
+        AndroidView(
+          modifier = Modifier.matchParentSize(),
+          factory = { anchorView },
+        )
+        content.invoke(balloonComposeView)
+      }
+    }.map { it.measure(constraints) }
 
-    content.invoke(balloonComposeView)
+    val layoutWidth = mainPlaceables.maxOfOrNull { it.width } ?: 0
+    val layoutHeight = mainPlaceables.maxOfOrNull { it.height } ?: 0
+
+    layout(layoutWidth, layoutHeight) {
+      mainPlaceables.forEach { it.place(0, 0) }
+    }
   }
 
   DisposableEffect(key1 = key) {
