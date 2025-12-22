@@ -56,7 +56,19 @@ androidx-compose-constraintlayout = { group = "androidx.constraintlayout", name 
 compose-stable-marker = { group = "com.github.skydoves", name = "compose-stable-marker", version.ref = "composeStableMarker" }
 
 # unit test
+junit = { module = "junit:junit", version = "4.13.2" }
+truth = { module = "com.google.truth:truth", version = "1.4.4" }
+robolectric = { module = "org.robolectric:robolectric", version = "4.14.1" }
+mockk = { module = "io.mockk:mockk", version = "1.13.13" }
+mockk-android = { module = "io.mockk:mockk-android", version = "1.13.13" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version = "1.9.0" }
+androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTest" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTest" }
+androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidxTest" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version = "1.2.1" }
+androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version = "3.6.1" }
+androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-profileinstaller = { module = "androidx.profileinstaller:profileinstaller", version.ref = "baselineProfiles" }
 androidx-benchmark-macro = { module = "androidx.benchmark:benchmark-macro-junit4", version.ref = "androidxMacroBenchmark" }
 androidx-test-uiautomator = { module = "androidx.test.uiautomator:uiautomator", version.ref = "uiAutomator" }

@@ -46,6 +46,7 @@ android {
 
   defaultConfig {
     minSdk = Configuration.minSdk
+    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
   }
 
@@ -80,6 +81,18 @@ kotlin {
       "-opt-in=com.skydoves.balloon.annotations.InternalBalloonApi",
     )
   }
+
+  target {
+    compilations.configureEach {
+      if (name.contains("Test")) {
+        compileTaskProvider.configure {
+          compilerOptions {
+            freeCompilerArgs.set(listOf("-opt-in=com.skydoves.balloon.annotations.InternalBalloonApi"))
+          }
+        }
+      }
+    }
+  }
 }
 
 tasks.withType<DokkaTask>().configureEach {
@@ -105,6 +118,20 @@ dependencies {
   implementation(libs.androidx.fragment)
   implementation(libs.androidx.lifecycle)
   implementation(libs.androidx.annotation)
+
+  testImplementation(libs.junit)
+  testImplementation(libs.truth)
+  testImplementation(libs.robolectric)
+  testImplementation(libs.mockk)
+  testImplementation(libs.androidx.test.core)
+
+  androidTestImplementation(libs.junit)
+  androidTestImplementation(libs.truth)
+  androidTestImplementation(libs.androidx.test.core)
+  androidTestImplementation(libs.androidx.test.runner)
+  androidTestImplementation(libs.androidx.test.rules)
+  androidTestImplementation(libs.androidx.test.ext.junit)
+  androidTestImplementation(libs.androidx.test.espresso.core)
 
   baselineProfile(project(":benchmark"))
   dokkaPlugin(libs.android.documentation.plugin)
