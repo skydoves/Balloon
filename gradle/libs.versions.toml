@@ -58,7 +58,7 @@ compose-stable-marker = { group = "com.github.skydoves", name = "compose-stable-
 # unit test
 junit = { module = "junit:junit", version = "4.13.2" }
 truth = { module = "com.google.truth:truth", version = "1.4.5" }
-robolectric = { module = "org.robolectric:robolectric", version = "4.14.1" }
+robolectric = { module = "org.robolectric:robolectric", version = "4.16" }
 mockk = { module = "io.mockk:mockk", version = "1.14.7" }
 mockk-android = { module = "io.mockk:mockk-android", version = "1.13.13" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version = "1.9.0" }
