@@ -37,6 +37,21 @@ jobs:
       - name: API check
         run: ./gradlew apiCheck
 
+  unit_tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6.0.1
+      - name: Set up JDK
+        uses: actions/setup-java@v5.1.0
+        with:
+          distribution: zulu
+          java-version: 17
+      - uses: gradle/gradle-build-action@v3.5.0
+      - name: Run unit tests
+        run: ./gradlew testDebugUnitTest --stacktrace
+
   build:
     runs-on: ubuntu-latest
     steps:
