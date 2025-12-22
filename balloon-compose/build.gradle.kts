@@ -34,6 +34,7 @@ android {
 
   defaultConfig {
     minSdk = Configuration.minSdk
+    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 
   buildFeatures {
@@ -84,6 +85,18 @@ kotlin {
       "-opt-in=com.skydoves.balloon.annotations.InternalBalloonApi",
     )
   }
+
+  target {
+    compilations.configureEach {
+      if (name.contains("Test")) {
+        compileTaskProvider.configure {
+          compilerOptions {
+            freeCompilerArgs.set(listOf("-opt-in=com.skydoves.balloon.annotations.InternalBalloonApi"))
+          }
+        }
+      }
+    }
+  }
 }
 
 tasks.withType(JavaCompile::class.java).configureEach {
@@ -103,6 +116,25 @@ dependencies {
   implementation(libs.androidx.lifecycle.runtime.compose)
   implementation(libs.androidx.lifecycle.viewmodel.compose)
   implementation(libs.androidx.savedstate.compose)
+
+  testImplementation(libs.junit)
+  testImplementation(libs.truth)
+  testImplementation(libs.robolectric)
+  testImplementation(libs.mockk)
+  testImplementation(libs.kotlinx.coroutines.test)
+  testImplementation(libs.androidx.test.core)
+  testImplementation(platform(libs.androidx.compose.bom))
+  testImplementation(libs.androidx.compose.ui.test)
+
+  androidTestImplementation(libs.junit)
+  androidTestImplementation(libs.truth)
+  androidTestImplementation(libs.androidx.test.core)
+  androidTestImplementation(libs.androidx.test.runner)
+  androidTestImplementation(libs.androidx.test.rules)
+  androidTestImplementation(libs.androidx.test.ext.junit)
+  androidTestImplementation(platform(libs.androidx.compose.bom))
+  androidTestImplementation(libs.androidx.compose.ui.test)
+  debugImplementation(libs.androidx.compose.ui.test.manifest)
 
   baselineProfile(project(":benchmark"))
   dokkaPlugin(libs.android.documentation.plugin)
