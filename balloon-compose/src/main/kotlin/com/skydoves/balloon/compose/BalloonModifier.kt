@@ -168,22 +168,56 @@ public fun Modifier.balloon(
   val horizontalPadding = builder.paddingLeft + builder.paddingRight +
     builder.marginLeft + builder.marginRight
 
-  // Pre-measure balloon content if not yet measured
-  if (balloonLayoutInfo.value == null) {
+  // Pre-measure balloon content if not yet measured (or if fixed-width target changed)
+  val fixedWidthMode = builder.widthRatio > 0f || builder.maxWidthRatio > 0f
+
+  // In fixed-width mode, the target width is screen-based, not anchor-constraint-based.
+  // We can compute it outside the measurePolicy so we can re-trigger this Layout when it changes.
+  val desiredFixedWidth = if (fixedWidthMode) {
+    val w = when {
+      builder.widthRatio > 0f ->
+        (screenWidth * builder.widthRatio - horizontalPadding).toInt()
+
+      builder.maxWidthRatio > 0f ->
+        (screenWidth * builder.maxWidthRatio - horizontalPadding).toInt()
+
+      else -> 0
+    }.coerceAtLeast(0)
+    w
+  } else {
+    null
+  }
+
+  if (balloonLayoutInfo.value == null ||
+    (desiredFixedWidth != null && balloonLayoutInfo.value?.width != desiredFixedWidth)
+  ) {
     Layout(
       content = { balloonContent() },
       measurePolicy = { measurables, constraints ->
+
         val maxContentWidth = when {
           builder.widthRatio > 0f ->
             (screenWidth * builder.widthRatio - horizontalPadding).toInt()
+
           builder.maxWidthRatio > 0f ->
             (screenWidth * builder.maxWidthRatio - horizontalPadding).toInt()
-          else -> constraints.maxWidth - horizontalPadding
+
+          else ->
+            constraints.maxWidth - horizontalPadding
+        }.coerceAtLeast(0)
+
+        val targetWidth = if (fixedWidthMode) {
+          // IMPORTANT: do NOT clamp to constraints.maxWidth (anchor width)
+          maxContentWidth
+        } else {
+          // Non-fixed mode: behave like before, limited by the anchor constraints.
+          maxContentWidth.coerceAtMost((constraints.maxWidth - horizontalPadding).coerceAtLeast(0))
         }.coerceAtLeast(0)
 
         val contentConstraints = Constraints(
-          minWidth = 0,
-          maxWidth = maxContentWidth.coerceAtMost(constraints.maxWidth),
+          // IMPORTANT: in fixed mode, force the content host to measure at EXACT width
+          minWidth = if (fixedWidthMode) targetWidth else 0,
+          maxWidth = targetWidth,
           minHeight = 0,
           maxHeight = constraints.maxHeight,
         )
@@ -191,8 +225,15 @@ public fun Modifier.balloon(
         val placeables = measurables.map { it.measure(contentConstraints) }
 
         if (placeables.isNotEmpty()) {
-          val measuredWidth = placeables.maxOf { it.width }
-          val measuredHeight = placeables.maxOf { it.height }
+          val measuredHeight = placeables.maxOf { it.height }.coerceAtLeast(0)
+
+          // IMPORTANT: in fixed mode, the card width must be the fixed width,
+          // not the max placeable width (which can still end up smaller).
+          val measuredWidth = if (fixedWidthMode) {
+            targetWidth
+          } else {
+            placeables.maxOf { it.width }.coerceAtLeast(0)
+          }
 
           if (measuredWidth > 0 && measuredHeight > 0) {
             val size = IntSize(width = measuredWidth, height = measuredHeight)
