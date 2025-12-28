@@ -50,7 +50,7 @@ Add the dependency below to your **module**'s `build.gradle` file:
 
 ```kotlin
 dependencies {
-    implementation("com.github.skydoves:balloon:1.7.0")
+    implementation("com.github.skydoves:balloon:1.7.1")
 }
 ```
 

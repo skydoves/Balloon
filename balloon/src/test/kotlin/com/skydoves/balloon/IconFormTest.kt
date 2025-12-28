@@ -28,7 +28,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [21])
+@Config(sdk = [28])
 class IconFormTest {
 
   private lateinit var context: Context
