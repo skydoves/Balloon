@@ -333,6 +333,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun getWidthRatio ()F
 	public final fun isAttachedInDecor ()Z
 	public final fun isClipArrowEnabled ()Z
+	public final fun isClippingEnabled ()Z
 	public final fun isComposableContent ()Z
 	public final fun isFocusable ()Z
 	public final fun isRtlLayout ()Z
@@ -421,6 +422,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final fun setCircularDuration (J)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setCircularDuration (J)V
 	public final synthetic fun setClipArrowEnabled (Z)V
+	public final synthetic fun setClippingEnabled (Z)V
 	public final synthetic fun setComposableContent (Z)V
 	public final fun setCornerRadius (F)Lcom/skydoves/balloon/Balloon$Builder;
 	public final synthetic fun setCornerRadius (F)V
@@ -475,6 +477,7 @@ public final class com/skydoves/balloon/Balloon$Builder {
 	public final synthetic fun setIncludeFontPadding (Z)V
 	public final fun setIsAttachedInDecor (Z)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setIsClipArrowEnabled (Z)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setIsClippingEnabled (Z)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setIsComposableContent (Z)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setIsStatusBarVisible (Z)Lcom/skydoves/balloon/Balloon$Builder;
 	public final fun setIsVisibleArrow (Z)Lcom/skydoves/balloon/Balloon$Builder;

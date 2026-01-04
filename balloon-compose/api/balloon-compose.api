@@ -94,6 +94,7 @@ public final class com/skydoves/balloon/compose/BalloonState : com/skydoves/ball
 	public fun showAlignTop (II)V
 	public fun showAsDropDown (II)V
 	public fun showAtCenter (IILcom/skydoves/balloon/BalloonCenterAlign;)V
+	public final fun update ()V
 	public fun update (II)V
 	public fun updateAlign (Lcom/skydoves/balloon/BalloonAlign;II)V
 	public fun updateAlignBottom (II)V

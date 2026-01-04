@@ -21,6 +21,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
@@ -91,6 +92,9 @@ public class BalloonState internal constructor(
 
   /** The internal balloon window delegate. Set internally by the balloon modifier. */
   internal var _balloonWindow: BalloonWindow? = null
+
+  /** The balloon layout info state for triggering re-measurement. Set internally by the balloon modifier. */
+  internal var _balloonLayoutInfo: MutableState<BalloonLayoutInfo?>? = null
 
   override val anchorView: View
     get() = _anchorView
@@ -318,9 +322,29 @@ public class BalloonState internal constructor(
   override fun getBalloonArrowView(): View =
     _balloonWindow?.getBalloonArrowView() ?: error("BalloonState is not attached")
 
+  /**
+   * Triggers re-measurement of the balloon content.
+   * Call this method when the balloon content changes dynamically (e.g., showing/hiding elements)
+   * to update the balloon size without closing it.
+   *
+   * Example usage:
+   * ```
+   * var showExtra by remember { mutableStateOf(false) }
+   *
+   * Button(onClick = {
+   *   showExtra = !showExtra
+   *   balloonState.update() // Trigger re-measurement after content change
+   * })
+   * ```
+   */
+  public fun update() {
+    _balloonLayoutInfo?.value = null
+  }
+
   internal fun dispose() {
     _balloonWindow?.dismiss()
     _balloonWindow = null
     _anchorView = null
+    _balloonLayoutInfo = null
   }
 }

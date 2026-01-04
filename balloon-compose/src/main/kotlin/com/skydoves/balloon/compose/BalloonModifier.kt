@@ -109,6 +109,11 @@ public fun Modifier.balloon(
   // Track balloon layout info for measurement
   val balloonLayoutInfo = remember { mutableStateOf<BalloonLayoutInfo?>(null) }
 
+  // Connect layout info to state for update() functionality
+  remember(balloonLayoutInfo) {
+    state._balloonLayoutInfo = balloonLayoutInfo
+  }
+
   // Create BalloonComposeView and connect to state
   val balloonComposeView = remember(key) {
     BalloonComposeView(
