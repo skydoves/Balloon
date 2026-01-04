@@ -199,6 +199,7 @@ HSPLcom/skydoves/balloon/Balloon$Builder;->getTextTypefaceObject()Landroid/graph
 HSPLcom/skydoves/balloon/Balloon$Builder;->getWidthRatio()F
 HSPLcom/skydoves/balloon/Balloon$Builder;->isAttachedInDecor()Z
 HSPLcom/skydoves/balloon/Balloon$Builder;->isClipArrowEnabled()Z
+HSPLcom/skydoves/balloon/Balloon$Builder;->isClippingEnabled()Z
 HSPLcom/skydoves/balloon/Balloon$Builder;->isFocusable()Z
 HSPLcom/skydoves/balloon/Balloon$Builder;->isRtlLayout()Z
 HSPLcom/skydoves/balloon/Balloon$Builder;->isVisibleArrow()Z
