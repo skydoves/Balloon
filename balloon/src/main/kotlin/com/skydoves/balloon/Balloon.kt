@@ -699,6 +699,7 @@ public class Balloon private constructor(
     with(this.bodyWindow) {
       isOutsideTouchable = true
       isFocusable = builder.isFocusable
+      isClippingEnabled = builder.isClippingEnabled
       setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
       elevation = builder.elevation
       setIsAttachedInDecor(builder.isAttachedInDecor)
@@ -2537,6 +2538,9 @@ public class Balloon private constructor(
     public var isAttachedInDecor: Boolean = true
 
     @set:JvmSynthetic
+    public var isClippingEnabled: Boolean = true
+
+    @set:JvmSynthetic
     public var isComposableContent: Boolean = false
 
     @set:JvmSynthetic
@@ -3284,6 +3288,16 @@ public class Balloon private constructor(
      */
     public fun setIsAttachedInDecor(value: Boolean): Builder = apply {
       this.isAttachedInDecor = value
+    }
+
+    /**
+     * Sets whether the popup window will be clipped to the screen bounds.
+     * When set to false, the balloon can extend beyond screen boundaries,
+     * which is useful for maintaining position relative to anchor views in scrollable containers.
+     * Default is true for backward compatibility.
+     */
+    public fun setIsClippingEnabled(value: Boolean): Builder = apply {
+      this.isClippingEnabled = value
     }
 
     /**
