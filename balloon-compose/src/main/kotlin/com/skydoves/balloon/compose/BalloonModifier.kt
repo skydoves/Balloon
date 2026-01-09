@@ -40,7 +40,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
@@ -293,12 +292,12 @@ public fun Modifier.balloon(
     val position = coordinates.positionInWindow()
     val size = coordinates.size
 
-    // Update the anchor view's position and size in the parent view
-    anchorView.updateLayoutParams<FrameLayout.LayoutParams> {
-      width = size.width
-      height = size.height
-      leftMargin = position.x.toInt()
-      topMargin = position.y.toInt()
+    (anchorView.layoutParams as? ViewGroup.MarginLayoutParams)?.let { params ->
+      params.width = size.width
+      params.height = size.height
+      params.leftMargin = position.x.toInt()
+      params.topMargin = position.y.toInt()
+      anchorView.layoutParams = params
     }
   }
 }
