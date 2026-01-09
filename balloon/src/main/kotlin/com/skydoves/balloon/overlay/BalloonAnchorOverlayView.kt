@@ -153,6 +153,7 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
     view?.let { anchor ->
       val rect = Rect()
       anchor.getGlobalVisibleRect(rect)
+      rect.offset(anchor.translationX.toInt(), anchor.translationY.toInt())
       val anchorRect = overlayPosition?.let { position ->
         RectF(
           position.x - overlayPadding.left,

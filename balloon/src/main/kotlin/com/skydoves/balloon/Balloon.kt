@@ -1011,7 +1011,9 @@ public class Balloon private constructor(
         startBalloonHighlightAnimation()
 
         val (xOff, yOff) = calculateOffset(placement)
-        bodyWindow.showAsDropDown(mainAnchor, xOff, yOff)
+        val adjustedXOff = xOff + mainAnchor.translationX.toInt()
+        val adjustedYOff = yOff + mainAnchor.translationY.toInt()
+        bodyWindow.showAsDropDown(mainAnchor, adjustedXOff, adjustedYOff)
       }
     } else if (builder.dismissWhenShowAgain) {
       dismiss()
@@ -1727,10 +1729,12 @@ public class Balloon private constructor(
       }
 
       val (xOff, yOff) = calculateOffset(placement)
+      val adjustedXOff = xOff + placement.anchor.translationX.toInt()
+      val adjustedYOff = yOff + placement.anchor.translationY.toInt()
       this.bodyWindow.update(
         placement.anchor,
-        xOff,
-        yOff,
+        adjustedXOff,
+        adjustedYOff,
         placement.width,
         placement.height,
       )
