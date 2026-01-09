@@ -66,8 +66,30 @@ import java.util.UUID
  * }
  * ```
  *
+ * When using inside a BottomSheet or Dialog, provide the [anchorParent] parameter to ensure
+ * the balloon appears above the sheet:
+ * ```
+ * ModalBottomSheet(onDismissRequest = { ... }) {
+ *   val view = LocalView.current
+ *   val anchorParent = remember { (view.parent as? ViewGroup) }
+ *
+ *   Button(
+ *     onClick = { balloonState.showAlignTop() },
+ *     modifier = Modifier.balloon(
+ *       state = balloonState,
+ *       anchorParent = anchorParent,
+ *     ) { Text("Tooltip") }
+ *   ) {
+ *     Text("Show Balloon")
+ *   }
+ * }
+ * ```
+ *
  * @param state The [BalloonState] used to control the balloon.
  * @param key Optional key to trigger recomposition of balloon content.
+ * @param anchorParent Optional custom parent ViewGroup for the anchor view. When displaying
+ *   balloons inside a BottomSheet or Dialog, pass the sheet's content container to ensure
+ *   the balloon renders above the sheet. If null (default), uses the activity's decor view.
  * @param balloonContent The composable content to display inside the balloon.
  * @return A modifier that attaches the balloon to this composable.
  */
@@ -75,6 +97,7 @@ import java.util.UUID
 public fun Modifier.balloon(
   state: BalloonState,
   key: Any? = null,
+  anchorParent: ViewGroup? = null,
   balloonContent: @Composable () -> Unit,
 ): Modifier {
   val context = LocalContext.current
@@ -90,12 +113,13 @@ public fun Modifier.balloon(
 
   val id = rememberSaveable { UUID.randomUUID() }
 
-  // Get the decor view to add our invisible anchor
-  val decorView = remember(context) {
-    (context as? Activity)?.window?.decorView as? ViewGroup
+  // Get the parent view for the anchor. Use custom anchorParent if provided,
+  // otherwise fall back to the activity's decor view.
+  val parentView = remember(context, anchorParent) {
+    anchorParent ?: (context as? Activity)?.window?.decorView as? ViewGroup
   }
 
-  // Create an invisible anchor view that will be added to the decor view
+  // Create an invisible anchor view that will be added to the parent view
   val anchorView = remember {
     View(context).apply {
       // Make it invisible but still part of the hierarchy
@@ -139,10 +163,10 @@ public fun Modifier.balloon(
     balloonComposeView
   }
 
-  // Add anchor view to decor view and handle disposal
-  DisposableEffect(key, decorView) {
-    // Add the anchor view to the decor view
-    decorView?.addView(
+  // Add anchor view to parent view and handle disposal
+  DisposableEffect(key, parentView) {
+    // Add the anchor view to the parent view
+    parentView?.addView(
       anchorView,
       FrameLayout.LayoutParams(0, 0).apply {
         leftMargin = 0
@@ -152,8 +176,8 @@ public fun Modifier.balloon(
 
     onDispose {
       balloonComposeView.dispose()
-      // Remove anchor view from decor view
-      decorView?.removeView(anchorView)
+      // Remove anchor view from parent view
+      parentView?.removeView(anchorView)
       anchorView.apply {
         setViewTreeSavedStateRegistryOwner(null)
         setViewTreeLifecycleOwner(null)
@@ -199,6 +223,22 @@ public fun Modifier.balloon(
     Layout(
       content = { balloonContent() },
       measurePolicy = { measurables, constraints ->
+        val isUnboundedWidth = constraints.maxWidth == Constraints.Infinity
+        val isUnboundedHeight = constraints.maxHeight == Constraints.Infinity ||
+          constraints.maxHeight == 0
+
+        if (!fixedWidthMode && isUnboundedWidth) {
+          return@Layout layout(0, 0) {}
+        }
+
+        // Use screen width as fallback for unbounded width constraints
+        val effectiveMaxWidth = if (isUnboundedWidth) screenWidth else constraints.maxWidth
+        // Use a reasonable max height when unbounded (screen height equivalent)
+        val effectiveMaxHeight = if (isUnboundedHeight) {
+          (screenWidth * 2) // Use 2x screen width as a reasonable max height fallback
+        } else {
+          constraints.maxHeight
+        }
 
         val maxContentWidth = when {
           builder.widthRatio > 0f ->
@@ -208,7 +248,7 @@ public fun Modifier.balloon(
             (screenWidth * builder.maxWidthRatio - horizontalPadding).toInt()
 
           else ->
-            constraints.maxWidth - horizontalPadding
+            (effectiveMaxWidth - horizontalPadding).coerceAtLeast(0)
         }.coerceAtLeast(0)
 
         val targetWidth = if (fixedWidthMode) {
@@ -216,7 +256,7 @@ public fun Modifier.balloon(
           maxContentWidth
         } else {
           // Non-fixed mode: behave like before, limited by the anchor constraints.
-          maxContentWidth.coerceAtMost((constraints.maxWidth - horizontalPadding).coerceAtLeast(0))
+          maxContentWidth.coerceAtMost((effectiveMaxWidth - horizontalPadding).coerceAtLeast(0))
         }.coerceAtLeast(0)
 
         val contentConstraints = Constraints(
@@ -224,16 +264,13 @@ public fun Modifier.balloon(
           minWidth = if (fixedWidthMode) targetWidth else 0,
           maxWidth = targetWidth,
           minHeight = 0,
-          maxHeight = constraints.maxHeight,
+          maxHeight = effectiveMaxHeight,
         )
 
         val placeables = measurables.map { it.measure(contentConstraints) }
 
         if (placeables.isNotEmpty()) {
           val measuredHeight = placeables.maxOf { it.height }.coerceAtLeast(0)
-
-          // IMPORTANT: in fixed mode, the card width must be the fixed width,
-          // not the max placeable width (which can still end up smaller).
           val measuredWidth = if (fixedWidthMode) {
             targetWidth
           } else {
@@ -262,7 +299,7 @@ public fun Modifier.balloon(
     val position = coordinates.positionInWindow()
     val size = coordinates.size
 
-    // Update the anchor view's position and size in the decor view
+    // Update the anchor view's position and size in the parent view
     anchorView.updateLayoutParams<FrameLayout.LayoutParams> {
       width = size.width
       height = size.height
