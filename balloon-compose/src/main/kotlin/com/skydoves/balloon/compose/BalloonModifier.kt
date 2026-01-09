@@ -231,14 +231,8 @@ public fun Modifier.balloon(
           return@Layout layout(0, 0) {}
         }
 
-        // Use screen width as fallback for unbounded width constraints
         val effectiveMaxWidth = if (isUnboundedWidth) screenWidth else constraints.maxWidth
-        // Use a reasonable max height when unbounded (screen height equivalent)
-        val effectiveMaxHeight = if (isUnboundedHeight) {
-          (screenWidth * 2) // Use 2x screen width as a reasonable max height fallback
-        } else {
-          constraints.maxHeight
-        }
+        val effectiveMaxHeight = if (isUnboundedHeight) screenWidth * 2 else constraints.maxHeight
 
         val maxContentWidth = when {
           builder.widthRatio > 0f ->

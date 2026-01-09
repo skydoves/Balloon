@@ -41,7 +41,7 @@ internal fun View.visible(shouldVisible: Boolean) {
 internal fun View.getViewPointOnScreen(): Point {
   val location: IntArray = intArrayOf(0, 0)
   getLocationOnScreen(location)
-  return Point(location[0], location[1])
+  return Point(location[0] + translationX.toInt(), location[1] + translationY.toInt())
 }
 
 /** returns the status bar height if the anchor is on the Activity. */
