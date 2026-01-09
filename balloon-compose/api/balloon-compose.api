@@ -42,7 +42,7 @@ public final class com/skydoves/balloon/compose/BalloonKt {
 }
 
 public final class com/skydoves/balloon/compose/BalloonModifierKt {
-	public static final fun balloon (Landroidx/compose/ui/Modifier;Lcom/skydoves/balloon/compose/BalloonState;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)Landroidx/compose/ui/Modifier;
+	public static final fun balloon (Landroidx/compose/ui/Modifier;Lcom/skydoves/balloon/compose/BalloonState;Ljava/lang/Object;Landroid/view/ViewGroup;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)Landroidx/compose/ui/Modifier;
 }
 
 public final class com/skydoves/balloon/compose/BalloonState : com/skydoves/balloon/compose/BalloonWindow {
