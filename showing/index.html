@@ -1,0 +1,1324 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Modernized and sophisticated tooltips, fully customizable with an arrow and animations on Android.">
+      
+      
+        <meta name="author" content="Jaewoong (skydoves)">
+      
+      
+        <link rel="canonical" href="https://github.com/skydoves/Balloon/showing/">
+      
+      
+        <link rel="prev" href="../getting-started/">
+      
+      
+        <link rel="next" href="../arrow/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Showing Balloon - Balloon</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-1SBY14Q79E"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-1SBY14Q79E",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-1SBY14Q79E",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#showing-balloon" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Balloon" class="md-header__button md-logo" aria-label="Balloon" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4l-4 4-4-4H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2m0 2v12h4.83L12 19.17 15.17 16H20V4z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Balloon
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Showing Balloon
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/skydoves/Balloon" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Balloon
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Balloon" class="md-nav__button md-logo" aria-label="Balloon" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4l-4 4-4-4H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2m0 2v12h4.83L12 19.17 15.17 16H20V4z"/></svg>
+
+    </a>
+    Balloon
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/skydoves/Balloon" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Balloon
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Showing Balloon
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Showing Balloon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#display-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Display Methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Display Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#align-top" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Align Top
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#align-bottom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Align Bottom
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#align-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Align Start
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#align-end" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Align End
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#as-dropdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        As Dropdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#at-center" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        At Center
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kotlin-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kotlin Extensions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dismissing-balloon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dismissing Balloon
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dismissing Balloon">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#immediate-dismiss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Immediate Dismiss
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dismiss-with-delay" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dismiss with Delay
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto-dismiss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auto Dismiss
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sequential-display" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sequential Display
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sequential Display">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-relay-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using Relay Methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-coroutines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using Coroutines
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#update-position" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Update Position
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-in-dialogfragment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Display in DialogFragment
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arrow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arrow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../text-icon/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Text and Icon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../customization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Customization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overlay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../animation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Animation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../listeners/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Listeners
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../persistence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Persistence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Jetpack Compose
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Jetpack Compose
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compose/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compose/balloon-state/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BalloonState
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compose/extensions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compose Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sponsor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sponsor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#display-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Display Methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Display Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#align-top" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Align Top
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#align-bottom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Align Bottom
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#align-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Align Start
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#align-end" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Align End
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#as-dropdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        As Dropdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#at-center" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        At Center
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kotlin-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kotlin Extensions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dismissing-balloon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dismissing Balloon
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dismissing Balloon">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#immediate-dismiss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Immediate Dismiss
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dismiss-with-delay" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dismiss with Delay
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto-dismiss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auto Dismiss
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sequential-display" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sequential Display
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sequential Display">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-relay-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using Relay Methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-coroutines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using Coroutines
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#update-position" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Update Position
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-in-dialogfragment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Display in DialogFragment
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="showing-balloon">Showing Balloon<a class="headerlink" href="#showing-balloon" title="Permanent link">&para;</a></h1>
+<p>This guide covers the various ways to display and dismiss Balloon tooltips.</p>
+<h2 id="display-methods">Display Methods<a class="headerlink" href="#display-methods" title="Permanent link">&para;</a></h2>
+<p>You can show the Balloon using different alignment methods. Each method positions the Balloon relative to an anchor view.</p>
+<h3 id="align-top">Align Top<a class="headerlink" href="#align-top" title="Permanent link">&para;</a></h3>
+<p>Shows the Balloon above the anchor view:</p>
+<div class="highlight"><pre><span></span><code><span class="n">balloon</span><span class="p">.</span><span class="na">showAlignTop</span><span class="p">(</span><span class="n">anchor</span><span class="p">)</span><span class="w"> </span><span class="c1">// shows above the anchor</span>
+<span class="n">balloon</span><span class="p">.</span><span class="na">showAlignTop</span><span class="p">(</span><span class="n">anchor</span><span class="p">,</span><span class="w"> </span><span class="n">xOff</span><span class="p">,</span><span class="w"> </span><span class="n">yOff</span><span class="p">)</span><span class="w"> </span><span class="c1">// with offset</span>
+</code></pre></div>
+<h3 id="align-bottom">Align Bottom<a class="headerlink" href="#align-bottom" title="Permanent link">&para;</a></h3>
+<p>Shows the Balloon below the anchor view:</p>
+<div class="highlight"><pre><span></span><code><span class="n">balloon</span><span class="p">.</span><span class="na">showAlignBottom</span><span class="p">(</span><span class="n">anchor</span><span class="p">)</span><span class="w"> </span><span class="c1">// shows below the anchor</span>
+<span class="n">balloon</span><span class="p">.</span><span class="na">showAlignBottom</span><span class="p">(</span><span class="n">anchor</span><span class="p">,</span><span class="w"> </span><span class="n">xOff</span><span class="p">,</span><span class="w"> </span><span class="n">yOff</span><span class="p">)</span><span class="w"> </span><span class="c1">// with offset</span>
+</code></pre></div>
+<h3 id="align-start">Align Start<a class="headerlink" href="#align-start" title="Permanent link">&para;</a></h3>
+<p>Shows the Balloon at the start (left in LTR) of the anchor view:</p>
+<div class="highlight"><pre><span></span><code><span class="n">balloon</span><span class="p">.</span><span class="na">showAlignStart</span><span class="p">(</span><span class="n">anchor</span><span class="p">)</span><span class="w"> </span><span class="c1">// shows at start</span>
+<span class="n">balloon</span><span class="p">.</span><span class="na">showAlignStart</span><span class="p">(</span><span class="n">anchor</span><span class="p">,</span><span class="w"> </span><span class="n">xOff</span><span class="p">,</span><span class="w"> </span><span class="n">yOff</span><span class="p">)</span><span class="w"> </span><span class="c1">// with offset</span>
+</code></pre></div>
+<h3 id="align-end">Align End<a class="headerlink" href="#align-end" title="Permanent link">&para;</a></h3>
+<p>Shows the Balloon at the end (right in LTR) of the anchor view:</p>
+<div class="highlight"><pre><span></span><code><span class="n">balloon</span><span class="p">.</span><span class="na">showAlignEnd</span><span class="p">(</span><span class="n">anchor</span><span class="p">)</span><span class="w"> </span><span class="c1">// shows at end</span>
+<span class="n">balloon</span><span class="p">.</span><span class="na">showAlignEnd</span><span class="p">(</span><span class="n">anchor</span><span class="p">,</span><span class="w"> </span><span class="n">xOff</span><span class="p">,</span><span class="w"> </span><span class="n">yOff</span><span class="p">)</span><span class="w"> </span><span class="c1">// with offset</span>
+</code></pre></div>
+<h3 id="as-dropdown">As Dropdown<a class="headerlink" href="#as-dropdown" title="Permanent link">&para;</a></h3>
+<p>Shows the Balloon as a dropdown below the anchor:</p>
+<div class="highlight"><pre><span></span><code><span class="n">balloon</span><span class="p">.</span><span class="na">showAsDropDown</span><span class="p">(</span><span class="n">anchor</span><span class="p">)</span><span class="w"> </span><span class="c1">// shows as dropdown</span>
+<span class="n">balloon</span><span class="p">.</span><span class="na">showAsDropDown</span><span class="p">(</span><span class="n">anchor</span><span class="p">,</span><span class="w"> </span><span class="n">xOff</span><span class="p">,</span><span class="w"> </span><span class="n">yOff</span><span class="p">)</span><span class="w"> </span><span class="c1">// with offset</span>
+</code></pre></div>
+<h3 id="at-center">At Center<a class="headerlink" href="#at-center" title="Permanent link">&para;</a></h3>
+<p>Shows the Balloon overlapping the anchor at its center:</p>
+<div class="highlight"><pre><span></span><code><span class="n">balloon</span><span class="p">.</span><span class="na">showAtCenter</span><span class="p">(</span><span class="n">anchor</span><span class="p">)</span><span class="w"> </span><span class="c1">// shows at center</span>
+<span class="n">balloon</span><span class="p">.</span><span class="na">showAtCenter</span><span class="p">(</span><span class="n">anchor</span><span class="p">,</span><span class="w"> </span><span class="n">xOff</span><span class="p">,</span><span class="w"> </span><span class="n">yOff</span><span class="p">,</span><span class="w"> </span><span class="n">BalloonCenterAlign</span><span class="p">.</span><span class="na">TOP</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="kotlin-extensions">Kotlin Extensions<a class="headerlink" href="#kotlin-extensions" title="Permanent link">&para;</a></h2>
+<p>You can also use Kotlin extension functions on views:</p>
+<div class="highlight"><pre><span></span><code><span class="n">myButton</span><span class="p">.</span><span class="na">showAlignTop</span><span class="p">(</span><span class="n">balloon</span><span class="p">)</span>
+<span class="n">myButton</span><span class="p">.</span><span class="na">showAlignBottom</span><span class="p">(</span><span class="n">balloon</span><span class="p">)</span>
+<span class="n">myButton</span><span class="p">.</span><span class="na">showAlignStart</span><span class="p">(</span><span class="n">balloon</span><span class="p">)</span>
+<span class="n">myButton</span><span class="p">.</span><span class="na">showAlignEnd</span><span class="p">(</span><span class="n">balloon</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="dismissing-balloon">Dismissing Balloon<a class="headerlink" href="#dismissing-balloon" title="Permanent link">&para;</a></h2>
+<h3 id="immediate-dismiss">Immediate Dismiss<a class="headerlink" href="#immediate-dismiss" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">balloon</span><span class="p">.</span><span class="na">dismiss</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="dismiss-with-delay">Dismiss with Delay<a class="headerlink" href="#dismiss-with-delay" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">balloon</span><span class="p">.</span><span class="na">dismissWithDelay</span><span class="p">(</span><span class="m">1000L</span><span class="p">)</span><span class="w"> </span><span class="c1">// dismisses after 1 second</span>
+</code></pre></div>
+<h3 id="auto-dismiss">Auto Dismiss<a class="headerlink" href="#auto-dismiss" title="Permanent link">&para;</a></h3>
+<p>Set the Balloon to automatically dismiss after a duration:</p>
+<div class="highlight"><pre><span></span><code><span class="n">Balloon</span><span class="p">.</span><span class="na">Builder</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="na">setAutoDismissDuration</span><span class="p">(</span><span class="m">1000L</span><span class="p">)</span><span class="w"> </span><span class="c1">// auto dismiss after 1 second</span>
+</code></pre></div>
+<h2 id="sequential-display">Sequential Display<a class="headerlink" href="#sequential-display" title="Permanent link">&para;</a></h2>
+<p>You can show multiple Balloons sequentially using relay methods or coroutines.</p>
+<h3 id="using-relay-methods">Using Relay Methods<a class="headerlink" href="#using-relay-methods" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">customListBalloon</span>
+<span class="w">    </span><span class="p">.</span><span class="na">relayShowAlignBottom</span><span class="p">(</span><span class="n">customProfileBalloon</span><span class="p">,</span><span class="w"> </span><span class="n">circleImageView</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="na">relayShowAlignTop</span><span class="p">(</span><span class="n">customTagBalloon</span><span class="p">,</span><span class="w"> </span><span class="n">bottomNavigationView</span><span class="p">,</span><span class="w"> </span><span class="m">130</span><span class="p">,</span><span class="w"> </span><span class="m">0</span><span class="p">)</span>
+
+<span class="c1">// Start the sequence</span>
+<span class="n">customListBalloon</span><span class="p">.</span><span class="na">showAlignBottom</span><span class="p">(</span><span class="n">anchorView</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="using-coroutines">Using Coroutines<a class="headerlink" href="#using-coroutines" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">coroutineScope</span><span class="p">.</span><span class="na">launch</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">customListBalloon</span><span class="p">.</span><span class="na">awaitAlignBottom</span><span class="p">(</span><span class="n">anchorView</span><span class="p">)</span>
+<span class="w">    </span><span class="n">customProfileBalloon</span><span class="p">.</span><span class="na">awaitAlignBottom</span><span class="p">(</span><span class="n">circleImageView</span><span class="p">)</span>
+<span class="w">    </span><span class="n">customTagBalloon</span><span class="p">.</span><span class="na">awaitAlignTop</span><span class="p">(</span><span class="n">bottomNavigationView</span><span class="p">,</span><span class="w"> </span><span class="m">130</span><span class="p">,</span><span class="w"> </span><span class="m">0</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code>relayShow__</code> and <code>await__</code> methods overwrite the <code>setOnDismissListener</code> internally, so you cannot use <code>setOnDismissListener</code> at the same time.</p>
+</div>
+<h2 id="update-position">Update Position<a class="headerlink" href="#update-position" title="Permanent link">&para;</a></h2>
+<p>You can update the Balloon's position while it's displayed:</p>
+<div class="highlight"><pre><span></span><code><span class="n">balloon</span><span class="p">.</span><span class="na">updateAlignTop</span><span class="p">(</span><span class="n">xOff</span><span class="p">,</span><span class="w"> </span><span class="n">yOff</span><span class="p">)</span>
+<span class="n">balloon</span><span class="p">.</span><span class="na">updateAlignBottom</span><span class="p">(</span><span class="n">xOff</span><span class="p">,</span><span class="w"> </span><span class="n">yOff</span><span class="p">)</span>
+<span class="n">balloon</span><span class="p">.</span><span class="na">updateAlignStart</span><span class="p">(</span><span class="n">xOff</span><span class="p">,</span><span class="w"> </span><span class="n">yOff</span><span class="p">)</span>
+<span class="n">balloon</span><span class="p">.</span><span class="na">updateAlignEnd</span><span class="p">(</span><span class="n">xOff</span><span class="p">,</span><span class="w"> </span><span class="n">yOff</span><span class="p">)</span>
+<span class="n">balloon</span><span class="p">.</span><span class="na">update</span><span class="p">(</span><span class="n">xOff</span><span class="p">,</span><span class="w"> </span><span class="n">yOff</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="display-in-dialogfragment">Display in DialogFragment<a class="headerlink" href="#display-in-dialogfragment" title="Permanent link">&para;</a></h2>
+<p>When showing a Balloon inside a DialogFragment, you may need to attach it to the decor frame:</p>
+<div class="highlight"><pre><span></span><code><span class="n">balloon</span><span class="p">.</span><span class="na">setIsAttachedInDecor</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.tabs.link", "content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
