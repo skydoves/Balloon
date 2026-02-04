@@ -2,6 +2,7 @@ import com.skydoves.balloon.Configuration
 
 plugins {
   id("com.android.test")
+  id("org.jetbrains.kotlin.android")
   id(libs.plugins.baseline.profile.get().pluginId)
 }
 

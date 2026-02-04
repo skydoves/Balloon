@@ -5,6 +5,7 @@ import java.net.URL
 
 plugins {
   id(libs.plugins.android.library.get().pluginId)
+  id(libs.plugins.kotlin.android.get().pluginId)
   id(libs.plugins.compose.compiler.get().pluginId)
   id(libs.plugins.nexus.plugin.get().pluginId)
   id(libs.plugins.baseline.profile.get().pluginId)
