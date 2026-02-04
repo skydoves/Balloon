@@ -1,5 +1,5 @@
 [versions]
-agp = "8.13.2"
+agp = "9.0.0"
 dokka = "2.1.0"
 kotlin = "2.3.0"
 kotlinBinaryCompatibility = "0.18.1"
@@ -13,10 +13,10 @@ androidxActivity = "1.12.3"
 androidxFragment = "1.8.9"
 androidxLifecycle = "2.10.0"
 androidxAnnotation = "1.9.1"
-androidxMacroBenchmark = "1.4.1"
+androidxMacroBenchmark = "1.5.0-alpha02"
 androidxTest = "1.7.0"
 composeStableMarker = "1.0.7"
-baselineProfiles = "1.4.1"
+baselineProfiles = "1.5.0-alpha02"
 uiAutomator = "2.3.0"
 spotless = "6.21.0"
 
@@ -69,6 +69,6 @@ androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version
 androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version = "3.7.0" }
 androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-androidx-profileinstaller = { module = "androidx.profileinstaller:profileinstaller", version.ref = "baselineProfiles" }
+androidx-profileinstaller = { module = "androidx.profileinstaller:profileinstaller", version = "1.4.1" }
 androidx-benchmark-macro = { module = "androidx.benchmark:benchmark-macro-junit4", version.ref = "androidxMacroBenchmark" }
 androidx-test-uiautomator = { module = "androidx.test.uiautomator:uiautomator", version.ref = "uiAutomator" }
