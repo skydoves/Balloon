@@ -2,7 +2,6 @@ import com.skydoves.balloon.Configuration
 
 plugins {
   id("com.android.test")
-  id("org.jetbrains.kotlin.android")
   id(libs.plugins.baseline.profile.get().pluginId)
 }
 
@@ -23,8 +22,8 @@ android {
 
   targetProjectPath = ":benchmark-app"
 
-  testOptions.managedDevices.devices {
-    maybeCreate<com.android.build.api.dsl.ManagedVirtualDevice>("pixel6api31").apply {
+  testOptions.managedDevices.localDevices {
+    create("pixel6api31") {
       device = "Pixel 6"
       apiLevel = 31
       systemImageSource = "aosp"
