@@ -20,15 +20,17 @@ import androidx.compose.ui.semantics.SemanticsPropertyKey
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 
 internal fun SemanticsPropertyReceiver.balloon() {
-  this[IsBalloon] = Unit
+  this[BalloonSemanticsProperties.IsBalloon] = Unit
 }
 
-internal val IsBalloon = SemanticsPropertyKey<Unit>(
-  name = "IsBalloon",
-  mergePolicy = { _, _ ->
-    throw IllegalStateException(
-      "merge function called on unmergeable property IsBalloon. " +
-        "A dialog should not be a child of a clickable/focusable node.",
-    )
-  },
-)
+private object BalloonSemanticsProperties {
+  val IsBalloon = SemanticsPropertyKey<Unit>(
+    name = "IsBalloon",
+    mergePolicy = { _, _ ->
+      throw IllegalStateException(
+        "merge function called on unmergeable property IsBalloon. " +
+          "A dialog should not be a child of a clickable/focusable node.",
+      )
+    },
+  )
+}
