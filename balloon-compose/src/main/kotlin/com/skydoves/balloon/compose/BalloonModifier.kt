@@ -230,7 +230,7 @@ public fun Modifier.balloon(
           return@Layout layout(0, 0) {}
         }
 
-        val effectiveMaxWidth = if (isUnboundedWidth) screenWidth else constraints.maxWidth
+        val effectiveMaxWidth = screenWidth
         val effectiveMaxHeight = if (isUnboundedHeight) screenWidth * 2 else constraints.maxHeight
 
         val maxContentWidth = when {
@@ -248,7 +248,7 @@ public fun Modifier.balloon(
           // IMPORTANT: do NOT clamp to constraints.maxWidth (anchor width)
           maxContentWidth
         } else {
-          // Non-fixed mode: behave like before, limited by the anchor constraints.
+          // Non-fixed mode: limited by the screen width.
           maxContentWidth.coerceAtMost((effectiveMaxWidth - horizontalPadding).coerceAtLeast(0))
         }.coerceAtLeast(0)
 
