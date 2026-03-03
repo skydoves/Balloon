@@ -46,6 +46,7 @@ import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.savedstate.compose.LocalSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import com.skydoves.balloon.BalloonSizeSpec
 import java.util.UUID
 
 /**
@@ -197,7 +198,8 @@ public fun Modifier.balloon(
     builder.marginLeft + builder.marginRight
 
   // Pre-measure balloon content if not yet measured (or if fixed-width target changed)
-  val fixedWidthMode = builder.widthRatio > 0f || builder.maxWidthRatio > 0f
+  val fixedWidthMode = builder.widthRatio > 0f || builder.maxWidthRatio > 0f ||
+    builder.width != BalloonSizeSpec.WRAP
 
   // In fixed-width mode, the target width is screen-based, not anchor-constraint-based.
   // We can compute it outside the measurePolicy so we can re-trigger this Layout when it changes.
@@ -208,6 +210,9 @@ public fun Modifier.balloon(
 
       builder.maxWidthRatio > 0f ->
         (screenWidth * builder.maxWidthRatio - horizontalPadding).toInt()
+
+      builder.width != BalloonSizeSpec.WRAP ->
+        builder.width.coerceAtMost(screenWidth)
 
       else -> 0
     }.coerceAtLeast(0)
@@ -231,7 +236,11 @@ public fun Modifier.balloon(
         }
 
         val effectiveMaxWidth = screenWidth
-        val effectiveMaxHeight = if (isUnboundedHeight) screenWidth * 2 else constraints.maxHeight
+        val effectiveMaxHeight = when {
+          builder.height != BalloonSizeSpec.WRAP -> builder.height
+          isUnboundedHeight -> screenWidth * 2
+          else -> constraints.maxHeight
+        }
 
         val maxContentWidth = when {
           builder.widthRatio > 0f ->
@@ -240,8 +249,11 @@ public fun Modifier.balloon(
           builder.maxWidthRatio > 0f ->
             (screenWidth * builder.maxWidthRatio - horizontalPadding).toInt()
 
+          builder.width != BalloonSizeSpec.WRAP ->
+            builder.width.coerceAtMost(screenWidth)
+
           else ->
-            (effectiveMaxWidth - horizontalPadding).coerceAtLeast(0)
+            builder.maxWidth.coerceAtMost(screenWidth) - horizontalPadding
         }.coerceAtLeast(0)
 
         val targetWidth = if (fixedWidthMode) {
@@ -263,11 +275,32 @@ public fun Modifier.balloon(
         val placeables = measurables.map { it.measure(contentConstraints) }
 
         if (placeables.isNotEmpty()) {
-          val measuredHeight = placeables.maxOf { it.height }.coerceAtLeast(0)
-          val measuredWidth = if (fixedWidthMode) {
-            targetWidth
+          val measuredHeight = if (builder.height != BalloonSizeSpec.WRAP) {
+            builder.height
           } else {
-            placeables.maxOf { it.width }.coerceAtLeast(0)
+            placeables.maxOf { it.height }.coerceAtLeast(0)
+          }
+          val measuredWidth = when {
+            builder.widthRatio > 0f -> targetWidth
+            builder.minWidthRatio > 0f || builder.maxWidthRatio > 0f -> {
+              val min = if (builder.minWidthRatio > 0f) {
+                (screenWidth * builder.minWidthRatio).toInt()
+              } else {
+                0
+              }
+              val max = if (builder.maxWidthRatio > 0f) {
+                (screenWidth * builder.maxWidthRatio).toInt()
+              } else {
+                screenWidth
+              }
+              placeables.maxOf { it.width }.coerceIn(min, max)
+            }
+            builder.width != BalloonSizeSpec.WRAP -> targetWidth
+            else ->
+              placeables.maxOf { it.width }
+                .coerceIn(builder.minWidth, builder.maxWidth)
+                .coerceAtMost(screenWidth)
+                .coerceAtLeast(0)
           }
 
           if (measuredWidth > 0 && measuredHeight > 0) {
