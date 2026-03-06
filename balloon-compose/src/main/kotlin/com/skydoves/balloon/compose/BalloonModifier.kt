@@ -231,11 +231,16 @@ public fun Modifier.balloon(
         val isUnboundedHeight = constraints.maxHeight == Constraints.Infinity ||
           constraints.maxHeight == 0
 
-        if (!fixedWidthMode && isUnboundedWidth) {
-          return@Layout layout(0, 0) {}
+        val effectiveMaxWidth = if (fixedWidthMode) {
+          // Fixed mode: always use screenWidth so ratio/explicit widths aren't clamped by anchor.
+          screenWidth
+        } else if (isUnboundedWidth) {
+          // Unbounded (e.g., KMM, ScrollView): fall back to screenWidth.
+          screenWidth
+        } else {
+          // Bounded non-fixed mode: respect the parent constraints (e.g., XML+ComposeView).
+          constraints.maxWidth.coerceAtMost(screenWidth)
         }
-
-        val effectiveMaxWidth = screenWidth
         val effectiveMaxHeight = when {
           builder.height != BalloonSizeSpec.WRAP -> builder.height
           isUnboundedHeight -> screenWidth * 2
@@ -253,14 +258,14 @@ public fun Modifier.balloon(
             builder.width.coerceAtMost(screenWidth)
 
           else ->
-            builder.maxWidth.coerceAtMost(screenWidth) - horizontalPadding
+            (effectiveMaxWidth - horizontalPadding).coerceAtLeast(0)
         }.coerceAtLeast(0)
 
         val targetWidth = if (fixedWidthMode) {
           // IMPORTANT: do NOT clamp to constraints.maxWidth (anchor width)
           maxContentWidth
         } else {
-          // Non-fixed mode: limited by the screen width.
+          // Non-fixed mode: respect parent constraints.
           maxContentWidth.coerceAtMost((effectiveMaxWidth - horizontalPadding).coerceAtLeast(0))
         }.coerceAtLeast(0)
 
