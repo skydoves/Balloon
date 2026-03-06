@@ -71,7 +71,6 @@ tasks.withType<DokkaTask>().configureEach {
 }
 
 baselineProfile {
-  baselineProfileOutputDir = "."
   filter {
     include("com.skydoves.balloon.compose.**")
   }
