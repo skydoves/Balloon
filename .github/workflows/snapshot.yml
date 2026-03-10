@@ -25,11 +25,12 @@ jobs:
         env:
           SNAPSHOT: true
 
-      - name: Publish Snapshot to MavenCentral
+      - name: Publish Snapshot to Sonatype OSSRH
         run: |
           ./gradlew publishAllPublicationsToMavenCentral --no-configuration-cache
         env:
           SNAPSHOT: true
+          ORG_GRADLE_PROJECT_SONATYPE_HOST: S01
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.OSSRH_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.OSSRH_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
