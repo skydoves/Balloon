@@ -19,7 +19,11 @@ package com.skydoves.balloondemo
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.skydoves.balloon.BalloonAlign
 import com.skydoves.balloon.balloon
@@ -43,12 +47,32 @@ class CustomActivity : AppCompatActivity(), CustomAdapter.CustomViewHolder.Deleg
   private val customTagBalloon by balloon<TagBalloonFactory>()
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    enableEdgeToEdge()
     super.onCreate(savedInstanceState)
 
     val binding = ActivityCustomBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
     with(binding) {
+      val rootStartPadding = root.paddingLeft
+      val rootEndPadding = root.paddingRight
+      val appBarTopPadding = appBarLayout.paddingTop
+      val bottomNavBottomPadding = bottomNavigationView.paddingBottom
+
+      ViewCompat.setOnApplyWindowInsetsListener(root) { view, insets ->
+        val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+        view.updatePadding(
+          left = rootStartPadding + systemBars.left,
+          right = rootEndPadding + systemBars.right,
+        )
+        appBarLayout.updatePadding(top = appBarTopPadding + systemBars.top)
+        bottomNavigationView.updatePadding(bottom = bottomNavBottomPadding + systemBars.bottom)
+
+        insets
+      }
+      ViewCompat.requestApplyInsets(root)
+
       tabLayout.addTab(tabLayout.newTab().setText("Timeline"))
       tabLayout.addTab(tabLayout.newTab().setText("Contents"))
 
