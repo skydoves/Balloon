@@ -153,21 +153,23 @@ public fun Balloon(
     // Calculate width constraints for balloon content (issue #779)
     val horizontalPadding = builder.paddingLeft + builder.paddingRight +
       builder.marginLeft + builder.marginRight
+    // The balloon renders in a PopupWindow (floating overlay), not in the parent layout.
+    // Use screen dimensions instead of parent constraints for measurement.
     val maxContentWidth = when {
       builder.widthRatio > 0f ->
         (screenWidth * builder.widthRatio - horizontalPadding).toInt()
       builder.maxWidthRatio > 0f ->
         (screenWidth * builder.maxWidthRatio - horizontalPadding).toInt()
-      else -> constraints.maxWidth - horizontalPadding
+      else -> (screenWidth - horizontalPadding)
     }.coerceAtLeast(0)
 
     // Measure balloon content if needed (only when content exists and size not yet calculated)
     if (isComposableContent && balloonComposeView.balloonLayoutInfo.value == null) {
       val balloonContentConstraints = Constraints(
         minWidth = 0,
-        maxWidth = maxContentWidth.coerceAtMost(constraints.maxWidth),
+        maxWidth = maxContentWidth.coerceAtMost(screenWidth),
         minHeight = 0,
-        maxHeight = constraints.maxHeight,
+        maxHeight = (screenWidth * 2).coerceAtLeast(0),
       )
       val balloonPlaceables = subcompose("balloon_measurement") {
         // balloonContent is guaranteed non-null here since isComposableContent is true

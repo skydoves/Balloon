@@ -229,24 +229,17 @@ public fun Modifier.balloon(
     Layout(
       content = { balloonContent() },
       measurePolicy = { measurables, constraints ->
-        val isUnboundedWidth = constraints.maxWidth == Constraints.Infinity
-        val isUnboundedHeight = constraints.maxHeight == Constraints.Infinity ||
-          constraints.maxHeight == 0
-
-        val effectiveMaxWidth = if (fixedWidthMode) {
-          // Fixed mode: always use screenWidth so ratio/explicit widths aren't clamped by anchor.
-          screenWidth
-        } else if (isUnboundedWidth) {
-          // Unbounded (e.g., KMM, ScrollView): fall back to screenWidth.
-          screenWidth
-        } else {
-          // Bounded non-fixed mode: respect the parent constraints (e.g., XML+ComposeView).
-          constraints.maxWidth.coerceAtMost(screenWidth)
-        }
+        // The balloon renders in a PopupWindow (floating overlay), not in the parent layout.
+        // Therefore, parent constraints must NOT limit the balloon content measurement.
+        // The Layout here is purely for measurement (layout(0, 0) {}), so we always use
+        // screen dimensions as the upper bound. This fixes:
+        // - #943: width incorrectly clamped to parent constraints in XML+ComposeView/KMM
+        // - #952: height incorrectly clamped to parent's fixed height
+        // - #963: negative constraints.maxHeight from ConstraintLayout on Chromebooks
+        val effectiveMaxWidth = screenWidth
         val effectiveMaxHeight = when {
           builder.height != BalloonSizeSpec.WRAP -> builder.height
-          isUnboundedHeight -> screenWidth * 2
-          else -> constraints.maxHeight
+          else -> screenWidth * 2
         }.coerceAtLeast(0)
 
         val maxContentWidth = when {
@@ -264,10 +257,8 @@ public fun Modifier.balloon(
         }.coerceAtLeast(0)
 
         val targetWidth = if (fixedWidthMode) {
-          // IMPORTANT: do NOT clamp to constraints.maxWidth (anchor width)
           maxContentWidth
         } else {
-          // Non-fixed mode: respect parent constraints.
           maxContentWidth.coerceAtMost((effectiveMaxWidth - horizontalPadding).coerceAtLeast(0))
         }.coerceAtLeast(0)
 
