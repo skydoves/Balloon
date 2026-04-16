@@ -104,6 +104,11 @@ tasks.withType<DokkaTask>().configureEach {
         remoteLineSuffix.set("#L")
       }
     }
+    // Suppress the 'release' source set which duplicates 'androidJvm' in Dokka 2.x
+    // See: https://github.com/Kotlin/dokka/issues/3701
+    named("release") {
+      suppress.set(true)
+    }
   }
 }
 
