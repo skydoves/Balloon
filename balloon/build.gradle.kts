@@ -13,8 +13,7 @@
 // limitations under the License.
 
 import com.skydoves.balloon.Configuration
-import org.jetbrains.dokka.gradle.DokkaTask
-import java.net.URL
+import java.net.URI
 
 plugins {
   id(libs.plugins.android.library.get().pluginId)
@@ -94,21 +93,18 @@ kotlin {
   }
 }
 
-tasks.withType<DokkaTask>().configureEach {
-  dokkaSourceSets {
-    named("main") {
-      moduleName.set("balloon")
-      includes.from("README.md")
-      sourceLink {
-        remoteUrl.set(URL("https://github.com/skydoves/balloon"))
-        remoteLineSuffix.set("#L")
-      }
+dokka {
+  dokkaSourceSets.named("main") {
+    moduleName.set("balloon")
+    sourceLink {
+      remoteUrl.set(URI("https://github.com/skydoves/balloon"))
+      remoteLineSuffix.set("#L")
     }
-    // Suppress the 'release' source set which duplicates 'androidJvm' in Dokka 2.x
-    // See: https://github.com/Kotlin/dokka/issues/3701
-    named("release") {
-      suppress.set(true)
-    }
+  }
+  // Suppress the 'release' source set which duplicates 'androidJvm' in Dokka 2.x
+  // See: https://github.com/Kotlin/dokka/issues/3701
+  dokkaSourceSets.named("release") {
+    suppress.set(true)
   }
 }
 
