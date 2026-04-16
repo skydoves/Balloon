@@ -19,7 +19,6 @@
 package com.skydoves.balloon
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
@@ -93,6 +92,7 @@ import com.skydoves.balloon.extensions.dimen
 import com.skydoves.balloon.extensions.dimenPixel
 import com.skydoves.balloon.extensions.displaySize
 import com.skydoves.balloon.extensions.dp
+import com.skydoves.balloon.extensions.findActivity
 import com.skydoves.balloon.extensions.getIntrinsicHeight
 import com.skydoves.balloon.extensions.getStatusBarHeight
 import com.skydoves.balloon.extensions.getSumOfIntrinsicWidth
@@ -1096,7 +1096,7 @@ public class Balloon private constructor(
     if (destroyed) return false
 
     // If the Activity is finishing, we can't attach the popupWindow to the Activity's window. (#92)
-    if ((context as? Activity)?.isFinishing == true) return false
+    if (context.findActivity()?.isFinishing == true) return false
 
     // We should check the contentView is already attached to the decorView or backgroundView in the popupWindow.
     // Sometimes there is a concurrency issue between show and dismiss the popupWindow. (#149)

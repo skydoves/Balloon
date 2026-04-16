@@ -16,11 +16,30 @@
 
 package com.skydoves.balloon.extensions
 
+import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
 import android.graphics.drawable.Drawable
 import androidx.annotation.DimenRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import com.skydoves.balloon.annotations.InternalBalloonApi
+
+/**
+ * Recursively unwraps [ContextWrapper] layers to find the underlying [Activity].
+ * This handles cases like Hilt's [FragmentContextWrapper] where the context
+ * is not directly an [Activity] but wraps one.
+ */
+@InternalBalloonApi
+@JvmSynthetic
+public fun Context.findActivity(): Activity? {
+  var ctx = this
+  while (ctx is ContextWrapper) {
+    if (ctx is Activity) return ctx
+    ctx = ctx.baseContext
+  }
+  return null
+}
 
 /** px size to sp size. */
 @JvmSynthetic

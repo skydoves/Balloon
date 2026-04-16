@@ -16,7 +16,6 @@
 
 package com.skydoves.balloon.compose
 
-import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -47,6 +46,8 @@ import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.savedstate.compose.LocalSavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.skydoves.balloon.BalloonSizeSpec
+import com.skydoves.balloon.annotations.InternalBalloonApi
+import com.skydoves.balloon.extensions.findActivity
 import java.util.UUID
 
 /**
@@ -93,6 +94,7 @@ import java.util.UUID
  * @param balloonContent The composable content to display inside the balloon.
  * @return A modifier that attaches the balloon to this composable.
  */
+@OptIn(InternalBalloonApi::class)
 @Composable
 public fun Modifier.balloon(
   state: BalloonState,
@@ -116,7 +118,7 @@ public fun Modifier.balloon(
   // Get the parent view for the anchor. Use custom anchorParent if provided,
   // otherwise fall back to the activity's decor view.
   val parentView = remember(context, anchorParent) {
-    anchorParent ?: (context as? Activity)?.window?.decorView as? ViewGroup
+    anchorParent ?: context.findActivity()?.window?.decorView as? ViewGroup
   }
 
   // Create an invisible anchor view that will be added to the parent view
