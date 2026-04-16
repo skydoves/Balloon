@@ -247,7 +247,7 @@ public fun Modifier.balloon(
           builder.height != BalloonSizeSpec.WRAP -> builder.height
           isUnboundedHeight -> screenWidth * 2
           else -> constraints.maxHeight
-        }
+        }.coerceAtLeast(0)
 
         val maxContentWidth = when {
           builder.widthRatio > 0f ->
