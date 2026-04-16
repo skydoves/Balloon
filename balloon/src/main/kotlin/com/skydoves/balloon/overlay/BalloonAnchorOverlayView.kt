@@ -16,7 +16,6 @@
 
 package com.skydoves.balloon.overlay
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -35,6 +34,7 @@ import androidx.annotation.ColorInt
 import androidx.core.graphics.createBitmap
 import com.skydoves.balloon.BalloonOverlayPadding
 import com.skydoves.balloon.extensions.dimen
+import com.skydoves.balloon.extensions.findActivity
 import com.skydoves.balloon.internals.viewProperty
 
 /**
@@ -314,8 +314,9 @@ public class BalloonAnchorOverlayView @JvmOverloads constructor(
   private fun getStatusBarHeight(): Int {
     val rectangle = Rect()
     val context = context
-    return if (context is Activity) {
-      context.window.decorView.getWindowVisibleDisplayFrame(rectangle)
+    val activity = context.findActivity()
+    return if (activity != null) {
+      activity.window.decorView.getWindowVisibleDisplayFrame(rectangle)
       rectangle.top
     } else {
       0

@@ -18,7 +18,6 @@ package com.skydoves.balloon.extensions
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.app.Activity
 import android.graphics.Point
 import android.graphics.Rect
 import android.view.View
@@ -49,8 +48,9 @@ internal fun View.getViewPointOnScreen(): Point {
 internal fun View.getStatusBarHeight(isStatusBarVisible: Boolean): Int {
   val rectangle = Rect()
   val context = context
-  return if (context is Activity && isStatusBarVisible) {
-    context.window.decorView.getWindowVisibleDisplayFrame(rectangle)
+  val activity = context.findActivity()
+  return if (activity != null && isStatusBarVisible) {
+    activity.window.decorView.getWindowVisibleDisplayFrame(rectangle)
     rectangle.top
   } else {
     0
