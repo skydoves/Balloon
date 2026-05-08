@@ -294,7 +294,16 @@ public class RadiusLayout @JvmOverloads constructor(
 
       canvas.restoreToCount(save)
     } else {
-      super.dispatchDraw(canvas)
+      // Clip children to the rounded rect so user-provided layouts respect cornerRadius
+      // even when isClipArrowEnabled is false (issue #970).
+      if (radius > 0f && !path.isEmpty) {
+        val save = canvas.save()
+        canvas.clipPath(path)
+        super.dispatchDraw(canvas)
+        canvas.restoreToCount(save)
+      } else {
+        super.dispatchDraw(canvas)
+      }
     }
   }
 }
