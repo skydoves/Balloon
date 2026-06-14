@@ -62,3 +62,6 @@ freeline.py
 freeline/
 freeline_project_description.json
 .hotswan/
+
+# Claude Code task files
+tasks/

@@ -17,6 +17,8 @@ plugins {
   alias(libs.plugins.android.application) apply false
   alias(libs.plugins.android.library) apply false
   alias(libs.plugins.kotlin.android) apply false
+  alias(libs.plugins.kotlin.multiplatform) apply false
+  alias(libs.plugins.jetbrains.compose) apply false
   alias(libs.plugins.baseline.profile) apply false
   alias(libs.plugins.compose.compiler) apply false
   alias(libs.plugins.nexus.plugin)
@@ -26,7 +28,22 @@ plugins {
 }
 
 apiValidation {
-  ignoredProjects.addAll(listOf("app", "benchmark", "benchmark-app"))
+  ignoredProjects.addAll(
+    listOf(
+      "app",
+      "benchmark",
+      "benchmark-app",
+      "wasmApp",
+      "desktopApp",
+      "androidApp",
+      // The demo composable lives in this non-published module; nothing to validate.
+      "samples-shared",
+      // The KMP module's API surface is multi-target; binary-compat-validator
+      // baselines per-target which requires a full multi-target build to seed.
+      // Ignore until we add the api/ baseline (run `./gradlew :balloon-compose-multiplatform:apiDump`).
+      "balloon-compose-multiplatform",
+    ),
+  )
   ignoredPackages.add("com/skydoves/balloon/databinding")
   nonPublicMarkers.add("kotlin.PublishedApi")
 }
