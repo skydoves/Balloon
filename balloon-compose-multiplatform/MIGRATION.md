@@ -67,19 +67,26 @@ val style = rememberBalloonBuilder {
     setAnimationDurationMillis(250)
 }
 
-// Text content moves out of the builder and into the slot:
+// Text content moves out of the builder and into the balloonContent slot:
 val state = rememberBalloonState(style)
-Box(modifier = Modifier.balloon(state) {
-    Text(
-        text = "Tooltip text",
-        color = Color.White,
-    )
-}) { /* anchor */ }
+Balloon(
+    state = state,
+    balloonContent = {
+        Text(
+            text = "Tooltip text",
+            color = Color.White,
+        )
+    },
+) {
+    // anchor — the composable the balloon points at
+    Button(onClick = { state.showAlignTop() }) { Text("Show") }
+}
 ```
 
 The biggest mental shift: **content is a Compose slot now, not a builder
 property.** You no longer call `setText(...)` / `setTextColor(...)` — just put a
-`Text(...)` (or any composable) inside the `Modifier.balloon { ... }` lambda.
+`Text(...)` (or any composable) inside the `balloonContent { ... }` slot, and
+trigger it with `state.show*()` from the anchor.
 
 ## Setter mapping
 
@@ -123,7 +130,7 @@ property.** You no longer call `setText(...)` / `setTextColor(...)` — just put
 | `setMaxWidth(Int)` | `setMaxWidth(Dp)` | |
 | `setMeasuredWidth(Int)` | _not supported in KMP_ | Anti-pattern in Compose. |
 | `setHeight*` / `setSize*` / `setSizeResource` | _not supported in KMP_ | As above. |
-| `setText(CharSequence)` (+ `*Resource`) | _not a builder concern_ | Place a `Text(...)` inside the `Modifier.balloon { ... }` slot. |
+| `setText(CharSequence)` (+ `*Resource`) | _not a builder concern_ | Place a `Text(...)` inside the `balloonContent { ... }` slot. |
 | `setTextColor(@ColorInt)` (+ `*Resource`) | _not a builder concern_ | Set on the `Text(...)` itself. |
 | `setTextSize(Float)` (+ `*Resource`) | _not a builder concern_ | Use `MaterialTheme.typography` or `Text(fontSize = ...)`. |
 | `setTextIsHtml(...)` | _not supported in KMP_ | Use `AnnotatedString` / a Markdown library inside the slot. |
@@ -152,9 +159,9 @@ property.** You no longer call `setText(...)` / `setTextColor(...)` — just put
 | `setDismissWhenOverlayClicked(...)` | _not yet supported_ | See overlay note above. |
 | `setDismissWhenLifecycleOnPause(...)` | _not needed in KMP_ | Composition disposal handles this. |
 | `setShouldPassTouchEventToAnchor(...)` | _not yet supported_ | Pending popup-host design in commonMain. |
-| `setAutoDismissDuration(Long)` | _not yet supported_ | Use `LaunchedEffect(state) { delay(ms); state.dismiss() }`. |
+| `setAutoDismissDuration(Long)` | `setAutoDismissDuration(Long)` | Supported — auto-dismisses after the given delay in ms (pass `0L` to disable). |
 | `setLifecycleOwner(...)` / `setLifecycleObserver(...)` | _not needed in KMP_ | See above. |
-| `setBalloonAnimation(BalloonAnimation)` | `setBalloonAnimation(BalloonAnimation)` | Same enum; new module renames `CIRCULAR` → approximation, see `BalloonTransitions.kt`. |
+| `setBalloonAnimation(BalloonAnimation)` | `setBalloonAnimation(BalloonAnimation)` | Same enum; `CIRCULAR` is rendered as a scale approximation (see `BalloonTransitions.kt`). |
 | `setBalloonAnimationStyle(@StyleRes)` | _not supported in KMP_ | XML animation styles are Android-only. |
 | `setBalloonOverlayAnimation*` | _not yet supported_ | Tied to overlay support. |
 | `setCircularDuration(Long)` | `setAnimationDurationMillis(Int)` | Generalized to all animations. |

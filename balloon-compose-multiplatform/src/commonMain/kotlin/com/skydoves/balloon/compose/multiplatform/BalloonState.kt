@@ -126,6 +126,15 @@ public class BalloonState internal constructor(
    */
   internal var centerAlign: BalloonCenterAlign? by mutableStateOf(null)
 
+  /**
+   * Monotonically increasing counter bumped on every [show] / [showAtCenter]
+   * call — even when the balloon is already visible. The auto-dismiss timer
+   * keys on this so re-showing an already-visible balloon restarts the timeout
+   * instead of letting the original countdown run to completion.
+   */
+  internal var showGeneration: Int by mutableStateOf(0)
+    private set
+
   /** Returns whether the balloon is currently showing. */
   public val isShowing: Boolean
     get() = isVisible
@@ -160,6 +169,7 @@ public class BalloonState internal constructor(
     this.centerAlign = null
     this.align = align
     this.offset = DpOffset(xOffset, yOffset)
+    this.showGeneration++
     this.isVisible = true
   }
 
@@ -195,6 +205,7 @@ public class BalloonState internal constructor(
     this.centerAlign = centerAlign
     this.align = BalloonAlign.CENTER
     this.offset = DpOffset(xOffset, yOffset)
+    this.showGeneration++
     this.isVisible = true
   }
 

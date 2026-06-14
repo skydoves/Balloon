@@ -15,6 +15,7 @@
 @file:OptIn(ExperimentalWasmDsl::class)
 
 import com.skydoves.balloon.Configuration
+import java.net.URI
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 plugins {
@@ -120,6 +121,16 @@ android {
 
   lint {
     abortOnError = false
+  }
+}
+
+dokka {
+  moduleName.set("balloon-compose-multiplatform")
+  dokkaSourceSets.configureEach {
+    sourceLink {
+      remoteUrl.set(URI("https://github.com/skydoves/balloon"))
+      remoteLineSuffix.set("#L")
+    }
   }
 }
 

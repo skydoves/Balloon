@@ -38,14 +38,21 @@ apiValidation {
       "androidApp",
       // The demo composable lives in this non-published module; nothing to validate.
       "samples-shared",
-      // The KMP module's API surface is multi-target; binary-compat-validator
-      // baselines per-target which requires a full multi-target build to seed.
-      // Ignore until we add the api/ baseline (run `./gradlew :balloon-compose-multiplatform:apiDump`).
-      "balloon-compose-multiplatform",
     ),
   )
-  ignoredPackages.add("com/skydoves/balloon/databinding")
+  // Dot-separated FQN (not slash): the KLib ABI validator rejects slash-form
+  // package names as "illegal characters". Nothing public currently lives here
+  // (the `:balloon` viewBinding classes are non-public), so this is defensive.
+  ignoredPackages.add("com.skydoves.balloon.databinding")
   nonPublicMarkers.add("kotlin.PublishedApi")
+
+  // `balloon-compose-multiplatform` publishes klibs for the native/wasm targets
+  // in addition to the JVM/Android jars, so enable KLib ABI validation to baseline
+  // its full multi-target public surface (run `:balloon-compose-multiplatform:apiDump`).
+  @OptIn(kotlinx.validation.ExperimentalBCVApi::class)
+  klib {
+    enabled = true
+  }
 }
 
 subprojects {

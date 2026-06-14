@@ -27,7 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.platform.LocalDensity
@@ -91,8 +91,10 @@ internal fun BalloonContent(
   val density = LocalDensity.current
 
   val arrowOverlayModifier = if (needsArrowOverlay) {
-    Modifier.drawWithContent {
-      drawContent()
+    // `drawBehind` paints the arrow on the background fill but BEHIND the children
+    // (everything later in the chain), so a differently-colored arrow never covers
+    // the balloon content.
+    Modifier.drawBehind {
       val side = arrowOrientation.resolve(layoutDirection)
       val arrowPath = buildArrowTrianglePath(
         size = size,
@@ -129,16 +131,18 @@ internal fun BalloonContent(
     Modifier
   }
 
-  // Modifier order matters here. Modifiers earlier in the chain wrap later ones,
-  // so they draw ON TOP of later modifiers. We want:
-  //   1. Border drawn last (visually on top, over the background, NOT clipped).
-  //   2. Background filled to the shape outline.
-  //   3. Arrow overlay (if any) painted on top of the background fill but BEFORE
-  //      the clip + padding for children — sits inside the shape outline.
-  //   4. Children clipped to the shape so they can't overflow rounded corners.
-  //   5. Padding applied inside the clip so content stays within the shape.
-  // This ordering also avoids the bug where a `Modifier.clip(shape)` placed
-  // before `Modifier.border(...)` clips half of the border stroke.
+  // Modifier order matters here. For draw modifiers the EARLIER one is the outer
+  // node: `background` / `drawBehind` paint themselves first and let the rest of
+  // the chain draw on top, whereas `border` draws its content first and strokes
+  // last. The resulting bottom-to-top paint order is therefore:
+  //   1. Background filled to the shape outline (earliest `background`).
+  //   2. Arrow (if any) painted on the fill, BEHIND the children, and BEFORE the
+  //      clip so the protrusion outside the body isn't clipped away.
+  //   3. Children, clipped to the shape and padded inside it.
+  //   4. Border stroke on top of everything — it's the outer `border` node, so it
+  //      strokes last and is NOT clipped by the later `clip(shape)`.
+  // Keeping `border` ahead of `clip` is what stops `clip(shape)` from shaving off
+  // half of the centered border stroke.
   Box(
     modifier = Modifier
       .then(maxWidthModifier)

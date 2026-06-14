@@ -106,12 +106,13 @@ public fun Balloon(
   // so the popup-position-provider can read it via state observation.
   val anchorBoundsState: MutableState<IntRect?> = remember(key) { mutableStateOf(null) }
 
-  // Auto-dismiss after a configurable timeout. Keying on `state.isVisible` means
-  // the timer restarts every time the balloon becomes visible. Cancellation of
-  // this LaunchedEffect (e.g. visibility flips back to false early) cancels the
-  // delay automatically.
+  // Auto-dismiss after a configurable timeout. Keying on `state.showGeneration`
+  // (bumped by every show/showAtCenter, even while already visible) restarts the
+  // timer on each show, so re-showing a still-visible balloon gets a fresh
+  // countdown. Keying on `state.isVisible` additionally cancels the pending delay
+  // the moment the balloon is dismissed early.
   if (style.autoDismissMillis > 0L) {
-    LaunchedEffect(state, state.isVisible) {
+    LaunchedEffect(state, state.isVisible, state.showGeneration) {
       if (state.isVisible) {
         delay(style.autoDismissMillis)
         if (state.isVisible) state.dismiss()
