@@ -47,8 +47,17 @@ class PositionProviderTest {
   private val anchor = IntRect(left = 200, top = 200, right = 300, bottom = 260)
 
   // Derived once so the assertions read like the spec.
-  private val anchorCenterX = anchor.left + anchor.width / 2 // 250
   private val anchorCenterY = anchor.top + anchor.height / 2 // 230
+
+  // Centering assertions mirror the implementation's single-rounding form
+  // `left + (width - popup) / 2`. This is NOT the same as `center - popup / 2` for odd
+  // sizes (two truncations vs one), so asserting the impl form stops the test from
+  // silently drifting — see [bottomCentering_isExactForOddSizes].
+  private fun centeredX(popupWidth: Int, rect: IntRect = anchor): Int =
+    rect.left + (rect.width - popupWidth) / 2
+
+  private fun centeredY(popupHeight: Int, rect: IntRect = anchor): Int =
+    rect.top + (rect.height - popupHeight) / 2
 
   /** A large window so nothing clamps unless a test deliberately shrinks it. */
   private val bigWindow = IntSize(width = 1000, height = 1000)
@@ -94,7 +103,7 @@ class PositionProviderTest {
     val offset = calc(state, BalloonAlign.BOTTOM)
 
     // x centers the popup on the anchor; y meets the anchor's bottom edge.
-    assertEquals(anchorCenterX - popup.width / 2, offset.x)
+    assertEquals(centeredX(popup.width), offset.x)
     assertEquals(anchor.bottom, offset.y)
   }
 
@@ -103,7 +112,7 @@ class PositionProviderTest {
     val state = stateOf()
     val offset = calc(state, BalloonAlign.TOP)
 
-    assertEquals(anchorCenterX - popup.width / 2, offset.x)
+    assertEquals(centeredX(popup.width), offset.x)
     assertEquals(anchor.top - popup.height, offset.y)
   }
 
@@ -113,7 +122,7 @@ class PositionProviderTest {
     val offset = calc(state, BalloonAlign.START)
 
     assertEquals(anchor.left - popup.width, offset.x)
-    assertEquals(anchorCenterY - popup.height / 2, offset.y)
+    assertEquals(centeredY(popup.height), offset.y)
   }
 
   @Test
@@ -122,7 +131,7 @@ class PositionProviderTest {
     val offset = calc(state, BalloonAlign.END)
 
     assertEquals(anchor.right, offset.x)
-    assertEquals(anchorCenterY - popup.height / 2, offset.y)
+    assertEquals(centeredY(popup.height), offset.y)
   }
 
   @Test
@@ -169,7 +178,7 @@ class PositionProviderTest {
     val state = stateOf()
     val offset = calc(state, BalloonAlign.CENTER, centerAlign = BalloonCenterAlign.TOP)
 
-    assertEquals(anchorCenterX - popup.width / 2, offset.x)
+    assertEquals(centeredX(popup.width), offset.x)
     // popup bottom edge lands on the anchor's vertical center.
     assertEquals(anchorCenterY, offset.y + popup.height)
     // Arrow points back down at the anchor center.
@@ -181,7 +190,7 @@ class PositionProviderTest {
     val state = stateOf()
     val offset = calc(state, BalloonAlign.CENTER, centerAlign = BalloonCenterAlign.BOTTOM)
 
-    assertEquals(anchorCenterX - popup.width / 2, offset.x)
+    assertEquals(centeredX(popup.width), offset.x)
     assertEquals(anchorCenterY, offset.y)
     assertEquals(ArrowOrientation.TOP, state.resolvedArrowOrientation)
   }
@@ -289,5 +298,29 @@ class PositionProviderTest {
     assertEquals(rightAnchor.left - popup.width, offset.x) // flipped to sit on the left
     assertEquals(ArrowOrientation.START, state.resolvedArrowOrientation)
     assertEquals(ResolvedArrowSide.RIGHT, state.resolvedArrowOrientation?.resolve(rtl))
+  }
+
+  @Test
+  fun bottomCentering_isExactForOddSizes() {
+    // Odd popup width against the even 100-wide anchor: the impl's single-rounding form
+    // `left + (100 - 81) / 2` = 209, whereas `anchorCenterX - popup.width / 2` would give
+    // 210. Locks the exact rounding so a regression to the two-truncation form is caught.
+    val state = stateOf()
+    val oddPopup = IntSize(width = 81, height = 41)
+    val offset = calc(state, BalloonAlign.BOTTOM, popupSize = oddPopup)
+
+    assertEquals(209, offset.x)
+    assertEquals(centeredX(oddPopup.width), offset.x)
+    assertEquals(anchor.bottom, offset.y)
+  }
+
+  @Test
+  fun userOffset_shiftsBasePosition() {
+    val state = stateOf()
+    val userOffset = IntOffset(x = 12, y = -7)
+    val offset = calc(state, BalloonAlign.BOTTOM, userOffset = userOffset)
+
+    assertEquals(centeredX(popup.width) + userOffset.x, offset.x)
+    assertEquals(anchor.bottom + userOffset.y, offset.y)
   }
 }

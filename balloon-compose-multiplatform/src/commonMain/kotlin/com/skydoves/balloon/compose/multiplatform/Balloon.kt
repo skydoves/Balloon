@@ -62,7 +62,6 @@ internal fun BalloonContent(
       arrowHeight = effectiveArrowSize.height,
       arrowOrientation = arrowOrientation,
       arrowPositionRatio = arrowPositionRatio,
-      strokeThickness = style.borderThickness,
     )
   }
 
@@ -98,11 +97,11 @@ internal fun BalloonContent(
       val side = arrowOrientation.resolve(layoutDirection)
       val arrowPath = buildArrowTrianglePath(
         size = size,
+        cornerRadiusPx = with(density) { style.cornerRadius.toPx() },
         arrowWidthPx = with(density) { style.arrowSize.width.toPx() },
         arrowHeightPx = with(density) { style.arrowSize.height.toPx() },
         side = side,
         ratioInRect = arrowPositionRatio,
-        halfStrokePx = with(density) { (style.borderThickness / 2).toPx() },
       )
       drawPath(arrowPath, color = style.arrowColor)
     }
@@ -140,9 +139,9 @@ internal fun BalloonContent(
   //      clip so the protrusion outside the body isn't clipped away.
   //   3. Children, clipped to the shape and padded inside it.
   //   4. Border stroke on top of everything — it's the outer `border` node, so it
-  //      strokes last and is NOT clipped by the later `clip(shape)`.
-  // Keeping `border` ahead of `clip` is what stops `clip(shape)` from shaving off
-  // half of the centered border stroke.
+  //      strokes last. On an Outline.Generic, `border` draws an INNER-aligned stroke
+  //      (Stroke(width*2) then clears the outer half), so it sits flush against the
+  //      shape edge, fully inside the layout bounds — no inset needed and no gap.
   Box(
     modifier = Modifier
       .then(maxWidthModifier)

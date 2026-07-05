@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
-import androidx.compose.ui.window.PopupProperties
 import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
 
@@ -97,39 +96,7 @@ public fun Balloon(
   balloonContent: @Composable () -> Unit,
   content: @Composable () -> Unit,
 ) {
-  val style = state.style
-  val layoutDirection = LocalLayoutDirection.current
-  val density = LocalDensity.current
-  val currentBalloonContent by rememberUpdatedState(balloonContent)
-
-  // Local fast-path mirror of the anchor bounds. We also push it onto `state`
-  // so the popup-position-provider can read it via state observation.
   val anchorBoundsState: MutableState<IntRect?> = remember(key) { mutableStateOf(null) }
-
-  // Auto-dismiss after a configurable timeout. Keying on `state.showGeneration`
-  // (bumped by every show/showAtCenter, even while already visible) restarts the
-  // timer on each show, so re-showing a still-visible balloon gets a fresh
-  // countdown. Keying on `state.isVisible` additionally cancels the pending delay
-  // the moment the balloon is dismissed early.
-  if (style.autoDismissMillis > 0L) {
-    LaunchedEffect(state, state.isVisible, state.showGeneration) {
-      if (state.isVisible) {
-        delay(style.autoDismissMillis)
-        if (state.isVisible) state.dismiss()
-      }
-    }
-  }
-
-  val anchorBounds = anchorBoundsState.value
-
-  // Drive visibility through a transition state rather than gating the Popup
-  // directly on `state.isVisible`. If the Popup were born already-visible the
-  // enter transition would be skipped, and unmounting it on dismiss would skip
-  // the exit transition. Keeping the Popup mounted while the transition runs
-  // lets both animations play. See Fix A.
-  val visibleState = remember { MutableTransitionState(false) }
-  visibleState.targetState = state.isVisible
-  val popupActive = visibleState.currentState || visibleState.targetState || !visibleState.isIdle
 
   Box(
     modifier = modifier.onGloballyPositioned { coordinates ->
@@ -137,89 +104,142 @@ public fun Balloon(
       // Avoid recomposition cascades: only push when bounds actually change.
       if (anchorBoundsState.value != newBounds) {
         anchorBoundsState.value = newBounds
-        state.anchorBounds = newBounds
       }
     },
   ) {
     content()
+    // The popup layer MUST live inside this wrapper Box (never as a sibling of the
+    // anchor in the caller's Column/Row), so the zero-sized node `Popup` emits can't
+    // claim a spacing slot and shift the anchor.
+    BalloonPopupLayer(
+      state = state,
+      anchorBounds = anchorBoundsState.value,
+      balloonContent = balloonContent,
+    )
+  }
+}
 
-    if (popupActive && anchorBounds != null) {
-      val offsetPx = with(density) {
-        IntOffset(
-          state.offset.x.roundToPx(),
-          state.offset.y.roundToPx(),
+/**
+ * Emits the balloon [Popup] (with enter/exit animation and auto-dismiss) for [state],
+ * positioned against [anchorBounds]. Shared by the [Balloon] anchor wrapper and by
+ * [BalloonHost] (the `Modifier.balloon` path) so both render identically.
+ *
+ * Must be hosted inside a container that is NOT a spacing-based `Column`/`Row`
+ * (a plain `Box` is ideal): `Popup` emits a zero-sized node into the host
+ * composition, which would otherwise receive a spacing slot and shift its siblings.
+ */
+@Composable
+internal fun BalloonPopupLayer(
+  state: BalloonState,
+  anchorBounds: IntRect?,
+  balloonContent: @Composable () -> Unit,
+) {
+  val style = state.style
+  val layoutDirection = LocalLayoutDirection.current
+  val density = LocalDensity.current
+  val currentBalloonContent by rememberUpdatedState(balloonContent)
+
+  // Auto-dismiss after a configurable timeout. Keying on `state.showGeneration`
+  // (bumped by every show/showAtCenter, even while already visible) restarts the
+  // timer on each show; keying on `state.isVisible` cancels the pending delay the
+  // moment the balloon is dismissed early; keying on `style.autoDismissMillis` lets
+  // a changed timeout take effect without waiting for the next show.
+  if (style.autoDismissMillis > 0L) {
+    LaunchedEffect(state, state.isVisible, state.showGeneration, style.autoDismissMillis) {
+      if (state.isVisible) {
+        delay(style.autoDismissMillis)
+        if (state.isVisible) state.dismiss()
+      }
+    }
+  }
+
+  // Drive visibility through a transition state rather than gating the Popup directly
+  // on `state.isVisible`, so both the enter and exit animations get to play.
+  val visibleState = remember { MutableTransitionState(false) }
+  visibleState.targetState = state.isVisible
+  val popupActive = visibleState.currentState || visibleState.targetState || !visibleState.isIdle
+
+  if (popupActive && anchorBounds != null) {
+    val offsetPx = with(density) {
+      IntOffset(
+        state.offset.x.roundToPx(),
+        state.offset.y.roundToPx(),
+      )
+    }
+
+    val positionProvider =
+      remember(state.align, state.centerAlign, anchorBounds, offsetPx, style) {
+        BalloonPopupPositionProvider(
+          state = state,
+          anchorBounds = anchorBounds,
+          align = state.align,
+          centerAlign = state.centerAlign,
+          userOffsetPx = offsetPx,
         )
       }
 
-      val positionProvider =
-        remember(state.align, state.centerAlign, anchorBounds, offsetPx, style) {
-          BalloonPopupPositionProvider(
-            state = state,
-            anchorBounds = anchorBounds,
-            align = state.align,
-            centerAlign = state.centerAlign,
-            userOffsetPx = offsetPx,
-          )
+    // Prefer the orientation written back by the position provider (it accounts for
+    // flips when the requested side has no room); fall back to the align-derived
+    // orientation on the very first frame before the provider runs.
+    val resolvedOrientation =
+      state.resolvedArrowOrientation
+        ?: resolveArrowOrientation(state.align, style, layoutDirection)
+
+    // Pivot scale animations around the arrow edge so the balloon appears to grow
+    // from / collapse toward its arrow. When the placement flips, the resolved
+    // orientation already reflects the new edge, so the origin follows along. The
+    // dead-center overlay (CENTER align with no center-align side) has no arrow
+    // edge, so it falls back to the geometric center.
+    val transformOrigin =
+      remember(resolvedOrientation, state.align, state.centerAlign, layoutDirection) {
+        if (state.align == BalloonAlign.CENTER && state.centerAlign == null) {
+          TransformOrigin.Center
+        } else {
+          transformOriginForArrow(resolvedOrientation, layoutDirection)
         }
+      }
 
-      // Prefer the orientation written back by the position provider (it accounts
-      // for flips when the requested side has no room); fall back to the
-      // align-derived orientation on the very first frame before the provider runs.
-      val resolvedOrientation =
-        state.resolvedArrowOrientation
-          ?: resolveArrowOrientation(state.align, style, layoutDirection)
-
-      // Pivot scale animations around the arrow edge so the balloon appears to grow
-      // from / collapse toward its arrow. When the placement flips, the resolved
-      // orientation already reflects the new edge, so the origin follows along.
-      // The dead-center overlay (CENTER align with no center-align side) has no
-      // arrow edge, so it falls back to the geometric center.
-      val transformOrigin =
-        remember(resolvedOrientation, state.align, state.centerAlign, layoutDirection) {
-          if (state.align == BalloonAlign.CENTER && state.centerAlign == null) {
-            transformOriginFor(BalloonAlign.CENTER)
-          } else {
-            transformOriginForArrow(resolvedOrientation, layoutDirection)
-          }
-        }
-
-      Popup(
-        popupPositionProvider = positionProvider,
-        // Always provide a dismiss callback. PopupProperties decides which inputs
-        // (back-press, outside-click) actually trigger it; gating onDismissRequest
-        // here would suppress dismisses that the framework correctly invokes.
-        onDismissRequest = { state.dismiss() },
-        properties = PopupProperties(
-          // Focusable is required on Android for back-press to be captured by
-          // the Popup. We tie it to dismissOnBackPress so popups that don't need
-          // to dismiss on back-press don't steal IME / D-pad focus.
-          focusable = style.dismissOnBackPress,
-          dismissOnBackPress = style.dismissOnBackPress,
-          dismissOnClickOutside = style.dismissOnClickOutside,
+    Popup(
+      popupPositionProvider = positionProvider,
+      // Always provide a dismiss callback. PopupProperties decides which inputs
+      // (back-press, outside-click) actually trigger it; gating onDismissRequest
+      // here would suppress dismisses that the framework correctly invokes.
+      onDismissRequest = { state.dismiss() },
+      // Routed through expect/actual so the Skia targets can set
+      // `usePlatformInsets = false`. Our provider positions in raw window
+      // coordinates (from boundsInWindow), but skiko's Popup otherwise runs
+      // providers in an inset-excluded space and re-adds the system-bar insets,
+      // which would shift every balloon by the status-bar height on iOS.
+      properties = balloonPopupProperties(
+        // Focusable is required on Android for back-press to be captured by the
+        // Popup. We tie it to dismissOnBackPress so popups that don't need to
+        // dismiss on back-press don't steal IME / D-pad focus.
+        focusable = style.dismissOnBackPress,
+        dismissOnBackPress = style.dismissOnBackPress,
+        dismissOnClickOutside = style.dismissOnClickOutside,
+      ),
+    ) {
+      AnimatedVisibility(
+        visibleState = visibleState,
+        enter = balloonEnterTransition(
+          animation = style.animation,
+          durationMillis = style.animationDurationMillis,
+          transformOrigin = transformOrigin,
+        ),
+        exit = balloonExitTransition(
+          animation = style.animation,
+          durationMillis = style.animationDurationMillis,
+          transformOrigin = transformOrigin,
         ),
       ) {
-        AnimatedVisibility(
-          visibleState = visibleState,
-          enter = balloonEnterTransition(
-            animation = style.animation,
-            durationMillis = style.animationDurationMillis,
-            transformOrigin = transformOrigin,
-          ),
-          exit = balloonExitTransition(
-            animation = style.animation,
-            durationMillis = style.animationDurationMillis,
-            transformOrigin = transformOrigin,
-          ),
-        ) {
-          BalloonContent(
-            style = style,
-            arrowOrientation = resolvedOrientation,
-            // The provider writes resolvedArrowRatio = style.arrowPosition in the
-            // ALIGN_BALLOON case, so always reading it back is correct.
-            arrowPositionRatio = state.resolvedArrowRatio,
-            content = { currentBalloonContent() },
-          )
-        }
+        BalloonContent(
+          style = style,
+          arrowOrientation = resolvedOrientation,
+          // The provider writes resolvedArrowRatio = style.arrowPosition in the
+          // ALIGN_BALLOON case, so always reading it back is correct.
+          arrowPositionRatio = state.resolvedArrowRatio,
+          content = { currentBalloonContent() },
+        )
       }
     }
   }
@@ -264,7 +284,7 @@ private fun resolveArrowOrientation(
  * [Float.roundToInt] on each edge. Mirrors the rounding the framework uses
  * internally for popup placement.
  */
-private fun androidx.compose.ui.geometry.Rect.toIntRect(): IntRect = IntRect(
+internal fun androidx.compose.ui.geometry.Rect.toIntRect(): IntRect = IntRect(
   left = left.roundToInt(),
   top = top.roundToInt(),
   right = right.roundToInt(),

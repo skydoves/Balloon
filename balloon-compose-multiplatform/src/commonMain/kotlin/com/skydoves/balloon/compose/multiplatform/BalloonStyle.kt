@@ -84,7 +84,9 @@ public data class BalloonStyle(
 )
 
 /**
- * The default [BalloonStyle], matching the visual defaults of the original Android
- * `Balloon.Builder`. Useful as a starting point for `copy(...)`-based customization.
+ * The default [BalloonStyle] — sensible starting values in the spirit of the original
+ * Android `Balloon.Builder`, though not a byte-for-byte match (e.g. the background is a
+ * dark grey `#272727` rather than the View library's pure black, and the arrow is `15×12`).
+ * Useful as a starting point for `copy(...)`-based customization.
  */
 public val DefaultBalloonStyle: BalloonStyle = BalloonStyle()

@@ -22,12 +22,15 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.dp
 
 /**
  * A Compose [Shape] that draws a rounded rectangle with a triangular arrow notch
  * on one of its four edges — the same shape produced by `RadiusLayout` in the
  * Android-only Balloon library.
+ *
+ * Internal on purpose: it is only ever constructed by [BalloonContent] and provides
+ * nothing a consumer can't already configure through [BalloonStyle], so it is kept
+ * off the public ABI.
  *
  * @param cornerRadius radius of the rounded-rect corners.
  * @param arrowWidth width of the arrow base along the rect edge. `0.dp` disables the arrow.
@@ -39,17 +42,13 @@ import androidx.compose.ui.unit.dp
  * @param arrowPositionRatio fraction along the rect's width (TOP/BOTTOM) or
  *   height (START/END) where the arrow's center is anchored. Clamped so the arrow
  *   stays within the rounded portion of the edge.
- * @param strokeThickness thickness of an outer stroke. The outline is inset by
- *   `strokeThickness / 2` so a stroked draw stays inside the layout bounds.
- *   Pure fills can leave this at `0.dp`.
  */
-public class BalloonShape(
-  public val cornerRadius: Dp,
-  public val arrowWidth: Dp,
-  public val arrowHeight: Dp,
-  public val arrowOrientation: ArrowOrientation,
-  public val arrowPositionRatio: Float = 0.5f,
-  public val strokeThickness: Dp = 0.dp,
+internal class BalloonShape(
+  val cornerRadius: Dp,
+  val arrowWidth: Dp,
+  val arrowHeight: Dp,
+  val arrowOrientation: ArrowOrientation,
+  val arrowPositionRatio: Float = 0.5f,
 ) : Shape {
 
   override fun createOutline(
@@ -60,7 +59,6 @@ public class BalloonShape(
     val cornerRadiusPx = with(density) { cornerRadius.toPx() }
     val arrowWidthPx = with(density) { arrowWidth.toPx() }
     val arrowHeightPx = with(density) { arrowHeight.toPx() }
-    val halfStrokePx = with(density) { strokeThickness.toPx() } / 2f
 
     val side = arrowOrientation.resolve(layoutDirection)
 
@@ -71,7 +69,6 @@ public class BalloonShape(
       arrowHeightPx = arrowHeightPx,
       side = side,
       ratioInRect = arrowPositionRatio,
-      halfStrokePx = halfStrokePx,
     )
     return Outline.Generic(path)
   }
@@ -83,8 +80,7 @@ public class BalloonShape(
       arrowWidth == other.arrowWidth &&
       arrowHeight == other.arrowHeight &&
       arrowOrientation == other.arrowOrientation &&
-      arrowPositionRatio == other.arrowPositionRatio &&
-      strokeThickness == other.strokeThickness
+      arrowPositionRatio == other.arrowPositionRatio
   }
 
   override fun hashCode(): Int {
@@ -93,12 +89,11 @@ public class BalloonShape(
     result = 31 * result + arrowHeight.hashCode()
     result = 31 * result + arrowOrientation.hashCode()
     result = 31 * result + arrowPositionRatio.hashCode()
-    result = 31 * result + strokeThickness.hashCode()
     return result
   }
 
   override fun toString(): String =
     "BalloonShape(cornerRadius=$cornerRadius, arrowWidth=$arrowWidth, " +
       "arrowHeight=$arrowHeight, arrowOrientation=$arrowOrientation, " +
-      "arrowPositionRatio=$arrowPositionRatio, strokeThickness=$strokeThickness)"
+      "arrowPositionRatio=$arrowPositionRatio)"
 }

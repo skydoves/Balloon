@@ -37,7 +37,7 @@ import androidx.compose.ui.graphics.TransformOrigin
  *   pointing at an anchor, this should typically be on the side closest to the anchor
  *   (e.g., for a balloon BELOW the anchor with arrow pointing up, origin = (0.5f, 0f)).
  */
-public fun balloonEnterTransition(
+internal fun balloonEnterTransition(
   animation: BalloonAnimation,
   durationMillis: Int = 250,
   transformOrigin: TransformOrigin = TransformOrigin.Center,
@@ -90,7 +90,7 @@ public fun balloonEnterTransition(
  *   value used for [balloonEnterTransition] so the balloon collapses back toward its
  *   anchor side.
  */
-public fun balloonExitTransition(
+internal fun balloonExitTransition(
   animation: BalloonAnimation,
   durationMillis: Int = 200,
   transformOrigin: TransformOrigin = TransformOrigin.Center,

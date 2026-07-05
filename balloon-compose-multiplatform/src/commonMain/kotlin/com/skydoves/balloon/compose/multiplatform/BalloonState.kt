@@ -25,7 +25,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.first
 
@@ -95,13 +94,6 @@ public class BalloonState internal constructor(
    */
   public var offset: DpOffset by mutableStateOf(DpOffset.Zero)
     internal set
-
-  /**
-   * The anchor's bounds in window coordinates, captured by the [Balloon]
-   * anchor composable via `onGloballyPositioned`. `null` until the anchor has
-   * been laid out.
-   */
-  internal var anchorBounds: IntRect? by mutableStateOf(null)
 
   /**
    * The arrow orientation resolved by [BalloonPopupPositionProvider] after
@@ -210,12 +202,22 @@ public class BalloonState internal constructor(
   }
 
   /**
+   * Monotonically increasing counter bumped each time the balloon actually
+   * transitions from visible to hidden. [await] observes this (not just [isVisible])
+   * so a same-frame dismiss→show — where `snapshotFlow` would conflate the
+   * intermediate `false` away — still resumes the awaiting coroutine.
+   */
+  internal var dismissGeneration: Int by mutableStateOf(0)
+    private set
+
+  /**
    * Dismisses the balloon. If the balloon is already hidden this is a no-op
    * and [onDismiss] is NOT invoked.
    */
   public fun dismiss() {
     if (isVisible) {
       isVisible = false
+      dismissGeneration++
       onDismiss?.invoke()
     }
   }
@@ -234,7 +236,11 @@ public class BalloonState internal constructor(
    */
   public suspend fun await() {
     if (!isVisible) return
-    snapshotFlow { isVisible }.first { !it }
+    val startGeneration = dismissGeneration
+    // Observe a monotonic dismiss counter alongside `isVisible`: a same-frame
+    // dismiss→show conflates the intermediate `false` away in snapshotFlow, but the
+    // counter still advances, so the awaiter resumes on the dismiss that occurred.
+    snapshotFlow { !isVisible || dismissGeneration != startGeneration }.first { it }
   }
 
   /**
