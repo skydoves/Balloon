@@ -89,6 +89,9 @@ kotlin {
         implementation(libs.compose.multiplatform.foundation)
         implementation(libs.compose.multiplatform.ui)
         implementation(libs.compose.multiplatform.material)
+        // Ships the demo's profile picture to every target, so the shared demo renders the
+        // same image the Android-only `:app` demo loads from `R.drawable.sample0`.
+        implementation(libs.compose.multiplatform.resources)
       }
     }
     val commonTest by getting {
@@ -97,6 +100,13 @@ kotlin {
       }
     }
   }
+}
+
+// Pin the generated `Res` class so the shared demo can import it from common code.
+compose.resources {
+  publicResClass = false
+  packageOfResClass = "com.skydoves.balloon.compose.multiplatform.sample.resources"
+  generateResClass = auto
 }
 
 android {

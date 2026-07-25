@@ -20,6 +20,32 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Path
 
 /**
+ * The 1-device-pixel overlap between the arrow and the body, ported from
+ * `SIZE_ARROW_BOUNDARY` in the Android-only library.
+ */
+private const val ARROW_BOUNDARY_PX = 1f
+
+/**
+ * How far the arrow tip sticks out beyond the body rect, in pixels.
+ *
+ * The Android original lays the arrow out as an `ImageView` of exactly `arrowHeight`
+ * pixels whose base is pulled `SIZE_ARROW_BOUNDARY` (1px) *into* the body so no seam
+ * shows between the two — see `Balloon.updateArrow`, which positions the arrow at
+ * `card.y - arrowHeight + SIZE_ARROW_BOUNDARY` (TOP) or
+ * `card.y + card.height - SIZE_ARROW_BOUNDARY` (BOTTOM), while
+ * `Balloon.initializeBalloonContent` reserves `arrowHeight - SIZE_ARROW_BOUNDARY` of
+ * padding for it. The visible protrusion is therefore `arrowHeight - 1px`.
+ *
+ * Note this deliberately does NOT mirror `RadiusLayout.rebuildPath`, which uses
+ * `arrowHeight * 0.5f`: that code path only runs under the opt-in
+ * `setIsClipArrowEnabled(true)` mode, whereas the default (`isClipArrowEnabled = false`)
+ * renders through the `ImageView` arrow described above. Matching the default is what
+ * keeps a ported call-site pixel-identical.
+ */
+internal fun arrowProtrusionPx(arrowHeightPx: Float): Float =
+  (arrowHeightPx - ARROW_BOUNDARY_PX).coerceAtLeast(0f)
+
+/**
  * Build a rounded-rectangle-with-arrow [Path] inside a box of [size].
  *
  * This is a pure function ported from `RadiusLayout.rebuildPath()` in the original
@@ -58,9 +84,7 @@ internal fun buildBalloonPath(
 
   val hasArrow = arrowWidthPx > 0f && arrowHeightPx > 0f
 
-  // Mirror RadiusLayout: protrusion is half the arrow height, so the arrow tip extends
-  // protrusion px outside the body rect on the corresponding edge.
-  val protrusion = if (hasArrow) arrowHeightPx * 0.5f else 0f
+  val protrusion = if (hasArrow) arrowProtrusionPx(arrowHeightPx) else 0f
 
   val rectLeft = if (hasArrow && side == ResolvedArrowSide.LEFT) protrusion else 0f
   val rectTop = if (hasArrow && side == ResolvedArrowSide.TOP) protrusion else 0f
@@ -177,7 +201,7 @@ internal fun buildArrowTrianglePath(
   if (arrowWidthPx <= 0f || arrowHeightPx <= 0f) return path
   if (size.width <= 0f || size.height <= 0f) return path
 
-  val protrusion = arrowHeightPx * 0.5f
+  val protrusion = arrowProtrusionPx(arrowHeightPx)
   val rectLeft = if (side == ResolvedArrowSide.LEFT) protrusion else 0f
   val rectTop = if (side == ResolvedArrowSide.TOP) protrusion else 0f
   val rectRight = if (side == ResolvedArrowSide.RIGHT) size.width - protrusion else size.width

@@ -17,8 +17,10 @@
 package com.skydoves.balloon.kmpdemo
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import com.skydoves.balloon.compose.multiplatform.sample.BalloonDemoScreen
 
 /**
@@ -27,10 +29,21 @@ import com.skydoves.balloon.compose.multiplatform.sample.BalloonDemoScreen
  * This module deliberately lives alongside the existing `:app` (which uses the
  * AndroidX Compose stack) so the Compose-Multiplatform classpath stays isolated
  * from the legacy demo and there is no plugin / runtime conflict.
+ *
+ * The window setup mirrors `ComposeActivity` in `:app` — same `enableEdgeToEdge()`, same
+ * `Toast` feedback — so the two demos can be screenshotted and compared pixel for pixel.
  */
 class KmpBalloonActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
+    enableEdgeToEdge()
     super.onCreate(savedInstanceState)
-    setContent { BalloonDemoScreen() }
+
+    setContent {
+      BalloonDemoScreen(
+        onMessage = { message ->
+          Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+        },
+      )
+    }
   }
 }

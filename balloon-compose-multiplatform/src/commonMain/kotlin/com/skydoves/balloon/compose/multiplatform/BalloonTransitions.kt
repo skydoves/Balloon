@@ -18,9 +18,7 @@ package com.skydoves.balloon.compose.multiplatform
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -28,89 +26,86 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.ui.graphics.TransformOrigin
 
-/**
- * Returns an [EnterTransition] for the given [BalloonAnimation].
+/*
+ * Enter / exit transitions reproducing the window animations of the Android-only Balloon
+ * library one-for-one.
  *
- * @param animation The chosen animation type.
- * @param durationMillis Total transition duration.
- * @param transformOrigin The transform origin for scale-based animations. For balloons
- *   pointing at an anchor, this should typically be on the side closest to the anchor
- *   (e.g., for a balloon BELOW the anchor with arrow pointing up, origin = (0.5f, 0f)).
+ * The View implementation drives these through `PopupWindow.animationStyle`, i.e. the
+ * `Balloon_*_Anim` styles in `balloon/src/main/res/values/styles.xml`. Each branch below
+ * matches the corresponding `res/anim` resource — same duration, same interpolator, same
+ * scale endpoints, and (importantly) the same CENTRE pivot: every scale animation in the
+ * original uses `pivotX="50%" pivotY="50%"`, regardless of where the arrow sits.
+ *
+ * | animation | enter                                                    | exit                     |
+ * |-----------|----------------------------------------------------------|--------------------------|
+ * | NONE      | `balloon_none_in` — alpha 0→1, 0ms                        | `balloon_none_out`, 0ms  |
+ * | FADE      | `balloon_fade_in` — alpha 0→1, 200ms linear               | `balloon_fade_out`, 200ms|
+ * | ELASTIC   | `balloon_elastic_center` — scale .5→1, 250ms bounce       | `balloon_dispose_center` |
+ * | OVERSHOOT | `balloon_overshoot_center` — scale .5→1, 250ms overshoot  | `balloon_dispose_center` |
+ * | CIRCULAR  | circular reveal (see `Modifier.balloonCircularReveal`)    | `balloon_show_down_center`|
+ *
+ * `BalloonAnimation.CIRCULAR`'s enter is not expressible as an [EnterTransition]; it is a
+ * true clip-circle reveal applied by `Modifier.balloonCircularReveal` in `BalloonContent`,
+ * matching `ViewAnimationUtils.createCircularReveal`. Only its exit lives here — which is
+ * also what the View version does, since `Balloon_Normal_Dispose_Anim` declares an exit
+ * animation only.
+ */
+
+/** Duration of `balloon_fade_in` / `balloon_fade_out`. */
+private const val FADE_DURATION = 200
+
+/** Duration of `balloon_elastic_center`, `balloon_overshoot_center`, `balloon_dispose_center`. */
+private const val SCALE_DURATION = 250
+
+/** Duration of `balloon_show_down_center`, the CIRCULAR exit. */
+private const val SHOW_DOWN_DURATION = 200
+
+/** Initial scale of `balloon_elastic_center` / `balloon_overshoot_center`. */
+private const val SCALE_FROM = 0.5f
+
+/**
+ * Returns the [EnterTransition] matching the window enter animation of [animation].
+ *
+ * @param animation the chosen animation family.
  */
 internal fun balloonEnterTransition(
   animation: BalloonAnimation,
-  durationMillis: Int = 250,
-  transformOrigin: TransformOrigin = TransformOrigin.Center,
 ): EnterTransition = when (animation) {
   BalloonAnimation.NONE -> EnterTransition.None
-  BalloonAnimation.FADE -> fadeIn(animationSpec = tween(durationMillis))
-  BalloonAnimation.ELASTIC -> {
-    // Spring with a bouncy effect, mirroring the original `OvershootInterpolator(2f)`.
-    // Scale grows from 0.6 -> 1.0 and is paired with a fade so the bounce never reveals
-    // a partially-positioned balloon abruptly.
-    scaleIn(
-      animationSpec = spring(
-        dampingRatio = Spring.DampingRatioMediumBouncy,
-        stiffness = Spring.StiffnessMediumLow,
-      ),
-      initialScale = 0.6f,
-      transformOrigin = transformOrigin,
-    ) + fadeIn(animationSpec = tween(durationMillis))
-  }
-  BalloonAnimation.OVERSHOOT -> {
-    // Milder overshoot than ELASTIC: smaller scale delta and stiffer/less bouncy spring.
-    scaleIn(
-      animationSpec = spring(
-        dampingRatio = Spring.DampingRatioLowBouncy,
-        stiffness = Spring.StiffnessMedium,
-      ),
-      initialScale = 0.85f,
-      transformOrigin = transformOrigin,
-    ) + fadeIn(animationSpec = tween(durationMillis))
-  }
-  BalloonAnimation.CIRCULAR -> {
-    // Compose Multiplatform has no built-in circular reveal primitive, so we approximate
-    // it with a scale-from-zero on an eased curve combined with a short cross-fade. The
-    // [transformOrigin] parameter biases the growth direction toward the anchor side,
-    // which visually reads as a directional reveal rather than a centered pop.
-    scaleIn(
-      animationSpec = tween(durationMillis, easing = FastOutSlowInEasing),
-      initialScale = 0f,
-      transformOrigin = transformOrigin,
-    ) + fadeIn(animationSpec = tween(durationMillis / 2))
-  }
+  BalloonAnimation.FADE -> fadeIn(tween(FADE_DURATION, easing = LinearEasing))
+  BalloonAnimation.ELASTIC -> scaleIn(
+    animationSpec = tween(SCALE_DURATION, easing = BounceEasing),
+    initialScale = SCALE_FROM,
+    transformOrigin = TransformOrigin.Center,
+  )
+  BalloonAnimation.OVERSHOOT -> scaleIn(
+    animationSpec = tween(SCALE_DURATION, easing = OvershootEasing),
+    initialScale = SCALE_FROM,
+    transformOrigin = TransformOrigin.Center,
+  )
+  BalloonAnimation.CIRCULAR -> EnterTransition.None
 }
 
 /**
- * Returns an [ExitTransition] for the given [BalloonAnimation].
+ * Returns the [ExitTransition] matching the window exit animation of [animation].
  *
- * @param animation The chosen animation type.
- * @param durationMillis Total transition duration.
- * @param transformOrigin The transform origin for scale-based animations. Mirror of the
- *   value used for [balloonEnterTransition] so the balloon collapses back toward its
- *   anchor side.
+ * @param animation the chosen animation family.
  */
 internal fun balloonExitTransition(
   animation: BalloonAnimation,
-  durationMillis: Int = 200,
-  transformOrigin: TransformOrigin = TransformOrigin.Center,
 ): ExitTransition = when (animation) {
   BalloonAnimation.NONE -> ExitTransition.None
-  BalloonAnimation.FADE -> fadeOut(animationSpec = tween(durationMillis))
-  BalloonAnimation.ELASTIC, BalloonAnimation.OVERSHOOT -> {
-    // Use a deterministic tween on exit (no bounce) so the balloon dismisses cleanly even
-    // if a new show is queued immediately afterward.
-    scaleOut(
-      animationSpec = tween(durationMillis),
-      targetScale = 0.6f,
-      transformOrigin = transformOrigin,
-    ) + fadeOut(animationSpec = tween(durationMillis))
-  }
-  BalloonAnimation.CIRCULAR -> {
-    scaleOut(
-      animationSpec = tween(durationMillis, easing = FastOutSlowInEasing),
-      targetScale = 0f,
-      transformOrigin = transformOrigin,
-    ) + fadeOut(animationSpec = tween(durationMillis / 2))
-  }
+  BalloonAnimation.FADE -> fadeOut(tween(FADE_DURATION, easing = LinearEasing))
+  // `balloon_dispose_center`: scale 1 -> 0, 250ms, implicit accelerate/decelerate.
+  BalloonAnimation.ELASTIC, BalloonAnimation.OVERSHOOT -> scaleOut(
+    animationSpec = tween(SCALE_DURATION, easing = AccelerateDecelerateEasing),
+    targetScale = 0f,
+    transformOrigin = TransformOrigin.Center,
+  )
+  // `balloon_show_down_center`: scale 1 -> 0, 200ms, implicit accelerate/decelerate.
+  BalloonAnimation.CIRCULAR -> scaleOut(
+    animationSpec = tween(SHOW_DOWN_DURATION, easing = AccelerateDecelerateEasing),
+    targetScale = 0f,
+    transformOrigin = TransformOrigin.Center,
+  )
 }

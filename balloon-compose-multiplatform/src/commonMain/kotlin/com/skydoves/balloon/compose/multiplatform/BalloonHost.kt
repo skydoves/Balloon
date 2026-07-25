@@ -32,7 +32,10 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInWindow
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
+import kotlin.math.roundToInt
 
 /**
  * A single registered [Modifier.balloon] anchor: its [state], the latest captured
@@ -49,12 +52,27 @@ internal class BalloonEntry(val state: BalloonState) {
 }
 
 /**
- * Holds the [BalloonEntry]s registered by [Modifier.balloon] within one [BalloonHost].
- * Backed by a snapshot list so the host recomposes as anchors mount / unmount.
+ * A request for [BalloonHost] to draw an overlay scrim behind one balloon.
+ *
+ * Overlays cannot be drawn by the balloon's own `Popup` — see the KDoc on
+ * [BalloonOverlayScrim] — so every balloon that wants one, whether it came from
+ * [Modifier.balloon] or from the [Balloon] wrapper composable, registers here and the host
+ * draws it across its whole (full-window) Box.
+ */
+@Stable
+internal class BalloonOverlayRequest(val state: BalloonState) {
+  var anchorBounds: IntRect? by mutableStateOf(null)
+}
+
+/**
+ * Holds the [BalloonEntry]s registered by [Modifier.balloon], and the overlay requests
+ * registered by any balloon under this [BalloonHost]. Backed by snapshot lists so the host
+ * recomposes as anchors mount / unmount.
  */
 @Stable
 internal class BalloonRegistry {
   val entries = mutableStateListOf<BalloonEntry>()
+  val overlays = mutableStateListOf<BalloonOverlayRequest>()
 
   fun register(entry: BalloonEntry) {
     if (entry !in entries) entries.add(entry)
@@ -62,6 +80,14 @@ internal class BalloonRegistry {
 
   fun unregister(entry: BalloonEntry) {
     entries.remove(entry)
+  }
+
+  fun registerOverlay(request: BalloonOverlayRequest) {
+    if (request !in overlays) overlays.add(request)
+  }
+
+  fun unregisterOverlay(request: BalloonOverlayRequest) {
+    overlays.remove(request)
   }
 }
 
@@ -101,9 +127,36 @@ public fun BalloonHost(
   content: @Composable () -> Unit,
 ) {
   val registry = remember { BalloonRegistry() }
+  // Where this host sits in the window, so anchor bounds (captured in window coordinates)
+  // can be translated into the scrim's local drawing space.
+  var originInWindow by remember { mutableStateOf(IntOffset.Zero) }
   CompositionLocalProvider(LocalBalloonRegistry provides registry) {
-    Box(modifier) {
+    Box(
+      modifier = modifier.onGloballyPositioned { coordinates ->
+        val position = coordinates.positionInWindow()
+        val newOrigin = IntOffset(position.x.roundToInt(), position.y.roundToInt())
+        if (originInWindow != newOrigin) originInWindow = newOrigin
+      },
+    ) {
       content()
+
+      // Overlay scrims are drawn INSIDE this Box, above the content but below the balloon
+      // popups (which are separate windows and therefore always on top). A `Popup` cannot
+      // be used for them — see the KDoc on `BalloonOverlayScrim`.
+      registry.overlays.forEach { request ->
+        val bounds = request.anchorBounds
+        if (bounds != null) {
+          key(request) {
+            BalloonOverlayScrim(
+              state = request.state,
+              anchorBounds = bounds,
+              originInWindow = originInWindow,
+              visible = request.state.isVisible,
+            )
+          }
+        }
+      }
+
       registry.entries.forEach { entry ->
         key(entry) {
           BalloonPopupLayer(

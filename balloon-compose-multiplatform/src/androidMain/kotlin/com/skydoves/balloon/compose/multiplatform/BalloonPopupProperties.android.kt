@@ -19,9 +19,29 @@ package com.skydoves.balloon.compose.multiplatform
 import androidx.compose.ui.window.PopupProperties
 
 /**
- * Android's `Popup` positions providers directly in window coordinates (no platform-inset
+ * Android's `Popup` runs position providers directly in window coordinates (no platform-inset
  * translation), so a plain [PopupProperties] already matches the absolute coordinates our
- * position provider produces.
+ * position provider produces — with one exception, [PopupProperties.clippingEnabled].
+ *
+ * With clipping enabled (the framework default) `AndroidPopup` derives the `windowSize` it
+ * hands to `calculatePosition` from `View.getWindowVisibleDisplayFrame()`, which **excludes**
+ * the system bars, and clips the popup window to that same frame. Our anchor rectangles come
+ * from `LayoutCoordinates.boundsInWindow()`, which under `enableEdgeToEdge()` is measured
+ * from the physical top of the screen — so the two disagree by the status-bar height. The
+ * observable symptoms are:
+ *
+ * - a balloon near the bottom flips above its anchor although there is room below, because
+ *   `anchor.bottom + popupHeight > windowSize.height` fires a status-bar height too early;
+ * - the final on-screen clamp makes the bottom strip of the window unreachable;
+ * - the overlay scrim stops at the status bar instead of covering the whole screen, and its
+ *   anchor cut-out is displaced downward by exactly the status-bar height.
+ *
+ * Disabling clipping switches the framework to the full window bounds (on API 30+,
+ * `WindowMetrics.getBounds()`), which is the same coordinate space `boundsInWindow()` uses.
+ * Nothing is lost by turning it off: [BalloonPopupPositionProvider] already clamps the
+ * balloon inside the window itself, and honours [BalloonStyle.margin] while doing so.
+ *
+ * This is the Android counterpart of the Skia targets' `usePlatformInsets = false`.
  */
 internal actual fun balloonPopupProperties(
   focusable: Boolean,
@@ -31,4 +51,5 @@ internal actual fun balloonPopupProperties(
   focusable = focusable,
   dismissOnBackPress = dismissOnBackPress,
   dismissOnClickOutside = dismissOnClickOutside,
+  clippingEnabled = false,
 )

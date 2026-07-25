@@ -108,8 +108,11 @@ public class BalloonState internal constructor(
    * against the final on-screen placement. For `ALIGN_BALLOON` this stays at
    * [BalloonStyle.arrowPosition]; for `ALIGN_ANCHOR` (and center-align) the arrow
    * is re-anchored so it points at the anchor.
+   *
+   * `null` until the first placement pass of the CURRENT show, in which case the caller
+   * falls back to [BalloonStyle.arrowPosition].
    */
-  internal var resolvedArrowRatio: Float by mutableStateOf(0.5f)
+  internal var resolvedArrowRatio: Float? by mutableStateOf(null)
 
   /**
    * When the balloon is shown via [showAtCenter] / [awaitAtCenter], the side of
@@ -161,6 +164,11 @@ public class BalloonState internal constructor(
     this.centerAlign = null
     this.align = align
     this.offset = DpOffset(xOffset, yOffset)
+    // Clear the previous placement so the first frame of this show falls back to the
+    // align-derived orientation and the configured arrowPosition, instead of briefly
+    // drawing the arrow on the edge / at the ratio the PREVIOUS show resolved to.
+    this.resolvedArrowOrientation = null
+    this.resolvedArrowRatio = null
     this.showGeneration++
     this.isVisible = true
   }
@@ -197,6 +205,8 @@ public class BalloonState internal constructor(
     this.centerAlign = centerAlign
     this.align = BalloonAlign.CENTER
     this.offset = DpOffset(xOffset, yOffset)
+    this.resolvedArrowOrientation = null
+    this.resolvedArrowRatio = null
     this.showGeneration++
     this.isVisible = true
   }

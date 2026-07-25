@@ -14,20 +14,14 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<resources>
 
-  <application
-    android:allowBackup="true"
-    android:label="Balloon KMP Demo"
-    android:supportsRtl="true"
-    android:theme="@style/KmpDemoTheme">
-    <activity
-      android:name=".KmpBalloonActivity"
-      android:exported="true">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
-    </activity>
-  </application>
-</manifest>
+  <!--
+    Mirrors `AppTheme.NoActionBar` in the `:app` demo (a plain no-action-bar theme with a
+    white primary text colour) so the two demos put their content in an identically
+    configured window and can be compared pixel for pixel.
+  -->
+  <style name="KmpDemoTheme" parent="@android:style/Theme.Material.NoActionBar">
+    <item name="android:textColorPrimary">@android:color/white</item>
+  </style>
+</resources>

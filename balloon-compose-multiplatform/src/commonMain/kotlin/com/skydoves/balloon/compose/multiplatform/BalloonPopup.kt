@@ -20,6 +20,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -28,11 +29,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
@@ -153,9 +154,40 @@ internal fun BalloonPopupLayer(
     }
   }
 
+  // Overlays are drawn by BalloonHost across its whole Box, because a Popup's window
+  // cannot cover the system bars (see `BalloonOverlayScrim`). Both this layer's callers —
+  // `Modifier.balloon` and the `Balloon(...)` wrapper — therefore register the request here
+  // rather than emitting the scrim themselves.
+  val registry = LocalBalloonRegistry.current
+  if (style.isVisibleOverlay) {
+    checkNotNull(registry) {
+      "A balloon with setIsVisibleOverlay(true) must be shown inside a BalloonHost { ... }: " +
+        "the overlay scrim is drawn by the host so it can cover the whole window, which a " +
+        "Popup cannot do. Wrap your screen in BalloonHost."
+    }
+    val request = remember(state) { BalloonOverlayRequest(state) }
+    request.anchorBounds = anchorBounds
+    DisposableEffect(registry, request) {
+      registry.registerOverlay(request)
+      onDispose { registry.unregisterOverlay(request) }
+    }
+  }
+
+  // The anchor can leave the composition while the balloon is still showing (a LazyColumn
+  // item scrolling out of the viewport, a screen being navigated away from). Without this
+  // the popup would simply stop being composed while `isVisible` stayed true: `onDismiss`
+  // would never fire, `await()` would hang forever, and the next `toggle()` would dismiss
+  // instead of show. The Android reference does the same thing in `Modifier.balloon`'s
+  // `onDispose`, which calls `BalloonComposeView.dispose()` -> `balloon.dismiss()`.
+  DisposableEffect(state) {
+    onDispose { state.dismiss() }
+  }
+
   // Drive visibility through a transition state rather than gating the Popup directly
   // on `state.isVisible`, so both the enter and exit animations get to play.
-  val visibleState = remember { MutableTransitionState(false) }
+  // Keyed on `state` so swapping the BalloonState at this call-site starts from a clean
+  // transition rather than inheriting the previous balloon's animation progress.
+  val visibleState = remember(state) { MutableTransitionState(false) }
   visibleState.targetState = state.isVisible
   val popupActive = visibleState.currentState || visibleState.targetState || !visibleState.isIdle
 
@@ -167,14 +199,24 @@ internal fun BalloonPopupLayer(
       )
     }
 
+    // The framework's `windowSize` is NOT in the same coordinate space as the anchor
+    // rectangles: on Android it is derived from the popup window's own metrics and excludes
+    // the system bars, while `boundsInWindow()` measures from the top of an edge-to-edge
+    // window. Mixing them makes a balloon flip above its anchor although there is room
+    // below, and makes the bottom strip of the window unreachable by the final clamp. The
+    // container size is the app window's own size, i.e. exactly the space the anchor
+    // rectangles live in, so we use that and ignore the framework's value.
+    val windowSize = LocalWindowInfo.current.containerSize
+
     val positionProvider =
-      remember(state.align, state.centerAlign, anchorBounds, offsetPx, style) {
+      remember(state.align, state.centerAlign, anchorBounds, offsetPx, style, windowSize) {
         BalloonPopupPositionProvider(
           state = state,
           anchorBounds = anchorBounds,
           align = state.align,
           centerAlign = state.centerAlign,
           userOffsetPx = offsetPx,
+          windowSize = windowSize,
         )
       }
 
@@ -184,20 +226,6 @@ internal fun BalloonPopupLayer(
     val resolvedOrientation =
       state.resolvedArrowOrientation
         ?: resolveArrowOrientation(state.align, style, layoutDirection)
-
-    // Pivot scale animations around the arrow edge so the balloon appears to grow
-    // from / collapse toward its arrow. When the placement flips, the resolved
-    // orientation already reflects the new edge, so the origin follows along. The
-    // dead-center overlay (CENTER align with no center-align side) has no arrow
-    // edge, so it falls back to the geometric center.
-    val transformOrigin =
-      remember(resolvedOrientation, state.align, state.centerAlign, layoutDirection) {
-        if (state.align == BalloonAlign.CENTER && state.centerAlign == null) {
-          TransformOrigin.Center
-        } else {
-          transformOriginForArrow(resolvedOrientation, layoutDirection)
-        }
-      }
 
     Popup(
       popupPositionProvider = positionProvider,
@@ -211,33 +239,30 @@ internal fun BalloonPopupLayer(
       // providers in an inset-excluded space and re-adds the system-bar insets,
       // which would shift every balloon by the status-bar height on iOS.
       properties = balloonPopupProperties(
-        // Focusable is required on Android for back-press to be captured by the
-        // Popup. We tie it to dismissOnBackPress so popups that don't need to
-        // dismiss on back-press don't steal IME / D-pad focus.
-        focusable = style.dismissOnBackPress,
+        // Its own knob, mirroring the original `Balloon.Builder.setFocusable` (default
+        // true). Deriving it from `dismissOnBackPress` would be a trap: a balloon
+        // configured with `setDismissWhenTouchOutside(false)` would still be focusable and
+        // therefore touch-modal, which on iOS / Wasm (no back key) leaves the app with no
+        // way to dismiss it and every touch swallowed.
+        focusable = style.focusable,
         dismissOnBackPress = style.dismissOnBackPress,
         dismissOnClickOutside = style.dismissOnClickOutside,
       ),
     ) {
       AnimatedVisibility(
         visibleState = visibleState,
-        enter = balloonEnterTransition(
-          animation = style.animation,
-          durationMillis = style.animationDurationMillis,
-          transformOrigin = transformOrigin,
-        ),
-        exit = balloonExitTransition(
-          animation = style.animation,
-          durationMillis = style.animationDurationMillis,
-          transformOrigin = transformOrigin,
-        ),
+        enter = balloonEnterTransition(style.animation),
+        exit = balloonExitTransition(style.animation),
       ) {
         BalloonContent(
           style = style,
           arrowOrientation = resolvedOrientation,
           // The provider writes resolvedArrowRatio = style.arrowPosition in the
-          // ALIGN_BALLOON case, so always reading it back is correct.
-          arrowPositionRatio = state.resolvedArrowRatio,
+          // ALIGN_BALLOON case, so reading it back is correct once it has run; before the
+          // first placement pass of this show it is null and the configured position is
+          // the right fallback.
+          arrowPositionRatio = state.resolvedArrowRatio ?: style.arrowPosition,
+          onClick = { state.dismiss() },
           content = { currentBalloonContent() },
         )
       }
@@ -292,22 +317,6 @@ internal fun androidx.compose.ui.geometry.Rect.toIntRect(): IntRect = IntRect(
 )
 
 /**
- * Computes the [TransformOrigin] that scale-based transitions should pivot around
- * for a balloon whose (possibly flipped) arrow sits on the edge described by
- * [orientation]. The origin lands on that arrow edge so the balloon appears to
- * grow from / collapse toward its arrow regardless of any placement flip.
- */
-private fun transformOriginForArrow(
-  orientation: ArrowOrientation,
-  layoutDirection: LayoutDirection,
-): TransformOrigin = when (orientation.resolve(layoutDirection)) {
-  ResolvedArrowSide.TOP -> TransformOrigin(0.5f, 0f)
-  ResolvedArrowSide.BOTTOM -> TransformOrigin(0.5f, 1f)
-  ResolvedArrowSide.LEFT -> TransformOrigin(0f, 0.5f)
-  ResolvedArrowSide.RIGHT -> TransformOrigin(1f, 0.5f)
-}
-
-/**
  * Computes the popup offset from the captured anchor bounds, the requested
  * alignment, the arrow size and the user-supplied offset, and writes back the
  * resolved arrow orientation / ratio onto [state] so [BalloonContent] can draw
@@ -336,6 +345,7 @@ internal class BalloonPopupPositionProvider(
   private val align: BalloonAlign,
   private val centerAlign: BalloonCenterAlign?,
   private val userOffsetPx: IntOffset,
+  private val windowSize: IntSize,
 ) : PopupPositionProvider {
 
   override fun calculatePosition(
@@ -344,6 +354,10 @@ internal class BalloonPopupPositionProvider(
     layoutDirection: LayoutDirection,
     popupContentSize: IntSize,
   ): IntOffset {
+    // Deliberately shadowing the framework's `windowSize` parameter — see the call site for
+    // why the container size is the only one in the same coordinate space as the anchor.
+    @Suppress("NAME_SHADOWING")
+    val windowSize = this.windowSize
     // Note: the `anchorBounds` argument supplied by the framework is the bounds
     // of the *parent* of the Popup composable, which is not necessarily the
     // anchor we care about. We therefore use the captured [anchorBounds] from
@@ -353,8 +367,15 @@ internal class BalloonPopupPositionProvider(
     val isRtl = layoutDirection == LayoutDirection.Rtl
     val popupW = popupContentSize.width
     val popupH = popupContentSize.height
-    val anchorCenterX = captured.left + captured.width / 2
-    val anchorCenterY = captured.top + captured.height / 2
+    // `Balloon.calculateAlignOffset` halves every extent with `(x * 0.5f).roundToInt()`,
+    // so we round the same way instead of using integer division — otherwise odd anchor
+    // or popup sizes land one pixel off the View implementation.
+    val halfAnchorW = (captured.width * 0.5f).roundToInt()
+    val halfAnchorH = (captured.height * 0.5f).roundToInt()
+    val halfPopupW = (popupW * 0.5f).roundToInt()
+    val halfPopupH = (popupH * 0.5f).roundToInt()
+    val anchorCenterX = captured.left + halfAnchorW
+    val anchorCenterY = captured.top + halfAnchorH
 
     val maxX = (windowSize.width - popupW).coerceAtLeast(0)
     val maxY = (windowSize.height - popupH).coerceAtLeast(0)
@@ -372,30 +393,30 @@ internal class BalloonPopupPositionProvider(
       // flip (clamp still applies). The arrow points back at the anchor center.
       when (centerAlign.resolveAbsolute(isRtl)) {
         AbsoluteBalloonAlign.TOP -> {
-          baseX = anchorCenterX - popupW / 2
+          baseX = anchorCenterX - halfPopupW
           baseY = anchorCenterY - popupH
           orientation = ArrowOrientation.BOTTOM
         }
         AbsoluteBalloonAlign.BOTTOM -> {
-          baseX = anchorCenterX - popupW / 2
+          baseX = anchorCenterX - halfPopupW
           baseY = anchorCenterY
           orientation = ArrowOrientation.TOP
         }
         AbsoluteBalloonAlign.LEFT -> {
           baseX = anchorCenterX - popupW
-          baseY = anchorCenterY - popupH / 2
+          baseY = anchorCenterY - halfPopupH
           orientation = if (isRtl) ArrowOrientation.START else ArrowOrientation.END
         }
         else -> { // RIGHT
           baseX = anchorCenterX
-          baseY = anchorCenterY - popupH / 2
+          baseY = anchorCenterY - halfPopupH
           orientation = if (isRtl) ArrowOrientation.END else ArrowOrientation.START
         }
       }
     } else {
       when (align.resolveAbsolute(isRtl)) {
         AbsoluteBalloonAlign.TOP -> {
-          baseX = captured.left + (captured.width - popupW) / 2
+          baseX = captured.left + halfAnchorW - halfPopupW
           // Requested above: flip BELOW when there's no room above but room below.
           if (captured.top - popupH < 0 && captured.bottom + popupH <= windowSize.height) {
             baseY = captured.bottom
@@ -407,7 +428,7 @@ internal class BalloonPopupPositionProvider(
           }
         }
         AbsoluteBalloonAlign.BOTTOM -> {
-          baseX = captured.left + (captured.width - popupW) / 2
+          baseX = captured.left + halfAnchorW - halfPopupW
           // Requested below: flip ABOVE when there's no room below but room above.
           if (captured.bottom + popupH > windowSize.height && captured.top - popupH >= 0) {
             baseY = captured.top - popupH
@@ -419,7 +440,7 @@ internal class BalloonPopupPositionProvider(
           }
         }
         AbsoluteBalloonAlign.LEFT -> {
-          baseY = captured.top + (captured.height - popupH) / 2
+          baseY = captured.top + captured.height - halfPopupH - halfAnchorH
           // Requested left: flip RIGHT when there's no room left but room right.
           if (captured.left - popupW < 0 && captured.right + popupW <= windowSize.width) {
             baseX = captured.right
@@ -433,7 +454,7 @@ internal class BalloonPopupPositionProvider(
           }
         }
         AbsoluteBalloonAlign.RIGHT -> {
-          baseY = captured.top + (captured.height - popupH) / 2
+          baseY = captured.top + captured.height - halfPopupH - halfAnchorH
           // Requested right: flip LEFT when there's no room right but room left.
           if (captured.right + popupW > windowSize.width && captured.left - popupW >= 0) {
             baseX = captured.left - popupW
@@ -447,8 +468,8 @@ internal class BalloonPopupPositionProvider(
           }
         }
         else -> { // CENTER overlay (centerAlign == null): dead-center, no flip.
-          baseX = captured.left + (captured.width - popupW) / 2
-          baseY = captured.top + (captured.height - popupH) / 2
+          baseX = captured.left + halfAnchorW - halfPopupW
+          baseY = captured.top + captured.height - halfPopupH - halfAnchorH
           orientation = resolveArrowOrientation(align, style, layoutDirection)
         }
       }

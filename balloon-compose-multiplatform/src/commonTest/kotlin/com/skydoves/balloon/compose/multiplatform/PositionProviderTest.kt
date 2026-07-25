@@ -88,6 +88,7 @@ class PositionProviderTest {
       align = align,
       centerAlign = centerAlign,
       userOffsetPx = userOffset,
+      windowSize = window,
     )
     return provider.calculatePosition(
       anchorBounds = captured,
