@@ -1,5 +1,5 @@
 [versions]
-agp = "9.3.1"
+agp = "9.3.2"
 dokka = "2.2.0"
 kotlin = "2.3.10"
 kotlinBinaryCompatibility = "0.18.1"
