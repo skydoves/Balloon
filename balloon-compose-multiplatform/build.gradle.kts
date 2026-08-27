@@ -99,6 +99,18 @@ kotlin {
     val commonTest by getting {
       dependencies {
         implementation(kotlin("test"))
+        @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+        implementation(libs.compose.multiplatform.ui.test)
+        implementation(libs.compose.multiplatform.foundation)
+        implementation(libs.compose.multiplatform.ui)
+        implementation(libs.kotlinx.coroutines.test)
+      }
+    }
+    // `runComposeUiTest` renders through Skiko on the JVM, which needs the desktop
+    // runtime on the test classpath; `:desktopTest` is where the UI suite actually runs.
+    val desktopTest by getting {
+      dependencies {
+        implementation(compose.desktop.currentOs)
       }
     }
   }
