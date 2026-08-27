@@ -25,6 +25,8 @@ package com.skydoves.balloon.compose.multiplatform
  *   arrow points toward the anchor.
  * - [END]: balloon is shown on the trailing side of the anchor (right in LTR / left in RTL);
  *   arrow points toward the anchor.
+ * - [DROP_DOWN]: balloon is shown below the anchor with their leading edges aligned rather
+ *   than centered, mirroring the original `Balloon.showAsDropDown`; arrow points up.
  * - [CENTER]: balloon is rendered centered on top of the anchor (overlay-style). The
  *   arrow has no anchor edge to point at — call `setIsVisibleArrow(false)` (or set
  *   [BalloonStyle.isArrowVisible] to `false`) to hide it for a clean overlay.
@@ -34,5 +36,6 @@ public enum class BalloonAlign {
   BOTTOM,
   START,
   END,
+  DROP_DOWN,
   CENTER,
 }

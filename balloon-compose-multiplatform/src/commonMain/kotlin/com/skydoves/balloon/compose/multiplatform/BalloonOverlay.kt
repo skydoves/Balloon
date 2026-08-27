@@ -36,9 +36,11 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
+import androidx.compose.ui.unit.LayoutDirection
 import kotlin.math.max
 
 /**
@@ -114,13 +116,18 @@ internal fun BoxScope.BalloonOverlayScrim(
   visible: Boolean,
 ) {
   val style = state.style
+  val layoutDirection = LocalLayoutDirection.current
 
   // The View version animates the overlay window with `Balloon_Fade_Anim`
   // (`applyBalloonOverlayAnimation`, BalloonOverlayAnimation.FADE), so a plain alpha tween is
   // the faithful reproduction — and unlike `AnimatedVisibility` it adds no layout wrapper.
+  val fadeDuration = when (style.overlayAnimation) {
+    BalloonOverlayAnimation.NONE -> 0
+    BalloonOverlayAnimation.FADE -> OVERLAY_FADE_DURATION
+  }
   val animatedAlpha by animateFloatAsState(
     targetValue = if (visible) 1f else 0f,
-    animationSpec = tween(OVERLAY_FADE_DURATION, easing = LinearEasing),
+    animationSpec = tween(fadeDuration, easing = LinearEasing),
     label = "balloonOverlayAlpha",
   )
   if (animatedAlpha <= 0f) return
@@ -131,7 +138,10 @@ internal fun BoxScope.BalloonOverlayScrim(
       .pointerInput(style.dismissWhenOverlayClicked) {
         // The tap is consumed either way: the scrim is modal, exactly like the View version's
         // overlay window, so a touch must not fall through to the content below.
-        detectTapGestures { if (style.dismissWhenOverlayClicked) state.dismiss() }
+        detectTapGestures {
+          state.onOverlayClick?.invoke()
+          if (style.dismissWhenOverlayClicked) state.dismiss()
+        }
       }
       .graphicsLayer {
         alpha = animatedAlpha
@@ -139,7 +149,7 @@ internal fun BoxScope.BalloonOverlayScrim(
       }
       .drawBehind {
         drawRect(color = style.overlayColor)
-        drawAnchorCutout(style, anchorBounds, originInWindow)
+        drawAnchorCutout(style, anchorBounds, originInWindow, layoutDirection)
       },
   )
 }
@@ -149,15 +159,19 @@ private fun DrawScope.drawAnchorCutout(
   style: BalloonStyle,
   anchorBounds: IntRect,
   originInWindow: IntOffset,
+  layoutDirection: LayoutDirection,
 ) {
   if (style.overlayShape == BalloonOverlayShape.Empty) return
 
-  val pad = style.overlayPadding.toPx()
+  val padStart = style.overlayPadding.calculateLeftPadding(layoutDirection).toPx()
+  val padEnd = style.overlayPadding.calculateRightPadding(layoutDirection).toPx()
+  val padTop = style.overlayPadding.calculateTopPadding().toPx()
+  val padBottom = style.overlayPadding.calculateBottomPadding().toPx()
   val rect = Rect(
-    left = (anchorBounds.left - originInWindow.x) - pad,
-    top = (anchorBounds.top - originInWindow.y) - pad,
-    right = (anchorBounds.right - originInWindow.x) + pad,
-    bottom = (anchorBounds.bottom - originInWindow.y) + pad,
+    left = (anchorBounds.left - originInWindow.x) - padStart,
+    top = (anchorBounds.top - originInWindow.y) - padTop,
+    right = (anchorBounds.right - originInWindow.x) + padEnd,
+    bottom = (anchorBounds.bottom - originInWindow.y) + padBottom,
   )
   if (rect.width <= 0f || rect.height <= 0f) return
 

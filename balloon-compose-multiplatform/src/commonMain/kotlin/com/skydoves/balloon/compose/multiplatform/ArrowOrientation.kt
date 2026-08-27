@@ -51,6 +51,15 @@ internal fun ArrowOrientation.resolve(layoutDirection: LayoutDirection): Resolve
 }
 
 /**
+ * Whether the arrow protrudes along the vertical axis, i.e. sits on the TOP or BOTTOM edge.
+ *
+ * The axis is what decides how the popup reserves space around the body, so it is also what
+ * a placement flip must not change — see [BalloonPopupPositionProvider].
+ */
+internal val ArrowOrientation.isVertical: Boolean
+  get() = this == ArrowOrientation.TOP || this == ArrowOrientation.BOTTOM
+
+/**
  * Absolute resolution of an [ArrowOrientation] after taking layout direction into account.
  * Used internally by the path builder so it doesn't have to reason about RTL.
  */

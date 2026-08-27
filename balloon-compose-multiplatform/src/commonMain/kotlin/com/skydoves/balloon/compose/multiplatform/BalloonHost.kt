@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
@@ -47,7 +48,10 @@ internal class BalloonEntry(val state: BalloonState) {
   /** Anchor bounds in window coordinates, updated by the modifier's `onGloballyPositioned`. */
   var anchorBounds: IntRect? by mutableStateOf(null)
 
-  /** The balloon body; set once to a stable lambda that always reads the latest content. */
+  /**
+   * The balloon body; set once to a stable lambda that always reads the latest content —
+   * and re-provides the CompositionLocals that were in scope where the modifier was called.
+   */
   var content: @Composable () -> Unit by mutableStateOf({})
 }
 
@@ -198,8 +202,16 @@ public fun Modifier.balloon(
       "(or the subtree that contains your anchors) in BalloonHost."
   }
   val updatedContent by rememberUpdatedState(balloonContent)
+  // The body is composed by [BalloonHost], which sits ABOVE the anchor in the tree, so on
+  // its own it would read the host's `MaterialTheme` / `LocalLayoutDirection` /
+  // `LocalContentColor` instead of the anchor's. Capturing the locals here and re-providing
+  // them around the body puts it back in the caller's scope. (The Android original gets this
+  // for free by capturing a `rememberCompositionContext()` at the modifier call-site.)
+  val updatedLocals by rememberUpdatedState(currentCompositionLocalContext)
   val entry = remember(state, key) {
-    BalloonEntry(state).also { it.content = { updatedContent() } }
+    BalloonEntry(state).also {
+      it.content = { CompositionLocalProvider(updatedLocals) { updatedContent() } }
+    }
   }
   DisposableEffect(registry, entry) {
     registry.register(entry)

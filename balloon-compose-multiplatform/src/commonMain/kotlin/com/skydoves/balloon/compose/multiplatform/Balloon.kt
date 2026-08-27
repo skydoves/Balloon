@@ -30,7 +30,9 @@ import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
@@ -47,6 +49,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -55,59 +58,74 @@ import kotlin.math.max
 /**
  * Renders the balloon body — background, border, padding, sizing, margin, overlay-less
  * decorations and animations — around [content], using the shape derived from [style] and
- * the resolved [arrowOrientation] / [arrowPositionRatio].
+ * the resolved [arrowOrientation] / [arrowCenterFromCardStart].
  *
  * ## Box model
  *
  * The composable reproduces the View implementation's popup box so that a ported call-site
  * lands on the same pixels. In the original (`balloon_layout_body.xml` plus
- * `Balloon.initializeBalloonRoot` / `initializeBalloonContent`) the popup is:
+ * `Balloon.initializeBalloonRoot` / `initializeBalloonContent`) the popup is
  *
  * ```
- * popup ─ margin ─ arrow-reserve ─ card(padding ─ content)
+ * popup ─ margin ─ reserve ─ card(padding ─ content)
  * ```
  *
- * where the arrow reserve is `elevation` on the axis orthogonal to the arrow and
- * `effectiveArrowHeight - 1px` on the arrow axis. The reserve on the arrow axis is applied
- * on *both* sides in the original, but since the balloon is positioned by its popup edge on
- * the arrow side, the far-side reserve cancels out of the card's on-screen position — so
- * only the arrow-side protrusion (baked into [BalloonShape]) and the orthogonal `elevation`
- * inset are reproduced here.
+ * and `initializeBalloonContent` sets that reserve to
  *
- * That `elevation` inset is not decorative: it is what makes a wrap-width balloon stop
- * `2 * elevation` pixels short of the window edges, and what `setWidthRatio` measures
- * against.
+ * ```
+ * arrow axis: effectiveArrowHeight - 1px on BOTH sides
+ * cross axis: elevation on both sides
+ * ```
+ *
+ * Both are reproduced here, because both are load-bearing:
+ *
+ * - the reserve on the arrow side is the visible protrusion, and is carved into the shape;
+ * - the reserve on the far side and the cross-axis `elevation` are what make a wrap-width
+ *   balloon stop short of the window edges, and are what every width spec — `setWidth`,
+ *   `setWidthRatio`, `setMaxWidth`, … — is measured against, exactly as in the original
+ *   where those specs size the *popup*, not the card.
+ *
+ * The one deliberate departure: when the arrow is hidden the arrow-axis reserve collapses,
+ * so the body sits flush against its anchor. The View implementation reserves it regardless
+ * of `isVisibleArrow`, leaving an unexplained gap the size of an arrow nobody can see.
  *
  * This composable is intentionally pure (no popup, no anchor positioning); it is hosted
  * inside a `Popup` by [BalloonPopupLayer].
  *
  * @param style the resolved visual configuration.
  * @param arrowOrientation the final (possibly flipped) arrow edge.
- * @param arrowPositionRatio the final arrow position along that edge, `0f..1f`.
- * @param onClick invoked when the body is tapped and [BalloonStyle.dismissWhenClicked] is on.
+ * @param arrowCenterFromCardStart the arrow center, in pixels from the card's leading edge
+ *   along that side, as resolved by [BalloonPopupPositionProvider]. `null` centers the arrow.
+ * @param onClick invoked when the body is tapped.
  * @param content the balloon body.
  */
 @Composable
 internal fun BalloonContent(
   style: BalloonStyle,
   arrowOrientation: ArrowOrientation,
-  arrowPositionRatio: Float,
+  arrowCenterFromCardStart: Float?,
   onClick: () -> Unit,
   content: @Composable () -> Unit,
 ) {
-  // When the arrow is hidden, collapse arrow size to zero so BalloonShape falls back
-  // to a plain rounded rect (BalloonShapeBuilder already handles 0-sized arrows).
-  val effectiveArrowSize = if (style.isArrowVisible) style.arrowSize else DpSize.Zero
+  val layoutDirection = LocalLayoutDirection.current
+  val density = LocalDensity.current
+  val side = arrowOrientation.resolve(layoutDirection)
+  val arrowSize = style.effectiveArrowSize
+  val hasArrow = arrowSize != DpSize.Zero
 
-  val shape = remember(style, arrowOrientation, arrowPositionRatio) {
+  val shape = remember(style, arrowOrientation, arrowCenterFromCardStart) {
     BalloonShape(
       cornerRadius = style.cornerRadius,
-      arrowWidth = effectiveArrowSize.width,
-      arrowHeight = effectiveArrowSize.height,
+      arrowWidth = arrowSize.width,
+      arrowHeight = arrowSize.height,
       arrowOrientation = arrowOrientation,
-      arrowPositionRatio = arrowPositionRatio,
+      arrowCenterFromRectStart = arrowCenterFromCardStart,
     )
   }
+
+  // ---- The popup box around the card. See the KDoc: `protrusion` is carved out of the
+  // shape on the arrow side, the other three sides are padding on the outer Box.
+  val reserve = remember(style, side, density) { style.reserve(side, density) }
 
   val borderModifier = if (
     style.borderThickness > 0.dp && style.borderColor.isSpecified
@@ -118,15 +136,9 @@ internal fun BalloonContent(
   }
 
   // Decide whether the arrow needs a separate paint pass on top of the body fill.
-  val needsArrowOverlay = style.isArrowVisible &&
+  val needsArrowOverlay = hasArrow &&
     style.arrowColor.isSpecified &&
-    style.arrowColor != style.backgroundColor &&
-    style.arrowSize.width > 0.dp &&
-    style.arrowSize.height > 0.dp
-
-  val layoutDirection = LocalLayoutDirection.current
-  val density = LocalDensity.current
-  val side = arrowOrientation.resolve(layoutDirection)
+    style.arrowColor != style.backgroundColor
 
   val arrowOverlayModifier = if (needsArrowOverlay) {
     // `drawBehind` paints the arrow on the background fill but BEHIND the children
@@ -136,10 +148,10 @@ internal fun BalloonContent(
       val arrowPath = buildArrowTrianglePath(
         size = size,
         cornerRadiusPx = with(density) { style.cornerRadius.toPx() },
-        arrowWidthPx = with(density) { style.arrowSize.width.toPx() },
-        arrowHeightPx = with(density) { style.arrowSize.height.toPx() },
+        arrowWidthPx = with(density) { arrowSize.width.toPx() },
+        arrowHeightPx = with(density) { arrowSize.height.toPx() },
         side = side,
-        ratioInRect = arrowPositionRatio,
+        arrowCenterFromRectStart = arrowCenterFromCardStart,
       )
       drawPath(arrowPath, color = style.arrowColor)
     }
@@ -152,85 +164,116 @@ internal fun BalloonContent(
   // ADDITIONAL space, so we add a matching absolute padding on the arrow side (applied
   // inside the clip, after style.padding). `absolutePadding` keeps LEFT/RIGHT correct
   // under RTL.
-  val hasArrow = style.isArrowVisible &&
-    effectiveArrowSize.width > 0.dp &&
-    effectiveArrowSize.height > 0.dp
   val arrowSpacingModifier = if (hasArrow) {
-    val protrusion = with(density) {
-      arrowProtrusionPx(effectiveArrowSize.height.toPx()).toDp()
-    }
     when (side) {
-      ResolvedArrowSide.TOP -> Modifier.absolutePadding(top = protrusion)
-      ResolvedArrowSide.BOTTOM -> Modifier.absolutePadding(bottom = protrusion)
-      ResolvedArrowSide.LEFT -> Modifier.absolutePadding(left = protrusion)
-      ResolvedArrowSide.RIGHT -> Modifier.absolutePadding(right = protrusion)
+      ResolvedArrowSide.TOP -> Modifier.absolutePadding(top = reserve.protrusion)
+      ResolvedArrowSide.BOTTOM -> Modifier.absolutePadding(bottom = reserve.protrusion)
+      ResolvedArrowSide.LEFT -> Modifier.absolutePadding(left = reserve.protrusion)
+      ResolvedArrowSide.RIGHT -> Modifier.absolutePadding(right = reserve.protrusion)
     }
   } else {
     Modifier
   }
 
-  // ---- Sizing. Reproduces Balloon.getMeasuredWidth()/getWidthMeasureSpec(): every width
-  // spec is expressed against the window width minus the margins and the elevation inset,
-  // because those are part of the popup box in the original but not of the visible card.
-  val windowWidthPx = LocalWindowInfo.current.containerSize.width
-  val windowWidth = with(density) { windowWidthPx.toDp() }
+  // The far-side / cross-axis reserve, as padding on the outer Box.
+  val outerReserveModifier = when (side) {
+    ResolvedArrowSide.TOP -> Modifier.absolutePadding(
+      left = reserve.cross,
+      right = reserve.cross,
+      bottom = reserve.farSide,
+    )
+    ResolvedArrowSide.BOTTOM -> Modifier.absolutePadding(
+      left = reserve.cross,
+      right = reserve.cross,
+      top = reserve.farSide,
+    )
+    ResolvedArrowSide.LEFT -> Modifier.absolutePadding(
+      top = reserve.cross,
+      bottom = reserve.cross,
+      right = reserve.farSide,
+    )
+    ResolvedArrowSide.RIGHT -> Modifier.absolutePadding(
+      top = reserve.cross,
+      bottom = reserve.cross,
+      left = reserve.farSide,
+    )
+  }
+
+  // ---- Sizing. Every width spec describes the POPUP box, exactly like
+  // `Balloon.getMeasuredWidth()` / `getWidthMeasureSpec()`, which set `bodyWindow.width`.
+  // The inner Box is therefore the spec minus the margins and the outer reserve.
+  val windowWidth = with(density) { LocalWindowInfo.current.containerSize.width.toDp() }
   val marginHorizontal = style.margin.calculateLeftPadding(layoutDirection) +
     style.margin.calculateRightPadding(layoutDirection)
-  val reserveHorizontal = if (side == ResolvedArrowSide.TOP || side == ResolvedArrowSide.BOTTOM) {
-    BalloonElevationInset * 2
-  } else {
-    0.dp
-  }
-  val availableWidth = (windowWidth - marginHorizontal - reserveHorizontal).coerceAtLeast(0.dp)
+  val marginVertical = style.margin.calculateTopPadding() +
+    style.margin.calculateBottomPadding()
+
+  fun popupToInnerWidth(popupWidth: Dp): Dp =
+    (popupWidth - marginHorizontal - reserve.horizontalOuter).coerceAtLeast(0.dp)
 
   val sizeModifier = when {
-    // setWidthRatio: an EXACT width, measured against the whole window.
+    // setWidthRatio: an EXACT popup width, measured against the whole window.
     style.widthRatio > 0f ->
-      Modifier.requiredWidth(
-        (windowWidth * style.widthRatio - marginHorizontal - reserveHorizontal)
-          .coerceAtLeast(0.dp),
-      )
+      Modifier.requiredWidth(popupToInnerWidth(windowWidth * style.widthRatio))
 
-    // setWidth: an EXACT width, capped at what the window allows.
+    // setMinWidthRatio / setMaxWidthRatio: a wrap bounded by fractions of the window. The
+    // original checks these BEFORE setWidth, and defaults an unset max ratio to 1f.
+    style.minWidthRatio > 0f || style.maxWidthRatio > 0f -> {
+      val maxRatio = if (style.maxWidthRatio > 0f) style.maxWidthRatio else 1f
+      Modifier.widthIn(
+        min = popupToInnerWidth(windowWidth * style.minWidthRatio),
+        max = popupToInnerWidth(windowWidth * maxRatio),
+      )
+    }
+
+    // setWidth: an EXACT popup width, capped at the window.
     style.width != Dp.Unspecified ->
-      Modifier.requiredWidth(style.width.coerceAtMost(availableWidth))
+      Modifier.requiredWidth(popupToInnerWidth(style.width.coerceAtMost(windowWidth)))
 
     // Otherwise wrap, bounded by the min/max specs and the window.
     else -> {
-      val maxFromRatio =
-        if (style.maxWidthRatio > 0f) windowWidth * style.maxWidthRatio else Dp.Unspecified
-      val maxWidth = minOfDp(style.maxWidth, maxFromRatio, availableWidth)
-      val minFromRatio =
-        if (style.minWidthRatio > 0f) windowWidth * style.minWidthRatio else Dp.Unspecified
-      val minWidth = maxOfDp(style.minWidth, minFromRatio).coerceAtMost(maxWidth)
-      Modifier.widthIn(min = minWidth, max = maxWidth)
+      val maxPopup = minOfDp(style.maxWidth, windowWidth)
+      val minPopup = (
+        if (style.minWidth == Dp.Unspecified) 0.dp else style.minWidth
+        ).coerceAtMost(maxPopup)
+      Modifier.widthIn(
+        min = popupToInnerWidth(minPopup),
+        max = popupToInnerWidth(maxPopup),
+      )
     }
   }
 
-  val heightModifier =
-    if (style.height != Dp.Unspecified) Modifier.height(style.height) else Modifier
+  // setHeight likewise sizes the popup; the original applies no window clamp to it.
+  val heightModifier = if (style.height != Dp.Unspecified) {
+    Modifier.height(
+      (style.height - marginVertical - reserve.verticalOuter).coerceAtLeast(0.dp),
+    )
+  } else {
+    Modifier
+  }
 
   val alphaModifier =
     if (style.alpha != 1f) Modifier.graphicsLayer { alpha = style.alpha } else Modifier
 
-  val clickModifier = if (style.dismissWhenClicked) {
-    Modifier.pointerInput(Unit) { detectTapGestures { onClick() } }
-  } else {
-    Modifier
-  }
+  // `pointerInput` would otherwise hold on to the lambda it was first given; reading
+  // through `rememberUpdatedState` keeps the tap wired to the current listener and the
+  // current `dismissWhenClicked` without restarting the gesture detector.
+  val currentOnClick by rememberUpdatedState(onClick)
+  val clickModifier = Modifier.pointerInput(Unit) { detectTapGestures { currentOnClick() } }
 
   Box(
     modifier = Modifier
       // The margin is outside everything: it keeps the balloon off the window edges and is
       // part of the popup box, exactly like the `balloonWrapper` margins in the original.
       .padding(style.margin)
-      .padding(horizontal = reserveHorizontal / 2)
+      .then(outerReserveModifier)
       .then(alphaModifier)
       .balloonHighlight(
         animation = style.highlightAnimation,
         arrowSide = side,
         isArrowVisible = style.isArrowVisible,
         startDelayMillis = style.highlightAnimationStartDelayMillis,
+        rotate = style.rotateAnimation,
       )
       .balloonCircularReveal(
         enabled = style.animation == BalloonAnimation.CIRCULAR,
@@ -267,22 +310,48 @@ internal fun BalloonContent(
 }
 
 /**
- * The inset the View implementation reserves around the body on the axis orthogonal to the
- * arrow, taken from `Balloon.Builder.elevation`'s default of `2.dp` and applied by
- * `initializeBalloonContent`.
+ * The space the popup box holds around the visible card, split the way
+ * `Balloon.initializeBalloonContent` splits it.
  *
- * It is why a wrap-width balloon stops 2dp short of each window edge, and what
- * [BalloonStyle.widthRatio] is measured against.
+ * @property protrusion how far the arrow tip sticks out past the card, on the arrow side.
+ *   Carved into [BalloonShape] rather than added as padding, so the notch and the body are
+ *   one path.
+ * @property farSide the reserve on the side OPPOSITE the arrow.
+ * @property cross the reserve on each of the two sides orthogonal to the arrow.
  */
-private val BalloonElevationInset: Dp = 2.dp
+internal data class BalloonReserve(
+  val protrusion: Dp,
+  val farSide: Dp,
+  val cross: Dp,
+  val horizontalOuter: Dp,
+  val verticalOuter: Dp,
+)
+
+/** Computes the [BalloonReserve] for [side] at the current [density]. */
+internal fun BalloonStyle.reserve(side: ResolvedArrowSide, density: Density): BalloonReserve {
+  val arrowSize = effectiveArrowSize
+  val protrusion = if (arrowSize == DpSize.Zero) {
+    0.dp
+  } else {
+    with(density) { arrowProtrusionPx(arrowSize.height.toPx()).toDp() }
+  }
+  val elevationInset = elevation.coerceAtLeast(0.dp)
+  // `initializeBalloonContent` uses `paddingSize.coerceAtLeast(elevation)` on the far side,
+  // which also keeps a hidden arrow's box symmetric at exactly the elevation inset.
+  val farSide = maxOf(protrusion, elevationInset)
+  val horizontal = side == ResolvedArrowSide.LEFT || side == ResolvedArrowSide.RIGHT
+  return BalloonReserve(
+    protrusion = protrusion,
+    farSide = farSide,
+    cross = elevationInset,
+    horizontalOuter = if (horizontal) farSide else elevationInset * 2,
+    verticalOuter = if (horizontal) elevationInset * 2 else farSide,
+  )
+}
 
 /** Smallest of the given values; [Dp.Unspecified] entries are ignored. */
-private fun minOfDp(a: Dp, b: Dp, c: Dp): Dp =
-  listOf(a, b, c).filter { it != Dp.Unspecified }.minOrNull() ?: Dp.Infinity
-
-/** Largest of the given values, defaulting to `0.dp` when neither is specified. */
-private fun maxOfDp(a: Dp, b: Dp): Dp =
-  listOf(a, b).filter { it != Dp.Unspecified }.maxOrNull() ?: 0.dp
+private fun minOfDp(a: Dp, b: Dp): Dp =
+  listOf(a, b).filter { it != Dp.Unspecified }.minOrNull() ?: Dp.Infinity
 
 /**
  * Reproduces `ViewAnimationUtils.createCircularReveal`, which the View implementation runs
@@ -359,6 +428,9 @@ public object Balloon {
     private var arrowOrientation: ArrowOrientation? = null
     private var arrowPosition: Float = 0.5f
     private var arrowPositionRules: ArrowPositionRules = ArrowPositionRules.ALIGN_BALLOON
+    private var arrowOrientationRules: ArrowOrientationRules = ArrowOrientationRules.ALIGN_ANCHOR
+    private var arrowAlignAnchorPadding: Dp = 0.dp
+    private var arrowAlignAnchorPaddingRatio: Float = 2.5f
     private var isArrowVisible: Boolean = true
     private var backgroundColor: Color = Color.Black
     private var arrowColor: Color = Color.Unspecified
@@ -372,6 +444,7 @@ public object Balloon {
     private var marginTop: Dp = 0.dp
     private var marginEnd: Dp = 0.dp
     private var marginBottom: Dp = 0.dp
+    private var elevation: Dp = 2.dp
     private var width: Dp = Dp.Unspecified
     private var widthRatio: Float = 0f
     private var minWidthRatio: Float = 0f
@@ -383,13 +456,19 @@ public object Balloon {
     private var circularDurationMillis: Long = 500L
     private var highlightAnimation: BalloonHighlightAnimation = BalloonHighlightAnimation.NONE
     private var highlightAnimationStartDelayMillis: Long = 0L
+    private var rotateAnimation: BalloonRotateAnimation = BalloonRotateAnimation()
     private var alpha: Float = 1f
     private var isVisibleOverlay: Boolean = false
     private var overlayColor: Color = Color.Transparent
-    private var overlayPadding: Dp = 0.dp
+    private var overlayPaddingStart: Dp = 0.dp
+    private var overlayPaddingTop: Dp = 0.dp
+    private var overlayPaddingEnd: Dp = 0.dp
+    private var overlayPaddingBottom: Dp = 0.dp
     private var overlayShape: BalloonOverlayShape = BalloonOverlayShape.Oval
+    private var overlayAnimation: BalloonOverlayAnimation = BalloonOverlayAnimation.FADE
     private var dismissWhenOverlayClicked: Boolean = true
     private var dismissWhenClicked: Boolean = false
+    private var dismissWhenShowAgain: Boolean = false
     private var focusable: Boolean = true
     private var dismissOnClickOutside: Boolean = true
     private var dismissOnBackPress: Boolean = true
@@ -438,7 +517,35 @@ public object Balloon {
       arrowPositionRules = value
     }
 
-    /** Whether the arrow notch is rendered. When false, the balloon is a plain rounded rectangle. */
+    /**
+     * Sets whether the arrow edge may follow the balloon when a lack of room flips it to the
+     * opposite side. Only has an effect together with [setArrowOrientation].
+     */
+    public fun setArrowOrientationRules(value: ArrowOrientationRules): Builder = apply {
+      arrowOrientationRules = value
+    }
+
+    /**
+     * Sets the extra clearance kept between the arrow and the balloon's corners under
+     * [ArrowPositionRules.ALIGN_ANCHOR].
+     */
+    public fun setArrowAlignAnchorPadding(value: Dp): Builder = apply {
+      arrowAlignAnchorPadding = value
+    }
+
+    /**
+     * Sets the multiplier on the arrow's own size in the `ALIGN_ANCHOR` clamp: the arrow
+     * never comes closer to a corner than `arrowSize * value + arrowAlignAnchorPadding`.
+     */
+    public fun setArrowAlignAnchorPaddingRatio(value: Float): Builder = apply {
+      arrowAlignAnchorPaddingRatio = value
+    }
+
+    /**
+     * Whether the arrow notch is rendered. When false the balloon is a plain rounded
+     * rectangle AND the space the arrow would have occupied is released, so the body sits
+     * flush against its anchor.
+     */
     public fun setIsVisibleArrow(value: Boolean): Builder = apply { isArrowVisible = value }
 
     /** Sets the balloon body fill color. */
@@ -486,6 +593,18 @@ public object Balloon {
       paddingTop = value
       paddingBottom = value
     }
+
+    /** Sets the start padding. */
+    public fun setPaddingStart(value: Dp): Builder = apply { paddingStart = value }
+
+    /** Sets the top padding. */
+    public fun setPaddingTop(value: Dp): Builder = apply { paddingTop = value }
+
+    /** Sets the end padding. */
+    public fun setPaddingEnd(value: Dp): Builder = apply { paddingEnd = value }
+
+    /** Sets the bottom padding. */
+    public fun setPaddingBottom(value: Dp): Builder = apply { paddingBottom = value }
 
     /** Sets a uniform margin on all four sides, keeping the balloon off the window edges. */
     public fun setMargin(value: Dp): Builder = apply {
@@ -560,8 +679,30 @@ public object Balloon {
      */
     public fun setHeight(value: Dp): Builder = apply { height = value }
 
-    /** Sets the enter / exit transition family. */
-    public fun setBalloonAnimation(value: BalloonAnimation): Builder = apply { animation = value }
+    /** Sets a fixed body width and height at once. */
+    public fun setSize(width: Dp, height: Dp): Builder = apply {
+      this.width = width
+      this.height = height
+    }
+
+    /**
+     * Sets the inset reserved on the axis orthogonal to the arrow, mirroring
+     * `Balloon.Builder.setElevation` (default `2.dp`). It is part of the popup box the width
+     * specs measure against; pass `0.dp` for a body that fills its width spec exactly.
+     */
+    public fun setElevation(value: Dp): Builder = apply { elevation = value }
+
+    /**
+     * Sets the enter / exit transition family.
+     *
+     * Mirrors the original's side effect: [BalloonAnimation.CIRCULAR] also turns
+     * [setFocusable] off, because a focusable popup would swallow the touches the reveal is
+     * meant to play under.
+     */
+    public fun setBalloonAnimation(value: BalloonAnimation): Builder = apply {
+      animation = value
+      if (value == BalloonAnimation.CIRCULAR) focusable = false
+    }
 
     /** Sets the duration of the [BalloonAnimation.CIRCULAR] reveal, in milliseconds. */
     public fun setCircularDuration(value: Long): Builder = apply {
@@ -577,6 +718,11 @@ public object Balloon {
       highlightAnimationStartDelayMillis = startDelayMillis.coerceAtLeast(0L)
     }
 
+    /** Sets the parameters of [BalloonHighlightAnimation.ROTATE]. */
+    public fun setBalloonRotationAnimation(value: BalloonRotateAnimation): Builder = apply {
+      rotateAnimation = value
+    }
+
     /** Sets the opacity of the whole balloon body, `0f..1f`. */
     public fun setAlpha(value: Float): Builder = apply { alpha = value.coerceIn(0f, 1f) }
 
@@ -587,7 +733,25 @@ public object Balloon {
     public fun setOverlayColor(value: Color): Builder = apply { overlayColor = value }
 
     /** Sets extra space added around the anchor before the cut-out shape is drawn. */
-    public fun setOverlayPadding(value: Dp): Builder = apply { overlayPadding = value }
+    public fun setOverlayPadding(value: Dp): Builder = apply {
+      overlayPaddingStart = value
+      overlayPaddingTop = value
+      overlayPaddingEnd = value
+      overlayPaddingBottom = value
+    }
+
+    /** Sets directional space added around the anchor before the cut-out shape is drawn. */
+    public fun setOverlayPadding(start: Dp, top: Dp, end: Dp, bottom: Dp): Builder = apply {
+      overlayPaddingStart = start
+      overlayPaddingTop = top
+      overlayPaddingEnd = end
+      overlayPaddingBottom = bottom
+    }
+
+    /** Sets how the overlay scrim appears and disappears. */
+    public fun setBalloonOverlayAnimation(value: BalloonOverlayAnimation): Builder = apply {
+      overlayAnimation = value
+    }
 
     /** Sets the shape of the anchor cut-out in the overlay scrim. */
     public fun setOverlayShape(value: BalloonOverlayShape): Builder = apply {
@@ -605,6 +769,14 @@ public object Balloon {
     }
 
     /**
+     * Whether showing an already-visible balloon dismisses it instead of re-showing it in
+     * place. Mirrors `setDismissWhenShowAgain`.
+     */
+    public fun setDismissWhenShowAgain(value: Boolean): Builder = apply {
+      dismissWhenShowAgain = value
+    }
+
+    /**
      * Whether the balloon's window takes input focus, mirroring the original `setFocusable`
      * (which also defaults to `true`).
      *
@@ -614,9 +786,15 @@ public object Balloon {
      */
     public fun setFocusable(value: Boolean): Builder = apply { focusable = value }
 
-    /** Whether tapping outside the balloon should dismiss it. */
+    /**
+     * Whether tapping outside the balloon should dismiss it.
+     *
+     * Mirrors the original's side effect: turning this off also turns [setFocusable] off, so
+     * a balloon that ignores outside taps does not sit there swallowing them either.
+     */
     public fun setDismissWhenTouchOutside(value: Boolean): Builder = apply {
       dismissOnClickOutside = value
+      if (!value) focusable = false
     }
 
     /** Whether the back button / Escape key should dismiss the balloon. */
@@ -640,6 +818,9 @@ public object Balloon {
       arrowOrientation = arrowOrientation,
       arrowPosition = arrowPosition,
       arrowPositionRules = arrowPositionRules,
+      arrowOrientationRules = arrowOrientationRules,
+      arrowAlignAnchorPadding = arrowAlignAnchorPadding,
+      arrowAlignAnchorPaddingRatio = arrowAlignAnchorPaddingRatio,
       isArrowVisible = isArrowVisible,
       backgroundColor = backgroundColor,
       arrowColor = arrowColor,
@@ -657,6 +838,7 @@ public object Balloon {
         end = marginEnd,
         bottom = marginBottom,
       ),
+      elevation = elevation,
       width = width,
       widthRatio = widthRatio,
       minWidthRatio = minWidthRatio,
@@ -668,13 +850,21 @@ public object Balloon {
       circularDurationMillis = circularDurationMillis,
       highlightAnimation = highlightAnimation,
       highlightAnimationStartDelayMillis = highlightAnimationStartDelayMillis,
+      rotateAnimation = rotateAnimation,
       alpha = alpha,
       isVisibleOverlay = isVisibleOverlay,
       overlayColor = overlayColor,
-      overlayPadding = overlayPadding,
+      overlayPadding = PaddingValues(
+        start = overlayPaddingStart,
+        top = overlayPaddingTop,
+        end = overlayPaddingEnd,
+        bottom = overlayPaddingBottom,
+      ),
       overlayShape = overlayShape,
+      overlayAnimation = overlayAnimation,
       dismissWhenOverlayClicked = dismissWhenOverlayClicked,
       dismissWhenClicked = dismissWhenClicked,
+      dismissWhenShowAgain = dismissWhenShowAgain,
       focusable = focusable,
       dismissOnClickOutside = dismissOnClickOutside,
       dismissOnBackPress = dismissOnBackPress,

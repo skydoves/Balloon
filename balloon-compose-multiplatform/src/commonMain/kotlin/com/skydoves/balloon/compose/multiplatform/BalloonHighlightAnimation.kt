@@ -16,6 +16,7 @@
 
 package com.skydoves.balloon.compose.multiplatform
 
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.InfiniteRepeatableSpec
 import androidx.compose.animation.core.InfiniteTransition
 import androidx.compose.animation.core.LinearEasing
@@ -33,7 +34,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.unit.LayoutDirection
 import kotlinx.coroutines.delay
 
 /**
@@ -50,12 +50,14 @@ import kotlinx.coroutines.delay
  * - [SHAKE]: translates 13% of the balloon's size toward the arrow edge and back over 650ms
  *   (`balloon_shake_*`).
  * - [BREATH]: fades between 75% and 100% alpha over 800ms (`balloon_fade`).
+ * - [ROTATE]: spins the balloon in 3D, configured by [BalloonStyle.rotateAnimation].
  */
 public enum class BalloonHighlightAnimation {
   NONE,
   HEARTBEAT,
   SHAKE,
   BREATH,
+  ROTATE,
 }
 
 /** Duration of `balloon_heartbeat_*` and `balloon_fade`. */
@@ -88,6 +90,7 @@ private const val SHAKE_DELTA_FRACTION = 0.13f
  * @param isArrowVisible when false, HEARTBEAT falls back to `balloon_heartbeat_center`.
  * @param startDelayMillis delay before the animation starts, mirroring
  *   `balloonHighlightAnimationStartDelay`.
+ * @param rotate parameters for [BalloonHighlightAnimation.ROTATE]; ignored otherwise.
  */
 @Composable
 internal fun Modifier.balloonHighlight(
@@ -95,6 +98,7 @@ internal fun Modifier.balloonHighlight(
   arrowSide: ResolvedArrowSide,
   isArrowVisible: Boolean,
   startDelayMillis: Long,
+  rotate: BalloonRotateAnimation,
 ): Modifier {
   if (animation == BalloonHighlightAnimation.NONE) return this
 
@@ -109,10 +113,15 @@ internal fun Modifier.balloonHighlight(
   }
   if (!started) return this
 
+  // ROTATE is the one highlight that does not repeat in reverse — `BalloonRotateAnimation`
+  // is a plain `Animation` with RESTART repeat and a bounded loop count — so it is driven by
+  // its own `Animatable` rather than the shared infinite transition below.
+  if (animation == BalloonHighlightAnimation.ROTATE) return this.balloonRotate(rotate)
+
   val transition = rememberInfiniteTransition(label = "balloonHighlight")
 
   return when (animation) {
-    BalloonHighlightAnimation.NONE -> this
+    BalloonHighlightAnimation.NONE, BalloonHighlightAnimation.ROTATE -> this
 
     BalloonHighlightAnimation.HEARTBEAT -> {
       val scale by transition.animateFloatReverse(
@@ -173,6 +182,42 @@ internal fun Modifier.balloonHighlight(
 }
 
 /**
+ * Drives [BalloonHighlightAnimation.ROTATE].
+ *
+ * `BalloonRotateAnimation` in the Android original runs an `android.graphics.Camera` from a
+ * plain `Animation`: `degree{X,Y,Z} * interpolatedTime` about the view's center, over
+ * `speeds` ms, repeating `loops` times with the default RESTART mode and the default
+ * accelerate/decelerate interpolator. `graphicsLayer`'s `rotationX/Y/Z` apply the same
+ * camera projection (its `cameraDistance` default of `8f` matches `Camera`'s default
+ * location), so the two produce the same motion.
+ */
+@Composable
+private fun Modifier.balloonRotate(rotate: BalloonRotateAnimation): Modifier {
+  val progress = remember(rotate) { Animatable(0f) }
+  LaunchedEffect(rotate) {
+    val spec = tween<Float>(rotate.speedMillis, easing = AccelerateDecelerateEasing)
+    if (rotate.loops == BalloonRotateAnimation.INFINITE) {
+      progress.animateTo(
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(spec, RepeatMode.Restart),
+      )
+    } else {
+      repeat(rotate.loops.coerceAtLeast(0)) {
+        progress.snapTo(0f)
+        progress.animateTo(1f, spec)
+      }
+    }
+  }
+  return this.graphicsLayer {
+    val t = progress.value
+    rotationX = rotate.degreeX * t
+    rotationY = rotate.degreeY * t
+    rotationZ = rotate.degreeZ * t
+    transformOrigin = TransformOrigin.Center
+  }
+}
+
+/**
  * Shorthand for the one spec every highlight animation shares: a linear tween that repeats
  * forever in reverse — the Compose equivalent of `repeatCount="infinite"` +
  * `repeatMode="reverse"` + `@android:anim/linear_interpolator`.
@@ -194,13 +239,3 @@ private fun reverseSpec(durationMillis: Int): InfiniteRepeatableSpec<Float> = in
   animation = tween(durationMillis, easing = LinearEasing),
   repeatMode = RepeatMode.Reverse,
 )
-
-/**
- * Resolves the arrow side used to pick a highlight animation's pivot / direction.
- *
- * The View implementation reads `builder.arrowOrientation` directly (without RTL
- * resolution), but since our [ArrowOrientation] is expressed in START/END terms we resolve
- * it here so a right-to-left layout shakes toward the anchor rather than away from it.
- */
-internal fun ArrowOrientation.highlightSide(layoutDirection: LayoutDirection): ResolvedArrowSide =
-  resolve(layoutDirection)

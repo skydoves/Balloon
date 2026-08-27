@@ -34,6 +34,8 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
@@ -183,6 +185,31 @@ internal fun BalloonPopupLayer(
     onDispose { state.dismiss() }
   }
 
+  // The framework's `windowSize` is NOT in the same coordinate space as the anchor
+  // rectangles: on Android it is derived from the popup window's own metrics and excludes
+  // the system bars, while `boundsInWindow()` measures from the top of an edge-to-edge
+  // window. Mixing them makes a balloon flip above its anchor although there is room below,
+  // and makes the bottom strip of the window unreachable by the final clamp. The container
+  // size is the app window's own size, i.e. exactly the space the anchor rectangles live
+  // in, so we use that and ignore the framework's value.
+  val windowSize = LocalWindowInfo.current.containerSize
+
+  // An anchor can also be scrolled clean out of the window while the balloon is up. Left
+  // alone the balloon would sit clamped against a window edge pointing at nothing, so it is
+  // dismissed the moment its anchor is fully outside — the same outcome as the anchor
+  // leaving the composition, just triggered by geometry.
+  LaunchedEffect(anchorBounds, windowSize, state.isVisible) {
+    val bounds = anchorBounds
+    if (state.isVisible && bounds != null && !bounds.isEmpty &&
+      (
+        bounds.right <= 0 || bounds.bottom <= 0 ||
+          bounds.left >= windowSize.width || bounds.top >= windowSize.height
+        )
+    ) {
+      state.dismiss()
+    }
+  }
+
   // Drive visibility through a transition state rather than gating the Popup directly
   // on `state.isVisible`, so both the enter and exit animations get to play.
   // Keyed on `state` so swapping the BalloonState at this call-site starts from a clean
@@ -199,33 +226,32 @@ internal fun BalloonPopupLayer(
       )
     }
 
-    // The framework's `windowSize` is NOT in the same coordinate space as the anchor
-    // rectangles: on Android it is derived from the popup window's own metrics and excludes
-    // the system bars, while `boundsInWindow()` measures from the top of an edge-to-edge
-    // window. Mixing them makes a balloon flip above its anchor although there is room
-    // below, and makes the bottom strip of the window unreachable by the final clamp. The
-    // container size is the app window's own size, i.e. exactly the space the anchor
-    // rectangles live in, so we use that and ignore the framework's value.
-    val windowSize = LocalWindowInfo.current.containerSize
-
-    val positionProvider =
-      remember(state.align, state.centerAlign, anchorBounds, offsetPx, style, windowSize) {
-        BalloonPopupPositionProvider(
-          state = state,
-          anchorBounds = anchorBounds,
-          align = state.align,
-          centerAlign = state.centerAlign,
-          userOffsetPx = offsetPx,
-          windowSize = windowSize,
-        )
-      }
+    val positionProvider = remember(
+      state.align,
+      state.centerAlign,
+      anchorBounds,
+      offsetPx,
+      style,
+      windowSize,
+      density,
+    ) {
+      BalloonPopupPositionProvider(
+        state = state,
+        anchorBounds = anchorBounds,
+        align = state.align,
+        centerAlign = state.centerAlign,
+        userOffsetPx = offsetPx,
+        windowSize = windowSize,
+        density = density,
+      )
+    }
 
     // Prefer the orientation written back by the position provider (it accounts for
     // flips when the requested side has no room); fall back to the align-derived
     // orientation on the very first frame before the provider runs.
     val resolvedOrientation =
       state.resolvedArrowOrientation
-        ?: resolveArrowOrientation(state.align, style, layoutDirection)
+        ?: resolveArrowOrientation(state.align, state.centerAlign, style, layoutDirection)
 
     Popup(
       popupPositionProvider = positionProvider,
@@ -250,6 +276,7 @@ internal fun BalloonPopupLayer(
       ),
     ) {
       AnimatedVisibility(
+        modifier = Modifier.semantics { balloon() },
         visibleState = visibleState,
         enter = balloonEnterTransition(style.animation),
         exit = balloonExitTransition(style.animation),
@@ -257,12 +284,13 @@ internal fun BalloonPopupLayer(
         BalloonContent(
           style = style,
           arrowOrientation = resolvedOrientation,
-          // The provider writes resolvedArrowRatio = style.arrowPosition in the
-          // ALIGN_BALLOON case, so reading it back is correct once it has run; before the
-          // first placement pass of this show it is null and the configured position is
-          // the right fallback.
-          arrowPositionRatio = state.resolvedArrowRatio ?: style.arrowPosition,
-          onClick = { state.dismiss() },
+          // Resolved by the position provider against the final placement. Before its first
+          // pass of this show it is null, which centers the arrow for one frame.
+          arrowCenterFromCardStart = state.resolvedArrowCenterPx,
+          onClick = {
+            state.onBalloonClick?.invoke()
+            if (style.dismissWhenClicked) state.dismiss()
+          },
           content = { currentBalloonContent() },
         )
       }
@@ -271,27 +299,35 @@ internal fun BalloonPopupLayer(
 }
 
 /**
- * Resolves the effective [ArrowOrientation] for a given [align].
+ * Resolves the [ArrowOrientation] implied by an alignment, i.e. the edge whose arrow points
+ * back at the anchor: a balloon shown above the anchor carries its arrow on the BOTTOM edge.
  *
- * If [BalloonStyle.arrowOrientation] is non-null it overrides the auto-derivation;
- * otherwise the orientation is the one that points back toward the anchor (e.g.
- * a balloon shown above the anchor has its arrow on the BOTTOM edge pointing
- * down at the anchor).
- *
- * For [BalloonAlign.CENTER] the arrow has no anchor edge to point at; we return
- * an arbitrary [ArrowOrientation.BOTTOM] for [BalloonContent] to render with —
- * users are expected to call `setIsVisibleArrow(false)` (or set
- * [BalloonStyle.isArrowVisible] to `false`) for a clean overlay. We deliberately
- * do NOT silently force `isArrowVisible = false` here because that would be a
- * surprising side-effect that violates the principle of explicit user intent.
+ * An explicit [BalloonStyle.arrowOrientation] overrides the derivation. For
+ * [BalloonAlign.CENTER] the side comes from [centerAlign] when the balloon was shown with
+ * `showAtCenter`; a dead-center overlay (`centerAlign == null`) has no edge to point at, so
+ * an arbitrary [ArrowOrientation.BOTTOM] is returned for [BalloonContent] to render with —
+ * users are expected to call `setIsVisibleArrow(false)` for a clean overlay. We deliberately
+ * do NOT silently force `isArrowVisible = false` here, because that would be a surprising
+ * side-effect that violates the principle of explicit user intent.
  */
 private fun resolveArrowOrientation(
   align: BalloonAlign,
+  centerAlign: BalloonCenterAlign?,
   style: BalloonStyle,
   layoutDirection: LayoutDirection,
 ): ArrowOrientation {
   style.arrowOrientation?.let { return it }
   val isRtl = layoutDirection == LayoutDirection.Rtl
+  if (align == BalloonAlign.CENTER) {
+    return when (centerAlign) {
+      BalloonCenterAlign.TOP -> ArrowOrientation.BOTTOM
+      BalloonCenterAlign.BOTTOM -> ArrowOrientation.TOP
+      BalloonCenterAlign.START -> if (isRtl) ArrowOrientation.START else ArrowOrientation.END
+      BalloonCenterAlign.END -> if (isRtl) ArrowOrientation.END else ArrowOrientation.START
+      // No meaningful arrow direction in overlay mode — caller hides the arrow.
+      null -> ArrowOrientation.BOTTOM
+    }
+  }
   return when (align) {
     BalloonAlign.TOP -> ArrowOrientation.BOTTOM
     BalloonAlign.BOTTOM -> ArrowOrientation.TOP
@@ -299,7 +335,7 @@ private fun resolveArrowOrientation(
     BalloonAlign.START -> if (isRtl) ArrowOrientation.START else ArrowOrientation.END
     // Balloon on the trailing side -> arrow points back to the leading side.
     BalloonAlign.END -> if (isRtl) ArrowOrientation.END else ArrowOrientation.START
-    // No meaningful arrow direction in overlay mode — caller hides the arrow.
+    BalloonAlign.DROP_DOWN -> ArrowOrientation.TOP
     BalloonAlign.CENTER -> ArrowOrientation.BOTTOM
   }
 }
@@ -319,10 +355,13 @@ internal fun androidx.compose.ui.geometry.Rect.toIntRect(): IntRect = IntRect(
 /**
  * Computes the popup offset from the captured anchor bounds, the requested
  * alignment, the arrow size and the user-supplied offset, and writes back the
- * resolved arrow orientation / ratio onto [state] so [BalloonContent] can draw
+ * resolved arrow orientation / center onto [state] so [BalloonContent] can draw
  * the arrow against the FINAL on-screen placement.
  *
- * The math follows the same conventions used in the existing Android Balloon:
+ * The math follows the same conventions as `Balloon.calculateAlignOffset` /
+ * `calculateCenterOffset`, which pass their result to
+ * `PopupWindow.showAsDropDown(anchor, xOff, yOff)` — i.e. an offset from the anchor's
+ * bottom-left corner:
  * - TOP: balloon sits above the anchor; popup bottom-edge meets anchor top-edge,
  *   so y = anchor.top - popup.height.
  * - BOTTOM: balloon sits below; y = anchor.bottom.
@@ -332,12 +371,17 @@ internal fun androidx.compose.ui.geometry.Rect.toIntRect(): IntRect = IntRect(
  *   [centerAlign] is set, placed adjacent to the anchor's center on that side
  *   (original `showAtCenter` parity).
  *
- * Placement automatically FLIPS to the opposite side when the requested side has
- * no room AND the opposite side does, flipping the arrow orientation to match
- * (Fix C). A final [coerceIn] clamp keeps the popup on-screen as a last resort.
- * The arrow is RE-ANCHORED against the final position: for `ALIGN_ANCHOR` (and
- * center-align) it points at the anchor; for `ALIGN_BALLOON` it stays at
- * [BalloonStyle.arrowPosition] (Fix B).
+ * Two things the original leaves to `PopupWindow` are done here instead, because a
+ * Compose `Popup` does neither: placement FLIPS to the opposite side when the requested
+ * side has no room and the opposite side does (the arrow follows, unless
+ * [ArrowOrientationRules.ALIGN_FIXED] pins it), and a final [coerceIn] keeps the popup
+ * on-screen. The flip test includes the caller's offset, so a balloon pushed down by
+ * `yOffset` flips on the room it will actually need.
+ *
+ * The arrow is then re-anchored against the final position, reproducing
+ * `Balloon.getArrowConstraintPositionX` / `...Y` — including their `ALIGN_ANCHOR`
+ * clamp band, which keeps the arrow `arrowWidth * arrowAlignAnchorPaddingRatio +
+ * arrowAlignAnchorPadding` clear of the balloon's ends.
  */
 internal class BalloonPopupPositionProvider(
   private val state: BalloonState,
@@ -346,6 +390,7 @@ internal class BalloonPopupPositionProvider(
   private val centerAlign: BalloonCenterAlign?,
   private val userOffsetPx: IntOffset,
   private val windowSize: IntSize,
+  private val density: Density,
 ) : PopupPositionProvider {
 
   override fun calculatePosition(
@@ -387,6 +432,8 @@ internal class BalloonPopupPositionProvider(
     // the requested side had to flip to the opposite side for lack of room.
     val orientation: ArrowOrientation
     var flipped = false
+    val offX = userOffsetPx.x
+    val offY = userOffsetPx.y
 
     if (align == BalloonAlign.CENTER && centerAlign != null) {
       // Original showAtCenter parity: place adjacent to the anchor CENTER. No
@@ -418,7 +465,9 @@ internal class BalloonPopupPositionProvider(
         AbsoluteBalloonAlign.TOP -> {
           baseX = captured.left + halfAnchorW - halfPopupW
           // Requested above: flip BELOW when there's no room above but room below.
-          if (captured.top - popupH < 0 && captured.bottom + popupH <= windowSize.height) {
+          if (captured.top - popupH + offY < 0 &&
+            captured.bottom + popupH + offY <= windowSize.height
+          ) {
             baseY = captured.bottom
             orientation = ArrowOrientation.TOP
             flipped = true
@@ -430,7 +479,9 @@ internal class BalloonPopupPositionProvider(
         AbsoluteBalloonAlign.BOTTOM -> {
           baseX = captured.left + halfAnchorW - halfPopupW
           // Requested below: flip ABOVE when there's no room below but room above.
-          if (captured.bottom + popupH > windowSize.height && captured.top - popupH >= 0) {
+          if (captured.bottom + popupH + offY > windowSize.height &&
+            captured.top - popupH + offY >= 0
+          ) {
             baseY = captured.top - popupH
             orientation = ArrowOrientation.BOTTOM
             flipped = true
@@ -442,7 +493,9 @@ internal class BalloonPopupPositionProvider(
         AbsoluteBalloonAlign.LEFT -> {
           baseY = captured.top + captured.height - halfPopupH - halfAnchorH
           // Requested left: flip RIGHT when there's no room left but room right.
-          if (captured.left - popupW < 0 && captured.right + popupW <= windowSize.width) {
+          if (captured.left - popupW + offX < 0 &&
+            captured.right + popupW + offX <= windowSize.width
+          ) {
             baseX = captured.right
             // Flipped to the right of the anchor -> arrow on the balloon's physical
             // LEFT edge (START in LTR, END in RTL).
@@ -456,7 +509,9 @@ internal class BalloonPopupPositionProvider(
         AbsoluteBalloonAlign.RIGHT -> {
           baseY = captured.top + captured.height - halfPopupH - halfAnchorH
           // Requested right: flip LEFT when there's no room right but room left.
-          if (captured.right + popupW > windowSize.width && captured.left - popupW >= 0) {
+          if (captured.right + popupW + offX > windowSize.width &&
+            captured.left - popupW + offX >= 0
+          ) {
             baseX = captured.left - popupW
             // Flipped to the left of the anchor -> arrow on the balloon's physical
             // RIGHT edge (END in LTR, START in RTL).
@@ -467,58 +522,151 @@ internal class BalloonPopupPositionProvider(
             orientation = if (isRtl) ArrowOrientation.END else ArrowOrientation.START
           }
         }
+        AbsoluteBalloonAlign.DROP_DOWN -> {
+          // Leading edges aligned rather than centered — `Balloon.showAsDropDown`.
+          baseX = if (isRtl) captured.right - popupW else captured.left
+          if (captured.bottom + popupH + offY > windowSize.height &&
+            captured.top - popupH + offY >= 0
+          ) {
+            baseY = captured.top - popupH
+            orientation = ArrowOrientation.BOTTOM
+            flipped = true
+          } else {
+            baseY = captured.bottom
+            orientation = ArrowOrientation.TOP
+          }
+        }
         else -> { // CENTER overlay (centerAlign == null): dead-center, no flip.
           baseX = captured.left + halfAnchorW - halfPopupW
           baseY = captured.top + captured.height - halfPopupH - halfAnchorH
-          orientation = resolveArrowOrientation(align, style, layoutDirection)
+          orientation = resolveArrowOrientation(align, centerAlign, style, layoutDirection)
         }
       }
     }
 
-    // An explicitly pinned orientation wins UNLESS the placement actually flipped
-    // (then the arrow must follow the balloon to keep pointing at the anchor).
+    // A pinned orientation wins, except under the default ALIGN_ANCHOR rule when the
+    // placement actually flipped — then the arrow must follow the balloon to keep pointing
+    // at the anchor. ALIGN_FIXED keeps it wherever the caller put it.
+    //
+    // A flip never moves the arrow to a different AXIS, though: the arrow axis decides how
+    // the popup reserves space, so the popup's own size would change, and that size is the
+    // input this flip decision was made from. The two would chase each other across measure
+    // passes. A pinned cross-axis arrow therefore stays where the caller put it, and only
+    // the balloon moves.
     val pinned = style.arrowOrientation
-    val resolvedOrientation = if (pinned != null && !flipped) pinned else orientation
+    val resolvedOrientation = when {
+      pinned == null -> orientation
+      style.arrowOrientationRules == ArrowOrientationRules.ALIGN_FIXED -> pinned
+      flipped && pinned.isVertical == orientation.isVertical -> orientation
+      else -> pinned
+    }
 
     // ---- 2. Apply user offset, then clamp to keep the popup on-screen.
-    val finalX = (baseX + userOffsetPx.x).coerceIn(0, maxX)
-    val finalY = (baseY + userOffsetPx.y).coerceIn(0, maxY)
+    val finalX = (baseX + offX).coerceIn(0, maxX)
+    val finalY = (baseY + offY).coerceIn(0, maxY)
 
-    // ---- 3. Re-anchor the arrow ratio against the FINAL placement.
-    val absoluteSide = resolvedOrientation.resolve(layoutDirection)
-    val ratio = when (absoluteSide) {
-      ResolvedArrowSide.TOP, ResolvedArrowSide.BOTTOM -> {
-        if (style.arrowPositionRules == ArrowPositionRules.ALIGN_ANCHOR ||
-          (align == BalloonAlign.CENTER && centerAlign != null)
-        ) {
-          val anchorArrowX = captured.left + captured.width * style.arrowPosition
-          if (popupW > 0) ((anchorArrowX - finalX) / popupW).coerceIn(0f, 1f) else 0.5f
-        } else {
-          style.arrowPosition
-        }
-      }
-      ResolvedArrowSide.LEFT, ResolvedArrowSide.RIGHT -> {
-        if (style.arrowPositionRules == ArrowPositionRules.ALIGN_ANCHOR ||
-          (align == BalloonAlign.CENTER && centerAlign != null)
-        ) {
-          val anchorArrowY = captured.top + captured.height * style.arrowPosition
-          if (popupH > 0) ((anchorArrowY - finalY) / popupH).coerceIn(0f, 1f) else 0.5f
-        } else {
-          style.arrowPosition
-        }
-      }
-    }
+    // ---- 3. Re-anchor the arrow against the FINAL placement, in card coordinates.
+    val side = resolvedOrientation.resolve(layoutDirection)
+    val arrowCenter = resolveArrowCenter(
+      style = style,
+      side = side,
+      layoutDirection = layoutDirection,
+      captured = captured,
+      popupOrigin = IntOffset(finalX, finalY),
+      popupSize = popupContentSize,
+    )
 
     // ---- 4. Write back, guarding against recomposition loops (only on change),
     // mirroring the anchorBounds change-guard in the Balloon anchor composable.
     if (state.resolvedArrowOrientation != resolvedOrientation) {
       state.resolvedArrowOrientation = resolvedOrientation
     }
-    if (state.resolvedArrowRatio != ratio) {
-      state.resolvedArrowRatio = ratio
+    if (state.resolvedArrowCenterPx != arrowCenter) {
+      state.resolvedArrowCenterPx = arrowCenter
     }
 
     return IntOffset(x = finalX, y = finalY)
+  }
+
+  /**
+   * Where the arrow's center belongs along [side], in pixels from the card's leading edge.
+   *
+   * Reproduces `Balloon.getArrowConstraintPositionX`, which works in the *wrapper's*
+   * coordinate space (the popup minus its margins). The card sits `elevation` further in
+   * than that wrapper on the axis the arrow runs along, so the wrapper result is shifted by
+   * that inset on the way out — which is why an `ALIGN_BALLOON` position of `0.5f` lands
+   * dead-centre while `0.25f` does *not* land at a quarter of the card.
+   *
+   * One deliberate departure: the original's Y-axis twin, `getArrowConstraintPositionY`, is
+   * an older copy that lacks the two "the anchor fits inside the balloon" early returns, so
+   * a side-aligned balloon snaps its arrow to the `minPosition` band instead of pointing at
+   * the anchor. The X algorithm is used on both axes here.
+   */
+  private fun resolveArrowCenter(
+    style: BalloonStyle,
+    side: ResolvedArrowSide,
+    layoutDirection: LayoutDirection,
+    captured: IntRect,
+    popupOrigin: IntOffset,
+    popupSize: IntSize,
+  ): Float {
+    // The axis the arrow runs ALONG: horizontal for a TOP/BOTTOM arrow, vertical otherwise.
+    val alongY = side == ResolvedArrowSide.LEFT || side == ResolvedArrowSide.RIGHT
+    val reserve = style.reserve(side, density)
+    val marginLead = with(density) {
+      if (alongY) {
+        style.margin.calculateTopPadding().toPx()
+      } else {
+        style.margin.calculateLeftPadding(layoutDirection).toPx()
+      }
+    }
+    val marginTrail = with(density) {
+      if (alongY) {
+        style.margin.calculateBottomPadding().toPx()
+      } else {
+        style.margin.calculateRightPadding(layoutDirection).toPx()
+      }
+    }
+    // Along its own axis the card is inset from the wrapper by the cross reserve on both
+    // sides, whichever way the arrow points.
+    val cardInset = with(density) { reserve.cross.toPx() }
+    val arrowBase = with(density) { style.effectiveArrowSize.width.toPx() }
+    val alignAnchorPad = with(density) { style.arrowAlignAnchorPadding.toPx() }
+
+    val popupExtent = (if (alongY) popupSize.height else popupSize.width).toFloat()
+    val anchorStart = (if (alongY) captured.top else captured.left).toFloat()
+    val anchorExtent = (if (alongY) captured.height else captured.width).toFloat()
+    val popupStart = (if (alongY) popupOrigin.y else popupOrigin.x).toFloat()
+    val wrapperExtent = popupExtent - marginLead - marginTrail
+    val wrapperStart = popupStart + marginLead
+
+    val arrowHalf = arrowBase / 2f
+    val wrapperArrowCenter = when (style.arrowPositionRules) {
+      ArrowPositionRules.ALIGN_BALLOON -> wrapperExtent * style.arrowPosition
+
+      ArrowPositionRules.ALIGN_ANCHOR -> {
+        val minPosition = arrowBase * style.arrowAlignAnchorPaddingRatio + alignAnchorPad
+        val maxPosition = popupExtent - minPosition - marginLead - marginTrail
+        val tip = anchorStart + anchorExtent * style.arrowPosition
+        val position = tip - arrowHalf - wrapperStart
+        val left = when {
+          // The anchor is entirely before / after the balloon: pin to the near end.
+          anchorStart + anchorExtent < wrapperStart -> minPosition
+          wrapperStart + popupExtent < anchorStart -> maxPosition
+          // The anchor's arrow point is at or before the balloon's start.
+          tip - arrowHalf <= wrapperStart -> 0f
+          // The usual case — the anchor is no larger than the balloon, so the arrow can
+          // point straight at it.
+          anchorExtent <= popupExtent - marginLead - marginTrail -> position
+          // A wider anchor: keep the arrow inside the `minPosition` band.
+          position <= arrowBase * 2f -> minPosition
+          position > popupExtent - arrowBase * 2f -> maxPosition
+          else -> position
+        }
+        left + arrowHalf
+      }
+    }
+    return wrapperArrowCenter - cardInset
   }
 }
 
@@ -526,13 +674,14 @@ internal class BalloonPopupPositionProvider(
  * Absolute (LTR-resolved) version of [BalloonAlign] used inside the popup
  * position math so that it doesn't have to reason about RTL.
  */
-private enum class AbsoluteBalloonAlign { TOP, BOTTOM, LEFT, RIGHT, CENTER }
+private enum class AbsoluteBalloonAlign { TOP, BOTTOM, LEFT, RIGHT, DROP_DOWN, CENTER }
 
 private fun BalloonAlign.resolveAbsolute(isRtl: Boolean): AbsoluteBalloonAlign = when (this) {
   BalloonAlign.TOP -> AbsoluteBalloonAlign.TOP
   BalloonAlign.BOTTOM -> AbsoluteBalloonAlign.BOTTOM
   BalloonAlign.START -> if (isRtl) AbsoluteBalloonAlign.RIGHT else AbsoluteBalloonAlign.LEFT
   BalloonAlign.END -> if (isRtl) AbsoluteBalloonAlign.LEFT else AbsoluteBalloonAlign.RIGHT
+  BalloonAlign.DROP_DOWN -> AbsoluteBalloonAlign.DROP_DOWN
   BalloonAlign.CENTER -> AbsoluteBalloonAlign.CENTER
 }
 

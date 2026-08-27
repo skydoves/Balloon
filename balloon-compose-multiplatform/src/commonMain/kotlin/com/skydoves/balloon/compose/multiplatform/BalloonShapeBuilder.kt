@@ -57,8 +57,8 @@ internal fun arrowProtrusionPx(arrowHeightPx: Float): Float =
  * - [side]: which absolute edge the arrow points away from (already RTL-resolved).
  *   Most callers should funnel through here so RTL handling happens exactly once at
  *   the [BalloonShape] boundary.
- * - [ratioInRect]: arrow center, expressed as a fraction (0f..1f) of the
- *   rect's width (for TOP/BOTTOM) or height (for LEFT/RIGHT).
+ * - [arrowCenterFromRectStart]: where the arrow's center sits, in pixels measured from the
+ *   body rect's left edge (TOP/BOTTOM) or top edge (LEFT/RIGHT). `null` centers the arrow.
  *   Clamped so the arrow base stays inside the rounded portion of the edge.
  *
  * The path spans the full [size] (minus the arrow protrusion on the arrow edge). No
@@ -75,7 +75,7 @@ internal fun buildBalloonPath(
   arrowWidthPx: Float,
   arrowHeightPx: Float,
   side: ResolvedArrowSide,
-  ratioInRect: Float,
+  arrowCenterFromRectStart: Float?,
 ): Path {
   val path = Path()
   val width = size.width
@@ -106,8 +106,10 @@ internal fun buildBalloonPath(
   }
 
   val halfArrow = arrowWidthPx / 2f
-  val arrowCenterX = arrowCenterAlong(width, ratioInRect, halfArrow, rectLeft, rectRight, radius)
-  val arrowCenterY = arrowCenterAlong(height, ratioInRect, halfArrow, rectTop, rectBottom, radius)
+  val arrowCenterX =
+    arrowCenterAlong(arrowCenterFromRectStart, halfArrow, rectLeft, rectRight, radius)
+  val arrowCenterY =
+    arrowCenterAlong(arrowCenterFromRectStart, halfArrow, rectTop, rectBottom, radius)
 
   when (side) {
     ResolvedArrowSide.TOP -> {
@@ -185,7 +187,11 @@ internal fun buildBalloonPath(
  *
  * Takes the same [cornerRadiusPx] as [buildBalloonPath] so the arrow center is
  * clamped identically — otherwise the colored triangle drifts from the body notch at
- * extreme [ratioInRect] with a non-zero corner radius.
+ * an extreme [arrowCenterFromRectStart] with a non-zero corner radius.
+ *
+ * The base is sunk [ARROW_BOUNDARY_PX] into the body, exactly like the arrow `ImageView` the
+ * View implementation overlaps onto the card, so no seam of body color shows through between
+ * a differently-colored arrow and the body it grows out of.
  *
  * Returns an empty path if [arrowWidthPx] or [arrowHeightPx] is `<= 0`.
  */
@@ -195,7 +201,7 @@ internal fun buildArrowTrianglePath(
   arrowWidthPx: Float,
   arrowHeightPx: Float,
   side: ResolvedArrowSide,
-  ratioInRect: Float,
+  arrowCenterFromRectStart: Float?,
 ): Path {
   val path = Path()
   if (arrowWidthPx <= 0f || arrowHeightPx <= 0f) return path
@@ -218,38 +224,38 @@ internal fun buildArrowTrianglePath(
   when (side) {
     ResolvedArrowSide.TOP -> {
       val centerX =
-        arrowCenterAlong(size.width, ratioInRect, halfArrow, rectLeft, rectRight, radius)
-      val tipY = rectTop - protrusion
-      path.moveTo(centerX - halfArrow, rectTop)
-      path.lineTo(centerX, tipY)
-      path.lineTo(centerX + halfArrow, rectTop)
+        arrowCenterAlong(arrowCenterFromRectStart, halfArrow, rectLeft, rectRight, radius)
+      val baseY = rectTop + ARROW_BOUNDARY_PX
+      path.moveTo(centerX - halfArrow, baseY)
+      path.lineTo(centerX, rectTop - protrusion)
+      path.lineTo(centerX + halfArrow, baseY)
       path.close()
     }
     ResolvedArrowSide.BOTTOM -> {
       val centerX =
-        arrowCenterAlong(size.width, ratioInRect, halfArrow, rectLeft, rectRight, radius)
-      val tipY = rectBottom + protrusion
-      path.moveTo(centerX - halfArrow, rectBottom)
-      path.lineTo(centerX, tipY)
-      path.lineTo(centerX + halfArrow, rectBottom)
+        arrowCenterAlong(arrowCenterFromRectStart, halfArrow, rectLeft, rectRight, radius)
+      val baseY = rectBottom - ARROW_BOUNDARY_PX
+      path.moveTo(centerX - halfArrow, baseY)
+      path.lineTo(centerX, rectBottom + protrusion)
+      path.lineTo(centerX + halfArrow, baseY)
       path.close()
     }
     ResolvedArrowSide.LEFT -> {
       val centerY =
-        arrowCenterAlong(size.height, ratioInRect, halfArrow, rectTop, rectBottom, radius)
-      val tipX = rectLeft - protrusion
-      path.moveTo(rectLeft, centerY - halfArrow)
-      path.lineTo(tipX, centerY)
-      path.lineTo(rectLeft, centerY + halfArrow)
+        arrowCenterAlong(arrowCenterFromRectStart, halfArrow, rectTop, rectBottom, radius)
+      val baseX = rectLeft + ARROW_BOUNDARY_PX
+      path.moveTo(baseX, centerY - halfArrow)
+      path.lineTo(rectLeft - protrusion, centerY)
+      path.lineTo(baseX, centerY + halfArrow)
       path.close()
     }
     ResolvedArrowSide.RIGHT -> {
       val centerY =
-        arrowCenterAlong(size.height, ratioInRect, halfArrow, rectTop, rectBottom, radius)
-      val tipX = rectRight + protrusion
-      path.moveTo(rectRight, centerY - halfArrow)
-      path.lineTo(tipX, centerY)
-      path.lineTo(rectRight, centerY + halfArrow)
+        arrowCenterAlong(arrowCenterFromRectStart, halfArrow, rectTop, rectBottom, radius)
+      val baseX = rectRight - ARROW_BOUNDARY_PX
+      path.moveTo(baseX, centerY - halfArrow)
+      path.lineTo(rectRight + protrusion, centerY)
+      path.lineTo(baseX, centerY + halfArrow)
       path.close()
     }
   }
@@ -261,26 +267,24 @@ internal fun buildArrowTrianglePath(
  * [buildArrowTrianglePath] so the body notch and the colored overlay triangle can
  * never drift apart.
  *
- * First maps [ratio] onto the full extent (keeping the base inside the edge), then
- * clamps it between the corner curves so the arrow base sits on the straight portion
- * of the edge. Falls back to the edge midpoint for degenerate sizes.
+ * [offsetFromRectStart] is measured from [rectStart], which is the body rect's edge — not
+ * the drawing box's — so it is already free of the arrow protrusion. `null` centers the
+ * arrow. The result is clamped between the corner curves so the arrow base sits on the
+ * straight portion of the edge; the View implementation applies no such clamp, which lets an
+ * `arrowPosition` of `0f`/`1f` float the triangle clear of the body it belongs to.
  */
 private fun arrowCenterAlong(
-  fullExtent: Float,
-  ratio: Float,
+  offsetFromRectStart: Float?,
   halfArrow: Float,
   rectStart: Float,
   rectEnd: Float,
   radius: Float,
 ): Float {
-  val center = (fullExtent * ratio).coerceIn(halfArrow, fullExtent - halfArrow)
+  val mid = (rectStart + rectEnd) / 2f
+  val center = if (offsetFromRectStart == null) mid else rectStart + offsetFromRectStart
   val insetStart = rectStart + radius + halfArrow
   val insetEnd = rectEnd - radius - halfArrow
-  return if (insetStart <= insetEnd) {
-    center.coerceIn(insetStart, insetEnd)
-  } else {
-    (rectStart + rectEnd) / 2f
-  }
+  return if (insetStart <= insetEnd) center.coerceIn(insetStart, insetEnd) else mid
 }
 
 /**

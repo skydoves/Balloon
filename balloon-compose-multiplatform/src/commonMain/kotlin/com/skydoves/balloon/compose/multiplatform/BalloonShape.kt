@@ -39,16 +39,16 @@ import androidx.compose.ui.unit.LayoutDirection
  *   matching `RadiusLayout`.
  * @param arrowOrientation which edge of the rect the arrow sits on.
  *   START/END are resolved against [LayoutDirection] at outline time.
- * @param arrowPositionRatio fraction along the rect's width (TOP/BOTTOM) or
- *   height (START/END) where the arrow's center is anchored. Clamped so the arrow
- *   stays within the rounded portion of the edge.
+ * @param arrowCenterFromRectStart where the arrow's center sits, in pixels from the body
+ *   rect's left edge (TOP/BOTTOM) or top edge (START/END). `null` centers the arrow.
+ *   Clamped so the arrow stays within the rounded portion of the edge.
  */
 internal class BalloonShape(
   val cornerRadius: Dp,
   val arrowWidth: Dp,
   val arrowHeight: Dp,
   val arrowOrientation: ArrowOrientation,
-  val arrowPositionRatio: Float = 0.5f,
+  val arrowCenterFromRectStart: Float? = null,
 ) : Shape {
 
   override fun createOutline(
@@ -68,7 +68,7 @@ internal class BalloonShape(
       arrowWidthPx = arrowWidthPx,
       arrowHeightPx = arrowHeightPx,
       side = side,
-      ratioInRect = arrowPositionRatio,
+      arrowCenterFromRectStart = arrowCenterFromRectStart,
     )
     return Outline.Generic(path)
   }
@@ -80,7 +80,7 @@ internal class BalloonShape(
       arrowWidth == other.arrowWidth &&
       arrowHeight == other.arrowHeight &&
       arrowOrientation == other.arrowOrientation &&
-      arrowPositionRatio == other.arrowPositionRatio
+      arrowCenterFromRectStart == other.arrowCenterFromRectStart
   }
 
   override fun hashCode(): Int {
@@ -88,12 +88,12 @@ internal class BalloonShape(
     result = 31 * result + arrowWidth.hashCode()
     result = 31 * result + arrowHeight.hashCode()
     result = 31 * result + arrowOrientation.hashCode()
-    result = 31 * result + arrowPositionRatio.hashCode()
+    result = 31 * result + arrowCenterFromRectStart.hashCode()
     return result
   }
 
   override fun toString(): String =
     "BalloonShape(cornerRadius=$cornerRadius, arrowWidth=$arrowWidth, " +
       "arrowHeight=$arrowHeight, arrowOrientation=$arrowOrientation, " +
-      "arrowPositionRatio=$arrowPositionRatio)"
+      "arrowCenterFromRectStart=$arrowCenterFromRectStart)"
 }

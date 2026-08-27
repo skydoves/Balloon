@@ -26,7 +26,10 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 /**
  * A state holder for managing balloon visibility, alignment and offset for the
@@ -104,15 +107,13 @@ public class BalloonState internal constructor(
   internal var resolvedArrowOrientation: ArrowOrientation? by mutableStateOf(null)
 
   /**
-   * The arrow position ratio (0f..1f) resolved by [BalloonPopupPositionProvider]
-   * against the final on-screen placement. For `ALIGN_BALLOON` this stays at
-   * [BalloonStyle.arrowPosition]; for `ALIGN_ANCHOR` (and center-align) the arrow
-   * is re-anchored so it points at the anchor.
+   * The arrow center resolved by [BalloonPopupPositionProvider] against the final
+   * on-screen placement, in pixels from the card's leading edge along the arrow's side.
    *
-   * `null` until the first placement pass of the CURRENT show, in which case the caller
-   * falls back to [BalloonStyle.arrowPosition].
+   * `null` until the first placement pass of the CURRENT show, in which case the arrow is
+   * drawn centered for one frame.
    */
-  internal var resolvedArrowRatio: Float? by mutableStateOf(null)
+  internal var resolvedArrowCenterPx: Float? by mutableStateOf(null)
 
   /**
    * When the balloon is shown via [showAtCenter] / [awaitAtCenter], the side of
@@ -148,6 +149,20 @@ public class BalloonState internal constructor(
   public var onDismiss: (() -> Unit)? = null
 
   /**
+   * Listener invoked when the balloon body is tapped, mirroring
+   * `Balloon.Builder.setOnBalloonClickListener`. It fires before any dismissal caused by
+   * [BalloonStyle.dismissWhenClicked].
+   */
+  public var onBalloonClick: (() -> Unit)? = null
+
+  /**
+   * Listener invoked when the overlay scrim is tapped, mirroring
+   * `Balloon.Builder.setOnBalloonOverlayClickListener`. It fires before any dismissal
+   * caused by [BalloonStyle.dismissWhenOverlayClicked].
+   */
+  public var onOverlayClick: (() -> Unit)? = null
+
+  /**
    * Shows the balloon with the given [align] and optional [xOffset]/[yOffset].
    *
    * Use [BalloonAlign.CENTER] to render the balloon as a dead-center overlay on
@@ -161,17 +176,30 @@ public class BalloonState internal constructor(
     xOffset: Dp = 0.dp,
     yOffset: Dp = 0.dp,
   ) {
+    // `setDismissWhenShowAgain` parity: showing an already-visible balloon closes it.
+    if (isVisible && style.dismissWhenShowAgain) {
+      dismiss()
+      return
+    }
     this.centerAlign = null
     this.align = align
     this.offset = DpOffset(xOffset, yOffset)
     // Clear the previous placement so the first frame of this show falls back to the
-    // align-derived orientation and the configured arrowPosition, instead of briefly
-    // drawing the arrow on the edge / at the ratio the PREVIOUS show resolved to.
+    // align-derived orientation and a centred arrow, instead of briefly drawing the arrow
+    // on the edge and at the offset the PREVIOUS show resolved to.
     this.resolvedArrowOrientation = null
-    this.resolvedArrowRatio = null
+    this.resolvedArrowCenterPx = null
     this.showGeneration++
     this.isVisible = true
   }
+
+  /**
+   * Shows the balloon directly below its anchor with its leading edges aligned, mirroring
+   * the original `Balloon.showAsDropDown`. Unlike [showAlignBottom] the balloon is not
+   * centered on the anchor: it starts where the anchor starts, plus the given offsets.
+   */
+  public fun showAsDropDown(xOffset: Dp = 0.dp, yOffset: Dp = 0.dp): Unit =
+    show(BalloonAlign.DROP_DOWN, xOffset, yOffset)
 
   /** Shows the balloon above its anchor. */
   public fun showAlignTop(xOffset: Dp = 0.dp, yOffset: Dp = 0.dp): Unit =
@@ -202,13 +230,52 @@ public class BalloonState internal constructor(
     xOffset: Dp = 0.dp,
     yOffset: Dp = 0.dp,
   ) {
+    if (isVisible && style.dismissWhenShowAgain) {
+      dismiss()
+      return
+    }
     this.centerAlign = centerAlign
     this.align = BalloonAlign.CENTER
     this.offset = DpOffset(xOffset, yOffset)
     this.resolvedArrowOrientation = null
-    this.resolvedArrowRatio = null
+    this.resolvedArrowCenterPx = null
     this.showGeneration++
     this.isVisible = true
+  }
+
+  /**
+   * Moves an already-visible balloon without re-running its enter animation or restarting
+   * its auto-dismiss timer — the counterpart of `Balloon.update` / `updateAlign*`.
+   *
+   * Does nothing when the balloon is hidden. Pass [align] to move it to a different side of
+   * the anchor, or leave it out to only change the offsets.
+   */
+  public fun update(
+    align: BalloonAlign = this.align,
+    xOffset: Dp = 0.dp,
+    yOffset: Dp = 0.dp,
+  ) {
+    if (!isVisible) return
+    this.align = align
+    this.offset = DpOffset(xOffset, yOffset)
+  }
+
+  /**
+   * Dismisses the balloon after [delayMillis], mirroring `Balloon.dismissWithDelay`.
+   * Returns `false` (and schedules nothing) when the balloon is not showing.
+   *
+   * The delay runs on the caller's [scope], so it is cancelled with it.
+   */
+  public fun dismissWithDelay(
+    scope: CoroutineScope,
+    delayMillis: Long,
+  ): Boolean {
+    if (!isVisible) return false
+    scope.launch {
+      delay(delayMillis)
+      dismiss()
+    }
+    return true
   }
 
   /**
@@ -237,7 +304,14 @@ public class BalloonState internal constructor(
    * shown with the given [align] (defaulting to the most recent alignment).
    */
   public fun toggle(align: BalloonAlign = this.align) {
-    if (isVisible) dismiss() else show(align)
+    if (isVisible) {
+      dismiss()
+      return
+    }
+    // Preserve a `showAtCenter` placement instead of silently degrading it to the
+    // dead-centre overlay that `show(BalloonAlign.CENTER)` produces.
+    val center = centerAlign
+    if (align == BalloonAlign.CENTER && center != null) showAtCenter(center) else show(align)
   }
 
   /**
@@ -267,6 +341,13 @@ public class BalloonState internal constructor(
     show(align, xOffset, yOffset)
     await()
   }
+
+  /**
+   * Shows the balloon as a drop-down under its anchor (see [showAsDropDown]) and suspends
+   * until it is dismissed.
+   */
+  public suspend fun awaitAsDropDown(xOffset: Dp = 0.dp, yOffset: Dp = 0.dp): Unit =
+    awaitAlign(BalloonAlign.DROP_DOWN, xOffset, yOffset)
 
   /** Shows the balloon above its anchor and suspends until it is dismissed. */
   public suspend fun awaitAlignTop(xOffset: Dp = 0.dp, yOffset: Dp = 0.dp): Unit =

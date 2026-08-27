@@ -17,16 +17,13 @@
 package com.skydoves.balloon.compose.multiplatform
 
 /**
- * ArrowPositionRules determines the position of the arrow depending on the aligning rules.
+ * How the overlay scrim appears and disappears, mirroring
+ * `com.skydoves.balloon.overlay.BalloonOverlayAnimation`.
  *
- * - [ALIGN_BALLOON]: the position is a fraction of the balloon's own popup box, so an
- *   `arrowPosition` of `0.5f` puts the arrow in the middle of the tooltip.
- * - [ALIGN_ANCHOR]: the position is a fraction of the ANCHOR, so an `arrowPosition` of
- *   `0.5f` points the arrow at the middle of the anchor wherever the balloon ends up.
- *   The arrow is kept `arrowSize * arrowAlignAnchorPaddingRatio + arrowAlignAnchorPadding`
- *   clear of the balloon's ends.
+ * - [NONE]: the scrim is shown and hidden instantly.
+ * - [FADE] (the default): a 200ms linear cross-fade, matching `Balloon_Fade_Anim`.
  */
-public enum class ArrowPositionRules {
-  ALIGN_BALLOON,
-  ALIGN_ANCHOR,
+public enum class BalloonOverlayAnimation {
+  NONE,
+  FADE,
 }
