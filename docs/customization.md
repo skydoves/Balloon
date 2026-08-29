@@ -70,18 +70,26 @@ tap handler, so a clickable row inside the body does not accidentally trigger
 
 ## Reusing a style
 
-`BalloonStyle` is an immutable data class, so `copy` is the natural way to make variants:
+`BalloonStyle` is immutable, and `derive` makes a variant that changes only what you name:
 
 ```kotlin
-val base = BalloonStyle(
-    cornerRadius = 8.dp,
-    padding = PaddingValues(12.dp),
-    backgroundColor = Color(0xFF785EF0),
-)
+val base = rememberBalloonBuilder {
+    setCornerRadius(8.dp)
+    setPadding(12.dp)
+    setBackgroundColor(Color(0xFF785EF0))
+}
 
-val warning = base.copy(backgroundColor = Color(0xFFFF6F00))
-val subtle = base.copy(alpha = 0.85f, arrowSize = DpSize(8.dp, 8.dp))
+val warning = base.derive { setBackgroundColor(Color(0xFFFF6F00)) }
+val subtle = base.derive {
+    setAlpha(0.85f)
+    setArrowSize(8.dp)
+}
 ```
+
+`derive` takes the same builder block as `rememberBalloonBuilder`, starting from an existing
+style instead of the defaults. It exists instead of a data class `copy` because a generated
+`copy` would name all 43 properties in the published binary interface and make adding a 44th
+option a breaking change.
 
 `DefaultBalloonStyle` is the same value the builder produces with no calls, which makes a
 convenient starting point.
@@ -93,7 +101,7 @@ a balloon that is already showing without hiding it:
 
 ```kotlin
 val color by animateColorAsState(if (selected) Color(0xFF785EF0) else Color(0xFF444444))
-val balloonState = rememberBalloonState(style.copy(backgroundColor = color))
+val balloonState = rememberBalloonState(style.derive { setBackgroundColor(color) })
 ```
 
 ## Behavior

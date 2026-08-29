@@ -110,7 +110,7 @@ Set `BalloonAnimation.NONE` so a screenshot or a semantics assertion runs agains
 frame:
 
 ```kotlin
-val style = BalloonStyle(animation = BalloonAnimation.NONE)
+val style = DefaultBalloonStyle.derive { setBalloonAnimation(BalloonAnimation.NONE) }
 ```
 
 `HEARTBEAT`, `SHAKE`, `BREATH`, and a `ROTATE` with `loops = INFINITE` never finish, so the

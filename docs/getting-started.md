@@ -46,17 +46,22 @@ val style = rememberBalloonBuilder {
 }
 ```
 
-You can also construct it directly, which is handy when the style lives outside composition:
+The builder also works outside composition, which is handy when the style is a constant:
 
 ```kotlin
-val style = BalloonStyle(
-    arrowSize = DpSize(10.dp, 10.dp),
-    padding = PaddingValues(12.dp),
-    cornerRadius = 8.dp,
-    backgroundColor = Color(0xFF785EF0),
-    animation = BalloonAnimation.ELASTIC,
-)
+val style = Balloon.Builder().apply {
+    setArrowSize(10.dp)
+    setPadding(12.dp)
+    setCornerRadius(8.dp)
+    setBackgroundColor(Color(0xFF785EF0))
+    setBalloonAnimation(BalloonAnimation.ELASTIC)
+}.build()
 ```
+
+`BalloonStyle` has no public constructor on purpose. It carries 43 properties, and a
+constructor that names all of them would freeze every one of them into the published binary
+interface, so adding a 44th option later would break code compiled against 2.0.0. The builder
+is the one entry point and its signature never has to change.
 
 `BalloonState` decides when the balloon shows and where:
 

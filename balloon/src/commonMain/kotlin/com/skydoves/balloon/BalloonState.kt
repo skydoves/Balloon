@@ -382,7 +382,7 @@ public class BalloonState internal constructor(
  * The state instance is captured once on first composition (or when [key]
  * changes), so `isVisible`, `align` and `offset` survive recompositions. The
  * [style] is re-applied on every recomposition: passing an updated [BalloonStyle]
- * (e.g. `style.copy(backgroundColor = animated)`) restyles the balloon in place
+ * (e.g. `style.derive { setBackgroundColor(animated) }`) restyles the balloon in place
  * without resetting its visibility. To force a fresh state instance, change [key].
  */
 @Composable

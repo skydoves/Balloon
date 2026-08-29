@@ -126,7 +126,8 @@ import androidx.compose.ui.unit.dp
  *   disables auto-dismiss.
  */
 @Immutable
-public data class BalloonStyle(
+@ConsistentCopyVisibility
+public data class BalloonStyle internal constructor(
   val cornerRadius: Dp = 5.dp,
   val arrowSize: DpSize = DpSize(12.dp, 12.dp),
   val arrowOrientation: ArrowOrientation? = null,
@@ -187,6 +188,30 @@ public data class BalloonStyle(
 /**
  * The default [BalloonStyle], matching the defaults of the Android `Balloon.Builder`:
  * a black body with a 5dp corner radius, a 12x12dp arrow, and no padding or margin.
- * Useful as a starting point for `copy(...)`-based customization.
+ * A convenient starting point for [derive].
  */
 public val DefaultBalloonStyle: BalloonStyle = BalloonStyle()
+
+/**
+ * Derives a variant of this style, changing only what [block] sets.
+ *
+ * ```kotlin
+ * val base = rememberBalloonBuilder {
+ *   setCornerRadius(8.dp)
+ *   setPadding(12.dp)
+ * }
+ * val warning = base.derive { setBackgroundColor(Color(0xFFFF6F00)) }
+ * ```
+ *
+ * This is what a data class `copy` would give you, minus the binary-compatibility trap.
+ * A generated `copy` pins all 43 properties into the published interface, so adding a 44th
+ * option in any later 2.x would break every caller compiled against 2.0.0. This signature
+ * never has to change, which is also why [BalloonStyle]'s constructor is internal and
+ * [Balloon.Builder] is the only way to make one.
+ *
+ * Cheap enough to call while recomposing, which is how an animated style restyles a balloon
+ * that is already showing.
+ */
+@BalloonDsl
+public fun BalloonStyle.derive(block: Balloon.Builder.() -> Unit): BalloonStyle =
+  Balloon.Builder().loadFrom(this).apply(block).build()

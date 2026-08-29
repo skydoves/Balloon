@@ -24,6 +24,8 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.absolutePadding
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
@@ -52,6 +54,7 @@ import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import kotlin.math.max
 
@@ -881,6 +884,71 @@ public object Balloon {
     }
 
     /** Builds the immutable [BalloonStyle] from the current builder state. */
+    /**
+     * Loads every value from [style], so a variant can be derived without repeating setters.
+     *
+     * `PaddingValues` only exposes its edges through `calculate*Padding(layoutDirection)`, so
+     * start/end are recovered in [LayoutDirection.Ltr]. That round-trips exactly for anything
+     * this builder produced, and for any `PaddingValues(start = ..., end = ...)`. The one lossy
+     * case is `PaddingValues.Absolute`, whose left/right come back as start/end and would then
+     * mirror under RTL.
+     */
+    internal fun loadFrom(style: BalloonStyle): Builder = apply {
+      cornerRadius = style.cornerRadius
+      arrowWidth = style.arrowSize.width
+      arrowHeight = style.arrowSize.height
+      arrowOrientation = style.arrowOrientation
+      arrowPosition = style.arrowPosition
+      arrowPositionRules = style.arrowPositionRules
+      arrowOrientationRules = style.arrowOrientationRules
+      arrowAlignAnchorPadding = style.arrowAlignAnchorPadding
+      arrowAlignAnchorPaddingRatio = style.arrowAlignAnchorPaddingRatio
+      isArrowVisible = style.isArrowVisible
+      backgroundColor = style.backgroundColor
+      arrowColor = style.arrowColor
+      borderColor = style.borderColor
+      borderThickness = style.borderThickness
+      paddingStart = style.padding.calculateStartPadding(LayoutDirection.Ltr)
+      paddingTop = style.padding.calculateTopPadding()
+      paddingEnd = style.padding.calculateEndPadding(LayoutDirection.Ltr)
+      paddingBottom = style.padding.calculateBottomPadding()
+      marginStart = style.margin.calculateStartPadding(LayoutDirection.Ltr)
+      marginTop = style.margin.calculateTopPadding()
+      marginEnd = style.margin.calculateEndPadding(LayoutDirection.Ltr)
+      marginBottom = style.margin.calculateBottomPadding()
+      elevation = style.elevation
+      width = style.width
+      widthRatio = style.widthRatio
+      minWidthRatio = style.minWidthRatio
+      maxWidthRatio = style.maxWidthRatio
+      minWidth = style.minWidth
+      maxWidth = style.maxWidth
+      height = style.height
+      animation = style.animation
+      circularDurationMillis = style.circularDurationMillis
+      highlightAnimation = style.highlightAnimation
+      highlightAnimationStartDelayMillis = style.highlightAnimationStartDelayMillis
+      rotateAnimation = style.rotateAnimation
+      alpha = style.alpha
+      isVisibleOverlay = style.isVisibleOverlay
+      overlayColor = style.overlayColor
+      overlayPaddingStart = style.overlayPadding.calculateStartPadding(LayoutDirection.Ltr)
+      overlayPaddingTop = style.overlayPadding.calculateTopPadding()
+      overlayPaddingEnd = style.overlayPadding.calculateEndPadding(LayoutDirection.Ltr)
+      overlayPaddingBottom = style.overlayPadding.calculateBottomPadding()
+      overlayPaddingColor = style.overlayPaddingColor
+      overlayShape = style.overlayShape
+      overlayAnimation = style.overlayAnimation
+      dismissWhenOverlayClicked = style.dismissWhenOverlayClicked
+      dismissWhenClicked = style.dismissWhenClicked
+      dismissWhenTouchMargin = style.dismissWhenTouchMargin
+      dismissWhenShowAgain = style.dismissWhenShowAgain
+      focusable = style.focusable
+      dismissOnClickOutside = style.dismissOnClickOutside
+      dismissOnBackPress = style.dismissOnBackPress
+      autoDismissMillis = style.autoDismissMillis
+    }
+
     public fun build(): BalloonStyle = BalloonStyle(
       cornerRadius = cornerRadius,
       arrowSize = DpSize(arrowWidth, arrowHeight),
