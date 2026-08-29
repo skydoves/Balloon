@@ -10,7 +10,7 @@ androidxActivity = "1.13.0"
 spotless = "6.21.0"
 androidxMacroBenchmark = "1.5.0-rc02"
 androidxTest = "1.7.0"
-uiAutomator = "2.3.0"
+uiAutomator = "2.4.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
