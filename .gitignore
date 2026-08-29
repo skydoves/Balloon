@@ -69,3 +69,9 @@ tasks/
 # Baseline profile generated for the demo app itself. Only the library's filtered copy
 # (balloon/src/main/baselineProfiles) is checked in and shipped in the AAR.
 androidApp/src/androidRelease/generated/
+
+# Xcode
+# `xcuserdata` is per-developer editor state, right down to the username in its path.
+xcuserdata/
+*.xcuserstate
+DerivedData/
