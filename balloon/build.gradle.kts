@@ -12,31 +12,103 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@file:OptIn(ExperimentalWasmDsl::class)
+
 import com.skydoves.balloon.Configuration
 import java.net.URI
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 plugins {
   id(libs.plugins.android.library.get().pluginId)
-  id(libs.plugins.kotlin.android.get().pluginId)
+  id(libs.plugins.kotlin.multiplatform.get().pluginId)
+  id(libs.plugins.jetbrains.compose.get().pluginId)
+  id(libs.plugins.compose.compiler.get().pluginId)
   id(libs.plugins.nexus.plugin.get().pluginId)
-  id(libs.plugins.baseline.profile.get().pluginId)
   id(libs.plugins.dokka.get().pluginId)
 }
 
 apply(from = "${rootDir}/scripts/publish-module.gradle.kts")
 
-mavenPublishing {
-  val artifactId = "balloon"
-  coordinates(
-    Configuration.artifactGroup,
-    artifactId,
-    rootProject.extra.get("libVersion").toString()
-  )
+project.version = rootProject.extra.get("libVersion").toString()
+project.group = Configuration.artifactGroup
 
+mavenPublishing {
   pom {
-    name.set(artifactId)
-    description.set("Modernized and sophisticated tooltips, fully customizable with an arrow and animations for Android.")
+    name.set("balloon")
+    description.set(
+      "Modernized and sophisticated tooltips for Compose Multiplatform, " +
+        "fully customizable with an arrow and animations.",
+    )
   }
+}
+
+@OptIn(ExperimentalWasmDsl::class)
+kotlin {
+  androidTarget { publishLibraryVariants("release") }
+  jvm("desktop")
+
+  // No `binaries.framework` block — the library is a pure klib for KMP
+  // consumers. iOS demo apps consume the framework via `:samples-shared`,
+  // which re-exports this library.
+  iosX64()
+  iosArm64()
+  iosSimulatorArm64()
+
+  wasmJs {
+    browser()
+    binaries.library()
+  }
+
+  @Suppress("OPT_IN_USAGE")
+  applyHierarchyTemplate {
+    common {
+      group("jvm") {
+        withAndroidTarget()
+        withJvm()
+      }
+      group("skia") {
+        withJvm()
+        group("apple") {
+          group("ios") {
+            withIosX64()
+            withIosArm64()
+            withIosSimulatorArm64()
+          }
+        }
+        withWasmJs()
+      }
+    }
+  }
+
+  tasks.register("testClasses")
+
+  sourceSets {
+    val commonMain by getting {
+      dependencies {
+        implementation(libs.compose.multiplatform.runtime)
+        implementation(libs.compose.multiplatform.foundation)
+        implementation(libs.compose.multiplatform.ui)
+      }
+    }
+    val commonTest by getting {
+      dependencies {
+        implementation(kotlin("test"))
+        implementation(libs.compose.multiplatform.ui.test)
+        implementation(libs.compose.multiplatform.foundation)
+        implementation(libs.compose.multiplatform.ui)
+        implementation(libs.kotlinx.coroutines.test)
+      }
+    }
+    // `runComposeUiTest` renders through Skiko on the JVM, which needs the desktop
+    // runtime on the test classpath; `:desktopTest` is where the UI suite actually runs.
+    val desktopTest by getting {
+      dependencies {
+        implementation(compose.desktop.currentOs)
+      }
+    }
+  }
+
+  explicitApi()
 }
 
 android {
@@ -45,14 +117,6 @@ android {
 
   defaultConfig {
     minSdk = Configuration.minSdk
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    consumerProguardFiles("consumer-rules.pro")
-  }
-
-  resourcePrefix = "balloon"
-
-  buildFeatures {
-    viewBinding = true
   }
 
   compileOptions {
@@ -65,74 +129,28 @@ android {
   }
 }
 
-baselineProfile {
-  filter {
-    include("com.skydoves.balloon.**")
-  }
-}
-
-kotlin {
-  compilerOptions {
-    jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
-    freeCompilerArgs.addAll(
-      "-Xexplicit-api=strict",
-      "-opt-in=com.skydoves.balloon.annotations.InternalBalloonApi",
-    )
-  }
-
-  target {
-    compilations.configureEach {
-      if (name.contains("Test")) {
-        compileTaskProvider.configure {
-          compilerOptions {
-            freeCompilerArgs.set(listOf("-opt-in=com.skydoves.balloon.annotations.InternalBalloonApi"))
-          }
-        }
-      }
-    }
-  }
-}
-
 dokka {
-  dokkaSourceSets.named("main") {
-    moduleName.set("balloon")
+  moduleName.set("balloon")
+  dokkaSourceSets.configureEach {
     sourceLink {
       remoteUrl.set(URI("https://github.com/skydoves/balloon"))
       remoteLineSuffix.set("#L")
     }
   }
-  // Suppress the 'release' source set which duplicates 'androidJvm' in Dokka 2.x
-  // See: https://github.com/Kotlin/dokka/issues/3701
-  dokkaSourceSets.named("release") {
-    suppress.set(true)
+}
+
+// `kotlin { explicitApi() }` above already passes `-Xexplicit-api=strict` — no
+// need to add it again here.
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile>().configureEach {
+  // Keep the JVM target at 11 so consumers running on JVM 11 don't hit
+  // `UnsupportedClassVersionError`.
+  compilerOptions {
+    jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
   }
 }
 
-tasks.withType(JavaCompile::class.java).configureEach {
+tasks.withType<JavaCompile>().configureEach {
   this.targetCompatibility = libs.versions.jvmTarget.get()
   this.sourceCompatibility = libs.versions.jvmTarget.get()
-}
-
-dependencies {
-  implementation(libs.androidx.appcompat)
-  implementation(libs.androidx.fragment)
-  implementation(libs.androidx.lifecycle)
-  implementation(libs.androidx.annotation)
-
-  testImplementation(libs.junit)
-  testImplementation(libs.truth)
-  testImplementation(libs.robolectric)
-  testImplementation(libs.mockk)
-  testImplementation(libs.androidx.test.core)
-
-  androidTestImplementation(libs.junit)
-  androidTestImplementation(libs.truth)
-  androidTestImplementation(libs.androidx.test.core)
-  androidTestImplementation(libs.androidx.test.runner)
-  androidTestImplementation(libs.androidx.test.rules)
-  androidTestImplementation(libs.androidx.test.ext.junit)
-  androidTestImplementation(libs.androidx.test.espresso.core)
-
-  baselineProfile(project(":benchmark"))
-  dokkaPlugin(libs.android.documentation.plugin)
 }

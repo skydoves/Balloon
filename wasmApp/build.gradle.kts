@@ -48,7 +48,7 @@ kotlin {
         implementation(libs.compose.multiplatform.ui)
         implementation(libs.compose.multiplatform.material)
 
-        // `:samples-shared` re-exports `:balloon-compose-multiplatform` via `api(...)`.
+        // `:samples-shared` re-exports `:balloon` via `api(...)`.
         implementation(project(":samples-shared"))
       }
     }

@@ -31,12 +31,7 @@ dependencyResolutionManagement {
   }
 }
 
-include(":app")
 include(":balloon")
-include(":benchmark")
-include(":benchmark-app")
-include(":balloon-compose")
-include(":balloon-compose-multiplatform")
 include(":samples-shared")
 include(":wasmApp")
 include(":desktopApp")

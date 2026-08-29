@@ -21,7 +21,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.skydoves.balloon.compose.multiplatform.sample.BalloonDemoScreen
+import com.skydoves.balloon.sample.BalloonDemoScreen
 
 /**
  * Hosts the shared [BalloonDemoScreen] composable inside an Android activity.

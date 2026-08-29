@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.window.ComposeViewport
-import com.skydoves.balloon.sample.BalloonDemoScreen
-import kotlinx.browser.document
+package com.skydoves.balloon
 
-@OptIn(ExperimentalComposeUiApi::class)
-fun main() {
-  ComposeViewport(document.body!!) {
-    BalloonDemoScreen()
-  }
+/**
+ * How the overlay scrim appears and disappears, mirroring
+ * `com.skydoves.balloon.overlay.BalloonOverlayAnimation`.
+ *
+ * - [NONE]: the scrim is shown and hidden instantly.
+ * - [FADE] (the default): a 200ms linear cross-fade, matching `Balloon_Fade_Anim`.
+ */
+public enum class BalloonOverlayAnimation {
+  NONE,
+  FADE,
 }

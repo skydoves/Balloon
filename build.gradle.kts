@@ -16,10 +16,8 @@
 plugins {
   alias(libs.plugins.android.application) apply false
   alias(libs.plugins.android.library) apply false
-  alias(libs.plugins.kotlin.android) apply false
   alias(libs.plugins.kotlin.multiplatform) apply false
   alias(libs.plugins.jetbrains.compose) apply false
-  alias(libs.plugins.baseline.profile) apply false
   alias(libs.plugins.compose.compiler) apply false
   alias(libs.plugins.nexus.plugin)
   alias(libs.plugins.spotless)
@@ -30,9 +28,6 @@ plugins {
 apiValidation {
   ignoredProjects.addAll(
     listOf(
-      "app",
-      "benchmark",
-      "benchmark-app",
       "wasmApp",
       "desktopApp",
       "androidApp",
@@ -40,15 +35,11 @@ apiValidation {
       "samples-shared",
     ),
   )
-  // Dot-separated FQN (not slash): the KLib ABI validator rejects slash-form
-  // package names as "illegal characters". Nothing public currently lives here
-  // (the `:balloon` viewBinding classes are non-public), so this is defensive.
-  ignoredPackages.add("com.skydoves.balloon.databinding")
   nonPublicMarkers.add("kotlin.PublishedApi")
 
-  // `balloon-compose-multiplatform` publishes klibs for the native/wasm targets
-  // in addition to the JVM/Android jars, so enable KLib ABI validation to baseline
-  // its full multi-target public surface (run `:balloon-compose-multiplatform:apiDump`).
+  // `balloon` publishes klibs for the native/wasm targets in addition to the JVM and
+  // Android jars, so enable KLib ABI validation to baseline its full multi-target public
+  // surface (run `:balloon:apiDump`).
   @OptIn(kotlinx.validation.ExperimentalBCVApi::class)
   klib {
     enabled = true

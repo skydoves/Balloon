@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.window.ComposeViewport
-import com.skydoves.balloon.sample.BalloonDemoScreen
-import kotlinx.browser.document
+package com.skydoves.balloon.sample
 
-@OptIn(ExperimentalComposeUiApi::class)
-fun main() {
-  ComposeViewport(document.body!!) {
-    BalloonDemoScreen()
-  }
-}
+import androidx.compose.ui.window.ComposeUIViewController
+import platform.UIKit.UIViewController
+
+/**
+ * iOS entry point that hosts [BalloonDemoScreen] inside a [UIViewController]
+ * so the iosApp Xcode project can embed it via `UIViewControllerRepresentable`.
+ *
+ * The Kotlin/Native compiler exposes this as `MainViewControllerKt.MainViewController()`
+ * to Swift.
+ */
+public fun MainViewController(): UIViewController = ComposeUIViewController { BalloonDemoScreen() }

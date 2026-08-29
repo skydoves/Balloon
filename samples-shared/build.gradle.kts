@@ -46,7 +46,7 @@ kotlin {
       isStatic = true
       // Re-export the library so Swift sees `Balloon`, `BalloonState`, etc.
       // alongside `MainViewController` from the same `shared` framework.
-      export(project(":balloon-compose-multiplatform"))
+      export(project(":balloon"))
     }
   }
 
@@ -83,14 +83,13 @@ kotlin {
       dependencies {
         // `api` so demo modules consuming `:samples-shared` transitively see
         // the library's public Compose APIs without re-declaring the dep.
-        api(project(":balloon-compose-multiplatform"))
+        api(project(":balloon"))
 
         implementation(libs.compose.multiplatform.runtime)
         implementation(libs.compose.multiplatform.foundation)
         implementation(libs.compose.multiplatform.ui)
         implementation(libs.compose.multiplatform.material)
-        // Ships the demo's profile picture to every target, so the shared demo renders the
-        // same image the Android-only `:app` demo loads from `R.drawable.sample0`.
+        // Ships the demo's profile picture to every target.
         implementation(libs.compose.multiplatform.resources)
       }
     }
@@ -105,13 +104,13 @@ kotlin {
 // Pin the generated `Res` class so the shared demo can import it from common code.
 compose.resources {
   publicResClass = false
-  packageOfResClass = "com.skydoves.balloon.compose.multiplatform.sample.resources"
+  packageOfResClass = "com.skydoves.balloon.sample.resources"
   generateResClass = auto
 }
 
 android {
   compileSdk = Configuration.compileSdk
-  namespace = "com.skydoves.balloon.compose.multiplatform.sample"
+  namespace = "com.skydoves.balloon.sample"
 
   defaultConfig {
     minSdk = Configuration.minSdk
@@ -128,8 +127,7 @@ android {
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile>().configureEach {
-  // Match the JVM target of the rest of the repo (`:balloon`, `:balloon-compose`,
-  // `:balloon-compose-multiplatform`) so consumers running on JVM 11 don't hit
+  // Match the JVM target of `:balloon` so consumers running on JVM 11 don't hit
   // `UnsupportedClassVersionError`.
   compilerOptions {
     jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
