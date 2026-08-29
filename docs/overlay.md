@@ -23,15 +23,13 @@ val style = rememberBalloonBuilder {
 
 !!! warning "An overlay needs a BalloonHost"
 
-    The scrim is drawn by `BalloonHost` so it can cover the entire window, including the
-    system bars. A popup window cannot do that: its layout params are wrap content and the
-    composition root clamps the reported size to a measure spec that excludes the navigation
-    bar, so the scrim would stop short of the bottom of the screen.
-
-    Wrap your screen once and both APIs work:
+    The scrim is drawn by `BalloonHost`, not by a popup. A Compose `Popup` cannot do the job
+    on Android: its layout params are wrap content and the composition root clamps the
+    reported size to a measure spec that excludes the navigation bar, so a popup scrim would
+    stop short of the bottom of the screen.
 
     ```kotlin
-    BalloonHost {
+    BalloonHost(modifier = Modifier.fillMaxSize()) {
         // Balloon(...) and Modifier.balloon(...) anchors go here
     }
     ```
@@ -39,17 +37,39 @@ val style = rememberBalloonBuilder {
     A balloon with `setIsVisibleOverlay(true)` outside a host throws an
     `IllegalStateException` that says exactly this.
 
+!!! note "The scrim covers the host, not the window"
+
+    The scrim fills the host's `Box` and is composited offscreen so the cut-out can erase
+    from it, which means it cannot paint outside those bounds. Balloon 1.x always dimmed the
+    whole display, because its scrim had a `MATCH_PARENT` window of its own.
+
+    To get the same result, put `BalloonHost` at the root of an edge-to-edge window with
+    `Modifier.fillMaxSize()`. Wrapping only a subtree dims only that subtree, which is
+    sometimes what you want and is worth knowing either way.
+
 ## Shapes
 
 ```kotlin
-setOverlayShape(BalloonOverlayShape.Empty)                    // no cut-out, dim everything
-setOverlayShape(BalloonOverlayShape.Rect)                     // the anchor's bounds
-setOverlayShape(BalloonOverlayShape.Oval)                     // inscribed in the bounds, default
+setOverlayShape(BalloonOverlayShape.Empty)  // no cut-out, dim everything
+setOverlayShape(BalloonOverlayShape.Rect)  // the anchor's bounds
+setOverlayShape(BalloonOverlayShape.Oval)  // inscribed in the bounds, default
 setOverlayShape(BalloonOverlayShape.Circle(radius = 40.dp))
 setOverlayShape(BalloonOverlayShape.RoundRect(radiusX = 12.dp, radiusY = 12.dp))
+setOverlayShape(
+    BalloonOverlayShape.RoundRectPerCorner(
+        topStart = 16.dp,
+        topEnd = 4.dp,
+        bottomEnd = 16.dp,
+        bottomStart = 4.dp,
+    ),
+)
 ```
 
-`Circle` with no radius uses half of the anchor's longer side.
+`Circle` with no radius uses half of the anchor's longer side. Balloon 1.x had no default
+here at all: its radius was mandatory, and a circle built without one drew nothing.
+
+`RoundRectPerCorner` is the counterpart of 1.x's four-argument `BalloonOverlayRoundRect`. Its
+corners are start relative, so they mirror under a right to left layout.
 
 !!! note "Radii are Dp, not pixels"
 
@@ -65,10 +85,18 @@ setOverlayPadding(6.dp)
 setOverlayPadding(start = 4.dp, top = 10.dp, end = 20.dp, bottom = 30.dp)
 ```
 
+That band is transparent by default, like the rest of the cut-out. Fill it to draw a highlight
+ring around the anchor:
+
+```kotlin
+setOverlayPadding(6.dp)
+setOverlayPaddingColor(Color(0xFFFFC107))
+```
+
 ## Animation
 
 ```kotlin
-setBalloonOverlayAnimation(BalloonOverlayAnimation.FADE)   // default, 200ms linear
+setBalloonOverlayAnimation(BalloonOverlayAnimation.FADE)  // default, 200ms linear
 setBalloonOverlayAnimation(BalloonOverlayAnimation.NONE)
 ```
 
@@ -77,7 +105,7 @@ setBalloonOverlayAnimation(BalloonOverlayAnimation.NONE)
 The scrim is modal. A tap on it never falls through to the content underneath.
 
 ```kotlin
-setDismissWhenOverlayClicked(true)   // default
+setDismissWhenOverlayClicked(true)  // default
 balloonState.onOverlayClick = { analytics.log("tour_scrim_tapped") }
 ```
 

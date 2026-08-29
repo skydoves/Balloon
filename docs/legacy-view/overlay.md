@@ -85,7 +85,7 @@ Balloon.Builder(context)
 
 ```kotlin
 BalloonOverlayAnimation.NONE
-BalloonOverlayAnimation.FADE // default
+BalloonOverlayAnimation.FADE  // default
 ```
 
 ## Overlay Padding
@@ -94,8 +94,8 @@ Add padding around the highlighted area:
 
 ```kotlin
 Balloon.Builder(context)
-    .setOverlayPadding(8f) // padding in dp
-    .setOverlayPaddingColorResource(R.color.paddingColor) // padding color
+    .setOverlayPadding(8f)  // padding in dp
+    .setOverlayPaddingColorResource(R.color.paddingColor)  // padding color
 ```
 
 ## Overlay Interaction
@@ -104,7 +104,7 @@ Balloon.Builder(context)
 
 ```kotlin
 Balloon.Builder(context)
-    .setDismissWhenOverlayClicked(true) // dismiss balloon when overlay is clicked
+    .setDismissWhenOverlayClicked(true)  // dismiss balloon when overlay is clicked
 ```
 
 ### Overlay Click Listener
@@ -122,7 +122,7 @@ Balloon.Builder(context)
 Balloon.Builder(context)
     .setOnBalloonOverlayTouchListener { view, event ->
         // handle overlay touch
-        true // return true if handled
+        true  // return true if handled
     }
 ```
 

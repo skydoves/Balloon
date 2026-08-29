@@ -164,8 +164,9 @@ internal fun BalloonPopupLayer(
   if (style.isVisibleOverlay) {
     checkNotNull(registry) {
       "A balloon with setIsVisibleOverlay(true) must be shown inside a BalloonHost { ... }: " +
-        "the overlay scrim is drawn by the host so it can cover the whole window, which a " +
-        "Popup cannot do. Wrap your screen in BalloonHost."
+        "the overlay scrim is drawn by the host, because a Popup cannot cover the system " +
+        "bars. Wrap your screen in BalloonHost, at the root and with Modifier.fillMaxSize() " +
+        "if you want the scrim to dim the whole window."
     }
     val request = remember(state) { BalloonOverlayRequest(state) }
     request.anchorBounds = anchorBounds
@@ -291,6 +292,7 @@ internal fun BalloonPopupLayer(
             state.onBalloonClick?.invoke()
             if (style.dismissWhenClicked) state.dismiss()
           },
+          onMarginTap = { state.dismiss() },
           content = { currentBalloonContent() },
         )
       }

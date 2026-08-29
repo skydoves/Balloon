@@ -30,7 +30,7 @@ Every scale pivots on the balloon's center, which is what the original animation
 regardless of where the arrow sits.
 
 ```kotlin
-setCircularDuration(700L)   // only affects CIRCULAR
+setCircularDuration(700L)  // only affects CIRCULAR
 ```
 
 !!! note "CIRCULAR clears focusability"
@@ -59,13 +59,13 @@ setBalloonHighlightAnimation(BalloonHighlightAnimation.SHAKE, startDelayMillis =
 | --- | --- |
 | `NONE` | nothing, the default |
 | `HEARTBEAT` | pulses between 100% and 90% scale over 800ms |
-| `SHAKE` | slides 13% of its own size toward the anchor and back over 650ms |
+| `SHAKE` | slides 13% of its own size away from the anchor and back over 650ms |
 | `BREATH` | fades between 75% and 100% alpha over 800ms |
 | `ROTATE` | spins in 3D, configured separately |
 
-`HEARTBEAT` pivots on the edge opposite the arrow, so the balloon pulses away from its anchor
-rather than through it. When the arrow is hidden it pivots on the center instead. `SHAKE` always
-moves toward the arrow, which is toward the anchor.
+`HEARTBEAT` pivots on the **arrow** edge, so the arrow stays pinned to the anchor while the rest
+of the balloon pulses toward it. When the arrow is hidden it pivots on the center instead.
+`SHAKE` slides **away** from the arrow, so the tooltip tugs against the anchor it points at.
 
 Until `startDelayMillis` elapses the balloon is drawn untransformed, exactly as in 1.x.
 
@@ -87,14 +87,18 @@ setBalloonRotationAnimation(
 
 The balloon turns `360 * turns * direction` degrees around Y, plus optional fixed sweeps around
 X and Z, over `speedMillis`, repeating `loops` times about its center. `INFINITE` repeats
-forever. It is driven by `graphicsLayer`'s `rotationX`, `rotationY`, and `rotationZ`, whose
-default camera distance matches `android.graphics.Camera`, so the projection is the same one
-1.x produced.
+forever.
+
+Two differences from 1.x worth knowing. The perspective is density relative here, where
+`android.graphics.Camera` sat at a fixed 576px whatever the screen, so the same rotation reads
+slightly flatter on a dense display and consistent across devices. And 1.x left
+`balloonRotateAnimation` null by default, which meant `ROTATE` did nothing until you configured
+it; here the default is a real `BalloonRotateAnimation()`.
 
 ## Overlay animation
 
 ```kotlin
-setBalloonOverlayAnimation(BalloonOverlayAnimation.FADE)   // default
+setBalloonOverlayAnimation(BalloonOverlayAnimation.FADE)  // default
 setBalloonOverlayAnimation(BalloonOverlayAnimation.NONE)
 ```
 

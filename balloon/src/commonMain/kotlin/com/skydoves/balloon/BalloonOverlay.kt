@@ -22,6 +22,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
@@ -32,9 +34,12 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
+import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Fill
+import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Dp
@@ -66,17 +71,34 @@ public sealed interface BalloonOverlayShape {
    * Punches a circle centred on the anchor.
    *
    * @param radius the circle's radius. [Dp.Unspecified] (the default) uses half of the
-   *   anchor's longer side, matching the View implementation's fallback.
+   *   anchor's longer side. The View implementation had no default here: its radius was
+   *   mandatory, and a `BalloonOverlayCircle` built without one simply drew nothing.
    */
   public data class Circle(val radius: Dp = Dp.Unspecified) : BalloonOverlayShape
 
   /**
-   * Punches a rounded rectangle matching the anchor's bounds.
+   * Punches a rounded rectangle matching the anchor's bounds, with the same radius on
+   * every corner.
    *
    * @param radiusX horizontal corner radius.
    * @param radiusY vertical corner radius, defaulting to [radiusX].
    */
   public data class RoundRect(val radiusX: Dp, val radiusY: Dp = radiusX) : BalloonOverlayShape
+
+  /**
+   * Punches a rounded rectangle with a different radius on each corner, mirroring the
+   * four-argument `BalloonOverlayRoundRect` constructor of the View implementation.
+   *
+   * Corners are named in start-relative terms and resolve against the layout direction, so
+   * [topStart] is the top-left corner in a left-to-right layout and the top-right one in a
+   * right-to-left layout.
+   */
+  public data class RoundRectPerCorner(
+    val topStart: Dp,
+    val topEnd: Dp,
+    val bottomEnd: Dp,
+    val bottomStart: Dp,
+  ) : BalloonOverlayShape
 }
 
 /** Duration of `balloon_fade_in` / `balloon_fade_out`, which the overlay window also uses. */
@@ -97,10 +119,18 @@ private const val OVERLAY_FADE_DURATION = 200
  * The View implementation puts the scrim in its own `PopupWindow`. A Compose `Popup` cannot do
  * the same job on Android: its `WindowManager.LayoutParams` are `WRAP_CONTENT`, and the
  * composition root constrains the reported size to the measure spec the window manager
- * supplies — which excludes the navigation bar. The scrim would stop short of the bottom of
- * the screen however large its content is. Drawing into the caller's own (edge-to-edge) window
- * has no such limit, needs no coordinate translation, and behaves identically on every target.
- * This is why overlays are rendered by [BalloonHost].
+ * supplies, which excludes the navigation bar. The scrim would stop short of the bottom of the
+ * screen however large its content is. Drawing into the caller's own window has no such limit
+ * and behaves identically on every target, which is why overlays are rendered by [BalloonHost].
+ *
+ * ## How far it reaches
+ *
+ * The scrim is `matchParentSize()` inside the host's `Box` and is composited offscreen so the
+ * cut-out can erase from it, which means it covers **the host's bounds**, not the window. The
+ * View implementation always dimmed the whole display, because its scrim had a `MATCH_PARENT`
+ * window of its own. To get the same result here, put `BalloonHost` at the root of an
+ * edge-to-edge window and give it `Modifier.fillMaxSize()`. Wrapping only a subtree dims only
+ * that subtree.
  *
  * @param state the balloon this overlay belongs to.
  * @param anchorBounds the anchor's bounds in window coordinates.
@@ -175,41 +205,94 @@ private fun DrawScope.drawAnchorCutout(
   )
   if (rect.width <= 0f || rect.height <= 0f) return
 
-  when (val shape = style.overlayShape) {
+  drawOverlayShape(style.overlayShape, rect, Color.Transparent, BlendMode.Clear, layoutDirection)
+
+  // `setOverlayPaddingColor` fills the band the padding opened up. The View implementation
+  // strokes a ring there after clearing; painting the padded shape and then clearing the
+  // unpadded one gets the same result and stays exact when the four paddings differ.
+  val paddingColor = style.overlayPaddingColor
+  val hasPadding = padStart > 0f || padTop > 0f || padEnd > 0f || padBottom > 0f
+  if (paddingColor.isSpecified && paddingColor.alpha > 0f && hasPadding) {
+    val anchorRect = Rect(
+      left = (anchorBounds.left - originInWindow.x).toFloat(),
+      top = (anchorBounds.top - originInWindow.y).toFloat(),
+      right = (anchorBounds.right - originInWindow.x).toFloat(),
+      bottom = (anchorBounds.bottom - originInWindow.y).toFloat(),
+    )
+    drawOverlayShape(style.overlayShape, rect, paddingColor, BlendMode.SrcOver, layoutDirection)
+    if (anchorRect.width > 0f && anchorRect.height > 0f) {
+      drawOverlayShape(
+        style.overlayShape,
+        anchorRect,
+        Color.Transparent,
+        BlendMode.Clear,
+        layoutDirection,
+      )
+    }
+  }
+}
+
+/** Paints [shape] into [rect] with [color] and [blendMode]. */
+private fun DrawScope.drawOverlayShape(
+  shape: BalloonOverlayShape,
+  rect: Rect,
+  color: Color,
+  blendMode: BlendMode,
+  layoutDirection: LayoutDirection,
+) {
+  when (shape) {
     BalloonOverlayShape.Empty -> Unit
 
     BalloonOverlayShape.Rect -> drawRect(
-      color = Color.Transparent,
+      color = color,
       topLeft = rect.topLeft,
       size = rect.size,
-      blendMode = BlendMode.Clear,
+      blendMode = blendMode,
     )
 
     BalloonOverlayShape.Oval -> drawOval(
-      color = Color.Transparent,
+      color = color,
       topLeft = rect.topLeft,
       size = rect.size,
-      blendMode = BlendMode.Clear,
+      blendMode = blendMode,
     )
 
     is BalloonOverlayShape.Circle -> drawCircle(
-      color = Color.Transparent,
+      color = color,
       radius = if (shape.radius == Dp.Unspecified) {
         max(rect.width, rect.height) / 2f
       } else {
         shape.radius.toPx()
       },
       center = rect.center,
-      blendMode = BlendMode.Clear,
+      blendMode = blendMode,
     )
 
     is BalloonOverlayShape.RoundRect -> drawRoundRect(
-      color = Color.Transparent,
+      color = color,
       topLeft = rect.topLeft,
       size = rect.size,
       cornerRadius = CornerRadius(shape.radiusX.toPx(), shape.radiusY.toPx()),
       style = Fill,
-      blendMode = BlendMode.Clear,
+      blendMode = blendMode,
     )
+
+    is BalloonOverlayShape.RoundRectPerCorner -> {
+      val ltr = layoutDirection == LayoutDirection.Ltr
+      val outline = RoundedCornerShape(
+        topStart = CornerSize(shape.topStart),
+        topEnd = CornerSize(shape.topEnd),
+        bottomEnd = CornerSize(shape.bottomEnd),
+        bottomStart = CornerSize(shape.bottomStart),
+      ).createOutline(rect.size, if (ltr) LayoutDirection.Ltr else LayoutDirection.Rtl, this)
+      translate(left = rect.left, top = rect.top) {
+        drawOutline(
+          outline = outline,
+          color = color,
+          style = Fill,
+          blendMode = blendMode,
+        )
+      }
+    }
   }
 }

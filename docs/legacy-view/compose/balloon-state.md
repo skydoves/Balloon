@@ -27,7 +27,7 @@ You can also pass an optional key to trigger recomposition:
 ```kotlin
 val balloonState = rememberBalloonState(
     builder = builder,
-    key = someKey // recomposes when key changes
+    key = someKey  // recomposes when key changes
 )
 ```
 

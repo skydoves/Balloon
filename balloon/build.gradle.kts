@@ -85,22 +85,37 @@ kotlin {
   sourceSets {
     val commonMain by getting {
       dependencies {
-        implementation(libs.compose.multiplatform.runtime)
-        implementation(libs.compose.multiplatform.foundation)
-        implementation(libs.compose.multiplatform.ui)
+        // `api`, not `implementation`: the public surface hands out `@Composable`,
+        // `Modifier`, `PaddingValues`, `Color`, `Dp` and `DpSize`, so these belong on a
+        // consumer's compile classpath. Declaring them `implementation` would publish them
+        // as `runtime` scope, and anyone without their own Compose dependency could not
+        // write `setBackgroundColor(Color.Red)`.
+        api(libs.compose.multiplatform.runtime)
+        api(libs.compose.multiplatform.foundation)
+        api(libs.compose.multiplatform.ui)
       }
     }
+    // Pure logic: the builder, the state machine, and the position math. These have no
+    // platform dependency, so they run on every target including Android's local unit tests.
     val commonTest by getting {
       dependencies {
         implementation(kotlin("test"))
-        implementation(libs.compose.multiplatform.ui.test)
         implementation(libs.compose.multiplatform.foundation)
         implementation(libs.compose.multiplatform.ui)
         implementation(libs.kotlinx.coroutines.test)
       }
     }
-    // `runComposeUiTest` renders through Skiko on the JVM, which needs the desktop
-    // runtime on the test classpath; `:desktopTest` is where the UI suite actually runs.
+    // Anything that needs a real renderer lives here: the shape geometry builds an actual
+    // `Path` and reads its bounds, and the UI suite composes through `runComposeUiTest`.
+    // Android's local unit tests would run both against stubbed `android.graphics` classes
+    // that throw, so these are scoped to the Skia targets and execute on `:desktopTest`.
+    val skiaTest by getting {
+      dependencies {
+        implementation(libs.compose.multiplatform.ui.test)
+      }
+    }
+    // `runComposeUiTest` renders through Skiko on the JVM, which needs the desktop runtime
+    // on the test classpath.
     val desktopTest by getting {
       dependencies {
         implementation(compose.desktop.currentOs)

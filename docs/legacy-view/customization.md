@@ -29,7 +29,7 @@ Balloon.Builder(context)
 
 ```kotlin
 Balloon.Builder(context)
-    .setAlpha(0.9f) // 0.0 to 1.0
+    .setAlpha(0.9f)  // 0.0 to 1.0
 ```
 
 ## Stroke (Border)
@@ -59,35 +59,35 @@ Balloon.Builder(context)
 
 ```kotlin
 Balloon.Builder(context)
-    .setFocusable(true) // gains focus when shown
+    .setFocusable(true)  // gains focus when shown
 ```
 
 ### Dismiss When Clicked
 
 ```kotlin
 Balloon.Builder(context)
-    .setDismissWhenClicked(true) // dismiss when Balloon is clicked
+    .setDismissWhenClicked(true)  // dismiss when Balloon is clicked
 ```
 
 ### Dismiss When Touched Outside
 
 ```kotlin
 Balloon.Builder(context)
-    .setDismissWhenTouchOutside(true) // dismiss when touching outside
+    .setDismissWhenTouchOutside(true)  // dismiss when touching outside
 ```
 
 ### Dismiss When Shown Again
 
 ```kotlin
 Balloon.Builder(context)
-    .setDismissWhenShowAgain(true) // dismiss current if show is called again
+    .setDismissWhenShowAgain(true)  // dismiss current if show is called again
 ```
 
 ### Dismiss When Lifecycle Destroyed
 
 ```kotlin
 Balloon.Builder(context)
-    .setDismissWhenLifecycleOnPause(true) // dismiss on onPause
+    .setDismissWhenLifecycleOnPause(true)  // dismiss on onPause
 ```
 
 ## Pass Touch Events to Anchor

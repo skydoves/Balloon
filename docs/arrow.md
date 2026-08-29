@@ -7,8 +7,8 @@ path as the body, so a border traces around it and a corner radius never clips i
 
 ```kotlin
 setIsVisibleArrow(true)
-setArrowSize(10.dp)                             // square
-setArrowSize(width = 16.dp, height = 8.dp)      // base along the edge, protrusion outward
+setArrowSize(10.dp)  // square
+setArrowSize(width = 16.dp, height = 8.dp)  // base along the edge, protrusion outward
 setArrowWidth(16.dp)
 setArrowHeight(8.dp)
 ```
@@ -56,7 +56,7 @@ space and changing it mid placement would feed back into the decision that cause
 ## Position along the edge
 
 ```kotlin
-setArrowPosition(0.62f)                                  // 0f..1f
+setArrowPosition(0.62f)  // 0f..1f
 setArrowPositionRules(ArrowPositionRules.ALIGN_BALLOON)  // default
 ```
 
@@ -68,7 +68,7 @@ is what you want for a wide balloon over a narrow anchor.
 
 ```kotlin
 setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
-setArrowPosition(0.5f)   // always points at the middle of the anchor
+setArrowPosition(0.5f)  // always points at the middle of the anchor
 ```
 
 Under `ALIGN_ANCHOR` the arrow is kept clear of the balloon's ends by
@@ -80,8 +80,8 @@ arrowSize * arrowAlignAnchorPaddingRatio + arrowAlignAnchorPadding
 which you can tune:
 
 ```kotlin
-setArrowAlignAnchorPaddingRatio(2.5f)   // default
-setArrowAlignAnchorPadding(8.dp)        // default 0.dp
+setArrowAlignAnchorPaddingRatio(2.5f)  // default
+setArrowAlignAnchorPadding(8.dp)  // default 0.dp
 ```
 
 The arrow base is also clamped to the straight part of the edge, `cornerRadius + arrowWidth / 2`

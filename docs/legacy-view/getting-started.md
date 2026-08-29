@@ -111,8 +111,8 @@ Set specific sizes regardless of the content:
 
 ```kotlin
 Balloon.Builder(context)
-    .setWidth(220) // sets 220dp width
-    .setHeight(160) // sets 160dp height
+    .setWidth(220)  // sets 220dp width
+    .setHeight(160)  // sets 160dp height
 ```
 
 ### Wrap Content
@@ -121,8 +121,8 @@ Set dynamic sizes depending on the content:
 
 ```kotlin
 Balloon.Builder(context)
-    .setWidth(BalloonSizeSpec.WRAP) // width depends on content
-    .setHeight(BalloonSizeSpec.WRAP) // height depends on content
+    .setWidth(BalloonSizeSpec.WRAP)  // width depends on content
+    .setHeight(BalloonSizeSpec.WRAP)  // height depends on content
 ```
 
 ### Screen Ratio
@@ -131,7 +131,7 @@ Set width based on the screen size ratio:
 
 ```kotlin
 Balloon.Builder(context)
-    .setWidthRatio(0.5f) // 50% of the horizontal screen size
+    .setWidthRatio(0.5f)  // 50% of the horizontal screen size
 ```
 
 ## Padding and Margin
@@ -142,9 +142,9 @@ Adjust the content padding inside the Balloon:
 
 ```kotlin
 Balloon.Builder(context)
-    .setPadding(6) // 6dp padding on all sides
-    .setPaddingLeft(8) // 8dp left padding
-    .setPaddingTop(12) // 12dp top padding
+    .setPadding(6)  // 6dp padding on all sides
+    .setPaddingLeft(8)  // 8dp left padding
+    .setPaddingTop(12)  // 12dp top padding
     .setPaddingRight(8)
     .setPaddingBottom(12)
 ```
@@ -155,10 +155,10 @@ Add margins to the Balloon container:
 
 ```kotlin
 Balloon.Builder(context)
-    .setMargin(12) // margin on all sides
+    .setMargin(12)  // margin on all sides
     .setMarginLeft(14)
     .setMarginRight(14)
-    .setMarginHorizontal(14) // left and right margins
+    .setMarginHorizontal(14)  // left and right margins
 ```
 
 ## Lifecycle Management

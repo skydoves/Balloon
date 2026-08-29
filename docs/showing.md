@@ -73,12 +73,18 @@ A balloon also dismisses itself when:
 - the user taps outside it, presses back or Escape, or taps the body, depending on the style
 
 ```kotlin
-setAutoDismissDuration(2_000L)     // 0L disables it
+setAutoDismissDuration(2_000L)  // 0L disables it
 setDismissWhenTouchOutside(true)
 setDismissWhenBackPressed(true)
 setDismissWhenClicked(true)
-setDismissWhenShowAgain(true)      // showing an already visible balloon closes it
+setDismissWhenShowAgain(true)  // showing an already visible balloon closes it
+setDismissWhenTouchMargin(true)  // a tap in the margin band closes it too
 ```
+
+`setDismissWhenTouchMargin` covers a gap the framework cannot see. The margin, and the space
+the balloon reserves for its arrow and its elevation inset, belong to the balloon's own popup,
+so a tap there is not an outside click. On by default, as in 1.x, and it only acts when
+`setDismissWhenTouchOutside` is on too.
 
 ## Moving a visible balloon
 

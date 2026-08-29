@@ -17,8 +17,8 @@ You can show the Balloon using different alignment methods. Each method position
 Shows the Balloon above the anchor view:
 
 ```kotlin
-balloon.showAlignTop(anchor) // shows above the anchor
-balloon.showAlignTop(anchor, xOff, yOff) // with offset
+balloon.showAlignTop(anchor)  // shows above the anchor
+balloon.showAlignTop(anchor, xOff, yOff)  // with offset
 ```
 
 ### Align Bottom
@@ -26,8 +26,8 @@ balloon.showAlignTop(anchor, xOff, yOff) // with offset
 Shows the Balloon below the anchor view:
 
 ```kotlin
-balloon.showAlignBottom(anchor) // shows below the anchor
-balloon.showAlignBottom(anchor, xOff, yOff) // with offset
+balloon.showAlignBottom(anchor)  // shows below the anchor
+balloon.showAlignBottom(anchor, xOff, yOff)  // with offset
 ```
 
 ### Align Start
@@ -35,8 +35,8 @@ balloon.showAlignBottom(anchor, xOff, yOff) // with offset
 Shows the Balloon at the start (left in LTR) of the anchor view:
 
 ```kotlin
-balloon.showAlignStart(anchor) // shows at start
-balloon.showAlignStart(anchor, xOff, yOff) // with offset
+balloon.showAlignStart(anchor)  // shows at start
+balloon.showAlignStart(anchor, xOff, yOff)  // with offset
 ```
 
 ### Align End
@@ -44,8 +44,8 @@ balloon.showAlignStart(anchor, xOff, yOff) // with offset
 Shows the Balloon at the end (right in LTR) of the anchor view:
 
 ```kotlin
-balloon.showAlignEnd(anchor) // shows at end
-balloon.showAlignEnd(anchor, xOff, yOff) // with offset
+balloon.showAlignEnd(anchor)  // shows at end
+balloon.showAlignEnd(anchor, xOff, yOff)  // with offset
 ```
 
 ### As Dropdown
@@ -53,8 +53,8 @@ balloon.showAlignEnd(anchor, xOff, yOff) // with offset
 Shows the Balloon as a dropdown below the anchor:
 
 ```kotlin
-balloon.showAsDropDown(anchor) // shows as dropdown
-balloon.showAsDropDown(anchor, xOff, yOff) // with offset
+balloon.showAsDropDown(anchor)  // shows as dropdown
+balloon.showAsDropDown(anchor, xOff, yOff)  // with offset
 ```
 
 ### At Center
@@ -62,7 +62,7 @@ balloon.showAsDropDown(anchor, xOff, yOff) // with offset
 Shows the Balloon overlapping the anchor at its center:
 
 ```kotlin
-balloon.showAtCenter(anchor) // shows at center
+balloon.showAtCenter(anchor)  // shows at center
 balloon.showAtCenter(anchor, xOff, yOff, BalloonCenterAlign.TOP)
 ```
 
@@ -88,7 +88,7 @@ balloon.dismiss()
 ### Dismiss with Delay
 
 ```kotlin
-balloon.dismissWithDelay(1000L) // dismisses after 1 second
+balloon.dismissWithDelay(1000L)  // dismisses after 1 second
 ```
 
 ### Auto Dismiss
@@ -97,7 +97,7 @@ Set the Balloon to automatically dismiss after a duration:
 
 ```kotlin
 Balloon.Builder(context)
-    .setAutoDismissDuration(1000L) // auto dismiss after 1 second
+    .setAutoDismissDuration(1000L)  // auto dismiss after 1 second
 ```
 
 ## Sequential Display

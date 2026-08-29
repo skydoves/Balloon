@@ -64,7 +64,7 @@ Handle touch events on the Balloon content:
 Balloon.Builder(context)
     .setOnBalloonTouchListener { view, motionEvent ->
         // handle touch event
-        true // return true if consumed
+        true  // return true if consumed
     }
 ```
 
@@ -87,7 +87,7 @@ Handle touch events on the overlay:
 Balloon.Builder(context)
     .setOnBalloonOverlayTouchListener { view, motionEvent ->
         // handle overlay touch
-        true // return true if consumed
+        true  // return true if consumed
     }
 ```
 

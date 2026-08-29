@@ -236,10 +236,11 @@ balloonContent = {
 | `setOverlayColor(Int)`, `*Resource` | `setOverlayColor(Color)` | |
 | `setOverlayPadding(Float)`, `*Resource` | `setOverlayPadding(Dp)` | |
 | `setOverlayPadding(l, t, r, b)` | `setOverlayPadding(start, top, end, bottom)` | RTL aware |
-| `setOverlayShape(...)` | `setOverlayShape(BalloonOverlayShape.…)` | `Empty`, `Rect`, `Oval`, `Circle(radius)`, `RoundRect(radiusX, radiusY)`. **Radii are `Dp` here and raw pixels in 1.x** |
+| `setOverlayShape(...)` | `setOverlayShape(BalloonOverlayShape.…)` | `Empty`, `Rect`, `Oval`, `Circle(radius)`, `RoundRect(radiusX, radiusY)`, `RoundRectPerCorner(topStart, topEnd, bottomEnd, bottomStart)`. **Radii are `Dp` here and raw pixels in 1.x** |
 | `setBalloonOverlayAnimation(...)` | same | `NONE` or `FADE` |
 | `setDismissWhenOverlayClicked(...)` | same | |
-| `setOverlayPaddingColor`, `setOverlayPaddingShader` | not supported | `Shader` is Android only |
+| `setOverlayPaddingColor(Int)`, `*Resource` | `setOverlayPaddingColor(Color)` | fills the band the padding opens up |
+| `setOverlayPaddingShader` | not supported | `Shader` is Android only |
 | `setOverlayPosition(Point)`, `setOverlayGravity(Int)` | not supported | the cut-out always follows the anchor |
 
 ### Animation
@@ -264,7 +265,7 @@ balloonContent = {
 | `setOnBalloonOverlayClickListener(...)` | `balloonState.onOverlayClick = { }` | |
 | `setOnBalloonInitializedListener(...)` | `Modifier.onGloballyPositioned` in the slot | |
 | `setOnBalloonTouchListener`, `setOnBalloonOutsideTouchListener`, `setOnBalloonOverlayTouchListener` | not supported | `View.OnTouchListener` and `MotionEvent` are Android only, use `Modifier.pointerInput` |
-| `setDismissWhenTouchMargin(...)` | not supported | the margin is layout only and never takes touches |
+| `setDismissWhenTouchMargin(Boolean)` | same | still defaults to `true`, and still only acts when `setDismissWhenTouchOutside` is on |
 | `setShouldPassTouchEventToAnchor(...)` | `setFocusable(false)` | a non focusable popup already lets touches through |
 | `setDismissWhenLifecycleOnPause`, `setLifecycleOwner`, `setLifecycleObserver` | not needed | composition disposal dismisses the balloon |
 | `setIsStatusBarVisible`, `setIsAttachedInDecor`, `setIsClippingEnabled`, `setIsComposableContent` | not supported | `PopupWindow` specific |
@@ -313,6 +314,36 @@ pixel diff described above.
    `arrowPosition` of `0f` or `1f` floated the triangle past the corner.
 
 Everything else matches to the pixel.
+
+## Behavior changes worth knowing
+
+Beyond the deliberate differences above, four things behave differently for the same input.
+
+1. **`setAutoDismissDuration(0L)` now means "never".** 1.x used `-1L` as the disabled sentinel
+   and treated `0L` as "dismiss immediately". Here `0L` disables auto dismiss and negatives are
+   clamped to it. Pass a positive value, or leave it unset.
+2. **`BalloonHighlightAnimation.ROTATE` animates out of the box.** In 1.x
+   `balloonRotateAnimation` defaulted to `null`, so `ROTATE` without an explicit
+   `setBalloonRotationAnimation` did nothing at all. The default here is a real
+   `BalloonRotateAnimation()`, with the same values 1.x's own builder defaulted to.
+3. **`BalloonOverlayAnimation.NONE` is now instant.** In 1.x it fell through to
+   `Balloon_Normal_Anim`, which scaled the scrim from the centre over 200ms, so "none" was not
+   none. Use `FADE` if you want a transition.
+4. **`ROTATE`'s perspective is density relative.** `android.graphics.Camera` sat at a fixed
+   576px whatever the screen; `graphicsLayer` scales the camera distance by density, so the
+   same rotation reads slightly flatter on a dense screen and consistent across devices.
+
+## A note on text color
+
+`backgroundColor` still defaults to `Color.Black`, but the content is your composable now, so a
+bare `Text(...)` picks up the ambient `LocalContentColor`. Under a light `MaterialTheme` that is
+near black, which is invisible on a black balloon. 1.x set `textColor` to white for you. Set the
+color yourself, or give the balloon a background that suits your theme:
+
+```kotlin
+balloonContent = { Text(text = "Tooltip", color = Color.White) }
+```
+
 
 ## Staying on 1.x
 

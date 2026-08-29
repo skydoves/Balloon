@@ -20,11 +20,11 @@ Balloon.Builder(context)
 ### Available Animations
 
 ```kotlin
-BalloonAnimation.NONE // no animation
-BalloonAnimation.FADE // fade in/out
-BalloonAnimation.OVERSHOOT // overshoot effect
-BalloonAnimation.ELASTIC // elastic bounce
-BalloonAnimation.CIRCULAR // circular reveal
+BalloonAnimation.NONE  // no animation
+BalloonAnimation.FADE  // fade in/out
+BalloonAnimation.OVERSHOOT  // overshoot effect
+BalloonAnimation.ELASTIC  // elastic bounce
+BalloonAnimation.CIRCULAR  // circular reveal
 ```
 
 ### Preview
@@ -45,11 +45,11 @@ Balloon.Builder(context)
 ### Available Highlight Animations
 
 ```kotlin
-BalloonHighlightAnimation.NONE // no highlight animation
-BalloonHighlightAnimation.HEARTBEAT // pulsing effect
-BalloonHighlightAnimation.SHAKE // shaking effect
-BalloonHighlightAnimation.BREATH // breathing effect
-BalloonHighlightAnimation.ROTATE // rotation effect
+BalloonHighlightAnimation.NONE  // no highlight animation
+BalloonHighlightAnimation.HEARTBEAT  // pulsing effect
+BalloonHighlightAnimation.SHAKE  // shaking effect
+BalloonHighlightAnimation.BREATH  // breathing effect
+BalloonHighlightAnimation.ROTATE  // rotation effect
 ```
 
 ### Preview
@@ -86,8 +86,8 @@ Balloon.Builder(context)
 ### Available Overlay Animations
 
 ```kotlin
-BalloonOverlayAnimation.NONE // no overlay animation
-BalloonOverlayAnimation.FADE // fade in/out (default)
+BalloonOverlayAnimation.NONE  // no overlay animation
+BalloonOverlayAnimation.FADE  // fade in/out (default)
 ```
 
 ## Animation Duration
@@ -96,7 +96,7 @@ Customize animation durations for circular reveal animation:
 
 ```kotlin
 Balloon.Builder(context)
-    .setCircularDuration(500L) // duration in milliseconds
+    .setCircularDuration(500L)  // duration in milliseconds
 ```
 
 ## Custom Animations

@@ -12,11 +12,11 @@ This guide covers how to customize the arrow on your Balloon tooltips.
 
 ```kotlin
 Balloon.Builder(context)
-    .setIsVisibleArrow(true) // show or hide the arrow
-    .setArrowSize(10) // arrow size in dp
-    .setArrowPosition(0.5f) // position ratio (0.0 ~ 1.0)
-    .setArrowOrientation(ArrowOrientation.BOTTOM) // arrow direction
-    .setArrowDrawable(ContextCompat.getDrawable(context, R.drawable.arrow)) // custom drawable
+    .setIsVisibleArrow(true)  // show or hide the arrow
+    .setArrowSize(10)  // arrow size in dp
+    .setArrowPosition(0.5f)  // position ratio (0.0 ~ 1.0)
+    .setArrowOrientation(ArrowOrientation.BOTTOM)  // arrow direction
+    .setArrowDrawable(ContextCompat.getDrawable(context, R.drawable.arrow))  // custom drawable
 ```
 
 ## Arrow Orientation
@@ -24,10 +24,10 @@ Balloon.Builder(context)
 The arrow orientation determines which side of the Balloon the arrow appears on:
 
 ```kotlin
-ArrowOrientation.TOP // arrow points upward
-ArrowOrientation.BOTTOM // arrow points downward
-ArrowOrientation.START // arrow points to the start (left in LTR)
-ArrowOrientation.END // arrow points to the end (right in LTR)
+ArrowOrientation.TOP  // arrow points upward
+ArrowOrientation.BOTTOM  // arrow points downward
+ArrowOrientation.START  // arrow points to the start (left in LTR)
+ArrowOrientation.END  // arrow points to the end (right in LTR)
 ```
 
 | TOP | BOTTOM | START | END |
@@ -40,9 +40,9 @@ The `setArrowPosition` method uses a ratio value from 0.0 to 1.0 to determine wh
 
 ```kotlin
 Balloon.Builder(context)
-    .setArrowPosition(0.5f) // center
-    .setArrowPosition(0.2f) // 20% from the start
-    .setArrowPosition(0.8f) // 80% from the start
+    .setArrowPosition(0.5f)  // center
+    .setArrowPosition(0.2f)  // 20% from the start
+    .setArrowPosition(0.8f)  // 80% from the start
 ```
 
 ## Arrow Position Rules
@@ -56,7 +56,7 @@ The arrow position is calculated relative to the anchor view:
 ```kotlin
 Balloon.Builder(context)
     .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
-    .setArrowPosition(0.5f) // arrow will be at the center of the anchor
+    .setArrowPosition(0.5f)  // arrow will be at the center of the anchor
 ```
 
 ### ALIGN_BALLOON
@@ -65,8 +65,8 @@ The arrow position is calculated relative to the Balloon body:
 
 ```kotlin
 Balloon.Builder(context)
-    .setArrowPositionRules(ArrowPositionRules.ALIGN_BALLOON) // default
-    .setArrowPosition(0.5f) // arrow will be at the center of the Balloon
+    .setArrowPositionRules(ArrowPositionRules.ALIGN_BALLOON)  // default
+    .setArrowPosition(0.5f)  // arrow will be at the center of the Balloon
 ```
 
 ## Arrow Orientation Rules
@@ -79,7 +79,7 @@ The arrow orientation adapts based on available screen space:
 
 ```kotlin
 Balloon.Builder(context)
-    .setArrowOrientationRules(ArrowOrientationRules.ALIGN_ANCHOR) // default
+    .setArrowOrientationRules(ArrowOrientationRules.ALIGN_ANCHOR)  // default
 ```
 
 For example, if you set `ArrowOrientation.TOP` and call `showAlignBottom`, but there's not enough space below the anchor, the Balloon will be shown above the anchor and the arrow orientation will automatically change to `BOTTOM`.
@@ -99,7 +99,7 @@ Balloon.Builder(context)
 
 ```kotlin
 Balloon.Builder(context)
-    .setArrowSize(10) // 10dp
+    .setArrowSize(10)  // 10dp
 ```
 
 ### Wrap Content
@@ -127,8 +127,8 @@ You can add left and right padding constraints to the arrow:
 
 ```kotlin
 Balloon.Builder(context)
-    .setArrowLeftPadding(10) // minimum distance from left edge
-    .setArrowRightPadding(10) // minimum distance from right edge
+    .setArrowLeftPadding(10)  // minimum distance from left edge
+    .setArrowRightPadding(10)  // minimum distance from right edge
 ```
 
 ## Arrow Elevation

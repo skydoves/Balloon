@@ -97,6 +97,7 @@ import kotlin.math.max
  * @param arrowCenterFromCardStart the arrow center, in pixels from the card's leading edge
  *   along that side, as resolved by [BalloonPopupPositionProvider]. `null` centers the arrow.
  * @param onClick invoked when the body is tapped.
+ * @param onMarginTap invoked when a tap lands in the margin / reserve band around the body.
  * @param content the balloon body.
  */
 @Composable
@@ -105,6 +106,7 @@ internal fun BalloonContent(
   arrowOrientation: ArrowOrientation,
   arrowCenterFromCardStart: Float?,
   onClick: () -> Unit,
+  onMarginTap: () -> Unit,
   content: @Composable () -> Unit,
 ) {
   val layoutDirection = LocalLayoutDirection.current
@@ -261,11 +263,24 @@ internal fun BalloonContent(
   val currentOnClick by rememberUpdatedState(onClick)
   val clickModifier = Modifier.pointerInput(Unit) { detectTapGestures { currentOnClick() } }
 
+  // The margin and the reserve are inside the balloon's own popup, so the framework never
+  // reports a tap there as an outside click, and without this it would simply be swallowed.
+  // `setDismissWhenTouchMargin` existed for exactly that dead band and defaulted to on. The
+  // card's own detector runs first and consumes its taps, so this only sees the band.
+  val currentOnMarginTap by rememberUpdatedState(onMarginTap)
+  val marginClickModifier =
+    if (style.dismissWhenTouchMargin && style.dismissOnClickOutside) {
+      Modifier.pointerInput(Unit) { detectTapGestures { currentOnMarginTap() } }
+    } else {
+      Modifier
+    }
+
   Box(
     modifier = Modifier
       // The margin is outside everything: it keeps the balloon off the window edges and is
       // part of the popup box, exactly like the `balloonWrapper` margins in the original.
       .padding(style.margin)
+      .then(marginClickModifier)
       .then(outerReserveModifier)
       .then(alphaModifier)
       .balloonHighlight(
@@ -464,10 +479,12 @@ public object Balloon {
     private var overlayPaddingTop: Dp = 0.dp
     private var overlayPaddingEnd: Dp = 0.dp
     private var overlayPaddingBottom: Dp = 0.dp
+    private var overlayPaddingColor: Color = Color.Unspecified
     private var overlayShape: BalloonOverlayShape = BalloonOverlayShape.Oval
     private var overlayAnimation: BalloonOverlayAnimation = BalloonOverlayAnimation.FADE
     private var dismissWhenOverlayClicked: Boolean = true
     private var dismissWhenClicked: Boolean = false
+    private var dismissWhenTouchMargin: Boolean = true
     private var dismissWhenShowAgain: Boolean = false
     private var focusable: Boolean = true
     private var dismissOnClickOutside: Boolean = true
@@ -748,6 +765,14 @@ public object Balloon {
       overlayPaddingBottom = bottom
     }
 
+    /**
+     * Sets the fill painted into the band [setOverlayPadding] opens up around the anchor.
+     * [Color.Unspecified] (the default) leaves it transparent with the rest of the cut-out.
+     */
+    public fun setOverlayPaddingColor(value: Color): Builder = apply {
+      overlayPaddingColor = value
+    }
+
     /** Sets how the overlay scrim appears and disappears. */
     public fun setBalloonOverlayAnimation(value: BalloonOverlayAnimation): Builder = apply {
       overlayAnimation = value
@@ -766,6 +791,16 @@ public object Balloon {
     /** Whether tapping the balloon body itself should dismiss it. */
     public fun setDismissWhenClicked(value: Boolean): Builder = apply {
       dismissWhenClicked = value
+    }
+
+    /**
+     * Whether a tap in the balloon's margin, or in the space it reserves for the arrow and
+     * the elevation inset, dismisses it. That band belongs to the balloon's own popup, so
+     * the framework does not report a tap there as an outside click. Defaults to `true`, as
+     * in the original, and only acts when [setDismissWhenTouchOutside] is also on.
+     */
+    public fun setDismissWhenTouchMargin(value: Boolean): Builder = apply {
+      dismissWhenTouchMargin = value
     }
 
     /**
@@ -860,10 +895,12 @@ public object Balloon {
         end = overlayPaddingEnd,
         bottom = overlayPaddingBottom,
       ),
+      overlayPaddingColor = overlayPaddingColor,
       overlayShape = overlayShape,
       overlayAnimation = overlayAnimation,
       dismissWhenOverlayClicked = dismissWhenOverlayClicked,
       dismissWhenClicked = dismissWhenClicked,
+      dismissWhenTouchMargin = dismissWhenTouchMargin,
       dismissWhenShowAgain = dismissWhenShowAgain,
       focusable = focusable,
       dismissOnClickOutside = dismissOnClickOutside,

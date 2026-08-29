@@ -4,7 +4,7 @@
 
 ```kotlin
 setBackgroundColor(Color(0xFF785EF0))
-setArrowColor(Color.White)     // Color.Unspecified inherits the background
+setArrowColor(Color.White)  // Color.Unspecified inherits the background
 setAlpha(0.9f)
 ```
 
@@ -18,7 +18,7 @@ setAlpha(0.9f)
 
 ```kotlin
 setBorder(color = Color.White, thickness = 2.dp)
-setBalloonStroke(color = Color.White, thickness = 2.dp)   // same thing, 1.x name
+setBalloonStroke(color = Color.White, thickness = 2.dp)  // same thing, 1.x name
 ```
 
 The stroke traces the real silhouette, arrow included, at exactly the thickness you asked for.
@@ -99,12 +99,13 @@ val balloonState = rememberBalloonState(style.copy(backgroundColor = color))
 ## Behavior
 
 ```kotlin
-setDismissWhenClicked(true)        // tapping the body closes it
-setDismissWhenTouchOutside(true)   // tapping outside closes it
-setDismissWhenBackPressed(true)    // back or Escape closes it
-setDismissWhenShowAgain(true)      // showing a visible balloon closes it instead
-setDismissWhenOverlayClicked(true) // tapping the scrim closes it
-setAutoDismissDuration(2_000L)     // 0L disables
+setDismissWhenClicked(true)  // tapping the body closes it
+setDismissWhenTouchOutside(true)  // tapping outside closes it
+setDismissWhenBackPressed(true)  // back or Escape closes it
+setDismissWhenShowAgain(true)  // showing a visible balloon closes it instead
+setDismissWhenTouchMargin(true)  // a tap in the margin band closes it too
+setDismissWhenOverlayClicked(true)  // tapping the scrim closes it
+setAutoDismissDuration(2_000L)  // 0L disables
 setFocusable(true)
 ```
 

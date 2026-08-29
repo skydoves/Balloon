@@ -32,6 +32,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import kotlinx.coroutines.delay
@@ -45,10 +46,10 @@ import kotlinx.coroutines.delay
  *
  * - [NONE]: no highlight animation (the default).
  * - [HEARTBEAT]: pulses between 100% and 90% scale over 800ms
- *   (`balloon_heartbeat_*`). The pivot is the arrow edge when the arrow is visible, and the
- *   centre otherwise.
- * - [SHAKE]: translates 13% of the balloon's size toward the arrow edge and back over 650ms
- *   (`balloon_shake_*`).
+ *   (`balloon_heartbeat_*`), pivoting on the arrow edge so the arrow stays pinned to the
+ *   anchor. Pivots on the centre when the arrow is hidden.
+ * - [SHAKE]: translates 13% of the balloon's size AWAY from the arrow edge and back over
+ *   650ms (`balloon_shake_*`).
  * - [BREATH]: fades between 75% and 100% alpha over 800ms (`balloon_fade`).
  * - [ROTATE]: spins the balloon in 3D, configured by [BalloonStyle.rotateAnimation].
  */
@@ -130,19 +131,7 @@ internal fun Modifier.balloonHighlight(
         durationMillis = HEARTBEAT_DURATION,
         label = "heartbeat",
       )
-      // `balloon_heartbeat_top` pivots at (50%, 100%), `_bottom` at (50%, 0%), `_left` at
-      // (100%, 50%), `_right` at (0%, 50%) — i.e. the edge OPPOSITE the arrow stays put, so
-      // the balloon pulses away from its anchor. `_center` is used when the arrow is hidden.
-      val origin = if (!isArrowVisible) {
-        TransformOrigin.Center
-      } else {
-        when (arrowSide) {
-          ResolvedArrowSide.TOP -> TransformOrigin(0.5f, 1f)
-          ResolvedArrowSide.BOTTOM -> TransformOrigin(0.5f, 0f)
-          ResolvedArrowSide.LEFT -> TransformOrigin(1f, 0.5f)
-          ResolvedArrowSide.RIGHT -> TransformOrigin(0f, 0.5f)
-        }
-      }
+      val origin = heartbeatOrigin(arrowSide, isArrowVisible)
       this.graphicsLayer {
         scaleX = scale
         scaleY = scale
@@ -157,15 +146,10 @@ internal fun Modifier.balloonHighlight(
         durationMillis = SHAKE_DURATION,
         label = "shake",
       )
-      // `balloon_shake_top` translates toYDelta="-13%", `_bottom` "+13%", `_left` "-13%" on
-      // X, `_right` "+13%" — always toward the arrow, i.e. toward the anchor.
+      val direction = shakeDirection(arrowSide)
       this.graphicsLayer {
-        when (arrowSide) {
-          ResolvedArrowSide.TOP -> translationY = -size.height * fraction
-          ResolvedArrowSide.BOTTOM -> translationY = size.height * fraction
-          ResolvedArrowSide.LEFT -> translationX = -size.width * fraction
-          ResolvedArrowSide.RIGHT -> translationX = size.width * fraction
-        }
+        translationX = size.width * fraction * direction.x
+        translationY = size.height * fraction * direction.y
       }
     }
 
@@ -182,14 +166,56 @@ internal fun Modifier.balloonHighlight(
 }
 
 /**
+ * The pivot [BalloonHighlightAnimation.HEARTBEAT] scales about.
+ *
+ * The View implementation picks the animation resource named after the side OPPOSITE the
+ * arrow, and that resource pivots on the ARROW side: an arrow on TOP selects
+ * `balloon_heartbeat_bottom`, whose pivot is `(50%, 0%)`. So the arrow edge stays pinned to
+ * the anchor while the rest of the balloon pulses toward it. A hidden arrow uses
+ * `balloon_heartbeat_center`.
+ */
+internal fun heartbeatOrigin(
+  arrowSide: ResolvedArrowSide,
+  isArrowVisible: Boolean,
+): TransformOrigin = if (!isArrowVisible) {
+  TransformOrigin.Center
+} else {
+  when (arrowSide) {
+    ResolvedArrowSide.TOP -> TransformOrigin(0.5f, 0f)
+    ResolvedArrowSide.BOTTOM -> TransformOrigin(0.5f, 1f)
+    ResolvedArrowSide.LEFT -> TransformOrigin(0f, 0.5f)
+    ResolvedArrowSide.RIGHT -> TransformOrigin(1f, 0.5f)
+  }
+}
+
+/**
+ * The unit direction [BalloonHighlightAnimation.SHAKE] slides in, as a fraction of the
+ * balloon's own size.
+ *
+ * Same opposite-name selection as [heartbeatOrigin]: an arrow on TOP selects
+ * `balloon_shake_bottom`, whose `toYDelta` is `+13%`. The balloon slides AWAY from the arrow,
+ * so the tooltip tugs against the anchor it points at.
+ */
+internal fun shakeDirection(arrowSide: ResolvedArrowSide): Offset = when (arrowSide) {
+  ResolvedArrowSide.TOP -> Offset(0f, 1f)
+  ResolvedArrowSide.BOTTOM -> Offset(0f, -1f)
+  ResolvedArrowSide.LEFT -> Offset(1f, 0f)
+  ResolvedArrowSide.RIGHT -> Offset(-1f, 0f)
+}
+
+/**
  * Drives [BalloonHighlightAnimation.ROTATE].
  *
  * `BalloonRotateAnimation` in the Android original runs an `android.graphics.Camera` from a
  * plain `Animation`: `degree{X,Y,Z} * interpolatedTime` about the view's center, over
  * `speeds` ms, repeating `loops` times with the default RESTART mode and the default
- * accelerate/decelerate interpolator. `graphicsLayer`'s `rotationX/Y/Z` apply the same
- * camera projection (its `cameraDistance` default of `8f` matches `Camera`'s default
- * location), so the two produce the same motion.
+ * accelerate/decelerate interpolator. All of that is reproduced here.
+ *
+ * The perspective is not identical. `android.graphics.Camera` sits at a fixed 576px
+ * regardless of density, whereas `graphicsLayer`'s `cameraDistance` is scaled by it, so the
+ * same rotation reads slightly flatter on a high density screen. Matching the original
+ * exactly would mean pinning the camera to a raw pixel distance, which would in turn make
+ * the effect vary by screen. Density-relative depth is the better default here.
  */
 @Composable
 private fun Modifier.balloonRotate(rotate: BalloonRotateAnimation): Modifier {

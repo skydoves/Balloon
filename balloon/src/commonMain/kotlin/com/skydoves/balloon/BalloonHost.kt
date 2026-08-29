@@ -49,10 +49,14 @@ internal class BalloonEntry(val state: BalloonState) {
   var anchorBounds: IntRect? by mutableStateOf(null)
 
   /**
-   * The balloon body; set once to a stable lambda that always reads the latest content —
-   * and re-provides the CompositionLocals that were in scope where the modifier was called.
+   * The balloon body; set once to a stable lambda that always reads the latest content, and
+   * re-provides the CompositionLocals that were in scope where the modifier was called.
+   *
+   * Nullable rather than defaulted to an empty composable: a `{}` literal here would make the
+   * compiler emit a `ComposableSingletons` holder into the published ABI for a lambda that is
+   * overwritten before it is ever composed.
    */
-  var content: @Composable () -> Unit by mutableStateOf({})
+  var content: (@Composable () -> Unit)? by mutableStateOf(null)
 }
 
 /**
@@ -163,11 +167,16 @@ public fun BalloonHost(
 
       registry.entries.forEach { entry ->
         key(entry) {
-          BalloonPopupLayer(
-            state = entry.state,
-            anchorBounds = entry.anchorBounds,
-            balloonContent = entry.content,
-          )
+          // `Modifier.balloon` sets `content` as it creates the entry, so the null branch is
+          // unreachable in practice. Reading it through `let` rather than defaulting to `{}`
+          // keeps a `ComposableSingletons` holder out of the published ABI.
+          entry.content?.let { balloonContent ->
+            BalloonPopupLayer(
+              state = entry.state,
+              anchorBounds = entry.anchorBounds,
+              balloonContent = balloonContent,
+            )
+          }
         }
       }
     }

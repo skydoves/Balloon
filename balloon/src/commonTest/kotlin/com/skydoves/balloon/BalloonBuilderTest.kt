@@ -75,7 +75,9 @@ class BalloonBuilderTest {
     assertEquals(0.dp, style.overlayPadding.calculateTopPadding())
     assertEquals(BalloonOverlayShape.Oval, style.overlayShape)
     assertEquals(BalloonOverlayAnimation.FADE, style.overlayAnimation)
+    assertEquals(Color.Unspecified, style.overlayPaddingColor)
     assertTrue(style.dismissWhenOverlayClicked)
+    assertTrue(style.dismissWhenTouchMargin)
     assertFalse(style.dismissWhenClicked)
     assertFalse(style.dismissWhenShowAgain)
     assertTrue(style.focusable)
@@ -312,6 +314,7 @@ class BalloonBuilderTest {
       .setOverlayColor(Color.Magenta)
       .setOverlayPadding(1.dp, 2.dp, 3.dp, 4.dp)
       .setOverlayShape(BalloonOverlayShape.Circle(16.dp))
+      .setOverlayPaddingColor(Color.Yellow)
       .setDismissWhenOverlayClicked(false)
       .build()
 
@@ -322,7 +325,32 @@ class BalloonBuilderTest {
     assertEquals(3.dp, style.overlayPadding.calculateRightPadding(ltr))
     assertEquals(4.dp, style.overlayPadding.calculateBottomPadding())
     assertEquals(BalloonOverlayShape.Circle(16.dp), style.overlayShape)
+    assertEquals(Color.Yellow, style.overlayPaddingColor)
     assertFalse(style.dismissWhenOverlayClicked)
+  }
+
+  @Test
+  fun perCornerOverlayShape_carriesEveryRadius() {
+    val shape = BalloonOverlayShape.RoundRectPerCorner(
+      topStart = 1.dp,
+      topEnd = 2.dp,
+      bottomEnd = 3.dp,
+      bottomStart = 4.dp,
+    )
+    val style = Balloon.Builder().setOverlayShape(shape).build()
+
+    assertEquals(shape, style.overlayShape)
+    assertEquals(1.dp, shape.topStart)
+    assertEquals(2.dp, shape.topEnd)
+    assertEquals(3.dp, shape.bottomEnd)
+    assertEquals(4.dp, shape.bottomStart)
+  }
+
+  @Test
+  fun overlayShapes_areValueEqual() {
+    assertEquals(BalloonOverlayShape.Circle(8.dp), BalloonOverlayShape.Circle(8.dp))
+    assertEquals(BalloonOverlayShape.RoundRect(8.dp), BalloonOverlayShape.RoundRect(8.dp, 8.dp))
+    assertEquals(BalloonOverlayShape.Oval, BalloonOverlayShape.Oval)
   }
 
   @Test
@@ -341,12 +369,14 @@ class BalloonBuilderTest {
   fun behaviorSetters_land() {
     val style = Balloon.Builder()
       .setDismissWhenClicked(true)
+      .setDismissWhenTouchMargin(false)
       .setDismissWhenShowAgain(true)
       .setDismissWhenBackPressed(false)
       .setAutoDismissDuration(1500L)
       .build()
 
     assertTrue(style.dismissWhenClicked)
+    assertFalse(style.dismissWhenTouchMargin)
     assertTrue(style.dismissWhenShowAgain)
     assertFalse(style.dismissOnBackPress)
     assertEquals(1500L, style.autoDismissMillis)

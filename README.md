@@ -149,20 +149,20 @@ it throws an exception that says so, instead of silently rendering nothing.
 `BalloonState` is the single place that controls visibility.
 
 ```kotlin
-balloonState.showAlignTop()          // above the anchor
-balloonState.showAlignBottom()       // below the anchor
-balloonState.showAlignStart()        // leading side
-balloonState.showAlignEnd()          // trailing side
-balloonState.showAsDropDown()        // below, leading edges aligned
+balloonState.showAlignTop()  // above the anchor
+balloonState.showAlignBottom()  // below the anchor
+balloonState.showAlignStart()  // leading side
+balloonState.showAlignEnd()  // trailing side
+balloonState.showAsDropDown()  // below, leading edges aligned
 balloonState.showAtCenter(BalloonCenterAlign.TOP)
 balloonState.show(BalloonAlign.BOTTOM, xOffset = 8.dp, yOffset = 4.dp)
 
 balloonState.toggle()
 balloonState.dismiss()
-balloonState.update(BalloonAlign.TOP)             // move without replaying the animation
+balloonState.update(BalloonAlign.TOP)  // move without replaying the animation
 balloonState.dismissWithDelay(scope, 1_500L)
 
-balloonState.isVisible                            // observable in composition
+balloonState.isVisible  // observable in composition
 ```
 
 Every `show` has a `suspend` twin that returns once the balloon is dismissed, which makes
@@ -201,9 +201,9 @@ setArrowOrientationRules(ArrowOrientationRules.ALIGN_FIXED)
 
 ```kotlin
 setIsVisibleArrow(true)
-setArrowSize(10.dp)                                  // square
-setArrowSize(width = 16.dp, height = 8.dp)           // base and protrusion
-setArrowPosition(0.62f)                              // 0f..1f along the edge
+setArrowSize(10.dp)  // square
+setArrowSize(width = 16.dp, height = 8.dp)  // base and protrusion
+setArrowPosition(0.62f)  // 0f..1f along the edge
 setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
 setArrowColor(Color.White)
 ```
@@ -216,8 +216,8 @@ the balloon lands. Under `ALIGN_ANCHOR` the arrow is kept
 ### Size and spacing
 
 ```kotlin
-setWidth(200.dp)            // fixed
-setWidthRatio(0.6f)         // fraction of the window
+setWidth(200.dp)  // fixed
+setWidthRatio(0.6f)  // fraction of the window
 setMinWidth(120.dp)
 setMaxWidth(320.dp)
 setMinWidthRatio(0.3f)
@@ -247,7 +247,7 @@ exactly the size you asked for.
 
 ```kotlin
 setBackgroundColor(Color(0xFF785EF0))
-setArrowColor(Color.White)                 // Color.Unspecified inherits the background
+setArrowColor(Color.White)  // Color.Unspecified inherits the background
 setCornerRadius(12.dp)
 setBorder(color = Color.White, thickness = 2.dp)
 setAlpha(0.9f)
@@ -291,7 +291,7 @@ so it can cover the whole window including the system bars.
 </p>
 
 ```kotlin
-setBalloonAnimation(BalloonAnimation.ELASTIC)   // NONE, FADE, OVERSHOOT, ELASTIC, CIRCULAR
+setBalloonAnimation(BalloonAnimation.ELASTIC)  // NONE, FADE, OVERSHOOT, ELASTIC, CIRCULAR
 setCircularDuration(500L)
 ```
 

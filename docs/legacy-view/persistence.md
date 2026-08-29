@@ -15,7 +15,7 @@ Set a maximum number of times the Balloon should be shown:
 ```kotlin
 Balloon.Builder(context)
     .setPreferenceName("my_tooltip")
-    .setShowCounts(3) // show only 3 times
+    .setShowCounts(3)  // show only 3 times
 ```
 
 With this configuration, the Balloon will only be displayed the first 3 times `showAlign*` is called. After that, the Balloon will not show.
@@ -49,7 +49,7 @@ Each Balloon that uses persistence should have a unique preference name:
 ```kotlin
 Balloon.Builder(context)
     .setPreferenceName("unique_tooltip_name")
-    .setShowCounts(1) // show only once
+    .setShowCounts(1)  // show only once
 ```
 
 The preference name is used as a key to store the show count in SharedPreferences.

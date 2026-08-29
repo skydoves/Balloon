@@ -18,8 +18,8 @@ leave the margins at zero.
 ## Width
 
 ```kotlin
-setWidth(200.dp)          // fixed
-setWidthRatio(0.6f)       // fraction of the window width
+setWidth(200.dp)  // fixed
+setWidthRatio(0.6f)  // fraction of the window width
 setMinWidth(120.dp)
 setMaxWidth(320.dp)
 setMinWidthRatio(0.3f)
@@ -82,7 +82,7 @@ setMarginBottom(4.dp)
 ## Elevation
 
 ```kotlin
-setElevation(2.dp)   // default
+setElevation(2.dp)  // default
 ```
 
 In 1.x this was both the shadow and an inset around the card. Here it is the inset only, which

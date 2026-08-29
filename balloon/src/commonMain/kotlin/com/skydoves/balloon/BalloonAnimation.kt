@@ -20,17 +20,19 @@ package com.skydoves.balloon
  * BalloonAnimation describes the enter/exit transition style applied to a balloon
  * when it is shown or dismissed.
  *
- * This is the Compose Multiplatform counterpart to the View-based animation enum in the
- * core balloon module. The actual transitions are produced by [balloonEnterTransition]
- * and [balloonExitTransition].
+ * Each entry reproduces the corresponding window animation of the View implementation, with
+ * the same duration, the same interpolator, and the same centre pivot. The transitions
+ * themselves are produced by [balloonEnterTransition] and [balloonExitTransition].
  *
  * - [NONE]: no animation; the balloon appears and disappears instantly.
- * - [FADE]: pure alpha cross-fade (~150ms originally).
- * - [ELASTIC]: scale-in with a bouncy/overshoot spring (originally `OvershootInterpolator(2f)`).
- * - [OVERSHOOT]: scale-in with a milder overshoot than [ELASTIC].
- * - [CIRCULAR]: an approximation of a circular reveal (Compose has no built-in circular
- *   reveal primitive, so this is implemented as a scale-from-zero with eased curve plus a
- *   shorter fade — see [balloonEnterTransition]).
+ * - [FADE]: alpha 0 to 1 over 200ms, linear, and the reverse on exit.
+ * - [ELASTIC]: scale 0.5 to 1 over 250ms with `BounceInterpolator`.
+ * - [OVERSHOOT]: scale 0.5 to 1 over 250ms with `OvershootInterpolator(2f)`.
+ * - [CIRCULAR]: a true clip-circle reveal growing from radius 0 to `max(width, height)` over
+ *   [BalloonStyle.circularDurationMillis], matching `ViewAnimationUtils.createCircularReveal`.
+ *   Also turns [BalloonStyle.focusable] off, as the original did.
+ *
+ * ELASTIC and OVERSHOOT share a 250ms scale-to-zero exit; CIRCULAR uses a 200ms one.
  */
 public enum class BalloonAnimation {
   NONE,

@@ -100,10 +100,10 @@ Balloon.Builder(context)
 ```kotlin
 Balloon.Builder(context)
     .setIconDrawableResource(R.drawable.ic_edit)
-    .setIconSize(20) // icon size in dp
-    .setIconSpace(10) // margin between icon and text
+    .setIconSize(20)  // icon size in dp
+    .setIconSpace(10)  // margin between icon and text
     .setIconColorResource(R.color.white)
-    .setIconGravity(IconGravity.START) // START, END, TOP, BOTTOM
+    .setIconGravity(IconGravity.START)  // START, END, TOP, BOTTOM
 ```
 
 ### Icon Gravity
@@ -111,10 +111,10 @@ Balloon.Builder(context)
 Control where the icon appears relative to the text:
 
 ```kotlin
-IconGravity.START // icon on the left (LTR)
-IconGravity.END // icon on the right (LTR)
-IconGravity.TOP // icon above text
-IconGravity.BOTTOM // icon below text
+IconGravity.START  // icon on the left (LTR)
+IconGravity.END  // icon on the right (LTR)
+IconGravity.TOP  // icon above text
+IconGravity.BOTTOM  // icon below text
 ```
 
 ## IconForm

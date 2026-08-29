@@ -97,10 +97,18 @@ import androidx.compose.ui.unit.dp
  * @property overlayColor color of that scrim.
  * @property overlayPadding extra space added around the anchor before the cut-out shape
  *   is drawn.
+ * @property overlayPaddingColor fill painted into the band [overlayPadding] opens up around
+ *   the anchor, mirroring `setOverlayPaddingColor`. [Color.Unspecified] (the default) leaves
+ *   the band transparent along with the rest of the cut-out.
  * @property overlayShape shape of the anchor cut-out.
  * @property overlayAnimation how the scrim appears and disappears.
  * @property dismissWhenOverlayClicked whether tapping the scrim dismisses the balloon.
  * @property dismissWhenClicked whether tapping the balloon body itself dismisses it.
+ * @property dismissWhenTouchMargin whether a tap that lands in the balloon's margin, or in the
+ *   space it reserves for the arrow and the elevation inset, dismisses it. That band is inside
+ *   the balloon's own popup, so the framework does not treat a tap there as an outside click.
+ *   Mirrors `setDismissWhenTouchMargin`, which likewise defaults to `true`, and like the
+ *   original it only acts when [dismissOnClickOutside] is also on.
  * @property dismissWhenShowAgain whether showing an already-visible balloon dismisses it
  *   instead of re-showing it in place. Mirrors `setDismissWhenShowAgain`.
  * @property focusable whether the balloon's window takes input focus. Mirrors the original's
@@ -148,10 +156,12 @@ public data class BalloonStyle(
   val isVisibleOverlay: Boolean = false,
   val overlayColor: Color = Color.Transparent,
   val overlayPadding: PaddingValues = PaddingValues(0.dp),
+  val overlayPaddingColor: Color = Color.Unspecified,
   val overlayShape: BalloonOverlayShape = BalloonOverlayShape.Oval,
   val overlayAnimation: BalloonOverlayAnimation = BalloonOverlayAnimation.FADE,
   val dismissWhenOverlayClicked: Boolean = true,
   val dismissWhenClicked: Boolean = false,
+  val dismissWhenTouchMargin: Boolean = true,
   val dismissWhenShowAgain: Boolean = false,
   val focusable: Boolean = true,
   val dismissOnClickOutside: Boolean = true,

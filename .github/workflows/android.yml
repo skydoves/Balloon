@@ -49,8 +49,11 @@ jobs:
           distribution: zulu
           java-version: 17
       - uses: gradle/gradle-build-action@v3.5.0
+      # `desktopTest` runs the whole suite through Skiko, including the shape geometry and
+      # the Compose UI tests. `testDebugUnitTest` runs the platform independent half again
+      # against the Android artifact.
       - name: Run unit tests
-        run: ./gradlew testDebugUnitTest --stacktrace
+        run: ./gradlew desktopTest testDebugUnitTest --stacktrace
 
   build:
     runs-on: ubuntu-latest
