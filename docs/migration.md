@@ -264,7 +264,9 @@ balloonContent = {
 | `setOnBalloonDismissListener(...)` | `balloonState.onDismiss = { }` | |
 | `setOnBalloonOverlayClickListener(...)` | `balloonState.onOverlayClick = { }` | |
 | `setOnBalloonInitializedListener(...)` | `Modifier.onGloballyPositioned` in the slot | |
-| `setOnBalloonTouchListener`, `setOnBalloonOutsideTouchListener`, `setOnBalloonOverlayTouchListener` | not supported | `View.OnTouchListener` and `MotionEvent` are Android only, use `Modifier.pointerInput` |
+| `setOnBalloonTouchListener` | not supported | `View.OnTouchListener` and `MotionEvent` are Android only. Use `Modifier.pointerInput` inside the balloon content |
+| `setOnBalloonOutsideTouchListener` | not supported | A popup cannot report touches outside itself, so there is nothing to hook. Observe `onDismiss`, or handle the gesture in the layout that owns the anchor |
+| `setOnBalloonOverlayTouchListener` | `balloonState.onOverlayClick` | taps only, not raw motion events |
 | `setDismissWhenTouchMargin(Boolean)` | same | still defaults to `true`, and still only acts when `setDismissWhenTouchOutside` is on |
 | `setShouldPassTouchEventToAnchor(...)` | `setFocusable(false)` | a non focusable popup already lets touches through |
 | `setDismissWhenLifecycleOnPause`, `setLifecycleOwner`, `setLifecycleObserver` | not needed | composition disposal dismisses the balloon |

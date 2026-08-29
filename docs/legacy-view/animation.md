@@ -31,7 +31,7 @@ BalloonAnimation.CIRCULAR  // circular reveal
 
 | FADE | OVERSHOOT | ELASTIC | CIRCULAR |
 |:----:|:---------:|:-------:|:--------:|
-| <img src="https://user-images.githubusercontent.com/24237865/74601168-6115c580-50de-11ea-817b-a334f33b6f96.gif" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/74601171-6410b600-50de-11ea-9ba0-5634e11f148a.gif" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/74601170-63781f80-50de-11ea-8db4-93f1dd1291fc.gif" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/74607359-b6bc9300-511b-11ea-978b-23bcc4399dce.gif" width="100%"/> |
+| <img alt="Balloon example" src="https://user-images.githubusercontent.com/24237865/74601168-6115c580-50de-11ea-817b-a334f33b6f96.gif" width="100%"/> | <img alt="Balloon example" src="https://user-images.githubusercontent.com/24237865/74601171-6410b600-50de-11ea-9ba0-5634e11f148a.gif" width="100%"/> | <img alt="Balloon example" src="https://user-images.githubusercontent.com/24237865/74601170-63781f80-50de-11ea-8db4-93f1dd1291fc.gif" width="100%"/> | <img alt="Balloon example" src="https://user-images.githubusercontent.com/24237865/74607359-b6bc9300-511b-11ea-978b-23bcc4399dce.gif" width="100%"/> |
 
 ## Highlight Animation
 
@@ -56,7 +56,7 @@ BalloonHighlightAnimation.ROTATE  // rotation effect
 
 | HEARTBEAT | SHAKE | BREATH | ROTATE |
 |:---------:|:-----:|:------:|:------:|
-| <img src="https://user-images.githubusercontent.com/24237865/135755074-6a9c87fc-55b2-460e-b34e-0b6808684a97.gif" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/135755077-02eeddbe-95fe-49ee-ad22-1f15879e84f1.gif" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/135755079-29ed8cd8-92fe-4b2a-8671-b3522999c551.gif" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/135755080-36dc7c8b-063a-442b-bcbd-bc000e92f9ac.gif" width="100%"/> |
+| <img alt="Balloon example" src="https://user-images.githubusercontent.com/24237865/135755074-6a9c87fc-55b2-460e-b34e-0b6808684a97.gif" width="100%"/> | <img alt="Balloon example" src="https://user-images.githubusercontent.com/24237865/135755077-02eeddbe-95fe-49ee-ad22-1f15879e84f1.gif" width="100%"/> | <img alt="Balloon example" src="https://user-images.githubusercontent.com/24237865/135755079-29ed8cd8-92fe-4b2a-8671-b3522999c551.gif" width="100%"/> | <img alt="Balloon example" src="https://user-images.githubusercontent.com/24237865/135755080-36dc7c8b-063a-442b-bcbd-bc000e92f9ac.gif" width="100%"/> |
 
 ## Rotate Animation Configuration
 

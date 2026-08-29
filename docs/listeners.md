@@ -85,6 +85,6 @@ plumbing that has no multiplatform equivalent. Use Compose instead:
 | 1.x | 2.0.0 |
 | --- | --- |
 | `setOnBalloonInitializedListener` | `Modifier.onGloballyPositioned` inside the balloon content |
-| `setOnBalloonOutsideTouchListener` | `setDismissWhenTouchOutside(false)` plus your own handling |
-| `setOnBalloonTouchListener` | `Modifier.pointerInput` inside the balloon content |
+| `setOnBalloonOutsideTouchListener` | no equivalent. A popup cannot report touches that land outside it, so there is nothing to hook. Observe `onDismiss`, or handle the gesture in the layout that owns the anchor |
+| `setOnBalloonTouchListener` | `Modifier.pointerInput` inside the balloon content, which does receive touches on the balloon itself |
 | `setOnBalloonOverlayTouchListener` | `onOverlayClick` |

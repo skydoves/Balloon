@@ -463,6 +463,60 @@ class PositionProviderTest {
     assertEquals(centeredY(popup.height), offset.y)
   }
 
+  // ------------------------------------------------- first-frame fallback agreement
+
+  @Test
+  fun firstFrameFallbackOrientation_agreesWithTheProvider_inBothDirections() {
+    // Before the provider's first pass, `BalloonPopupLayer` draws with the align-derived
+    // orientation. If the two disagree, the arrow jumps edges after one frame, and because
+    // the reserve is taken from the arrow side the whole balloon shifts with it. The bug
+    // this pins: the fallback used to mirror START/END itself, on top of the mirroring
+    // `ArrowOrientation.resolve` already does, so RTL came out inverted.
+    listOf(LayoutDirection.Ltr, LayoutDirection.Rtl).forEach { direction ->
+      listOf(BalloonAlign.TOP, BalloonAlign.BOTTOM, BalloonAlign.START, BalloonAlign.END)
+        .forEach { align ->
+          val state = stateOf()
+          calc(state, align, layoutDirection = direction)
+          assertEquals(
+            state.resolvedArrowOrientation,
+            resolveArrowOrientation(align, null, state.style),
+            "fallback disagrees with the provider for $align under $direction",
+          )
+        }
+    }
+  }
+
+  @Test
+  fun firstFrameFallbackOrientation_agreesForCenterAlign_inBothDirections() {
+    listOf(LayoutDirection.Ltr, LayoutDirection.Rtl).forEach { direction ->
+      BalloonCenterAlign.entries.forEach { centerAlign ->
+        val state = stateOf()
+        calc(state, BalloonAlign.CENTER, centerAlign = centerAlign, layoutDirection = direction)
+        assertEquals(
+          state.resolvedArrowOrientation,
+          resolveArrowOrientation(BalloonAlign.CENTER, centerAlign, state.style),
+          "fallback disagrees with the provider for $centerAlign under $direction",
+        )
+      }
+    }
+  }
+
+  @Test
+  fun sideAlignedArrow_alwaysResolvesToTheEdgeFacingTheAnchor() {
+    // START puts the balloon on the leading side, so its arrow belongs on the trailing edge,
+    // whichever way the layout runs.
+    assertEquals(
+      ResolvedArrowSide.RIGHT,
+      resolveArrowOrientation(BalloonAlign.START, null, BalloonStyle())
+        .resolve(LayoutDirection.Ltr),
+    )
+    assertEquals(
+      ResolvedArrowSide.LEFT,
+      resolveArrowOrientation(BalloonAlign.START, null, BalloonStyle())
+        .resolve(LayoutDirection.Rtl),
+    )
+  }
+
   // ----------------------------------------------------------------- arrow center
 
   @Test

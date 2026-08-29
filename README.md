@@ -19,9 +19,9 @@
 </p> <br>
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/24237865/61194943-f9d70380-a6ff-11e9-807f-ba1ca8126f8a.gif" width="280"/>
-<img src="https://user-images.githubusercontent.com/24237865/61225579-d346b600-a75b-11e9-84f8-3c06047b5003.gif" width="280"/>
-<img src="https://user-images.githubusercontent.com/24237865/148673977-dba2e44c-c2fb-4fb4-a648-e26e8541e865.png" width="252"/>
+<img alt="Balloon tooltips on a profile screen" src="https://user-images.githubusercontent.com/24237865/61194943-f9d70380-a6ff-11e9-807f-ba1ca8126f8a.gif" width="280"/>
+<img alt="Balloon tooltips in a list" src="https://user-images.githubusercontent.com/24237865/61225579-d346b600-a75b-11e9-84f8-3c06047b5003.gif" width="280"/>
+<img alt="Balloon shown from a Compose demo" src="https://user-images.githubusercontent.com/24237865/148673977-dba2e44c-c2fb-4fb4-a648-e26e8541e865.png" width="252"/>
 </p>
 
 ## Who's using Balloon?
@@ -179,10 +179,10 @@ LaunchedEffect(Unit) {
 ### Positioning
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/24237865/61320410-55120e80-a844-11e9-9af6-cae49b8897e7.gif" align="center" width="21%"/>
-<img src="https://user-images.githubusercontent.com/24237865/61320412-55120e80-a844-11e9-9ca9-81375707886e.gif" align="center" width="21%"/>
-<img src="https://user-images.githubusercontent.com/24237865/61320415-55aaa500-a844-11e9-874f-ca44be02aace.gif" align="center" width="21%"/>
-<img src="https://user-images.githubusercontent.com/24237865/61320416-55aaa500-a844-11e9-9aa1-53e409ca63fb.gif" align="center" width="21%"/>
+<img alt="Balloon aligned above its anchor" src="https://user-images.githubusercontent.com/24237865/61320410-55120e80-a844-11e9-9af6-cae49b8897e7.gif" align="center" width="21%"/>
+<img alt="Balloon aligned below its anchor" src="https://user-images.githubusercontent.com/24237865/61320412-55120e80-a844-11e9-9ca9-81375707886e.gif" align="center" width="21%"/>
+<img alt="Balloon aligned to the start of its anchor" src="https://user-images.githubusercontent.com/24237865/61320415-55aaa500-a844-11e9-874f-ca44be02aace.gif" align="center" width="21%"/>
+<img alt="Balloon aligned to the end of its anchor" src="https://user-images.githubusercontent.com/24237865/61320416-55aaa500-a844-11e9-9aa1-53e409ca63fb.gif" align="center" width="21%"/>
 </p>
 
 The arrow edge is derived from the alignment you show with, so it always points back at the
@@ -258,10 +258,10 @@ The border traces the real silhouette, arrow included, at exactly the thickness 
 ### Overlay
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/24237865/96139366-c7870800-0f39-11eb-9542-e98eac7ef193.gif" align="center" width="21%"/>
-<img src="https://user-images.githubusercontent.com/24237865/96138448-c0abc580-0f38-11eb-92e6-daf2f8266a3e.gif" align="center" width="21%"/>
-<img src="https://user-images.githubusercontent.com/24237865/96139358-c524ae00-0f39-11eb-82ff-90a4a734e076.gif" align="center" width="21%"/>
-<img src="https://user-images.githubusercontent.com/24237865/96138463-c3a6b600-0f38-11eb-8a2d-57cf96c4190c.gif" align="center" width="21%"/>
+<img alt="Overlay with an oval cut-out around the anchor" src="https://user-images.githubusercontent.com/24237865/96139366-c7870800-0f39-11eb-9542-e98eac7ef193.gif" align="center" width="21%"/>
+<img alt="Overlay with a rectangular cut-out" src="https://user-images.githubusercontent.com/24237865/96138448-c0abc580-0f38-11eb-92e6-daf2f8266a3e.gif" align="center" width="21%"/>
+<img alt="Overlay with a circular cut-out" src="https://user-images.githubusercontent.com/24237865/96139358-c524ae00-0f39-11eb-82ff-90a4a734e076.gif" align="center" width="21%"/>
+<img alt="Overlay with a rounded rectangle cut-out" src="https://user-images.githubusercontent.com/24237865/96138463-c3a6b600-0f38-11eb-8a2d-57cf96c4190c.gif" align="center" width="21%"/>
 </p>
 
 An overlay dims the whole window and cuts the anchor out of it, which is how you build a
@@ -276,18 +276,20 @@ setBalloonOverlayAnimation(BalloonOverlayAnimation.FADE)
 setDismissWhenOverlayClicked(true)
 ```
 
-Shapes available: `Empty`, `Rect`, `Oval`, `Circle(radius)`, `RoundRect(radiusX, radiusY)`.
+Shapes available: `Empty`, `Rect`, `Oval`, `Circle(radius)`, `RoundRect(radiusX, radiusY)`, and
+`RoundRectPerCorner(topStart, topEnd, bottomEnd, bottomStart)`.
 
-A balloon with an overlay must sit under a `BalloonHost`, because the scrim is drawn by the host
-so it can cover the whole window including the system bars.
+A balloon with an overlay must sit under a `BalloonHost`, because a popup cannot cover the
+system bars. The scrim fills the host's own bounds, so put `BalloonHost` at the root of an
+edge-to-edge window with `Modifier.fillMaxSize()` if you want it to dim the whole screen.
 
 ### Animations
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/24237865/74601168-6115c580-50de-11ea-817b-a334f33b6f96.gif" align="center" width="21%"/>
-<img src="https://user-images.githubusercontent.com/24237865/74601171-6410b600-50de-11ea-9ba0-5634e11f148a.gif" align="center" width="21%"/>
-<img src="https://user-images.githubusercontent.com/24237865/74601170-63781f80-50de-11ea-8db4-93f1dd1291fc.gif" align="center" width="21%"/>
-<img src="https://user-images.githubusercontent.com/24237865/74607359-b6bc9300-511b-11ea-978b-23bcc4399dce.gif" align="center" width="21%"/>
+<img alt="Fade enter animation" src="https://user-images.githubusercontent.com/24237865/74601168-6115c580-50de-11ea-817b-a334f33b6f96.gif" align="center" width="21%"/>
+<img alt="Overshoot enter animation" src="https://user-images.githubusercontent.com/24237865/74601171-6410b600-50de-11ea-9ba0-5634e11f148a.gif" align="center" width="21%"/>
+<img alt="Elastic enter animation" src="https://user-images.githubusercontent.com/24237865/74601170-63781f80-50de-11ea-8db4-93f1dd1291fc.gif" align="center" width="21%"/>
+<img alt="Circular reveal enter animation" src="https://user-images.githubusercontent.com/24237865/74607359-b6bc9300-511b-11ea-978b-23bcc4399dce.gif" align="center" width="21%"/>
 </p>
 
 ```kotlin
@@ -301,10 +303,10 @@ motion is identical on every platform.
 ### Highlight animations
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/24237865/135755074-6a9c87fc-55b2-460e-b34e-0b6808684a97.gif" align="center" width="21%"/>
-<img src="https://user-images.githubusercontent.com/24237865/135755077-02eeddbe-95fe-49ee-ad22-1f15879e84f1.gif" align="center" width="21%"/>
-<img src="https://user-images.githubusercontent.com/24237865/135755079-29ed8cd8-92fe-4b2a-8671-b3522999c551.gif" align="center" width="21%"/>
-<img src="https://user-images.githubusercontent.com/24237865/135755080-36dc7c8b-063a-442b-bcbd-bc000e92f9ac.gif" align="center" width="21%"/>
+<img alt="Heartbeat highlight animation" src="https://user-images.githubusercontent.com/24237865/135755074-6a9c87fc-55b2-460e-b34e-0b6808684a97.gif" align="center" width="21%"/>
+<img alt="Shake highlight animation" src="https://user-images.githubusercontent.com/24237865/135755077-02eeddbe-95fe-49ee-ad22-1f15879e84f1.gif" align="center" width="21%"/>
+<img alt="Breath highlight animation" src="https://user-images.githubusercontent.com/24237865/135755079-29ed8cd8-92fe-4b2a-8671-b3522999c551.gif" align="center" width="21%"/>
+<img alt="Rotate highlight animation" src="https://user-images.githubusercontent.com/24237865/135755080-36dc7c8b-063a-442b-bcbd-bc000e92f9ac.gif" align="center" width="21%"/>
 </p>
 
 A looping animation that plays while the balloon is showing, to draw the eye.
@@ -341,7 +343,7 @@ setFocusable(true)
 ## Custom content
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/24237865/61226019-aba41d80-a75c-11e9-9362-52e4742244b5.gif" align="center" width="32%"/>
+<img alt="Balloon with fully custom Compose content" src="https://user-images.githubusercontent.com/24237865/61226019-aba41d80-a75c-11e9-9362-52e4742244b5.gif" align="center" width="32%"/>
 </p>
 
 There is no `TextForm`, no `IconForm`, and no `setLayout`. The balloon body is a Compose slot, so

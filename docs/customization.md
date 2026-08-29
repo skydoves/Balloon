@@ -30,7 +30,7 @@ The balloon body is a Compose slot, so there is nothing to configure on the buil
 with the same composables you use everywhere else.
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/24237865/61226019-aba41d80-a75c-11e9-9362-52e4742244b5.gif" align="center" width="32%"/>
+<img alt="Balloon example" src="https://user-images.githubusercontent.com/24237865/61226019-aba41d80-a75c-11e9-9362-52e4742244b5.gif" align="center" width="32%"/>
 </p>
 
 ```kotlin

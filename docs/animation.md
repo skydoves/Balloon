@@ -8,10 +8,10 @@ so the motion is identical on Android, iOS, Desktop, and Web.
 ## Enter and exit
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/24237865/74601168-6115c580-50de-11ea-817b-a334f33b6f96.gif" align="center" width="21%"/>
-<img src="https://user-images.githubusercontent.com/24237865/74601171-6410b600-50de-11ea-9ba0-5634e11f148a.gif" align="center" width="21%"/>
-<img src="https://user-images.githubusercontent.com/24237865/74601170-63781f80-50de-11ea-8db4-93f1dd1291fc.gif" align="center" width="21%"/>
-<img src="https://user-images.githubusercontent.com/24237865/74607359-b6bc9300-511b-11ea-978b-23bcc4399dce.gif" align="center" width="21%"/>
+<img alt="Balloon example" src="https://user-images.githubusercontent.com/24237865/74601168-6115c580-50de-11ea-817b-a334f33b6f96.gif" align="center" width="21%"/>
+<img alt="Balloon example" src="https://user-images.githubusercontent.com/24237865/74601171-6410b600-50de-11ea-9ba0-5634e11f148a.gif" align="center" width="21%"/>
+<img alt="Balloon example" src="https://user-images.githubusercontent.com/24237865/74601170-63781f80-50de-11ea-8db4-93f1dd1291fc.gif" align="center" width="21%"/>
+<img alt="Balloon example" src="https://user-images.githubusercontent.com/24237865/74607359-b6bc9300-511b-11ea-978b-23bcc4399dce.gif" align="center" width="21%"/>
 </p>
 
 ```kotlin
@@ -42,10 +42,10 @@ setCircularDuration(700L)  // only affects CIRCULAR
 ## Highlight animations
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/24237865/135755074-6a9c87fc-55b2-460e-b34e-0b6808684a97.gif" align="center" width="21%"/>
-<img src="https://user-images.githubusercontent.com/24237865/135755077-02eeddbe-95fe-49ee-ad22-1f15879e84f1.gif" align="center" width="21%"/>
-<img src="https://user-images.githubusercontent.com/24237865/135755079-29ed8cd8-92fe-4b2a-8671-b3522999c551.gif" align="center" width="21%"/>
-<img src="https://user-images.githubusercontent.com/24237865/135755080-36dc7c8b-063a-442b-bcbd-bc000e92f9ac.gif" align="center" width="21%"/>
+<img alt="Balloon example" src="https://user-images.githubusercontent.com/24237865/135755074-6a9c87fc-55b2-460e-b34e-0b6808684a97.gif" align="center" width="21%"/>
+<img alt="Balloon example" src="https://user-images.githubusercontent.com/24237865/135755077-02eeddbe-95fe-49ee-ad22-1f15879e84f1.gif" align="center" width="21%"/>
+<img alt="Balloon example" src="https://user-images.githubusercontent.com/24237865/135755079-29ed8cd8-92fe-4b2a-8671-b3522999c551.gif" align="center" width="21%"/>
+<img alt="Balloon example" src="https://user-images.githubusercontent.com/24237865/135755080-36dc7c8b-063a-442b-bcbd-bc000e92f9ac.gif" align="center" width="21%"/>
 </p>
 
 A looping animation that plays for as long as the balloon is showing, to draw the eye.
@@ -113,8 +113,9 @@ frame:
 val style = BalloonStyle(animation = BalloonAnimation.NONE)
 ```
 
-Highlight animations loop forever, which means the Compose test clock never goes idle. Drive it
-by hand when you need one on screen:
+`HEARTBEAT`, `SHAKE`, `BREATH`, and a `ROTATE` with `loops = INFINITE` never finish, so the
+Compose test clock never goes idle and `waitForIdle` would hang. Drive the clock by hand for
+those. A `ROTATE` with a finite `loops` completes on its own and needs none of this.
 
 ```kotlin
 mainClock.autoAdvance = false

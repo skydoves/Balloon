@@ -252,7 +252,7 @@ internal fun BalloonPopupLayer(
     // orientation on the very first frame before the provider runs.
     val resolvedOrientation =
       state.resolvedArrowOrientation
-        ?: resolveArrowOrientation(state.align, state.centerAlign, style, layoutDirection)
+        ?: resolveArrowOrientation(state.align, state.centerAlign, style)
 
     Popup(
       popupPositionProvider = positionProvider,
@@ -312,21 +312,24 @@ internal fun BalloonPopupLayer(
  * do NOT silently force `isArrowVisible = false` here, because that would be a surprising
  * side-effect that violates the principle of explicit user intent.
  */
-private fun resolveArrowOrientation(
+internal fun resolveArrowOrientation(
   align: BalloonAlign,
   centerAlign: BalloonCenterAlign?,
   style: BalloonStyle,
-  layoutDirection: LayoutDirection,
 ): ArrowOrientation {
   style.arrowOrientation?.let { return it }
-  val isRtl = layoutDirection == LayoutDirection.Rtl
+  // Both [align] and [ArrowOrientation] are expressed in logical START/END terms, and
+  // `ArrowOrientation.resolve` is what turns those into physical sides. So this mapping must
+  // NOT consult the layout direction: doing so applies the mirroring twice and lands the
+  // first frame's arrow on the wrong edge under RTL, disagreeing with the position provider
+  // (which works from already-resolved absolute sides and therefore does need `isRtl`).
   if (align == BalloonAlign.CENTER) {
     return when (centerAlign) {
       BalloonCenterAlign.TOP -> ArrowOrientation.BOTTOM
       BalloonCenterAlign.BOTTOM -> ArrowOrientation.TOP
-      BalloonCenterAlign.START -> if (isRtl) ArrowOrientation.START else ArrowOrientation.END
-      BalloonCenterAlign.END -> if (isRtl) ArrowOrientation.END else ArrowOrientation.START
-      // No meaningful arrow direction in overlay mode — caller hides the arrow.
+      BalloonCenterAlign.START -> ArrowOrientation.END
+      BalloonCenterAlign.END -> ArrowOrientation.START
+      // No meaningful arrow direction in overlay mode; the caller hides the arrow.
       null -> ArrowOrientation.BOTTOM
     }
   }
@@ -334,9 +337,9 @@ private fun resolveArrowOrientation(
     BalloonAlign.TOP -> ArrowOrientation.BOTTOM
     BalloonAlign.BOTTOM -> ArrowOrientation.TOP
     // Balloon on the leading side -> arrow points back to the trailing side.
-    BalloonAlign.START -> if (isRtl) ArrowOrientation.START else ArrowOrientation.END
+    BalloonAlign.START -> ArrowOrientation.END
     // Balloon on the trailing side -> arrow points back to the leading side.
-    BalloonAlign.END -> if (isRtl) ArrowOrientation.END else ArrowOrientation.START
+    BalloonAlign.END -> ArrowOrientation.START
     BalloonAlign.DROP_DOWN -> ArrowOrientation.TOP
     BalloonAlign.CENTER -> ArrowOrientation.BOTTOM
   }
@@ -541,7 +544,7 @@ internal class BalloonPopupPositionProvider(
         else -> { // CENTER overlay (centerAlign == null): dead-center, no flip.
           baseX = captured.left + halfAnchorW - halfPopupW
           baseY = captured.top + captured.height - halfPopupH - halfAnchorH
-          orientation = resolveArrowOrientation(align, centerAlign, style, layoutDirection)
+          orientation = resolveArrowOrientation(align, centerAlign, style)
         }
       }
     }

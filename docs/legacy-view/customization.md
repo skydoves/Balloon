@@ -44,7 +44,7 @@ Balloon.Builder(context)
     )
 ```
 
-<img src="https://github.com/user-attachments/assets/c188b987-7fb1-4877-ae8e-2ba486e9cea1" width="310px"/>
+<img alt="Balloon example" src="https://github.com/user-attachments/assets/c188b987-7fb1-4877-ae8e-2ba486e9cea1" width="310px"/>
 
 ## Elevation and Shadow
 

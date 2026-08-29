@@ -74,18 +74,21 @@ import androidx.compose.ui.unit.dp
  *   Android original this is the shadow's room; here it is kept because it is part of the
  *   popup box the width specs measure against, so a ported `setWidthRatio` lands on the same
  *   pixels. Set it to `0.dp` for a body that fills its width spec exactly.
- * @property width fixed body width. [Dp.Unspecified] (the default) wraps the content,
- *   mirroring `BalloonSizeSpec.WRAP`.
- * @property widthRatio body width as a fraction of the window width. `0f` (the default)
- *   disables it. Takes precedence over [width] and [maxWidth], mirroring `setWidthRatio`.
- * @property minWidthRatio lower bound of the body width as a fraction of the window
- *   width. `0f` disables it.
- * @property maxWidthRatio upper bound of the body width as a fraction of the window
- *   width. `0f` disables it.
- * @property minWidth lower bound of the body width. [Dp.Unspecified] disables it.
- * @property maxWidth upper bound of the body width. [Dp.Unspecified] means no constraint
- *   beyond the window width.
- * @property height fixed body height. [Dp.Unspecified] (the default) wraps the content.
+ * @property width fixed width of the POPUP BOX, which is the visible card plus [margin] and
+ *   the [elevation] inset, exactly as `setWidth` sized `bodyWindow.width` in the original.
+ *   [Dp.Unspecified] (the default) wraps the content, mirroring `BalloonSizeSpec.WRAP`.
+ *   Set [elevation] to `0.dp` and no margin for a card of precisely this width.
+ * @property widthRatio popup-box width as a fraction of the window width. `0f` (the default)
+ *   disables it. Takes precedence over every other width spec, mirroring `setWidthRatio`.
+ * @property minWidthRatio lower bound of the popup-box width as a fraction of the window
+ *   width. `0f` disables it. Together with [maxWidthRatio] it outranks [width].
+ * @property maxWidthRatio upper bound of the popup-box width as a fraction of the window
+ *   width. `0f` disables it, and an unset value behaves as `1f` once [minWidthRatio] is set.
+ * @property minWidth lower bound of the popup-box width. [Dp.Unspecified] disables it.
+ * @property maxWidth upper bound of the popup-box width. [Dp.Unspecified] means no
+ *   constraint beyond the window width.
+ * @property height fixed height of the popup box. [Dp.Unspecified] (the default) wraps the
+ *   content. There is no height ratio, matching the original.
  * @property animation enter / exit transition family.
  * @property circularDurationMillis duration of the [BalloonAnimation.CIRCULAR] reveal.
  * @property highlightAnimation looping animation played while the balloon is showing.

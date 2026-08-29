@@ -194,4 +194,4 @@ button.setOnClickListener {
 }
 ```
 
-<img src="https://user-images.githubusercontent.com/24237865/61226019-aba41d80-a75c-11e9-9362-52e4742244b5.gif" align="center" width="310px"/>
+<img alt="Balloon example" src="https://user-images.githubusercontent.com/24237865/61226019-aba41d80-a75c-11e9-9362-52e4742244b5.gif" align="center" width="310px"/>
