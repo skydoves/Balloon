@@ -21,10 +21,10 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.skydoves.balloon.sample.BalloonDemoScreen
+import com.skydoves.balloon.sample.BalloonSampleApp
 
 /**
- * Hosts the shared [BalloonDemoScreen] composable inside an Android activity.
+ * Hosts the shared [BalloonSampleApp] composable inside an Android activity.
  *
  * This module deliberately lives alongside the existing `:app` (which uses the
  * AndroidX Compose stack) so the Compose-Multiplatform classpath stays isolated
@@ -39,7 +39,7 @@ class KmpBalloonActivity : ComponentActivity() {
     super.onCreate(savedInstanceState)
 
     setContent {
-      BalloonDemoScreen(
+      BalloonSampleApp(
         onMessage = { message ->
           Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
         },

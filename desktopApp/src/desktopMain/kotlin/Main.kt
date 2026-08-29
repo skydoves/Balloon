@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import com.skydoves.balloon.sample.BalloonDemoScreen
+import com.skydoves.balloon.sample.BalloonSampleApp
 
 fun main() = application {
   Window(
@@ -27,6 +27,6 @@ fun main() = application {
     title = "Balloon CMP Demo",
     state = rememberWindowState(size = DpSize(width = 720.dp, height = 720.dp)),
   ) {
-    BalloonDemoScreen()
+    BalloonSampleApp()
   }
 }

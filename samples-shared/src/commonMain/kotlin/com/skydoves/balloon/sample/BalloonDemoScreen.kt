@@ -107,9 +107,14 @@ private val Orange = Color(0xFFFF5722)
  *
  * @param onMessage invoked with a human-readable message when a demo action is triggered
  *   (the KMP stand-in for the original demo's `Toast`s).
+ * @param onOpenLabs invoked when the Labs entry point is clicked; the host is expected to
+ *   navigate to [com.skydoves.balloon.sample.labs.BalloonLabsScreen].
  */
 @Composable
-public fun BalloonDemoScreen(onMessage: (String) -> Unit = {}) {
+public fun BalloonDemoScreen(
+  onMessage: (String) -> Unit = {},
+  onOpenLabs: () -> Unit = {},
+) {
   // `Modifier.balloon` registers anchors with the nearest host, which is what actually
   // emits the popups. One host wraps the whole screen.
   BalloonHost {
@@ -151,6 +156,11 @@ public fun BalloonDemoScreen(onMessage: (String) -> Unit = {}) {
         )
 
         Spacer(modifier = Modifier.height(16.dp))
+
+        // Labs Entry Point
+        LabsEntry(onOpenLabs = onOpenLabs)
+
+        Spacer(modifier = Modifier.height(24.dp))
 
         // Animation Demos
         AnimationDemos()
@@ -442,6 +452,51 @@ private fun EditProfileSection() {
     elevation = ButtonDefaults.elevation(0.dp),
   ) {
     Text(text = "Edit Profile", color = SkyBlue)
+  }
+}
+
+@Composable
+private fun LabsEntry(onOpenLabs: () -> Unit) {
+  Text(
+    text = "Labs",
+    color = White70,
+    fontSize = 14.sp,
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(bottom = 8.dp),
+  )
+
+  Text(
+    text = "Experimental balloon playground on its own screen",
+    color = White56,
+    fontSize = 12.sp,
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(bottom = 12.dp),
+  )
+
+  Button(
+    onClick = onOpenLabs,
+    colors = ButtonDefaults.buttonColors(backgroundColor = Purple),
+    shape = RoundedCornerShape(8.dp),
+    elevation = ButtonDefaults.elevation(0.dp),
+    modifier = Modifier
+      .fillMaxWidth()
+      .height(48.dp),
+  ) {
+    Icon(
+      imageVector = DemoIcons.AutoMirroredList,
+      contentDescription = null,
+      tint = Color.White,
+      modifier = Modifier.size(18.dp),
+    )
+    Spacer(modifier = Modifier.width(8.dp))
+    Text(
+      text = "Open Balloon Labs",
+      color = Color.White,
+      fontSize = 14.sp,
+      fontWeight = FontWeight.Bold,
+    )
   }
 }
 

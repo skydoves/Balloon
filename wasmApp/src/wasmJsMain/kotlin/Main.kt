@@ -16,12 +16,12 @@
 
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
-import com.skydoves.balloon.sample.BalloonDemoScreen
+import com.skydoves.balloon.sample.BalloonSampleApp
 import kotlinx.browser.document
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
   ComposeViewport(document.body!!) {
-    BalloonDemoScreen()
+    BalloonSampleApp()
   }
 }
