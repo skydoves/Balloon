@@ -69,6 +69,38 @@ internal fun arrowProtrusionPx(arrowHeightPx: Float): Float =
  * If [arrowWidthPx] or [arrowHeightPx] is `<= 0`, a plain rounded rectangle is built
  * (no arrow notch).
  */
+/**
+ * The arrow's half-width, clamped so the triangle's base always fits on the edge it sits on.
+ *
+ * An `arrowWidth` wider than that edge would otherwise emit vertices outside the layout
+ * bounds: a self-intersecting outline, a fill that spills past the box, and on Android a
+ * wedge hard-truncated by the popup window. The View original does not survive this case at
+ * all -- `RadiusLayout.rebuildPath` throws `IllegalArgumentException` out of its `coerceIn`
+ * once `arrowWidth > width`.
+ *
+ * The body notch and the arrow overlay both route through here so they cannot disagree on
+ * the base, which is what keeps the 1px seam between them closed.
+ */
+internal fun clampedHalfArrow(
+  arrowWidthPx: Float,
+  rectWidth: Float,
+  rectHeight: Float,
+  side: ResolvedArrowSide,
+): Float {
+  val alongExtent = when (side) {
+    ResolvedArrowSide.LEFT, ResolvedArrowSide.RIGHT -> rectHeight
+    ResolvedArrowSide.TOP, ResolvedArrowSide.BOTTOM -> rectWidth
+  }
+  return (arrowWidthPx / 2f).nanTo(0f).coerceIn(0f, alongExtent / 2f)
+}
+
+/**
+ * Replaces `NaN` with [fallback]. `Dp.Unspecified.toPx()` is `NaN`, and neither `coerceIn`
+ * nor `coerceAtLeast` filters it -- it would flow into every `lineTo` and make Skia drop the
+ * whole path, i.e. a silently invisible balloon.
+ */
+private fun Float.nanTo(fallback: Float): Float = if (isNaN()) fallback else this
+
 internal fun buildBalloonPath(
   size: Size,
   cornerRadiusPx: Float,
@@ -95,6 +127,7 @@ internal fun buildBalloonPath(
   val rectWidth = (rectRight - rectLeft).coerceAtLeast(0f)
   val rectHeight = (rectBottom - rectTop).coerceAtLeast(0f)
   val radius = cornerRadiusPx
+    .nanTo(0f)
     .coerceAtLeast(0f)
     .coerceAtMost(minOf(rectWidth, rectHeight) / 2f)
 
@@ -105,7 +138,7 @@ internal fun buildBalloonPath(
     return path
   }
 
-  val halfArrow = arrowWidthPx / 2f
+  val halfArrow = clampedHalfArrow(arrowWidthPx, rectWidth, rectHeight, side)
   val arrowCenterX =
     arrowCenterAlong(arrowCenterFromRectStart, halfArrow, rectLeft, rectRight, radius)
   val arrowCenterY =
@@ -216,10 +249,11 @@ internal fun buildArrowTrianglePath(
   val rectWidth = (rectRight - rectLeft).coerceAtLeast(0f)
   val rectHeight = (rectBottom - rectTop).coerceAtLeast(0f)
   val radius = cornerRadiusPx
+    .nanTo(0f)
     .coerceAtLeast(0f)
     .coerceAtMost(minOf(rectWidth, rectHeight) / 2f)
 
-  val halfArrow = arrowWidthPx / 2f
+  val halfArrow = clampedHalfArrow(arrowWidthPx, rectWidth, rectHeight, side)
 
   when (side) {
     ResolvedArrowSide.TOP -> {

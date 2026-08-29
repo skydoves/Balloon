@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,7 +33,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Density
@@ -138,7 +138,6 @@ internal fun BalloonPopupLayer(
   balloonContent: @Composable () -> Unit,
 ) {
   val style = state.style
-  val layoutDirection = LocalLayoutDirection.current
   val density = LocalDensity.current
   val currentBalloonContent by rememberUpdatedState(balloonContent)
 
@@ -201,6 +200,11 @@ internal fun BalloonPopupLayer(
   // leaving the composition, just triggered by geometry.
   LaunchedEffect(anchorBounds, windowSize, state.isVisible) {
     val bounds = anchorBounds
+    // `WindowInfo.containerSize` starts at `IntSize.Zero` and is filled in by the platform,
+    // so on a target that sizes its scene after the first composition every on-screen anchor
+    // would momentarily read as "past the right edge" and the balloon would dismiss itself
+    // the frame it was shown. An unmeasured window tells us nothing; wait for a real one.
+    if (windowSize.width <= 0 || windowSize.height <= 0) return@LaunchedEffect
     if (state.isVisible && bounds != null && !bounds.isEmpty &&
       (
         bounds.right <= 0 || bounds.bottom <= 0 ||
@@ -227,7 +231,17 @@ internal fun BalloonPopupLayer(
       )
     }
 
+    // One holder per popup, re-created per show. See `BalloonArrowPlacement`: sharing it
+    // across two popups is what made two anchors on one state spin forever.
+    val placement = remember(state, state.showGeneration) { BalloonArrowPlacement() }
+
     val positionProvider = remember(
+      // `state` is captured by the provider, and two different states can compare equal on
+      // every other key here (`style` is value-equal data). Without it, swapping the state at
+      // a stable call-site keeps the old provider, which then writes its resolved arrow back
+      // onto the previous balloon.
+      state,
+      placement,
       state.align,
       state.centerAlign,
       anchorBounds,
@@ -238,6 +252,7 @@ internal fun BalloonPopupLayer(
     ) {
       BalloonPopupPositionProvider(
         state = state,
+        placement = placement,
         anchorBounds = anchorBounds,
         align = state.align,
         centerAlign = state.centerAlign,
@@ -251,7 +266,7 @@ internal fun BalloonPopupLayer(
     // flips when the requested side has no room); fall back to the align-derived
     // orientation on the very first frame before the provider runs.
     val resolvedOrientation =
-      state.resolvedArrowOrientation
+      placement.orientation
         ?: resolveArrowOrientation(state.align, state.centerAlign, style)
 
     Popup(
@@ -287,7 +302,7 @@ internal fun BalloonPopupLayer(
           arrowOrientation = resolvedOrientation,
           // Resolved by the position provider against the final placement. Before its first
           // pass of this show it is null, which centers the arrow for one frame.
-          arrowCenterFromCardStart = state.resolvedArrowCenterPx,
+          arrowCenterFromCardStart = placement.centerPx,
           onClick = {
             state.onBalloonClick?.invoke()
             if (style.dismissWhenClicked) state.dismiss()
@@ -388,8 +403,39 @@ internal fun androidx.compose.ui.geometry.Rect.toIntRect(): IntRect = IntRect(
  * clamp band, which keeps the arrow `arrowWidth * arrowAlignAnchorPaddingRatio +
  * arrowAlignAnchorPadding` clear of the balloon's ends.
  */
+/**
+ * Where the position provider actually put ONE popup's arrow.
+ *
+ * Deliberately owned by the popup layer rather than by [BalloonState]. The provider writes
+ * this during the layout pass and the popup reads it while composing, so a holder shared by
+ * two popups has each one invalidating the other every frame: a single [BalloonState] driving
+ * two anchors — a perfectly reasonable thing for a caller to write — would never settle, and
+ * hung instead of rendering.
+ *
+ * The layer re-creates it on every `showGeneration`, which is what clears the previous show's
+ * placement so the first frame falls back to the align-derived orientation and a centred
+ * arrow rather than briefly drawing the old one.
+ */
+@Stable
+internal class BalloonArrowPlacement {
+  /**
+   * The arrow orientation resolved after computing the final on-screen placement, which may
+   * flip to the opposite side when the requested one has no room. `null` until the first
+   * placement pass, in which case the caller falls back to the align-derived orientation.
+   */
+  var orientation: ArrowOrientation? by mutableStateOf(null)
+
+  /**
+   * The arrow centre resolved against the final placement, in pixels from the card's leading
+   * edge along the arrow's side. `null` until the first placement pass of the current show,
+   * in which case the arrow is drawn centred for one frame.
+   */
+  var centerPx: Float? by mutableStateOf(null)
+}
+
 internal class BalloonPopupPositionProvider(
   private val state: BalloonState,
+  private val placement: BalloonArrowPlacement,
   private val anchorBounds: IntRect,
   private val align: BalloonAlign,
   private val centerAlign: BalloonCenterAlign?,
@@ -427,8 +473,12 @@ internal class BalloonPopupPositionProvider(
     val anchorCenterX = captured.left + halfAnchorW
     val anchorCenterY = captured.top + halfAnchorH
 
+    // Same reasoning as the visibility effect: an unmeasured window would clamp every balloon
+    // to the origin. Fall back to the popup's own extent, which makes the clamp a no-op.
     val maxX = (windowSize.width - popupW).coerceAtLeast(0)
+      .let { if (windowSize.width <= 0) Int.MAX_VALUE else it }
     val maxY = (windowSize.height - popupH).coerceAtLeast(0)
+      .let { if (windowSize.height <= 0) Int.MAX_VALUE else it }
 
     // ---- 1. Resolve the base placement + (possibly flipped) arrow orientation.
     val baseX: Int
@@ -583,11 +633,11 @@ internal class BalloonPopupPositionProvider(
 
     // ---- 4. Write back, guarding against recomposition loops (only on change),
     // mirroring the anchorBounds change-guard in the Balloon anchor composable.
-    if (state.resolvedArrowOrientation != resolvedOrientation) {
-      state.resolvedArrowOrientation = resolvedOrientation
+    if (placement.orientation != resolvedOrientation) {
+      placement.orientation = resolvedOrientation
     }
-    if (state.resolvedArrowCenterPx != arrowCenter) {
-      state.resolvedArrowCenterPx = arrowCenter
+    if (placement.centerPx != arrowCenter) {
+      placement.centerPx = arrowCenter
     }
 
     return IntOffset(x = finalX, y = finalY)

@@ -227,6 +227,12 @@ private fun DrawScope.drawAnchorCutout(
         Color.Transparent,
         BlendMode.Clear,
         layoutDirection,
+        // A `Circle` carrying an explicit radius ignores the rect's size, so clearing it at
+        // that same radius would erase exactly what was just painted and leave no band at
+        // all. The View implementation strokes the ring at `radius - overlayPadding.top / 2`
+        // with `strokeWidth = overlayPadding.top`, i.e. it spans `radius - top` to `radius`;
+        // shrinking the inner circle by the top padding reproduces that band.
+        radiusInset = padTop,
       )
     }
   }
@@ -239,6 +245,7 @@ private fun DrawScope.drawOverlayShape(
   color: Color,
   blendMode: BlendMode,
   layoutDirection: LayoutDirection,
+  radiusInset: Float = 0f,
 ) {
   when (shape) {
     BalloonOverlayShape.Empty -> Unit
@@ -260,9 +267,11 @@ private fun DrawScope.drawOverlayShape(
     is BalloonOverlayShape.Circle -> drawCircle(
       color = color,
       radius = if (shape.radius == Dp.Unspecified) {
+        // Derived from the rect, which is already the padded one for the outer draw and the
+        // bare anchor for the inner draw, so the band falls out on its own.
         max(rect.width, rect.height) / 2f
       } else {
-        shape.radius.toPx()
+        (shape.radius.toPx() - radiusInset).coerceAtLeast(0f)
       },
       center = rect.center,
       blendMode = blendMode,

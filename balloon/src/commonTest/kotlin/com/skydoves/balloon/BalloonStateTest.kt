@@ -182,6 +182,17 @@ class BalloonStateTest {
   }
 
   @Test
+  fun update_toANonCenterAlign_dropsAPreviousCenterAlign() {
+    // Otherwise a later `update(BalloonAlign.CENTER)` keeps placing the balloon against the
+    // anchor's centre instead of the dead-centre overlay it documents.
+    val state = stateOf()
+    state.showAtCenter(BalloonCenterAlign.END)
+    state.update(BalloonAlign.TOP)
+
+    assertNull(state.centerAlign)
+  }
+
+  @Test
   fun update_isANoOpWhileHidden() {
     val state = stateOf()
     state.update(BalloonAlign.TOP, xOffset = 5.dp)
@@ -194,18 +205,29 @@ class BalloonStateTest {
   // ---------------------------------------------------------- resolved arrow reset
 
   @Test
-  fun show_clearsThePreviousPlacementResolution() {
+  fun show_advancesTheGenerationThatClearsThePreviousPlacement() {
     val state = stateOf()
     state.showAlignTop()
-    state.resolvedArrowOrientation = ArrowOrientation.BOTTOM
-    state.resolvedArrowCenterPx = 42f
+    val first = state.showGeneration
     state.dismiss()
 
     state.showAlignBottom()
 
-    // Otherwise the first frame of the new show would draw the previous show's arrow.
-    assertNull(state.resolvedArrowOrientation)
-    assertNull(state.resolvedArrowCenterPx)
+    // The popup keys its `BalloonArrowPlacement` on this, so a bump is what stops the first
+    // frame of the new show from drawing the previous show's arrow edge and offset.
+    assertTrue(state.showGeneration > first)
+  }
+
+  @Test
+  fun showAtCenter_advancesTheGenerationToo() {
+    val state = stateOf()
+    state.showAlignTop()
+    val first = state.showGeneration
+    state.dismiss()
+
+    state.showAtCenter()
+
+    assertTrue(state.showGeneration > first)
   }
 
   @Test
@@ -311,6 +333,38 @@ class BalloonStateTest {
   fun dismissWithDelay_returnsFalseWhenHidden() = runTest {
     val state = stateOf()
     assertFalse(state.dismissWithDelay(this, 100L))
+  }
+
+  @OptIn(ExperimentalCoroutinesApi::class)
+  @Test
+  fun dismissWithDelay_isCancelledByAnEarlierDismiss() = runTest {
+    // A pending dismissal must not outlive the balloon it was scheduled for: dismiss at one
+    // second, show again at two, and the stale job would close the new balloon at five.
+    val state = stateOf()
+    state.showAlignTop()
+    state.dismissWithDelay(this, 5_000L)
+
+    advanceTimeBy(1_000L)
+    state.dismiss()
+    advanceTimeBy(1_000L)
+    state.showAlignTop()
+
+    advanceTimeBy(4_000L)
+    assertTrue(state.isVisible, "the stale delayed dismiss closed a later balloon")
+  }
+
+  @OptIn(ExperimentalCoroutinesApi::class)
+  @Test
+  fun dismissWithDelay_replacesAnEarlierPendingDismiss() = runTest {
+    val state = stateOf()
+    state.showAlignTop()
+    state.dismissWithDelay(this, 200L)
+    state.dismissWithDelay(this, 1_000L)
+
+    advanceTimeBy(300L)
+    assertTrue(state.isVisible, "the superseded delay still fired")
+    advanceTimeBy(800L)
+    assertFalse(state.isVisible)
   }
 
   // ------------------------------------------------------------------ listeners

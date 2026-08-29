@@ -24,8 +24,8 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.absolutePadding
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
@@ -204,7 +204,13 @@ internal fun BalloonContent(
   // ---- Sizing. Every width spec describes the POPUP box, exactly like
   // `Balloon.getMeasuredWidth()` / `getWidthMeasureSpec()`, which set `bodyWindow.width`.
   // The inner Box is therefore the spec minus the margins and the outer reserve.
-  val windowWidth = with(density) { LocalWindowInfo.current.containerSize.width.toDp() }
+  // `WindowInfo.containerSize` starts at `IntSize.Zero` and only lands once the scene has
+  // been measured. Treating that as a real width would make every branch below resolve to a
+  // zero MAX bound, i.e. an invisible balloon, so the window clamp is skipped until it is
+  // known. Compose recomposes as soon as the size arrives.
+  val containerWidthPx = LocalWindowInfo.current.containerSize.width
+  val isWindowMeasured = containerWidthPx > 0
+  val windowWidth = with(density) { containerWidthPx.toDp() }
   val marginHorizontal = style.margin.calculateLeftPadding(layoutDirection) +
     style.margin.calculateRightPadding(layoutDirection)
   val marginVertical = style.margin.calculateTopPadding() +
@@ -215,12 +221,12 @@ internal fun BalloonContent(
 
   val sizeModifier = when {
     // setWidthRatio: an EXACT popup width, measured against the whole window.
-    style.widthRatio > 0f ->
+    style.widthRatio > 0f && isWindowMeasured ->
       Modifier.requiredWidth(popupToInnerWidth(windowWidth * style.widthRatio))
 
     // setMinWidthRatio / setMaxWidthRatio: a wrap bounded by fractions of the window. The
     // original checks these BEFORE setWidth, and defaults an unset max ratio to 1f.
-    style.minWidthRatio > 0f || style.maxWidthRatio > 0f -> {
+    (style.minWidthRatio > 0f || style.maxWidthRatio > 0f) && isWindowMeasured -> {
       val maxRatio = if (style.maxWidthRatio > 0f) style.maxWidthRatio else 1f
       Modifier.widthIn(
         min = popupToInnerWidth(windowWidth * style.minWidthRatio),
@@ -230,11 +236,19 @@ internal fun BalloonContent(
 
     // setWidth: an EXACT popup width, capped at the window.
     style.width != Dp.Unspecified ->
-      Modifier.requiredWidth(popupToInnerWidth(style.width.coerceAtMost(windowWidth)))
+      Modifier.requiredWidth(
+        popupToInnerWidth(
+          if (isWindowMeasured) style.width.coerceAtMost(windowWidth) else style.width,
+        ),
+      )
 
     // Otherwise wrap, bounded by the min/max specs and the window.
     else -> {
-      val maxPopup = minOfDp(style.maxWidth, windowWidth)
+      val maxPopup = if (isWindowMeasured) {
+        minOfDp(style.maxWidth, windowWidth)
+      } else {
+        minOfDp(style.maxWidth, Dp.Unspecified)
+      }
       val minPopup = (
         if (style.minWidth == Dp.Unspecified) 0.dp else style.minWidth
         ).coerceAtMost(maxPopup)
@@ -246,8 +260,10 @@ internal fun BalloonContent(
   }
 
   // setHeight likewise sizes the popup; the original applies no window clamp to it.
+  // `requiredHeight`, to match the width paths: `setHeight` was an exact popup height in the
+  // original, so an incoming max-height constraint must not squeeze it.
   val heightModifier = if (style.height != Dp.Unspecified) {
-    Modifier.height(
+    Modifier.requiredHeight(
       (style.height - marginVertical - reserve.verticalOuter).coerceAtLeast(0.dp),
     )
   } else {
@@ -265,8 +281,9 @@ internal fun BalloonContent(
 
   // The margin and the reserve are inside the balloon's own popup, so the framework never
   // reports a tap there as an outside click, and without this it would simply be swallowed.
-  // `setDismissWhenTouchMargin` existed for exactly that dead band and defaulted to on. The
-  // card's own detector runs first and consumes its taps, so this only sees the band.
+  // `setDismissWhenTouchMargin` existed for exactly that dead band and defaulted to on.
+  // `PointerEventPass.Main` is descendant-to-ancestor, so the card's own detector consumes
+  // every tap on the card rect first and this only ever sees the surrounding band.
   val currentOnMarginTap by rememberUpdatedState(onMarginTap)
   val marginClickModifier =
     if (style.dismissWhenTouchMargin && style.dismissOnClickOutside) {
@@ -277,16 +294,21 @@ internal fun BalloonContent(
 
   Box(
     modifier = Modifier
+      // The detector goes FIRST, before the margin is subtracted: a modifier placed after
+      // `padding` only ever covers the padded-in area, which would leave the margin strip —
+      // the very band `setDismissWhenTouchMargin` exists for — without a listener.
+      .then(marginClickModifier)
       // The margin is outside everything: it keeps the balloon off the window edges and is
       // part of the popup box, exactly like the `balloonWrapper` margins in the original.
       .padding(style.margin)
-      .then(marginClickModifier)
       .then(outerReserveModifier)
       .then(alphaModifier)
       .balloonHighlight(
         animation = style.highlightAnimation,
         arrowSide = side,
-        isArrowVisible = style.isArrowVisible,
+        // `hasArrow`, not `style.isArrowVisible`: an arrow flagged visible but sized to zero
+        // is not drawn, so HEARTBEAT must not pivot about an edge that isn't there.
+        isArrowVisible = hasArrow,
         startDelayMillis = style.highlightAnimationStartDelayMillis,
         rotate = style.rotateAnimation,
       )
@@ -311,11 +333,17 @@ internal fun BalloonContent(
       modifier = Modifier
         .then(sizeModifier)
         .then(heightModifier)
+        // BEFORE the clip on purpose. `Modifier.clip` gates hit testing as well as drawing:
+        // on an `Outline.Generic` the framework runs an exact path-containment test, so a
+        // detector placed after it is unreachable on the rounded corners and on the flat
+        // band beside the arrow. Those taps would then fall through to the margin detector
+        // and dismiss the balloon, where the original — whose `balloonWrapper` is a plain
+        // rectangle — reports them as ordinary balloon clicks.
+        .then(clickModifier)
         .then(borderModifier)
         .background(color = style.backgroundColor, shape = shape)
         .then(arrowOverlayModifier)
         .clip(shape)
-        .then(clickModifier)
         .padding(style.padding)
         .then(arrowSpacingModifier),
     ) {
@@ -365,6 +393,12 @@ internal fun BalloonStyle.reserve(side: ResolvedArrowSide, density: Density): Ba
 }
 
 /** Smallest of the given values; [Dp.Unspecified] entries are ignored. */
+/** Clamps a builder ratio to the `0f..1f` range its `@FloatRange` contract advertises. */
+private fun Float.asRatio(): Float = if (isNaN()) 0f else coerceIn(0f, 1f)
+
+/** Clamps a padding/margin value to something `PaddingValues` will accept. */
+private fun Dp.asInset(): Dp = if (this == Dp.Unspecified || this < 0.dp) 0.dp else this
+
 private fun minOfDp(a: Dp, b: Dp): Dp =
   listOf(a, b).filter { it != Dp.Unspecified }.minOrNull() ?: Dp.Infinity
 
@@ -526,7 +560,7 @@ public object Balloon {
 
     /** Sets the arrow position along its edge as a fraction `0.0..1.0`. */
     public fun setArrowPosition(value: Float): Builder = apply {
-      arrowPosition = value.coerceIn(0f, 1f)
+      arrowPosition = value.asRatio()
     }
 
     /** Sets the rule used to interpret [setArrowPosition]. */
@@ -673,13 +707,13 @@ public object Balloon {
      * Sets the body width as a fraction of the window width. Takes precedence over
      * [setWidth] and [setMaxWidth]. Pass `0f` to disable.
      */
-    public fun setWidthRatio(value: Float): Builder = apply { widthRatio = value }
+    public fun setWidthRatio(value: Float): Builder = apply { widthRatio = value.asRatio() }
 
     /** Sets a lower bound on the body width as a fraction of the window width. */
-    public fun setMinWidthRatio(value: Float): Builder = apply { minWidthRatio = value }
+    public fun setMinWidthRatio(value: Float): Builder = apply { minWidthRatio = value.asRatio() }
 
     /** Sets an upper bound on the body width as a fraction of the window width. */
-    public fun setMaxWidthRatio(value: Float): Builder = apply { maxWidthRatio = value }
+    public fun setMaxWidthRatio(value: Float): Builder = apply { maxWidthRatio = value.asRatio() }
 
     /** Sets a lower bound on the body width. */
     public fun setMinWidth(value: Dp): Builder = apply { minWidth = value }
@@ -861,17 +895,20 @@ public object Balloon {
       arrowColor = arrowColor,
       borderColor = borderColor,
       borderThickness = borderThickness,
+      // `PaddingValues` rejects negative and unspecified values from inside Compose's
+      // measure pass, with a message that names neither Balloon nor the setter that caused
+      // it. Sanitizing here keeps a stray `setMarginTop((-8).dp)` from crashing the app.
       padding = PaddingValues(
-        start = paddingStart,
-        top = paddingTop,
-        end = paddingEnd,
-        bottom = paddingBottom,
+        start = paddingStart.asInset(),
+        top = paddingTop.asInset(),
+        end = paddingEnd.asInset(),
+        bottom = paddingBottom.asInset(),
       ),
       margin = PaddingValues(
-        start = marginStart,
-        top = marginTop,
-        end = marginEnd,
-        bottom = marginBottom,
+        start = marginStart.asInset(),
+        top = marginTop.asInset(),
+        end = marginEnd.asInset(),
+        bottom = marginBottom.asInset(),
       ),
       elevation = elevation,
       width = width,
@@ -890,10 +927,10 @@ public object Balloon {
       isVisibleOverlay = isVisibleOverlay,
       overlayColor = overlayColor,
       overlayPadding = PaddingValues(
-        start = overlayPaddingStart,
-        top = overlayPaddingTop,
-        end = overlayPaddingEnd,
-        bottom = overlayPaddingBottom,
+        start = overlayPaddingStart.asInset(),
+        top = overlayPaddingTop.asInset(),
+        end = overlayPaddingEnd.asInset(),
+        bottom = overlayPaddingBottom.asInset(),
       ),
       overlayPaddingColor = overlayPaddingColor,
       overlayShape = overlayShape,

@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -99,23 +100,6 @@ public class BalloonState internal constructor(
     internal set
 
   /**
-   * The arrow orientation resolved by [BalloonPopupPositionProvider] after
-   * computing the final on-screen placement (which may flip to the opposite
-   * side when there is not enough room). `null` until the first placement pass,
-   * in which case the caller falls back to the align-derived orientation.
-   */
-  internal var resolvedArrowOrientation: ArrowOrientation? by mutableStateOf(null)
-
-  /**
-   * The arrow center resolved by [BalloonPopupPositionProvider] against the final
-   * on-screen placement, in pixels from the card's leading edge along the arrow's side.
-   *
-   * `null` until the first placement pass of the CURRENT show, in which case the arrow is
-   * drawn centered for one frame.
-   */
-  internal var resolvedArrowCenterPx: Float? by mutableStateOf(null)
-
-  /**
    * When the balloon is shown via [showAtCenter] / [awaitAtCenter], the side of
    * the anchor's center the balloon is placed on. `null` for normal aligns and
    * for the dead-center overlay produced by `show(BalloonAlign.CENTER)`.
@@ -184,11 +168,9 @@ public class BalloonState internal constructor(
     this.centerAlign = null
     this.align = align
     this.offset = DpOffset(xOffset, yOffset)
-    // Clear the previous placement so the first frame of this show falls back to the
-    // align-derived orientation and a centred arrow, instead of briefly drawing the arrow
-    // on the edge and at the offset the PREVIOUS show resolved to.
-    this.resolvedArrowOrientation = null
-    this.resolvedArrowCenterPx = null
+    // Bumping the generation also re-keys the popup's `BalloonArrowPlacement`, so the first
+    // frame of this show falls back to the align-derived orientation and a centred arrow
+    // instead of briefly drawing the arrow where the PREVIOUS show resolved to.
     this.showGeneration++
     this.isVisible = true
   }
@@ -237,8 +219,6 @@ public class BalloonState internal constructor(
     this.centerAlign = centerAlign
     this.align = BalloonAlign.CENTER
     this.offset = DpOffset(xOffset, yOffset)
-    this.resolvedArrowOrientation = null
-    this.resolvedArrowCenterPx = null
     this.showGeneration++
     this.isVisible = true
   }
@@ -256,6 +236,10 @@ public class BalloonState internal constructor(
     yOffset: Dp = 0.dp,
   ) {
     if (!isVisible) return
+    // Moving to any align other than the one `showAtCenter` set has to drop that side, or a
+    // later `update(BalloonAlign.CENTER)` would silently keep placing the balloon against the
+    // anchor's centre instead of producing the dead-centre overlay it documents.
+    if (align != BalloonAlign.CENTER) centerAlign = null
     this.align = align
     this.offset = DpOffset(xOffset, yOffset)
   }
@@ -271,12 +255,23 @@ public class BalloonState internal constructor(
     delayMillis: Long,
   ): Boolean {
     if (!isVisible) return false
-    scope.launch {
+    pendingDismiss?.cancel()
+    pendingDismiss = scope.launch {
       delay(delayMillis)
       dismiss()
     }
     return true
   }
+
+  /**
+   * The job scheduled by [dismissWithDelay], kept so it can be cancelled.
+   *
+   * Without this a pending dismissal outlives the balloon it was scheduled for: dismiss at
+   * one second, show again at two, and the delayed job still fires at five and closes a
+   * balloon it knows nothing about. The View implementation removed its callback in
+   * `dismiss()` for the same reason.
+   */
+  private var pendingDismiss: Job? = null
 
   /**
    * Monotonically increasing counter bumped each time the balloon actually
@@ -292,6 +287,8 @@ public class BalloonState internal constructor(
    * and [onDismiss] is NOT invoked.
    */
   public fun dismiss() {
+    pendingDismiss?.cancel()
+    pendingDismiss = null
     if (isVisible) {
       isVisible = false
       dismissGeneration++

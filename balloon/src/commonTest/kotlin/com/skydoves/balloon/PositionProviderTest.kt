@@ -44,6 +44,13 @@ import kotlin.test.assertTrue
  */
 class PositionProviderTest {
 
+  /**
+   * The placement holder the most recent `place(...)` call handed the provider. It lives on
+   * the popup layer now, not on `BalloonState`, so that two anchors sharing one state cannot
+   * invalidate each other forever.
+   */
+  private lateinit var lastPlacement: BalloonArrowPlacement
+
   private val ltr = LayoutDirection.Ltr
   private val density = Density(1f)
 
@@ -86,8 +93,10 @@ class PositionProviderTest {
     userOffset: IntOffset = IntOffset.Zero,
     layoutDirection: LayoutDirection = ltr,
   ): IntOffset {
+    val placement = BalloonArrowPlacement().also { lastPlacement = it }
     val provider = BalloonPopupPositionProvider(
       state = state,
+      placement = placement,
       anchorBounds = captured,
       align = align,
       centerAlign = centerAlign,
@@ -150,10 +159,10 @@ class PositionProviderTest {
     assertEquals(anchor.right, offset.x)
     // The balloon sits on the anchor's physical right, so the arrow goes on its physical
     // LEFT edge — which under RTL is `END`.
-    assertEquals(ArrowOrientation.END, state.resolvedArrowOrientation)
+    assertEquals(ArrowOrientation.END, lastPlacement.orientation)
     assertEquals(
       ResolvedArrowSide.LEFT,
-      state.resolvedArrowOrientation?.resolve(LayoutDirection.Rtl),
+      lastPlacement.orientation?.resolve(LayoutDirection.Rtl),
     )
   }
 
@@ -165,7 +174,7 @@ class PositionProviderTest {
     // Unlike BOTTOM, the popup starts where the anchor starts.
     assertEquals(anchor.left, offset.x)
     assertEquals(anchor.bottom, offset.y)
-    assertEquals(ArrowOrientation.TOP, state.resolvedArrowOrientation)
+    assertEquals(ArrowOrientation.TOP, lastPlacement.orientation)
     assertNotEquals(centeredX(popup.width), offset.x)
   }
 
@@ -261,7 +270,7 @@ class PositionProviderTest {
 
     assertEquals(anchor.top - popup.height, offset.y) // flipped to sit above
     // The provider writes back the flipped orientation: arrow now on the BOTTOM edge.
-    assertEquals(ArrowOrientation.BOTTOM, state.resolvedArrowOrientation)
+    assertEquals(ArrowOrientation.BOTTOM, lastPlacement.orientation)
   }
 
   @Test
@@ -272,7 +281,7 @@ class PositionProviderTest {
     val offset = calc(state, BalloonAlign.TOP, captured = highAnchor)
 
     assertEquals(highAnchor.bottom, offset.y)
-    assertEquals(ArrowOrientation.TOP, state.resolvedArrowOrientation)
+    assertEquals(ArrowOrientation.TOP, lastPlacement.orientation)
   }
 
   @Test
@@ -291,7 +300,7 @@ class PositionProviderTest {
     )
 
     assertEquals(anchor.top - popup.height + 40, offset.y)
-    assertEquals(ArrowOrientation.BOTTOM, state.resolvedArrowOrientation)
+    assertEquals(ArrowOrientation.BOTTOM, lastPlacement.orientation)
   }
 
   @Test
@@ -302,7 +311,7 @@ class PositionProviderTest {
     val offset = calc(state, BalloonAlign.START, captured = leftAnchor)
 
     assertEquals(leftAnchor.right, offset.x)
-    assertEquals(ArrowOrientation.START, state.resolvedArrowOrientation)
+    assertEquals(ArrowOrientation.START, lastPlacement.orientation)
   }
 
   @Test
@@ -325,8 +334,8 @@ class PositionProviderTest {
     )
 
     assertEquals(leftAnchor.right, offset.x) // flipped to sit on the right
-    assertEquals(ArrowOrientation.END, state.resolvedArrowOrientation)
-    assertEquals(ResolvedArrowSide.LEFT, state.resolvedArrowOrientation?.resolve(rtl))
+    assertEquals(ArrowOrientation.END, lastPlacement.orientation)
+    assertEquals(ResolvedArrowSide.LEFT, lastPlacement.orientation?.resolve(rtl))
   }
 
   @Test
@@ -345,8 +354,8 @@ class PositionProviderTest {
     )
 
     assertEquals(rightAnchor.left - popup.width, offset.x) // flipped to sit on the left
-    assertEquals(ArrowOrientation.START, state.resolvedArrowOrientation)
-    assertEquals(ResolvedArrowSide.RIGHT, state.resolvedArrowOrientation?.resolve(rtl))
+    assertEquals(ArrowOrientation.START, lastPlacement.orientation)
+    assertEquals(ResolvedArrowSide.RIGHT, lastPlacement.orientation?.resolve(rtl))
   }
 
   @Test
@@ -358,7 +367,7 @@ class PositionProviderTest {
     val tightAnchor = IntRect(left = 200, top = 10, right = 300, bottom = 70)
     val offset = calc(state, BalloonAlign.BOTTOM, captured = tightAnchor, window = window)
 
-    assertEquals(ArrowOrientation.TOP, state.resolvedArrowOrientation)
+    assertEquals(ArrowOrientation.TOP, lastPlacement.orientation)
     assertEquals(window.height - popup.height, offset.y)
   }
 
@@ -369,7 +378,7 @@ class PositionProviderTest {
     val state = stateOf(BalloonStyle(arrowOrientation = ArrowOrientation.END))
     calc(state, BalloonAlign.BOTTOM)
 
-    assertEquals(ArrowOrientation.END, state.resolvedArrowOrientation)
+    assertEquals(ArrowOrientation.END, lastPlacement.orientation)
   }
 
   @Test
@@ -384,7 +393,7 @@ class PositionProviderTest {
     // pointing at the anchor, overriding the pin.
     calc(state, BalloonAlign.BOTTOM, window = IntSize(1000, 280))
 
-    assertEquals(ArrowOrientation.BOTTOM, state.resolvedArrowOrientation)
+    assertEquals(ArrowOrientation.BOTTOM, lastPlacement.orientation)
   }
 
   @Test
@@ -404,7 +413,7 @@ class PositionProviderTest {
     // The balloon still flips above the anchor...
     assertEquals(anchor.top - popup.height, offset.y)
     // ...but the arrow stays on the edge the caller pinned.
-    assertEquals(ArrowOrientation.END, state.resolvedArrowOrientation)
+    assertEquals(ArrowOrientation.END, lastPlacement.orientation)
   }
 
   @Test
@@ -417,7 +426,7 @@ class PositionProviderTest {
     )
     calc(state, BalloonAlign.BOTTOM, window = IntSize(1000, 280))
 
-    assertEquals(ArrowOrientation.TOP, state.resolvedArrowOrientation)
+    assertEquals(ArrowOrientation.TOP, lastPlacement.orientation)
   }
 
   // --------------------------------------------------------------- center align
@@ -431,7 +440,7 @@ class PositionProviderTest {
     // popup bottom edge lands on the anchor's vertical center.
     assertEquals(anchorCenterY, offset.y + popup.height)
     // Arrow points back down at the anchor center.
-    assertEquals(ArrowOrientation.BOTTOM, state.resolvedArrowOrientation)
+    assertEquals(ArrowOrientation.BOTTOM, lastPlacement.orientation)
   }
 
   @Test
@@ -441,7 +450,7 @@ class PositionProviderTest {
 
     assertEquals(centeredX(popup.width), offset.x)
     assertEquals(anchorCenterY, offset.y)
-    assertEquals(ArrowOrientation.TOP, state.resolvedArrowOrientation)
+    assertEquals(ArrowOrientation.TOP, lastPlacement.orientation)
   }
 
   @Test
@@ -451,7 +460,7 @@ class PositionProviderTest {
 
     val anchorCenterX = anchor.left + (anchor.width * 0.5f).toInt()
     assertEquals(anchorCenterX, offset.x + popup.width)
-    assertEquals(ArrowOrientation.END, state.resolvedArrowOrientation)
+    assertEquals(ArrowOrientation.END, lastPlacement.orientation)
   }
 
   @Test
@@ -478,7 +487,7 @@ class PositionProviderTest {
           val state = stateOf()
           calc(state, align, layoutDirection = direction)
           assertEquals(
-            state.resolvedArrowOrientation,
+            lastPlacement.orientation,
             resolveArrowOrientation(align, null, state.style),
             "fallback disagrees with the provider for $align under $direction",
           )
@@ -493,7 +502,7 @@ class PositionProviderTest {
         val state = stateOf()
         calc(state, BalloonAlign.CENTER, centerAlign = centerAlign, layoutDirection = direction)
         assertEquals(
-          state.resolvedArrowOrientation,
+          lastPlacement.orientation,
           resolveArrowOrientation(BalloonAlign.CENTER, centerAlign, state.style),
           "fallback disagrees with the provider for $centerAlign under $direction",
         )
@@ -534,7 +543,7 @@ class PositionProviderTest {
     )
     calc(state, BalloonAlign.BOTTOM)
 
-    assertEquals(18f, state.resolvedArrowCenterPx)
+    assertEquals(18f, lastPlacement.centerPx)
   }
 
   @Test
@@ -548,7 +557,7 @@ class PositionProviderTest {
     calc(state, BalloonAlign.BOTTOM)
 
     // wrapper 80 -> 40; card inset 2 -> 38; card width is 80 - 2*2 = 76, whose centre is 38.
-    assertEquals(38f, state.resolvedArrowCenterPx)
+    assertEquals(38f, lastPlacement.centerPx)
   }
 
   @Test
@@ -572,7 +581,7 @@ class PositionProviderTest {
 
     // The arrow's absolute centre must land on the anchor's centre.
     val cardLeft = offset.x + 2 // margin 0 + elevation inset
-    assertEquals(400f, cardLeft + state.resolvedArrowCenterPx!!)
+    assertEquals(400f, cardLeft + lastPlacement.centerPx!!)
   }
 
   @Test
@@ -598,6 +607,7 @@ class PositionProviderTest {
       window = window,
       popupSize = widePopup,
     )
+    val anchorPlacement = lastPlacement
     calc(
       balloonState,
       BalloonAlign.BOTTOM,
@@ -605,13 +615,14 @@ class PositionProviderTest {
       window = window,
       popupSize = widePopup,
     )
+    val balloonPlacement = lastPlacement
 
     // ALIGN_BALLOON: centre of the card regardless of the shift (200/2 - 2 = 98).
-    assertEquals(98f, balloonState.resolvedArrowCenterPx)
+    assertEquals(98f, balloonPlacement.centerPx)
     // ALIGN_ANCHOR: the arrow keeps pointing at the anchor centre (950).
     val cardLeft = offset.x + 2
-    assertEquals(950f, cardLeft + anchorState.resolvedArrowCenterPx!!)
-    assertNotEquals(balloonState.resolvedArrowCenterPx, anchorState.resolvedArrowCenterPx)
+    assertEquals(950f, cardLeft + anchorPlacement.centerPx!!)
+    assertNotEquals(balloonPlacement.centerPx, anchorPlacement.centerPx)
   }
 
   @Test
@@ -631,7 +642,7 @@ class PositionProviderTest {
 
     // The natural arrow position (14) sits inside the `2 * arrowWidth` band, so it snaps to
     // minPosition = arrowBase(12) * 2.5 = 30 (arrow LEFT), + half arrow (6), - inset (2).
-    assertEquals(34f, state.resolvedArrowCenterPx)
+    assertEquals(34f, lastPlacement.centerPx)
   }
 
   @Test
@@ -648,7 +659,7 @@ class PositionProviderTest {
     calc(state, BalloonAlign.BOTTOM, captured = wideAnchor)
 
     // minPosition = 12 * 2.5 + 8 = 38; + 6 - 2 = 42.
-    assertEquals(42f, state.resolvedArrowCenterPx)
+    assertEquals(42f, lastPlacement.centerPx)
   }
 
   @Test
@@ -664,7 +675,7 @@ class PositionProviderTest {
     calc(state, BalloonAlign.END)
 
     // wrapper height 40 -> 10; minus the 2px card inset -> 8.
-    assertEquals(8f, state.resolvedArrowCenterPx)
+    assertEquals(8f, lastPlacement.centerPx)
   }
 
   @Test
@@ -680,7 +691,7 @@ class PositionProviderTest {
     )
     calc(state, BalloonAlign.BOTTOM)
 
-    assertEquals(20f, state.resolvedArrowCenterPx)
+    assertEquals(20f, lastPlacement.centerPx)
   }
 
   @Test
@@ -696,6 +707,6 @@ class PositionProviderTest {
     calc(state, BalloonAlign.BOTTOM)
 
     // wrapper = 80 - 20 = 60; 60*0.5 = 30; minus the 2px inset -> 28.
-    assertEquals(28f, state.resolvedArrowCenterPx)
+    assertEquals(28f, lastPlacement.centerPx)
   }
 }

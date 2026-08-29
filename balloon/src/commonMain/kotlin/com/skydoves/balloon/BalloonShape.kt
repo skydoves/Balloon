@@ -34,9 +34,9 @@ import androidx.compose.ui.unit.LayoutDirection
  *
  * @param cornerRadius radius of the rounded-rect corners.
  * @param arrowWidth width of the arrow base along the rect edge. `0.dp` disables the arrow.
- * @param arrowHeight height of the arrow protrusion outside the rect edge.
- *   `0.dp` disables the arrow. The actual protrusion is `arrowHeight / 2`,
- *   matching `RadiusLayout`.
+ * @param arrowHeight height of the arrow protrusion outside the rect edge. `0.dp` disables
+ *   the arrow. The visible protrusion is `arrowHeight - 1px`: the View implementation sinks
+ *   the arrow one pixel into the card so no seam shows between them.
  * @param arrowOrientation which edge of the rect the arrow sits on.
  *   START/END are resolved against [LayoutDirection] at outline time.
  * @param arrowCenterFromRectStart where the arrow's center sits, in pixels from the body
