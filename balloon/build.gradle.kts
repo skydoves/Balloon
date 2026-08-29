@@ -173,3 +173,28 @@ tasks.withType<JavaCompile>().configureEach {
   this.targetCompatibility = libs.versions.jvmTarget.get()
   this.sourceCompatibility = libs.versions.jvmTarget.get()
 }
+
+// Golden screenshot wiring, consumed by `src/desktopTest/.../golden/GoldenHarness.kt`.
+//
+// The harness reads and writes goldens in the SOURCE tree, not off the test classpath: the
+// classpath copy lives under `build/` and would be thrown away by `clean` and never committed.
+// A test JVM's working directory is not something to rely on, so the paths are handed over
+// explicitly.
+//
+// `-Pballoon.updateGolden` re-records every golden the run touches instead of comparing.
+tasks.named<Test>("desktopTest") {
+  systemProperty(
+    "balloon.goldenDir",
+    layout.projectDirectory.dir("src/desktopTest/resources/golden").asFile.absolutePath,
+  )
+  systemProperty(
+    "balloon.goldenReportDir",
+    layout.buildDirectory.dir("reports/golden").get().asFile.absolutePath,
+  )
+  val updateGolden = providers.gradleProperty("balloon.updateGolden")
+  if (updateGolden.isPresent) {
+    // `-Pballoon.updateGolden` with no `=value` arrives as an empty string; the harness only
+    // checks for presence, but an empty system property value is needlessly ambiguous.
+    systemProperty("balloon.updateGolden", updateGolden.get().ifEmpty { "true" })
+  }
+}
