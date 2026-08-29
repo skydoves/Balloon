@@ -1071,6 +1071,19 @@ private val overlayCases: List<GoldenCase> = listOf(
  */
 private val contentCases: List<GoldenCase> = listOf(
   GoldenCase("content-large", style(), content = { GoldenBody(240, 160) }),
+  // A full-bleed body against a large radius: with no padding the content reaches the corners,
+  // so it is only the shape clip that keeps them round. 1.x had a `setIsClipArrowEnabled` knob
+  // that defaulted to off, which is what made a custom `setLayout` render square corners over a
+  // rounded background. There is no such knob here and the clip is unconditional; if that ever
+  // regresses, the corners of this golden fill in with the body colour.
+  GoldenCase(
+    name = "content-full-bleed-large-radius",
+    style = style {
+      setPadding(0.dp)
+      setCornerRadius(28.dp)
+    },
+    content = { GoldenBody(180, 120) },
+  ),
   GoldenCase("content-tiny", style(), content = { GoldenBody(8, 8) }),
   GoldenCase("content-tall-narrow", style(), content = { GoldenBody(24, 220) }),
   GoldenCase("content-wide-flat", style(), content = { GoldenBody(320, 12) }),
