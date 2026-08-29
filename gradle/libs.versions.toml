@@ -1,10 +1,10 @@
 [versions]
-agp = "9.2.1"
+agp = "9.3.2"
 dokka = "2.2.0"
 kotlin = "2.3.10"
 kotlinBinaryCompatibility = "0.18.1"
 jvmTarget = "11"
-nexusPlugin = "0.36.0"
+nexusPlugin = "0.37.0"
 composeMultiplatform = "1.10.3"
 androidxActivity = "1.13.0"
 spotless = "6.21.0"
