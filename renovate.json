@@ -10,7 +10,9 @@
       "matchPackagePrefixes": [
         "com.google.devtools.ksp",
         "androidx.compose.compiler",
-        "com.android.tools.build:gradle"
+        "com.android.tools.build:gradle",
+        "com.android.application",
+        "com.android.library"
       ],
       "matchPackagePatterns": [
         "org.jetbrains.kotlin.*"
