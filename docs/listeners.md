@@ -1,141 +1,90 @@
 # Listeners
 
-Balloon provides various listeners to respond to user interactions and lifecycle events.
-
-## Click Listeners
-
-### Balloon Click Listener
-
-Triggered when the user clicks on the Balloon content:
+Listeners live on `BalloonState`, not on the builder. `BalloonStyle` is value equal data so that
+two identical styles compare equal and a restyle can be detected cheaply, and storing lambdas
+inside it would break that.
 
 ```kotlin
-Balloon.Builder(context)
-    .setOnBalloonClickListener { view ->
-        // handle balloon click
-    }
+val balloonState = rememberBalloonState(style)
+
+balloonState.onBalloonClick = { /* the body was tapped */ }
+balloonState.onOverlayClick = { /* the scrim was tapped */ }
+balloonState.onDismiss = { /* the balloon closed */ }
 ```
 
-### Balloon Overlay Click Listener
+## onBalloonClick
 
-Triggered when the user clicks on the overlay area:
-
-```kotlin
-Balloon.Builder(context)
-    .setOnBalloonOverlayClickListener {
-        // handle overlay click
-    }
-```
-
-## Dismiss Listener
-
-Triggered when the Balloon is dismissed:
+Fires when the balloon body is tapped, before any dismissal caused by `setDismissWhenClicked`.
 
 ```kotlin
-Balloon.Builder(context)
-    .setOnBalloonDismissListener {
-        // handle balloon dismiss
-    }
-```
-
-## Initialization Listener
-
-Triggered after the Balloon is fully initialized and laid out:
-
-```kotlin
-Balloon.Builder(context)
-    .setOnBalloonInitializedListener { view ->
-        // balloon is ready
-    }
-```
-
-## Touch Listeners
-
-### Balloon Touch Listener
-
-Handle touch events on the Balloon content:
-
-```kotlin
-Balloon.Builder(context)
-    .setOnBalloonTouchListener { view, motionEvent ->
-        // handle touch event
-        true // return true if consumed
-    }
-```
-
-### Outside Touch Listener
-
-Triggered when the user touches outside the Balloon:
-
-```kotlin
-Balloon.Builder(context)
-    .setOnBalloonOutsideTouchListener { view, motionEvent ->
-        // handle outside touch
-    }
-```
-
-### Overlay Touch Listener
-
-Handle touch events on the overlay:
-
-```kotlin
-Balloon.Builder(context)
-    .setOnBalloonOverlayTouchListener { view, motionEvent ->
-        // handle overlay touch
-        true // return true if consumed
-    }
-```
-
-## Setting Listeners After Building
-
-You can also set listeners after building the Balloon:
-
-```kotlin
-val balloon = Balloon.Builder(context)
-    .setText("Hello World!")
-    .build()
-
-balloon.setOnBalloonClickListener { view ->
-    // handle click
+val style = rememberBalloonBuilder {
+    setDismissWhenClicked(true)
 }
-
-balloon.setOnBalloonDismissListener {
-    // handle dismiss
+balloonState.onBalloonClick = {
+    analytics.log("tooltip_tapped")
 }
 ```
 
-## Listeners with Interfaces
+A tap that a child of the balloon body consumes does not reach this listener, so a clickable row
+inside the balloon behaves the way you would expect.
 
-For Java or when you need a more structured approach, use the listener interfaces:
+## onOverlayClick
 
-```kotlin
-balloon.setOnBalloonClickListener(object : OnBalloonClickListener {
-    override fun onBalloonClick(view: View) {
-        // handle click
-    }
-})
-
-balloon.setOnBalloonDismissListener(object : OnBalloonDismissListener {
-    override fun onBalloonDismiss() {
-        // handle dismiss
-    }
-})
-```
-
-## Chaining Show with Dismiss Listener
-
-A common pattern is to show another Balloon when one is dismissed:
+Fires when the overlay scrim is tapped, before any dismissal caused by
+`setDismissWhenOverlayClicked`.
 
 ```kotlin
-val firstBalloon = Balloon.Builder(context)
-    .setText("First tooltip")
-    .setOnBalloonDismissListener {
-        secondBalloon.showAlignBottom(anchor)
-    }
-    .build()
-
-val secondBalloon = Balloon.Builder(context)
-    .setText("Second tooltip")
-    .build()
-
-firstBalloon.showAlignBottom(anchor)
+balloonState.onOverlayClick = {
+    analytics.log("tour_scrim_tapped")
+}
 ```
+
+## onDismiss
+
+Fires exactly once per visible to hidden transition. Calling `dismiss()` on an already hidden
+balloon is a no-op and does not re-fire it.
+
+```kotlin
+balloonState.onDismiss = {
+    preferences.markTooltipSeen()
+}
+```
+
+It fires for every reason a balloon can close, including the auto dismiss timer, an outside tap,
+the back key, and the anchor leaving the composition or scrolling out of the window.
+
+## Observing state instead
+
+Often you do not need a callback at all. `isVisible` is snapshot state:
+
+```kotlin
+val rotation by animateFloatAsState(if (balloonState.isVisible) 180f else 0f)
+
+Icon(
+    modifier = Modifier.rotate(rotation),
+    imageVector = Icons.Default.ExpandMore,
+    contentDescription = null,
+)
+```
+
+And `await()` turns "run this after it closes" into straight line code:
+
+```kotlin
+LaunchedEffect(Unit) {
+    balloonState.awaitAlignBottom()
+    preferences.markTooltipSeen()
+}
+```
+
+## What is not here
+
+`OnBalloonInitializedListener`, `OnBalloonOutsideTouchListener`, `setOnBalloonTouchListener`, and
+`setOnBalloonOverlayTouchListener` are gone. They existed to expose `View` and `MotionEvent`
+plumbing that has no multiplatform equivalent. Use Compose instead:
+
+| 1.x | 2.0.0 |
+| --- | --- |
+| `setOnBalloonInitializedListener` | `Modifier.onGloballyPositioned` inside the balloon content |
+| `setOnBalloonOutsideTouchListener` | `setDismissWhenTouchOutside(false)` plus your own handling |
+| `setOnBalloonTouchListener` | `Modifier.pointerInput` inside the balloon content |
+| `setOnBalloonOverlayTouchListener` | `onOverlayClick` |

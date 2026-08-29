@@ -1,5 +1,11 @@
 # BalloonState
 
+!!! warning "Balloon 1.x (View)"
+
+    This page documents Balloon `1.7.6`, the last release of the View based library.
+    For the current version see the [Balloon 2.0.0 documentation](../../index.md) and the
+    [Migration guide](../../migration.md).
+
 `BalloonState` is the primary way to control balloon display in Jetpack Compose. It provides methods for showing, dismissing, and interacting with balloons.
 
 ## Creating BalloonState

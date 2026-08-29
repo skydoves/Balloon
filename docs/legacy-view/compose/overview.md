@@ -1,5 +1,11 @@
 # Jetpack Compose Overview
 
+!!! warning "Balloon 1.x (View)"
+
+    This page documents Balloon `1.7.6`, the last release of the View based library.
+    For the current version see the [Balloon 2.0.0 documentation](../../index.md) and the
+    [Migration guide](../../migration.md).
+
 Balloon provides first-class support for Jetpack Compose with a simple and intuitive API using the `Modifier.balloon()` extension.
 
 ## Installation
@@ -8,7 +14,7 @@ Add the Compose dependency to your `build.gradle`:
 
 ```gradle
 dependencies {
-    implementation("com.github.skydoves:balloon-compose:$version")
+    implementation("com.github.skydoves:balloon-compose:1.7.6")
 }
 ```
 

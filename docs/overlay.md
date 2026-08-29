@@ -1,135 +1,119 @@
 # Overlay
 
-Balloon supports displaying an overlay over the entire screen except for the anchor view, creating a spotlight effect that highlights the anchor.
+<p align="center">
+<img src="https://user-images.githubusercontent.com/24237865/96139366-c7870800-0f39-11eb-9542-e98eac7ef193.gif" align="center" width="21%"/>
+<img src="https://user-images.githubusercontent.com/24237865/96138448-c0abc580-0f38-11eb-92e6-daf2f8266a3e.gif" align="center" width="21%"/>
+<img src="https://user-images.githubusercontent.com/24237865/96139358-c524ae00-0f39-11eb-82ff-90a4a734e076.gif" align="center" width="21%"/>
+<img src="https://user-images.githubusercontent.com/24237865/96138463-c3a6b600-0f38-11eb-8a2d-57cf96c4190c.gif" align="center" width="21%"/>
+</p>
 
-## Basic Overlay
+An overlay dims the whole window and cuts the anchor out of it. That is how you build a
+spotlight style onboarding tour.
+
+## Basic usage
 
 ```kotlin
-Balloon.Builder(context)
-    .setIsVisibleOverlay(true)
-    .setOverlayColorResource(R.color.overlay)
-    .setOverlayPadding(6f)
-    .setOverlayPaddingColorResource(R.color.colorPrimary)
-    .setBalloonOverlayAnimation(BalloonOverlayAnimation.FADE)
-    .setDismissWhenOverlayClicked(false)
+val style = rememberBalloonBuilder {
+    setIsVisibleOverlay(true)
+    setOverlayColor(Color(0x99000000))
+    setOverlayPadding(6.dp)
+    setOverlayShape(BalloonOverlayShape.Oval)
+}
 ```
 
-## Overlay Shapes
+!!! warning "An overlay needs a BalloonHost"
 
-You can customize the shape of the highlighted area around the anchor.
+    The scrim is drawn by `BalloonHost` so it can cover the entire window, including the
+    system bars. A popup window cannot do that: its layout params are wrap content and the
+    composition root clamps the reported size to a measure spec that excludes the navigation
+    bar, so the scrim would stop short of the bottom of the screen.
 
-### Oval (Default)
+    Wrap your screen once and both APIs work:
 
-```kotlin
-Balloon.Builder(context)
-    .setOverlayShape(BalloonOverlayOval)
-```
-
-### Circle
-
-```kotlin
-Balloon.Builder(context)
-    .setOverlayShape(BalloonOverlayCircle(radius = 36f))
-```
-
-### Rectangle
-
-```kotlin
-Balloon.Builder(context)
-    .setOverlayShape(BalloonOverlayRect)
-```
-
-### Rounded Rectangle
-
-```kotlin
-Balloon.Builder(context)
-    .setOverlayShape(BalloonOverlayRoundRect(12f, 12f))
-```
-
-You can also set individual corner radii:
-
-```kotlin
-Balloon.Builder(context)
-    .setOverlayShape(
-        BalloonOverlayRoundRect(
-            topLeftRadius = 8f,
-            topRightRadius = 8f,
-            bottomLeftRadius = 16f,
-            bottomRightRadius = 16f
-        )
-    )
-```
-
-### Preview
-
-| OVAL | CIRCLE | RECT | ROUNDRECT |
-|:----:|:------:|:----:|:---------:|
-| <img src="https://user-images.githubusercontent.com/24237865/96139366-c7870800-0f39-11eb-9542-e98eac7ef193.gif" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/96138448-c0abc580-0f38-11eb-92e6-daf2f8266a3e.gif" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/96139358-c524ae00-0f39-11eb-82ff-90a4a734e076.gif" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/96138463-c3a6b600-0f38-11eb-8a2d-57cf96c4190c.gif" width="100%"/> |
-
-## Overlay Position
-
-Set a specific position for the overlay shape:
-
-```kotlin
-Balloon.Builder(context)
-    .setOverlayPosition(Point(x, y))
-```
-
-## Overlay Animation
-
-```kotlin
-BalloonOverlayAnimation.NONE
-BalloonOverlayAnimation.FADE // default
-```
-
-## Overlay Padding
-
-Add padding around the highlighted area:
-
-```kotlin
-Balloon.Builder(context)
-    .setOverlayPadding(8f) // padding in dp
-    .setOverlayPaddingColorResource(R.color.paddingColor) // padding color
-```
-
-## Overlay Interaction
-
-### Dismiss When Overlay Clicked
-
-```kotlin
-Balloon.Builder(context)
-    .setDismissWhenOverlayClicked(true) // dismiss balloon when overlay is clicked
-```
-
-### Overlay Click Listener
-
-```kotlin
-Balloon.Builder(context)
-    .setOnBalloonOverlayClickListener {
-        // handle overlay click
+    ```kotlin
+    BalloonHost {
+        // Balloon(...) and Modifier.balloon(...) anchors go here
     }
-```
+    ```
 
-### Overlay Touch Listener
+    A balloon with `setIsVisibleOverlay(true)` outside a host throws an
+    `IllegalStateException` that says exactly this.
+
+## Shapes
 
 ```kotlin
-Balloon.Builder(context)
-    .setOnBalloonOverlayTouchListener { view, event ->
-        // handle overlay touch
-        true // return true if handled
+setOverlayShape(BalloonOverlayShape.Empty)                    // no cut-out, dim everything
+setOverlayShape(BalloonOverlayShape.Rect)                     // the anchor's bounds
+setOverlayShape(BalloonOverlayShape.Oval)                     // inscribed in the bounds, default
+setOverlayShape(BalloonOverlayShape.Circle(radius = 40.dp))
+setOverlayShape(BalloonOverlayShape.RoundRect(radiusX = 12.dp, radiusY = 12.dp))
+```
+
+`Circle` with no radius uses half of the anchor's longer side.
+
+!!! note "Radii are Dp, not pixels"
+
+    `Circle` and `RoundRect` took raw pixels in 1.x and take `Dp` here. Passing the same
+    number gives a different result, so convert deliberately when porting.
+
+## Padding
+
+Extra space added around the anchor before the shape is cut:
+
+```kotlin
+setOverlayPadding(6.dp)
+setOverlayPadding(start = 4.dp, top = 10.dp, end = 20.dp, bottom = 30.dp)
+```
+
+## Animation
+
+```kotlin
+setBalloonOverlayAnimation(BalloonOverlayAnimation.FADE)   // default, 200ms linear
+setBalloonOverlayAnimation(BalloonOverlayAnimation.NONE)
+```
+
+## Interaction
+
+The scrim is modal. A tap on it never falls through to the content underneath.
+
+```kotlin
+setDismissWhenOverlayClicked(true)   // default
+balloonState.onOverlayClick = { analytics.log("tour_scrim_tapped") }
+```
+
+`onOverlayClick` fires before any dismissal, so it runs whether or not
+`dismissWhenOverlayClicked` is on.
+
+## Building a tour
+
+Combine an overlay with the `suspend` show calls and a tour is a handful of lines:
+
+```kotlin
+BalloonHost {
+    val tourStyle = rememberBalloonBuilder {
+        setIsVisibleOverlay(true)
+        setOverlayColor(Color(0xCC000000))
+        setOverlayPadding(8.dp)
+        setOverlayShape(BalloonOverlayShape.RoundRect(12.dp))
+        setBackgroundColor(Color.White)
+        setPadding(12.dp)
+        setCornerRadius(8.dp)
     }
-```
+    val step1 = rememberBalloonState(tourStyle)
+    val step2 = rememberBalloonState(tourStyle)
 
-## Multiple Anchors
+    LaunchedEffect(Unit) {
+        step1.awaitAlignBottom()
+        step2.awaitAlignTop()
+    }
 
-You can display the overlay with multiple anchors highlighted:
-
-```kotlin
-balloon.showAlign(
-    align = BalloonAlign.TOP,
-    mainAnchor = mainView,
-    subAnchorList = listOf(secondaryView1, secondaryView2),
-    xOff = 0,
-    yOff = 0
-)
+    Column {
+        Button(modifier = Modifier.balloon(step1) { Text("Start here") }, onClick = {}) {
+            Text("Home")
+        }
+        Button(modifier = Modifier.balloon(step2) { Text("Then here") }, onClick = {}) {
+            Text("Profile")
+        }
+    }
+}
 ```
