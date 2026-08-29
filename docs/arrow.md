@@ -1,135 +1,98 @@
 # Arrow
 
-This guide covers how to customize the arrow on your Balloon tooltips.
+The arrow is part of the balloon's silhouette, not a separate image. It is carved into the same
+path as the body, so a border traces around it and a corner radius never clips it.
 
-## Basic Arrow Configuration
-
-```kotlin
-Balloon.Builder(context)
-    .setIsVisibleArrow(true) // show or hide the arrow
-    .setArrowSize(10) // arrow size in dp
-    .setArrowPosition(0.5f) // position ratio (0.0 ~ 1.0)
-    .setArrowOrientation(ArrowOrientation.BOTTOM) // arrow direction
-    .setArrowDrawable(ContextCompat.getDrawable(context, R.drawable.arrow)) // custom drawable
-```
-
-## Arrow Orientation
-
-The arrow orientation determines which side of the Balloon the arrow appears on:
+## Size
 
 ```kotlin
-ArrowOrientation.TOP // arrow points upward
-ArrowOrientation.BOTTOM // arrow points downward
-ArrowOrientation.START // arrow points to the start (left in LTR)
-ArrowOrientation.END // arrow points to the end (right in LTR)
+setIsVisibleArrow(true)
+setArrowSize(10.dp)  // square
+setArrowSize(width = 16.dp, height = 8.dp)  // base along the edge, protrusion outward
+setArrowWidth(16.dp)
+setArrowHeight(8.dp)
 ```
 
-| TOP | BOTTOM | START | END |
-|:---:|:------:|:-----:|:---:|
-| <img src="https://user-images.githubusercontent.com/24237865/61320412-55120e80-a844-11e9-9ca9-81375707886e.gif" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/61320410-55120e80-a844-11e9-9af6-cae49b8897e7.gif" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/61320415-55aaa500-a844-11e9-874f-ca44be02aace.gif" width="100%"/> | <img src="https://user-images.githubusercontent.com/24237865/61320416-55aaa500-a844-11e9-9aa1-53e409ca63fb.gif" width="100%"/> |
+`width` is always the base along the balloon's edge and `height` is always how far the tip
+sticks out, on every orientation. The visible protrusion is `arrowHeight - 1px`, which is the
+one pixel the arrow overlaps the body by so no seam shows between them.
 
-## Arrow Position
+!!! note "Hiding the arrow frees its space"
 
-The `setArrowPosition` method uses a ratio value from 0.0 to 1.0 to determine where the arrow is placed along the Balloon edge.
+    `setIsVisibleArrow(false)` also releases the space the arrow occupied, so the body sits
+    flush against the anchor. Balloon 1.x kept reserving it, which left a gap the size of an
+    arrow nobody could see.
+
+## Orientation
+
+By default the arrow edge is derived from the alignment you show with, so it always points back
+at the anchor:
+
+| Shown with | Arrow edge |
+| --- | --- |
+| `showAlignTop()` | `BOTTOM` |
+| `showAlignBottom()` | `TOP` |
+| `showAlignStart()` | `END` |
+| `showAlignEnd()` | `START` |
+| `showAsDropDown()` | `TOP` |
+
+To pin it instead:
 
 ```kotlin
-Balloon.Builder(context)
-    .setArrowPosition(0.5f) // center
-    .setArrowPosition(0.2f) // 20% from the start
-    .setArrowPosition(0.8f) // 80% from the start
+setArrowOrientation(ArrowOrientation.TOP)
+setArrowOrientationRules(ArrowOrientationRules.ALIGN_FIXED)
 ```
 
-## Arrow Position Rules
+`ArrowOrientationRules` decides what happens when a lack of room flips the balloon to the
+opposite side:
 
-You can choose how the arrow position is calculated:
+- `ALIGN_ANCHOR` (default): the arrow follows the balloon so it keeps pointing at the anchor
+- `ALIGN_FIXED`: the arrow stays on the edge you named, wherever the balloon ends up
 
-### ALIGN_ANCHOR
+A flip never moves the arrow to a different axis. A horizontally pinned arrow stays horizontal
+even when the balloon flips vertically, because the arrow axis decides how the balloon reserves
+space and changing it mid placement would feed back into the decision that caused it.
 
-The arrow position is calculated relative to the anchor view:
+## Position along the edge
 
 ```kotlin
-Balloon.Builder(context)
-    .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
-    .setArrowPosition(0.5f) // arrow will be at the center of the anchor
+setArrowPosition(0.62f)  // 0f..1f
+setArrowPositionRules(ArrowPositionRules.ALIGN_BALLOON)  // default
 ```
 
-### ALIGN_BALLOON
+`ALIGN_BALLOON` reads the value as a fraction of the balloon, so `0.5f` centers the arrow.
 
-The arrow position is calculated relative to the Balloon body:
+`ALIGN_ANCHOR` reads it as a fraction of the **anchor** instead, so the arrow keeps pointing at
+the same spot on the anchor no matter where the balloon lands or how the window clamps it. This
+is what you want for a wide balloon over a narrow anchor.
 
 ```kotlin
-Balloon.Builder(context)
-    .setArrowPositionRules(ArrowPositionRules.ALIGN_BALLOON) // default
-    .setArrowPosition(0.5f) // arrow will be at the center of the Balloon
+setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+setArrowPosition(0.5f)  // always points at the middle of the anchor
 ```
 
-## Arrow Orientation Rules
+Under `ALIGN_ANCHOR` the arrow is kept clear of the balloon's ends by
 
-You can choose how the arrow orientation is determined:
+```
+arrowSize * arrowAlignAnchorPaddingRatio + arrowAlignAnchorPadding
+```
 
-### ALIGN_ANCHOR (Recommended)
-
-The arrow orientation adapts based on available screen space:
+which you can tune:
 
 ```kotlin
-Balloon.Builder(context)
-    .setArrowOrientationRules(ArrowOrientationRules.ALIGN_ANCHOR) // default
+setArrowAlignAnchorPaddingRatio(2.5f)  // default
+setArrowAlignAnchorPadding(8.dp)  // default 0.dp
 ```
 
-For example, if you set `ArrowOrientation.TOP` and call `showAlignBottom`, but there's not enough space below the anchor, the Balloon will be shown above the anchor and the arrow orientation will automatically change to `BOTTOM`.
+The arrow base is also clamped to the straight part of the edge, `cornerRadius + arrowWidth / 2`
+in from each end, so it never rides up onto a rounded corner.
 
-### ALIGN_FIXED
-
-The arrow orientation is fixed and does not change:
+## Color
 
 ```kotlin
-Balloon.Builder(context)
-    .setArrowOrientationRules(ArrowOrientationRules.ALIGN_FIXED)
+setArrowColor(Color.White)
 ```
 
-## Arrow Size
-
-### Fixed Size
-
-```kotlin
-Balloon.Builder(context)
-    .setArrowSize(10) // 10dp
-```
-
-### Wrap Content
-
-The arrow size matches the original drawable resource size:
-
-```kotlin
-Balloon.Builder(context)
-    .setArrowSize(BalloonSizeSpec.WRAP)
-```
-
-## Arrow Color
-
-The arrow color is automatically set to match the Balloon background color. You can also set a custom arrow drawable:
-
-```kotlin
-Balloon.Builder(context)
-    .setArrowDrawableResource(R.drawable.custom_arrow)
-    .setArrowColorResource(R.color.custom_arrow_color)
-```
-
-## Arrow Constraints
-
-You can add left and right padding constraints to the arrow:
-
-```kotlin
-Balloon.Builder(context)
-    .setArrowLeftPadding(10) // minimum distance from left edge
-    .setArrowRightPadding(10) // minimum distance from right edge
-```
-
-## Arrow Elevation
-
-Add elevation to the arrow for shadow effect:
-
-```kotlin
-Balloon.Builder(context)
-    .setArrowElevation(4f)
-```
+Leave it at `Color.Unspecified`, the default, and the arrow inherits `backgroundColor`. When you
+set a different color the arrow is painted in its own pass on top of the body fill but behind
+the balloon's content, so it can never cover what you put inside.

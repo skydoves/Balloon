@@ -16,9 +16,10 @@
 plugins {
   alias(libs.plugins.android.application) apply false
   alias(libs.plugins.android.library) apply false
-  alias(libs.plugins.kotlin.android) apply false
-  alias(libs.plugins.baseline.profile) apply false
+  alias(libs.plugins.kotlin.multiplatform) apply false
+  alias(libs.plugins.jetbrains.compose) apply false
   alias(libs.plugins.compose.compiler) apply false
+  alias(libs.plugins.baseline.profile) apply false
   alias(libs.plugins.nexus.plugin)
   alias(libs.plugins.spotless)
   alias(libs.plugins.kotlin.binary.compatibility)
@@ -26,9 +27,24 @@ plugins {
 }
 
 apiValidation {
-  ignoredProjects.addAll(listOf("app", "benchmark", "benchmark-app"))
-  ignoredPackages.add("com/skydoves/balloon/databinding")
+  ignoredProjects.addAll(
+    listOf(
+      "wasmApp",
+      "desktopApp",
+      "androidApp",
+      // The demo composable lives in this non-published module; nothing to validate.
+      "samples-shared",
+    ),
+  )
   nonPublicMarkers.add("kotlin.PublishedApi")
+
+  // `balloon` publishes klibs for the native/wasm targets in addition to the JVM and
+  // Android jars, so enable KLib ABI validation to baseline its full multi-target public
+  // surface (run `:balloon:apiDump`).
+  @OptIn(kotlinx.validation.ExperimentalBCVApi::class)
+  klib {
+    enabled = true
+  }
 }
 
 subprojects {

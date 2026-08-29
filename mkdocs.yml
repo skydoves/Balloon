@@ -1,5 +1,5 @@
 site_name: Balloon
-site_description: 'Modernized and sophisticated tooltips, fully customizable with an arrow and animations on Android.'
+site_description: 'Modernized and sophisticated tooltips for Compose Multiplatform, fully customizable with an arrow and animations.'
 site_author: 'Jaewoong (skydoves)'
 site_url: 'https://github.com/skydoves/Balloon'
 edit_uri: 'tree/main/docs/'
@@ -11,18 +11,29 @@ docs_dir: docs
 nav:
   - 'Overview': index.md
   - 'Getting Started': getting-started.md
-  - 'Showing Balloon': showing.md
+  - 'Showing a Balloon': showing.md
   - 'Arrow': arrow.md
-  - 'Text and Icon': text-icon.md
+  - 'Size and Spacing': size-spacing.md
   - 'Customization': customization.md
   - 'Overlay': overlay.md
   - 'Animation': animation.md
   - 'Listeners': listeners.md
-  - 'Persistence': persistence.md
-  - 'Jetpack Compose':
-    - 'Overview': compose/overview.md
-    - 'BalloonState': compose/balloon-state.md
-    - 'Compose Extensions': compose/extensions.md
+  - 'Migration from 1.x': migration.md
+  - 'Balloon 1.x (View)':
+    - 'Overview': legacy-view/index.md
+    - 'Getting Started': legacy-view/getting-started.md
+    - 'Showing Balloon': legacy-view/showing.md
+    - 'Arrow': legacy-view/arrow.md
+    - 'Text and Icon': legacy-view/text-icon.md
+    - 'Customization': legacy-view/customization.md
+    - 'Overlay': legacy-view/overlay.md
+    - 'Animation': legacy-view/animation.md
+    - 'Listeners': legacy-view/listeners.md
+    - 'Persistence': legacy-view/persistence.md
+    - 'Jetpack Compose':
+      - 'Overview': legacy-view/compose/overview.md
+      - 'BalloonState': legacy-view/compose/balloon-state.md
+      - 'Compose Extensions': legacy-view/compose/extensions.md
   - 'Sponsor': sponsor.md
 
 # Repository

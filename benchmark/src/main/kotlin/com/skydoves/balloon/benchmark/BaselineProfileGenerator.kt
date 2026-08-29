@@ -16,28 +16,61 @@
 
 package com.skydoves.balloon.benchmark
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.benchmark.macro.junit4.BaselineProfileRule
+import androidx.test.uiautomator.By
+import androidx.test.uiautomator.Until
 import org.junit.Rule
 import org.junit.Test
 
-@RequiresApi(Build.VERSION_CODES.P)
+/**
+ * Records the classes and methods Balloon touches while a balloon is actually shown.
+ *
+ * A startup-only journey would miss almost all of the library: the popup, the shape builder,
+ * the position provider and the animations only run once something is shown. So the journey
+ * below opens one balloon of every kind the demo offers - each entry animation, each highlight
+ * animation, and both overlay shapes - and dismisses it again.
+ *
+ * Run against a rooted or `userdebug` device:
+ * `./gradlew :benchmark:generateBaselineProfile`.
+ */
 class BaselineProfileGenerator {
+
   @get:Rule
   val baselineProfileRule = BaselineProfileRule()
 
   @Test
-  fun startup() =
-    baselineProfileRule.collect(
-      packageName = "com.skydoves.balloon.benchmark.app",
-      includeInStartupProfile = true,
-    ) {
-      pressHome()
-      // This block defines the app's critical user journey. Here we are interested in
-      // optimizing for app startup. But you can also navigate and scroll
-      // through your most important UI.
-      startActivityAndWait()
+  fun generate() = baselineProfileRule.collect(
+    packageName = PACKAGE,
+    includeInStartupProfile = true,
+  ) {
+    pressHome()
+    startActivityAndWait()
+    device.waitForIdle()
+
+    BUTTONS.forEach { label ->
+      val button = device.wait(Until.findObject(By.text(label)), TIMEOUT) ?: return@forEach
+      button.click()
+      device.waitForIdle()
+      // Dismiss by tapping well away from the balloon, which also exercises the
+      // outside-touch path rather than only the show path.
+      device.click(device.displayWidth / 2, device.displayHeight - 1)
       device.waitForIdle()
     }
+  }
+
+  private companion object {
+    const val PACKAGE = "com.skydoves.balloon.kmpdemo"
+    const val TIMEOUT = 5_000L
+    val BUTTONS = listOf(
+      "Elastic",
+      "Fade",
+      "Overshoot",
+      "Heartbeat",
+      "Shake",
+      "Breath",
+      "Oval Overlay",
+      "RoundRect Overlay",
+      "Edit Profile",
+    )
+  }
 }

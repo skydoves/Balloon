@@ -1,3 +1,18 @@
+/*
+ * Designed and developed by 2019 skydoves (Jaewoong Eum)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import com.skydoves.balloon.Configuration
 
 plugins {
@@ -11,7 +26,7 @@ android {
   namespace = "com.skydoves.balloon.benchmark"
 
   defaultConfig {
-    minSdk = Configuration.minSdkBenchmark
+    minSdk = 28
     targetSdk = Configuration.targetSdk
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
@@ -21,12 +36,17 @@ android {
     targetCompatibility = JavaVersion.VERSION_17
   }
 
-  targetProjectPath = ":benchmark-app"
+  // The KMP demo is the only app that drives the library, so it is what the journey runs
+  // against. Rules are filtered down to `com.skydoves.balloon.**` afterwards.
+  targetProjectPath = ":androidApp"
 
+  // Generation needs root, which a Play-Store emulator image never has. An AOSP managed
+  // device gives CI a reproducible one; locally, any `userdebug` AVD works through
+  // `useConnectedDevices`.
   testOptions.managedDevices.localDevices {
-    create("pixel6api31") {
+    create("aospApi35") {
       device = "Pixel 6"
-      apiLevel = 31
+      apiLevel = 35
       systemImageSource = "aosp"
     }
   }
@@ -38,17 +58,12 @@ kotlin {
   }
 }
 
-// This is the plugin configuration. Everything is optional. Defaults are in the
-// comments. In this example, you use the GMD added earlier and disable connected devices.
 baselineProfile {
-
-  // This specifies the managed devices to use that you run the tests on. The default
-  // is none.
-  managedDevices += "pixel6api31"
-
-  // This enables using connected devices to generate profiles. The default is true.
-  // When using connected devices, they must be rooted or API 33 and higher.
-  useConnectedDevices = false
+  managedDevices += "aospApi35"
+  // Off by default so `generateBaselineProfile` is reproducible: it always runs on the
+  // managed device above. Pass `-Pballoon.connectedBaselineProfile` to use an attached
+  // `userdebug` device instead (a Play-Store emulator image will not work - it cannot root).
+  useConnectedDevices = providers.gradleProperty("balloon.connectedBaselineProfile").isPresent
 }
 
 dependencies {

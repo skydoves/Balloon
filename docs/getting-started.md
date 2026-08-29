@@ -1,205 +1,170 @@
 # Getting Started
 
-This guide covers the basics of creating and displaying Balloon tooltips in your Android application.
+This guide covers installing Balloon 2.0.0 and attaching your first tooltip.
 
 ## Installation
 
-Add the dependency below to your module's `build.gradle` file:
-
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/balloon.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22balloon%22)
 
-=== "Groovy"
+=== "Compose Multiplatform"
 
-    ```groovy
-    dependencies {
-        implementation("com.github.skydoves:balloon:$version")
+    ```kotlin
+    kotlin {
+        sourceSets {
+            commonMain.dependencies {
+                implementation("com.github.skydoves:balloon:2.0.0")
+            }
+        }
     }
     ```
 
-=== "Kotlin"
+=== "Android only"
 
     ```kotlin
     dependencies {
-        implementation("com.github.skydoves:balloon:$version")
+        implementation("com.github.skydoves:balloon:2.0.0")
     }
     ```
 
-## Creating a Balloon
+Balloon depends on Compose Multiplatform 1.10.x and nothing else. The minimum Android SDK is 23.
 
-### Using Balloon.Builder
+## The two pieces
 
-You can create a Balloon instance using the `Balloon.Builder` class:
+Every balloon is made of a **style** and a **state**.
 
-```kotlin
-val balloon = Balloon.Builder(context)
-    .setWidthRatio(1.0f)
-    .setHeight(BalloonSizeSpec.WRAP)
-    .setText("Edit your profile here!")
-    .setTextColorResource(R.color.white)
-    .setTextSize(15f)
-    .setIconDrawableResource(R.drawable.ic_edit)
-    .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
-    .setArrowSize(10)
-    .setArrowPosition(0.5f)
-    .setPadding(12)
-    .setCornerRadius(8f)
-    .setBackgroundColorResource(R.color.skyBlue)
-    .setBalloonAnimation(BalloonAnimation.ELASTIC)
-    .setLifecycleOwner(lifecycleOwner)
-    .build()
-```
-
-### Using Kotlin DSL
-
-You can also create a Balloon using the Kotlin DSL with `createBalloon`:
+`BalloonStyle` is immutable value data that describes how the balloon looks. Build it with the
+fluent `Balloon.Builder`, usually through `rememberBalloonBuilder`:
 
 ```kotlin
-val balloon = createBalloon(context) {
-    setWidthRatio(1.0f)
-    setHeight(BalloonSizeSpec.WRAP)
-    setText("Edit your profile here!")
-    setTextColorResource(R.color.white)
-    setTextSize(15f)
-    setIconDrawableResource(R.drawable.ic_edit)
-    setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
-    setArrowSize(10)
+val style = rememberBalloonBuilder {
+    setArrowSize(10.dp)
     setArrowPosition(0.5f)
-    setPadding(12)
-    setCornerRadius(8f)
-    setBackgroundColorResource(R.color.skyBlue)
+    setPadding(12.dp)
+    setCornerRadius(8.dp)
+    setBackgroundColor(Color(0xFF785EF0))
     setBalloonAnimation(BalloonAnimation.ELASTIC)
-    setLifecycleOwner(lifecycleOwner)
 }
 ```
 
-### Using Java
-
-```java
-Balloon balloon = new Balloon.Builder(context)
-    .setArrowSize(10)
-    .setArrowOrientation(ArrowOrientation.TOP)
-    .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
-    .setArrowPosition(0.5f)
-    .setWidth(BalloonSizeSpec.WRAP)
-    .setHeight(65)
-    .setTextSize(15f)
-    .setCornerRadius(4f)
-    .setAlpha(0.9f)
-    .setText("You can access your profile from now on.")
-    .setTextColor(ContextCompat.getColor(context, R.color.white))
-    .setIconDrawable(ContextCompat.getDrawable(context, R.drawable.ic_profile))
-    .setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
-    .setOnBalloonClickListener(onBalloonClickListener)
-    .setBalloonAnimation(BalloonAnimation.FADE)
-    .setLifecycleOwner(lifecycleOwner)
-    .build();
-```
-
-## Width and Height
-
-You can adjust the width and height of the Balloon using various approaches.
-
-### Specific Size
-
-Set specific sizes regardless of the content:
+The builder also works outside composition, which is handy when the style is a constant:
 
 ```kotlin
-Balloon.Builder(context)
-    .setWidth(220) // sets 220dp width
-    .setHeight(160) // sets 160dp height
+val style = Balloon.Builder().apply {
+    setArrowSize(10.dp)
+    setPadding(12.dp)
+    setCornerRadius(8.dp)
+    setBackgroundColor(Color(0xFF785EF0))
+    setBalloonAnimation(BalloonAnimation.ELASTIC)
+}.build()
 ```
 
-### Wrap Content
+`BalloonStyle` has no public constructor on purpose. It carries 43 properties, and a
+constructor that names all of them would freeze every one of them into the published binary
+interface, so adding a 44th option later would break code compiled against 2.0.0. The builder
+is the one entry point and its signature never has to change.
 
-Set dynamic sizes depending on the content:
+`BalloonState` decides when the balloon shows and where:
 
 ```kotlin
-Balloon.Builder(context)
-    .setWidth(BalloonSizeSpec.WRAP) // width depends on content
-    .setHeight(BalloonSizeSpec.WRAP) // height depends on content
+val balloonState = rememberBalloonState(style)
 ```
 
-### Screen Ratio
+The state survives recomposition. Passing an updated `style` restyles a visible balloon in place
+without hiding it, so you can animate colors or sizes freely.
 
-Set width based on the screen size ratio:
+## Attaching a balloon
 
-```kotlin
-Balloon.Builder(context)
-    .setWidthRatio(0.5f) // 50% of the horizontal screen size
-```
+### Option 1: the Balloon composable
 
-## Padding and Margin
-
-### Padding
-
-Adjust the content padding inside the Balloon:
+Wrap the anchor. The body goes in `balloonContent` and the anchor goes in the trailing lambda.
 
 ```kotlin
-Balloon.Builder(context)
-    .setPadding(6) // 6dp padding on all sides
-    .setPaddingLeft(8) // 8dp left padding
-    .setPaddingTop(12) // 12dp top padding
-    .setPaddingRight(8)
-    .setPaddingBottom(12)
-```
-
-### Margin
-
-Add margins to the Balloon container:
-
-```kotlin
-Balloon.Builder(context)
-    .setMargin(12) // margin on all sides
-    .setMarginLeft(14)
-    .setMarginRight(14)
-    .setMarginHorizontal(14) // left and right margins
-```
-
-## Lifecycle Management
-
-To avoid memory leaks, always set the lifecycle owner. The Balloon will automatically dismiss when the activity or fragment is destroyed:
-
-```kotlin
-Balloon.Builder(context)
-    .setLifecycleOwner(lifecycleOwner)
-```
-
-!!! warning "Important"
-
-    Always set the lifecycle owner to prevent memory leaks. Dialog and PopupWindow can leak memory if not properly dismissed before the activity is destroyed.
-
-## Lazy Initialization
-
-You can initialize a Balloon lazily using the `balloon()` extension and a `Balloon.Factory`:
-
-```kotlin
-class CustomActivity : AppCompatActivity() {
-    private val profileBalloon by balloon<ProfileBalloonFactory>()
+Balloon(
+    state = balloonState,
+    balloonContent = {
+        Text(text = "Now you can edit your profile!", color = Color.White)
+    },
+) {
+    Button(onClick = { balloonState.showAlignTop() }) {
+        Text(text = "Edit profile")
+    }
 }
 ```
 
-Create a factory class that extends `Balloon.Factory`:
+Layout modifiers that belong to the anchor go on the `Balloon` composable itself, because it
+wraps the anchor in a `Box`:
 
 ```kotlin
-class ProfileBalloonFactory : Balloon.Factory() {
+Balloon(
+    modifier = Modifier.weight(1f),
+    state = balloonState,
+    balloonContent = { Text(text = "Tooltip") },
+) {
+    Text(text = "Anchor")
+}
+```
 
-    override fun create(context: Context, lifecycle: LifecycleOwner): Balloon {
-        return createBalloon(context) {
-            setLayout(R.layout.layout_custom_profile)
-            setArrowSize(10)
-            setArrowOrientation(ArrowOrientation.TOP)
-            setArrowPosition(0.5f)
-            setWidthRatio(0.55f)
-            setHeight(250)
-            setCornerRadius(4f)
-            setBackgroundColorResource(R.color.background)
-            setBalloonAnimation(BalloonAnimation.CIRCULAR)
-            setLifecycleOwner(lifecycle)
+### Option 2: Modifier.balloon
+
+When you would rather decorate an existing composable than wrap it, use `Modifier.balloon`. A
+Compose modifier cannot emit content, so the balloon is rendered by a `BalloonHost` that sits
+above the anchor in the tree.
+
+```kotlin
+BalloonHost {
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Button(
+            modifier = Modifier.balloon(balloonState) {
+                Text(text = "Now you can edit your profile!", color = Color.White)
+            },
+            onClick = { balloonState.showAlignTop() },
+        ) {
+            Text(text = "Edit profile")
         }
     }
 }
 ```
 
-!!! note
+Wrap a screen in `BalloonHost` once and every `Modifier.balloon` below it works. If you forget,
+the modifier throws an `IllegalStateException` naming `BalloonHost` rather than silently
+rendering nothing.
 
-    The factory class must have a default (no-argument) constructor.
+The balloon body is composed inside the host, but it reads the CompositionLocals that were in
+scope at the `Modifier.balloon` call site, so your `MaterialTheme`, `LocalContentColor`, and
+`LocalLayoutDirection` are the anchor's, not the host's.
+
+!!! tip "When do I need BalloonHost?"
+
+    Always for `Modifier.balloon`, and for any balloon that turns on an overlay. The overlay
+    scrim is drawn by the host so it can cover the entire window including the system bars,
+    which a popup window cannot do.
+
+## Showing and dismissing
+
+```kotlin
+balloonState.showAlignTop()
+balloonState.dismiss()
+balloonState.toggle()
+```
+
+See [Showing a Balloon](showing.md) for every placement option, offsets, auto dismiss, and
+coroutine sequences.
+
+## Custom content
+
+There is no `TextForm`, no `IconForm`, and no custom layout resource. The body is a Compose slot:
+
+```kotlin
+Balloon(
+    state = balloonState,
+    balloonContent = {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(imageVector = Icons.Default.Edit, contentDescription = null, tint = Color.White)
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = "Edit your profile", color = Color.White)
+        }
+    },
+) {
+    ProfileImage(onClick = { balloonState.showAlignBottom() })
+}
+```

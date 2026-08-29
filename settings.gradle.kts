@@ -20,15 +20,20 @@ pluginManagement {
   }
 }
 dependencyResolutionManagement {
-  repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+  // PREFER_PROJECT (instead of FAIL_ON_PROJECT_REPOS) so that the
+  // Kotlin/Wasm tasks can register the nodejs distribution repo on demand —
+  // FAIL_ON_PROJECT_REPOS makes `:kotlinWasmNodeJsSetup` fail with
+  // "repository 'Distributions at https://nodejs.org/dist' was added by unknown code".
+  repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
   repositories {
     google()
     mavenCentral()
   }
 }
 
-include(":app")
 include(":balloon")
+include(":samples-shared")
+include(":wasmApp")
+include(":desktopApp")
+include(":androidApp")
 include(":benchmark")
-include(":benchmark-app")
-include(":balloon-compose")

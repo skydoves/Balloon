@@ -1,0 +1,432 @@
+public final class com/skydoves/balloon/ArrowOrientation : java/lang/Enum {
+	public static final field BOTTOM Lcom/skydoves/balloon/ArrowOrientation;
+	public static final field END Lcom/skydoves/balloon/ArrowOrientation;
+	public static final field START Lcom/skydoves/balloon/ArrowOrientation;
+	public static final field TOP Lcom/skydoves/balloon/ArrowOrientation;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/ArrowOrientation;
+	public static fun values ()[Lcom/skydoves/balloon/ArrowOrientation;
+}
+
+public final class com/skydoves/balloon/ArrowOrientationRules : java/lang/Enum {
+	public static final field ALIGN_ANCHOR Lcom/skydoves/balloon/ArrowOrientationRules;
+	public static final field ALIGN_FIXED Lcom/skydoves/balloon/ArrowOrientationRules;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/ArrowOrientationRules;
+	public static fun values ()[Lcom/skydoves/balloon/ArrowOrientationRules;
+}
+
+public final class com/skydoves/balloon/ArrowPositionRules : java/lang/Enum {
+	public static final field ALIGN_ANCHOR Lcom/skydoves/balloon/ArrowPositionRules;
+	public static final field ALIGN_BALLOON Lcom/skydoves/balloon/ArrowPositionRules;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/ArrowPositionRules;
+	public static fun values ()[Lcom/skydoves/balloon/ArrowPositionRules;
+}
+
+public final class com/skydoves/balloon/Balloon {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/skydoves/balloon/Balloon;
+}
+
+public final class com/skydoves/balloon/Balloon$Builder {
+	public static final field $stable I
+	public fun <init> ()V
+	public final fun build ()Lcom/skydoves/balloon/BalloonStyle;
+	public final fun setAlpha (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setArrowAlignAnchorPadding-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setArrowAlignAnchorPaddingRatio (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setArrowColor-8_81llA (J)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setArrowHeight-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setArrowOrientation (Lcom/skydoves/balloon/ArrowOrientation;)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setArrowOrientationRules (Lcom/skydoves/balloon/ArrowOrientationRules;)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setArrowPosition (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setArrowPositionRules (Lcom/skydoves/balloon/ArrowPositionRules;)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setArrowSize-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setArrowSize-YgX7TsA (FF)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setArrowWidth-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setAutoDismissDuration (J)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setBackgroundColor-8_81llA (J)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setBalloonAnimation (Lcom/skydoves/balloon/BalloonAnimation;)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setBalloonHighlightAnimation (Lcom/skydoves/balloon/BalloonHighlightAnimation;J)Lcom/skydoves/balloon/Balloon$Builder;
+	public static synthetic fun setBalloonHighlightAnimation$default (Lcom/skydoves/balloon/Balloon$Builder;Lcom/skydoves/balloon/BalloonHighlightAnimation;JILjava/lang/Object;)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setBalloonOverlayAnimation (Lcom/skydoves/balloon/BalloonOverlayAnimation;)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setBalloonRotationAnimation (Lcom/skydoves/balloon/BalloonRotateAnimation;)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setBalloonStroke-l07J4OM (JF)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setBorder-l07J4OM (JF)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setCircularDuration (J)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setCornerRadius-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setDismissWhenBackPressed (Z)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setDismissWhenClicked (Z)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setDismissWhenOverlayClicked (Z)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setDismissWhenShowAgain (Z)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setDismissWhenTouchMargin (Z)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setDismissWhenTouchOutside (Z)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setElevation-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setFocusable (Z)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setHeight-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setIsVisibleArrow (Z)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setIsVisibleOverlay (Z)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setMargin-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setMargin-a9UjIt4 (FFFF)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setMarginBottom-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setMarginEnd-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setMarginHorizontal-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setMarginStart-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setMarginTop-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setMarginVertical-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setMaxWidth-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setMaxWidthRatio (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setMinWidth-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setMinWidthRatio (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setOverlayColor-8_81llA (J)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setOverlayPadding-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setOverlayPadding-a9UjIt4 (FFFF)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setOverlayPaddingColor-8_81llA (J)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setOverlayShape (Lcom/skydoves/balloon/BalloonOverlayShape;)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setPadding-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setPadding-a9UjIt4 (FFFF)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setPaddingBottom-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setPaddingEnd-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setPaddingHorizontal-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setPaddingStart-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setPaddingTop-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setPaddingVertical-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setSize-YgX7TsA (FF)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setWidth-0680j_4 (F)Lcom/skydoves/balloon/Balloon$Builder;
+	public final fun setWidthRatio (F)Lcom/skydoves/balloon/Balloon$Builder;
+}
+
+public final class com/skydoves/balloon/BalloonAlign : java/lang/Enum {
+	public static final field BOTTOM Lcom/skydoves/balloon/BalloonAlign;
+	public static final field CENTER Lcom/skydoves/balloon/BalloonAlign;
+	public static final field DROP_DOWN Lcom/skydoves/balloon/BalloonAlign;
+	public static final field END Lcom/skydoves/balloon/BalloonAlign;
+	public static final field START Lcom/skydoves/balloon/BalloonAlign;
+	public static final field TOP Lcom/skydoves/balloon/BalloonAlign;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/BalloonAlign;
+	public static fun values ()[Lcom/skydoves/balloon/BalloonAlign;
+}
+
+public final class com/skydoves/balloon/BalloonAnimation : java/lang/Enum {
+	public static final field CIRCULAR Lcom/skydoves/balloon/BalloonAnimation;
+	public static final field ELASTIC Lcom/skydoves/balloon/BalloonAnimation;
+	public static final field FADE Lcom/skydoves/balloon/BalloonAnimation;
+	public static final field NONE Lcom/skydoves/balloon/BalloonAnimation;
+	public static final field OVERSHOOT Lcom/skydoves/balloon/BalloonAnimation;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/BalloonAnimation;
+	public static fun values ()[Lcom/skydoves/balloon/BalloonAnimation;
+}
+
+public final class com/skydoves/balloon/BalloonCenterAlign : java/lang/Enum {
+	public static final field BOTTOM Lcom/skydoves/balloon/BalloonCenterAlign;
+	public static final field END Lcom/skydoves/balloon/BalloonCenterAlign;
+	public static final field START Lcom/skydoves/balloon/BalloonCenterAlign;
+	public static final field TOP Lcom/skydoves/balloon/BalloonCenterAlign;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/BalloonCenterAlign;
+	public static fun values ()[Lcom/skydoves/balloon/BalloonCenterAlign;
+}
+
+public abstract interface annotation class com/skydoves/balloon/BalloonDsl : java/lang/annotation/Annotation {
+}
+
+public final class com/skydoves/balloon/BalloonHighlightAnimation : java/lang/Enum {
+	public static final field BREATH Lcom/skydoves/balloon/BalloonHighlightAnimation;
+	public static final field HEARTBEAT Lcom/skydoves/balloon/BalloonHighlightAnimation;
+	public static final field NONE Lcom/skydoves/balloon/BalloonHighlightAnimation;
+	public static final field ROTATE Lcom/skydoves/balloon/BalloonHighlightAnimation;
+	public static final field SHAKE Lcom/skydoves/balloon/BalloonHighlightAnimation;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/BalloonHighlightAnimation;
+	public static fun values ()[Lcom/skydoves/balloon/BalloonHighlightAnimation;
+}
+
+public final class com/skydoves/balloon/BalloonHostKt {
+	public static final fun BalloonHost (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun balloon (Landroidx/compose/ui/Modifier;Lcom/skydoves/balloon/BalloonState;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)Landroidx/compose/ui/Modifier;
+}
+
+public final class com/skydoves/balloon/BalloonKt {
+	public static final fun rememberBalloonBuilder (Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Lcom/skydoves/balloon/BalloonStyle;
+}
+
+public final class com/skydoves/balloon/BalloonOverlayAnimation : java/lang/Enum {
+	public static final field FADE Lcom/skydoves/balloon/BalloonOverlayAnimation;
+	public static final field NONE Lcom/skydoves/balloon/BalloonOverlayAnimation;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/BalloonOverlayAnimation;
+	public static fun values ()[Lcom/skydoves/balloon/BalloonOverlayAnimation;
+}
+
+public abstract interface class com/skydoves/balloon/BalloonOverlayShape {
+}
+
+public final class com/skydoves/balloon/BalloonOverlayShape$Circle : com/skydoves/balloon/BalloonOverlayShape {
+	public static final field $stable I
+	public synthetic fun <init> (FILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (FLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-D9Ej5fM ()F
+	public final fun copy-0680j_4 (F)Lcom/skydoves/balloon/BalloonOverlayShape$Circle;
+	public static synthetic fun copy-0680j_4$default (Lcom/skydoves/balloon/BalloonOverlayShape$Circle;FILjava/lang/Object;)Lcom/skydoves/balloon/BalloonOverlayShape$Circle;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getRadius-D9Ej5fM ()F
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/skydoves/balloon/BalloonOverlayShape$Empty : com/skydoves/balloon/BalloonOverlayShape {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/skydoves/balloon/BalloonOverlayShape$Empty;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/skydoves/balloon/BalloonOverlayShape$Oval : com/skydoves/balloon/BalloonOverlayShape {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/skydoves/balloon/BalloonOverlayShape$Oval;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/skydoves/balloon/BalloonOverlayShape$Rect : com/skydoves/balloon/BalloonOverlayShape {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/skydoves/balloon/BalloonOverlayShape$Rect;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/skydoves/balloon/BalloonOverlayShape$RoundRect : com/skydoves/balloon/BalloonOverlayShape {
+	public static final field $stable I
+	public synthetic fun <init> (FFILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (FFLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-D9Ej5fM ()F
+	public final fun component2-D9Ej5fM ()F
+	public final fun copy-YgX7TsA (FF)Lcom/skydoves/balloon/BalloonOverlayShape$RoundRect;
+	public static synthetic fun copy-YgX7TsA$default (Lcom/skydoves/balloon/BalloonOverlayShape$RoundRect;FFILjava/lang/Object;)Lcom/skydoves/balloon/BalloonOverlayShape$RoundRect;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getRadiusX-D9Ej5fM ()F
+	public final fun getRadiusY-D9Ej5fM ()F
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/skydoves/balloon/BalloonOverlayShape$RoundRectPerCorner : com/skydoves/balloon/BalloonOverlayShape {
+	public static final field $stable I
+	public synthetic fun <init> (FFFFLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-D9Ej5fM ()F
+	public final fun component2-D9Ej5fM ()F
+	public final fun component3-D9Ej5fM ()F
+	public final fun component4-D9Ej5fM ()F
+	public final fun copy-a9UjIt4 (FFFF)Lcom/skydoves/balloon/BalloonOverlayShape$RoundRectPerCorner;
+	public static synthetic fun copy-a9UjIt4$default (Lcom/skydoves/balloon/BalloonOverlayShape$RoundRectPerCorner;FFFFILjava/lang/Object;)Lcom/skydoves/balloon/BalloonOverlayShape$RoundRectPerCorner;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBottomEnd-D9Ej5fM ()F
+	public final fun getBottomStart-D9Ej5fM ()F
+	public final fun getTopEnd-D9Ej5fM ()F
+	public final fun getTopStart-D9Ej5fM ()F
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/skydoves/balloon/BalloonPopupKt {
+	public static final fun Balloon (Lcom/skydoves/balloon/BalloonState;Landroidx/compose/ui/Modifier;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/skydoves/balloon/BalloonRotateAnimation {
+	public static final field $stable I
+	public static final field Companion Lcom/skydoves/balloon/BalloonRotateAnimation$Companion;
+	public static final field INFINITE I
+	public fun <init> ()V
+	public fun <init> (Lcom/skydoves/balloon/BalloonRotateDirection;IIIII)V
+	public synthetic fun <init> (Lcom/skydoves/balloon/BalloonRotateDirection;IIIIIILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lcom/skydoves/balloon/BalloonRotateDirection;
+	public final fun component2 ()I
+	public final fun component3 ()I
+	public final fun component4 ()I
+	public final fun component5 ()I
+	public final fun component6 ()I
+	public final fun copy (Lcom/skydoves/balloon/BalloonRotateDirection;IIIII)Lcom/skydoves/balloon/BalloonRotateAnimation;
+	public static synthetic fun copy$default (Lcom/skydoves/balloon/BalloonRotateAnimation;Lcom/skydoves/balloon/BalloonRotateDirection;IIIIIILjava/lang/Object;)Lcom/skydoves/balloon/BalloonRotateAnimation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDegreeX ()I
+	public final fun getDegreeZ ()I
+	public final fun getDirection ()Lcom/skydoves/balloon/BalloonRotateDirection;
+	public final fun getLoops ()I
+	public final fun getSpeedMillis ()I
+	public final fun getTurns ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/skydoves/balloon/BalloonRotateAnimation$Companion {
+}
+
+public final class com/skydoves/balloon/BalloonRotateDirection : java/lang/Enum {
+	public static final field LEFT Lcom/skydoves/balloon/BalloonRotateDirection;
+	public static final field RIGHT Lcom/skydoves/balloon/BalloonRotateDirection;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getValue ()I
+	public static fun valueOf (Ljava/lang/String;)Lcom/skydoves/balloon/BalloonRotateDirection;
+	public static fun values ()[Lcom/skydoves/balloon/BalloonRotateDirection;
+}
+
+public final class com/skydoves/balloon/BalloonState {
+	public static final field $stable I
+	public final fun await (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun awaitAlign-ghNngFA (Lcom/skydoves/balloon/BalloonAlign;FFLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun awaitAlign-ghNngFA$default (Lcom/skydoves/balloon/BalloonState;Lcom/skydoves/balloon/BalloonAlign;FFLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun awaitAlignBottom-Md-fbLM (FFLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun awaitAlignBottom-Md-fbLM$default (Lcom/skydoves/balloon/BalloonState;FFLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun awaitAlignEnd-Md-fbLM (FFLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun awaitAlignEnd-Md-fbLM$default (Lcom/skydoves/balloon/BalloonState;FFLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun awaitAlignStart-Md-fbLM (FFLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun awaitAlignStart-Md-fbLM$default (Lcom/skydoves/balloon/BalloonState;FFLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun awaitAlignTop-Md-fbLM (FFLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun awaitAlignTop-Md-fbLM$default (Lcom/skydoves/balloon/BalloonState;FFLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun awaitAsDropDown-Md-fbLM (FFLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun awaitAsDropDown-Md-fbLM$default (Lcom/skydoves/balloon/BalloonState;FFLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun awaitAtCenter-ghNngFA (Lcom/skydoves/balloon/BalloonCenterAlign;FFLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun awaitAtCenter-ghNngFA$default (Lcom/skydoves/balloon/BalloonState;Lcom/skydoves/balloon/BalloonCenterAlign;FFLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun dismiss ()V
+	public final fun dismissWithDelay (Lkotlinx/coroutines/CoroutineScope;J)Z
+	public final fun getAlign ()Lcom/skydoves/balloon/BalloonAlign;
+	public final fun getOffset-RKDOV3M ()J
+	public final fun getOnBalloonClick ()Lkotlin/jvm/functions/Function0;
+	public final fun getOnDismiss ()Lkotlin/jvm/functions/Function0;
+	public final fun getOnOverlayClick ()Lkotlin/jvm/functions/Function0;
+	public final fun getStyle ()Lcom/skydoves/balloon/BalloonStyle;
+	public final fun isShowing ()Z
+	public final fun isVisible ()Z
+	public final fun setOnBalloonClick (Lkotlin/jvm/functions/Function0;)V
+	public final fun setOnDismiss (Lkotlin/jvm/functions/Function0;)V
+	public final fun setOnOverlayClick (Lkotlin/jvm/functions/Function0;)V
+	public final fun show-VpY3zN4 (Lcom/skydoves/balloon/BalloonAlign;FF)V
+	public static synthetic fun show-VpY3zN4$default (Lcom/skydoves/balloon/BalloonState;Lcom/skydoves/balloon/BalloonAlign;FFILjava/lang/Object;)V
+	public final fun showAlignBottom-YgX7TsA (FF)V
+	public static synthetic fun showAlignBottom-YgX7TsA$default (Lcom/skydoves/balloon/BalloonState;FFILjava/lang/Object;)V
+	public final fun showAlignEnd-YgX7TsA (FF)V
+	public static synthetic fun showAlignEnd-YgX7TsA$default (Lcom/skydoves/balloon/BalloonState;FFILjava/lang/Object;)V
+	public final fun showAlignStart-YgX7TsA (FF)V
+	public static synthetic fun showAlignStart-YgX7TsA$default (Lcom/skydoves/balloon/BalloonState;FFILjava/lang/Object;)V
+	public final fun showAlignTop-YgX7TsA (FF)V
+	public static synthetic fun showAlignTop-YgX7TsA$default (Lcom/skydoves/balloon/BalloonState;FFILjava/lang/Object;)V
+	public final fun showAsDropDown-YgX7TsA (FF)V
+	public static synthetic fun showAsDropDown-YgX7TsA$default (Lcom/skydoves/balloon/BalloonState;FFILjava/lang/Object;)V
+	public final fun showAtCenter-VpY3zN4 (Lcom/skydoves/balloon/BalloonCenterAlign;FF)V
+	public static synthetic fun showAtCenter-VpY3zN4$default (Lcom/skydoves/balloon/BalloonState;Lcom/skydoves/balloon/BalloonCenterAlign;FFILjava/lang/Object;)V
+	public final fun toggle (Lcom/skydoves/balloon/BalloonAlign;)V
+	public static synthetic fun toggle$default (Lcom/skydoves/balloon/BalloonState;Lcom/skydoves/balloon/BalloonAlign;ILjava/lang/Object;)V
+	public final fun update-VpY3zN4 (Lcom/skydoves/balloon/BalloonAlign;FF)V
+	public static synthetic fun update-VpY3zN4$default (Lcom/skydoves/balloon/BalloonState;Lcom/skydoves/balloon/BalloonAlign;FFILjava/lang/Object;)V
+}
+
+public final class com/skydoves/balloon/BalloonStateKt {
+	public static final fun rememberBalloonState (Lcom/skydoves/balloon/BalloonStyle;Ljava/lang/Object;Landroidx/compose/runtime/Composer;II)Lcom/skydoves/balloon/BalloonState;
+}
+
+public final class com/skydoves/balloon/BalloonStyle {
+	public static final field $stable I
+	public synthetic fun <init> (FJLcom/skydoves/balloon/ArrowOrientation;FLcom/skydoves/balloon/ArrowPositionRules;Lcom/skydoves/balloon/ArrowOrientationRules;FFZJJJFLandroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;FFFFFFFFLcom/skydoves/balloon/BalloonAnimation;JLcom/skydoves/balloon/BalloonHighlightAnimation;JLcom/skydoves/balloon/BalloonRotateAnimation;FZJLandroidx/compose/foundation/layout/PaddingValues;JLcom/skydoves/balloon/BalloonOverlayShape;Lcom/skydoves/balloon/BalloonOverlayAnimation;ZZZZZZZJIILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-D9Ej5fM ()F
+	public final fun component10-0d7_KjU ()J
+	public final fun component11-0d7_KjU ()J
+	public final fun component12-0d7_KjU ()J
+	public final fun component13-D9Ej5fM ()F
+	public final fun component14 ()Landroidx/compose/foundation/layout/PaddingValues;
+	public final fun component15 ()Landroidx/compose/foundation/layout/PaddingValues;
+	public final fun component16-D9Ej5fM ()F
+	public final fun component17-D9Ej5fM ()F
+	public final fun component18 ()F
+	public final fun component19 ()F
+	public final fun component2-MYxV2XQ ()J
+	public final fun component20 ()F
+	public final fun component21-D9Ej5fM ()F
+	public final fun component22-D9Ej5fM ()F
+	public final fun component23-D9Ej5fM ()F
+	public final fun component24 ()Lcom/skydoves/balloon/BalloonAnimation;
+	public final fun component25 ()J
+	public final fun component26 ()Lcom/skydoves/balloon/BalloonHighlightAnimation;
+	public final fun component27 ()J
+	public final fun component28 ()Lcom/skydoves/balloon/BalloonRotateAnimation;
+	public final fun component29 ()F
+	public final fun component3 ()Lcom/skydoves/balloon/ArrowOrientation;
+	public final fun component30 ()Z
+	public final fun component31-0d7_KjU ()J
+	public final fun component32 ()Landroidx/compose/foundation/layout/PaddingValues;
+	public final fun component33-0d7_KjU ()J
+	public final fun component34 ()Lcom/skydoves/balloon/BalloonOverlayShape;
+	public final fun component35 ()Lcom/skydoves/balloon/BalloonOverlayAnimation;
+	public final fun component36 ()Z
+	public final fun component37 ()Z
+	public final fun component38 ()Z
+	public final fun component39 ()Z
+	public final fun component4 ()F
+	public final fun component40 ()Z
+	public final fun component41 ()Z
+	public final fun component42 ()Z
+	public final fun component43 ()J
+	public final fun component5 ()Lcom/skydoves/balloon/ArrowPositionRules;
+	public final fun component6 ()Lcom/skydoves/balloon/ArrowOrientationRules;
+	public final fun component7-D9Ej5fM ()F
+	public final fun component8 ()F
+	public final fun component9 ()Z
+	public static synthetic fun copy-Ck3cmrI$com_github_skydoves_balloon$default (Lcom/skydoves/balloon/BalloonStyle;FJLcom/skydoves/balloon/ArrowOrientation;FLcom/skydoves/balloon/ArrowPositionRules;Lcom/skydoves/balloon/ArrowOrientationRules;FFZJJJFLandroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;FFFFFFFFLcom/skydoves/balloon/BalloonAnimation;JLcom/skydoves/balloon/BalloonHighlightAnimation;JLcom/skydoves/balloon/BalloonRotateAnimation;FZJLandroidx/compose/foundation/layout/PaddingValues;JLcom/skydoves/balloon/BalloonOverlayShape;Lcom/skydoves/balloon/BalloonOverlayAnimation;ZZZZZZZJIILjava/lang/Object;)Lcom/skydoves/balloon/BalloonStyle;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAlpha ()F
+	public final fun getAnimation ()Lcom/skydoves/balloon/BalloonAnimation;
+	public final fun getArrowAlignAnchorPadding-D9Ej5fM ()F
+	public final fun getArrowAlignAnchorPaddingRatio ()F
+	public final fun getArrowColor-0d7_KjU ()J
+	public final fun getArrowOrientation ()Lcom/skydoves/balloon/ArrowOrientation;
+	public final fun getArrowOrientationRules ()Lcom/skydoves/balloon/ArrowOrientationRules;
+	public final fun getArrowPosition ()F
+	public final fun getArrowPositionRules ()Lcom/skydoves/balloon/ArrowPositionRules;
+	public final fun getArrowSize-MYxV2XQ ()J
+	public final fun getAutoDismissMillis ()J
+	public final fun getBackgroundColor-0d7_KjU ()J
+	public final fun getBorderColor-0d7_KjU ()J
+	public final fun getBorderThickness-D9Ej5fM ()F
+	public final fun getCircularDurationMillis ()J
+	public final fun getCornerRadius-D9Ej5fM ()F
+	public final fun getDismissOnBackPress ()Z
+	public final fun getDismissOnClickOutside ()Z
+	public final fun getDismissWhenClicked ()Z
+	public final fun getDismissWhenOverlayClicked ()Z
+	public final fun getDismissWhenShowAgain ()Z
+	public final fun getDismissWhenTouchMargin ()Z
+	public final fun getElevation-D9Ej5fM ()F
+	public final fun getFocusable ()Z
+	public final fun getHeight-D9Ej5fM ()F
+	public final fun getHighlightAnimation ()Lcom/skydoves/balloon/BalloonHighlightAnimation;
+	public final fun getHighlightAnimationStartDelayMillis ()J
+	public final fun getMargin ()Landroidx/compose/foundation/layout/PaddingValues;
+	public final fun getMaxWidth-D9Ej5fM ()F
+	public final fun getMaxWidthRatio ()F
+	public final fun getMinWidth-D9Ej5fM ()F
+	public final fun getMinWidthRatio ()F
+	public final fun getOverlayAnimation ()Lcom/skydoves/balloon/BalloonOverlayAnimation;
+	public final fun getOverlayColor-0d7_KjU ()J
+	public final fun getOverlayPadding ()Landroidx/compose/foundation/layout/PaddingValues;
+	public final fun getOverlayPaddingColor-0d7_KjU ()J
+	public final fun getOverlayShape ()Lcom/skydoves/balloon/BalloonOverlayShape;
+	public final fun getPadding ()Landroidx/compose/foundation/layout/PaddingValues;
+	public final fun getRotateAnimation ()Lcom/skydoves/balloon/BalloonRotateAnimation;
+	public final fun getWidth-D9Ej5fM ()F
+	public final fun getWidthRatio ()F
+	public fun hashCode ()I
+	public final fun isArrowVisible ()Z
+	public final fun isVisibleOverlay ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/skydoves/balloon/BalloonStyleKt {
+	public static final fun derive (Lcom/skydoves/balloon/BalloonStyle;Lkotlin/jvm/functions/Function1;)Lcom/skydoves/balloon/BalloonStyle;
+	public static final fun getDefaultBalloonStyle ()Lcom/skydoves/balloon/BalloonStyle;
+}
+
