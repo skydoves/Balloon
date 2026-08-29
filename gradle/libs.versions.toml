@@ -8,6 +8,9 @@ nexusPlugin = "0.37.0"
 composeMultiplatform = "1.10.3"
 androidxActivity = "1.13.0"
 spotless = "6.21.0"
+androidxMacroBenchmark = "1.5.0-rc02"
+androidxTest = "1.7.0"
+uiAutomator = "2.3.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -19,6 +22,7 @@ nexus-plugin = { id = "com.vanniktech.maven.publish", version.ref = "nexusPlugin
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kotlin-binary-compatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinBinaryCompatibility" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+baseline-profile = { id = "androidx.baselineprofile", version.ref = "androidxMacroBenchmark" }
 
 [libraries]
 # Compose Multiplatform (JetBrains), the only runtime dependency of `:balloon`.
@@ -30,6 +34,12 @@ compose-multiplatform-resources = { module = "org.jetbrains.compose.components:c
 
 # Demo apps
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
+
+# Baseline profile generation (`:benchmark`, and the profileinstaller the demo needs)
+androidx-benchmark-macro = { module = "androidx.benchmark:benchmark-macro-junit4", version.ref = "androidxMacroBenchmark" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTest" }
+androidx-test-uiautomator = { module = "androidx.test.uiautomator:uiautomator", version.ref = "uiAutomator" }
+androidx-profileinstaller = { module = "androidx.profileinstaller:profileinstaller", version = "1.4.1" }
 
 # Test
 compose-multiplatform-ui-test = { module = "org.jetbrains.compose.ui:ui-test", version.ref = "composeMultiplatform" }

@@ -20,6 +20,9 @@ plugins {
   id(libs.plugins.kotlin.multiplatform.get().pluginId)
   id(libs.plugins.jetbrains.compose.get().pluginId)
   id(libs.plugins.compose.compiler.get().pluginId)
+  // Adds the non-debuggable, profileable `benchmark` build type that `:benchmark` drives, and
+  // wires the profile it produces back into this app.
+  id(libs.plugins.baseline.profile.get().pluginId)
 }
 
 kotlin {
@@ -36,6 +39,8 @@ kotlin {
 
         // `:samples-shared` re-exports `:balloon` via `api(...)`.
         implementation(project(":samples-shared"))
+        // Required by macrobenchmark so the generated profile can be installed at runtime.
+        implementation(libs.androidx.profileinstaller)
       }
     }
   }
@@ -74,6 +79,12 @@ android {
   lint {
     abortOnError = false
   }
+}
+
+dependencies {
+  // Where the generated profile comes from. `:benchmark` drives this app through a journey
+  // that opens one balloon of every kind the demo offers.
+  baselineProfile(project(":benchmark"))
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile>().configureEach {

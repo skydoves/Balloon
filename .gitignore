@@ -65,3 +65,7 @@ freeline_project_description.json
 
 # Claude Code task files
 tasks/
+
+# Baseline profile generated for the demo app itself. Only the library's filtered copy
+# (balloon/src/main/baselineProfiles) is checked in and shipped in the AAR.
+androidApp/src/androidRelease/generated/

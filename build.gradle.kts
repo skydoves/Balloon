@@ -19,6 +19,7 @@ plugins {
   alias(libs.plugins.kotlin.multiplatform) apply false
   alias(libs.plugins.jetbrains.compose) apply false
   alias(libs.plugins.compose.compiler) apply false
+  alias(libs.plugins.baseline.profile) apply false
   alias(libs.plugins.nexus.plugin)
   alias(libs.plugins.spotless)
   alias(libs.plugins.kotlin.binary.compatibility)
