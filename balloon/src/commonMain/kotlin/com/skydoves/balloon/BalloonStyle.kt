@@ -212,6 +212,5 @@ public val DefaultBalloonStyle: BalloonStyle = BalloonStyle()
  * Cheap enough to call while recomposing, which is how an animated style restyles a balloon
  * that is already showing.
  */
-@BalloonDsl
 public fun BalloonStyle.derive(block: Balloon.Builder.() -> Unit): BalloonStyle =
   Balloon.Builder().loadFrom(this).apply(block).build()

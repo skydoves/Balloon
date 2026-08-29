@@ -376,7 +376,7 @@ public final class com/skydoves/balloon/BalloonStyle {
 	public final fun component7-D9Ej5fM ()F
 	public final fun component8 ()F
 	public final fun component9 ()Z
-	public static synthetic fun copy-Ck3cmrI$balloon$default (Lcom/skydoves/balloon/BalloonStyle;FJLcom/skydoves/balloon/ArrowOrientation;FLcom/skydoves/balloon/ArrowPositionRules;Lcom/skydoves/balloon/ArrowOrientationRules;FFZJJJFLandroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;FFFFFFFFLcom/skydoves/balloon/BalloonAnimation;JLcom/skydoves/balloon/BalloonHighlightAnimation;JLcom/skydoves/balloon/BalloonRotateAnimation;FZJLandroidx/compose/foundation/layout/PaddingValues;JLcom/skydoves/balloon/BalloonOverlayShape;Lcom/skydoves/balloon/BalloonOverlayAnimation;ZZZZZZZJIILjava/lang/Object;)Lcom/skydoves/balloon/BalloonStyle;
+	public static synthetic fun copy-Ck3cmrI$com_github_skydoves_balloon$default (Lcom/skydoves/balloon/BalloonStyle;FJLcom/skydoves/balloon/ArrowOrientation;FLcom/skydoves/balloon/ArrowPositionRules;Lcom/skydoves/balloon/ArrowOrientationRules;FFZJJJFLandroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;FFFFFFFFLcom/skydoves/balloon/BalloonAnimation;JLcom/skydoves/balloon/BalloonHighlightAnimation;JLcom/skydoves/balloon/BalloonRotateAnimation;FZJLandroidx/compose/foundation/layout/PaddingValues;JLcom/skydoves/balloon/BalloonOverlayShape;Lcom/skydoves/balloon/BalloonOverlayAnimation;ZZZZZZZJIILjava/lang/Object;)Lcom/skydoves/balloon/BalloonStyle;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAlpha ()F
 	public final fun getAnimation ()Lcom/skydoves/balloon/BalloonAnimation;

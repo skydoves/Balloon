@@ -473,6 +473,7 @@ public object Balloon {
    * lambdas break that. Migration: `balloonState.onDismiss = { ... }` instead of
    * `builder.setOnBalloonDismissListener {}`.
    */
+  @BalloonDsl
   public class Builder {
     private var cornerRadius: Dp = 5.dp
     private var arrowWidth: Dp = 12.dp
@@ -1015,23 +1016,29 @@ public object Balloon {
   }
 }
 
-/** DSL marker for the fluent [Balloon.Builder] receiver lambda. */
+/**
+ * DSL marker for the fluent [Balloon.Builder] receiver lambda, so a builder block nested
+ * inside another one cannot silently reach the outer builder's setters.
+ *
+ * It belongs on the receiver TYPE, not on the functions that take the lambda: a `@DslMarker`
+ * annotation applied to a function has no effect at all, which Kotlin 2.4 now warns about
+ * (KT-81567).
+ */
 @DslMarker
 public annotation class BalloonDsl
 
 /**
  * Create and remember a [BalloonStyle] using the fluent [Balloon.Builder] DSL.
  *
- * Mirrors the original `rememberBalloonBuilder { ... }` API in `balloon-compose`
- * so existing builder blocks can be migrated with minimal edits — see
- * `MIGRATION.md`.
+ * Mirrors the original `rememberBalloonBuilder { ... }` API in `balloon-compose`, so
+ * existing builder blocks can be migrated with minimal edits. See the migration guide in
+ * `docs/migration.md`.
  *
  * @param key recomposition key. When it changes, the [Balloon.Builder] block is
  *   re-evaluated and a new [BalloonStyle] is produced.
  * @param block fluent receiver lambda invoked on a fresh [Balloon.Builder].
  */
 @Composable
-@BalloonDsl
 public fun rememberBalloonBuilder(
   key: Any? = null,
   block: Balloon.Builder.() -> Unit,
