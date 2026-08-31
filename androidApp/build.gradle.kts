@@ -47,7 +47,7 @@ kotlin {
 }
 
 android {
-  compileSdk = Configuration.compileSdk
+  compileSdk = Configuration.compileSdkDemo
   namespace = "com.skydoves.balloon.kmpdemo"
 
   sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")

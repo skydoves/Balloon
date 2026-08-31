@@ -35,9 +35,9 @@ kotlin {
   androidTarget()
   jvm("desktop")
 
-  @Suppress("DEPRECATION")
+  // No `iosX64` here, unlike `:balloon`, because the glass demo depends on `cloudy`, which
+  // does not publish an Intel simulator artifact. The library itself still targets it.
   listOf(
-    iosX64(),
     iosArm64(),
     iosSimulatorArm64(),
   ).forEach {
@@ -66,7 +66,6 @@ kotlin {
         withJvm()
         group("apple") {
           group("ios") {
-            withIosX64()
             withIosArm64()
             withIosSimulatorArm64()
           }
@@ -91,6 +90,8 @@ kotlin {
         implementation(libs.compose.multiplatform.material)
         // Ships the demo's profile picture to every target.
         implementation(libs.compose.multiplatform.resources)
+        // Blur and liquid glass, used by the glass tooltip demo.
+        implementation(libs.compose.cloudy)
       }
     }
     val commonTest by getting {
@@ -109,7 +110,7 @@ compose.resources {
 }
 
 android {
-  compileSdk = Configuration.compileSdk
+  compileSdk = Configuration.compileSdkDemo
   namespace = "com.skydoves.balloon.sample"
 
   defaultConfig {

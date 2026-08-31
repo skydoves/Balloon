@@ -7,6 +7,7 @@ jvmTarget = "11"
 nexusPlugin = "0.37.0"
 composeMultiplatform = "1.10.3"
 androidxActivity = "1.13.0"
+cloudy = "1.0.0-alpha01"
 spotless = "6.21.0"
 androidxMacroBenchmark = "1.5.0-rc02"
 androidxTest = "1.7.0"
@@ -33,6 +34,7 @@ compose-multiplatform-material = { module = "org.jetbrains.compose.material:mate
 compose-multiplatform-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "composeMultiplatform" }
 
 # Demo apps
+compose-cloudy = { module = "com.github.skydoves:cloudy", version.ref = "cloudy" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
 
 # Baseline profile generation (`:benchmark`, and the profileinstaller the demo needs)
