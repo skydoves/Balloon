@@ -28,79 +28,79 @@ There is no `Context`, no `View`, no `Drawable`, no `Typeface`, and no XML anywh
 
 ## Dependency
 
-=== "Compose Multiplatform"
+**Compose Multiplatform**
 
-    ```kotlin
-    kotlin {
-        sourceSets {
-            commonMain.dependencies {
-                implementation("com.github.skydoves:balloon:2.0.0")
-            }
+```kotlin
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation("com.github.skydoves:balloon:2.0.0")
         }
     }
-    ```
+}
+```
 
-=== "Android only"
+**Android only**
 
-    ```kotlin
-    dependencies {
-        implementation("com.github.skydoves:balloon:2.0.0")
-    }
-    ```
+```kotlin
+dependencies {
+    implementation("com.github.skydoves:balloon:2.0.0")
+}
+```
 
 Remove `balloon-compose`. It is folded into `balloon`.
 
 ## Coming from the View API
 
-=== "1.x"
+**1.x**
 
-    ```kotlin
-    val balloon = Balloon.Builder(context)
-        .setWidthRatio(0.7f)
-        .setHeight(BalloonSizeSpec.WRAP)
-        .setText("Now you can edit your profile!")
-        .setTextColorResource(R.color.white)
-        .setTextSize(15f)
-        .setIconDrawableResource(R.drawable.ic_edit)
-        .setArrowSize(10)
-        .setArrowPosition(0.5f)
-        .setPadding(12)
-        .setCornerRadius(8f)
-        .setBackgroundColorResource(R.color.purple)
-        .setBalloonAnimation(BalloonAnimation.ELASTIC)
-        .setLifecycleOwner(lifecycleOwner)
-        .build()
+```kotlin
+val balloon = Balloon.Builder(context)
+    .setWidthRatio(0.7f)
+    .setHeight(BalloonSizeSpec.WRAP)
+    .setText("Now you can edit your profile!")
+    .setTextColorResource(R.color.white)
+    .setTextSize(15f)
+    .setIconDrawableResource(R.drawable.ic_edit)
+    .setArrowSize(10)
+    .setArrowPosition(0.5f)
+    .setPadding(12)
+    .setCornerRadius(8f)
+    .setBackgroundColorResource(R.color.purple)
+    .setBalloonAnimation(BalloonAnimation.ELASTIC)
+    .setLifecycleOwner(lifecycleOwner)
+    .build()
 
-    balloon.showAlignTop(anchorView)
-    ```
+balloon.showAlignTop(anchorView)
+```
 
-=== "2.0.0"
+**2.0.0**
 
-    ```kotlin
-    val style = rememberBalloonBuilder {
-        setWidthRatio(0.7f)
-        setArrowSize(10.dp)
-        setArrowPosition(0.5f)
-        setPadding(12.dp)
-        setCornerRadius(8.dp)
-        setBackgroundColor(Color(0xFF785EF0))
-        setBalloonAnimation(BalloonAnimation.ELASTIC)
-    }
-    val balloonState = rememberBalloonState(style)
+```kotlin
+val style = rememberBalloonBuilder {
+    setWidthRatio(0.7f)
+    setArrowSize(10.dp)
+    setArrowPosition(0.5f)
+    setPadding(12.dp)
+    setCornerRadius(8.dp)
+    setBackgroundColor(Color(0xFF785EF0))
+    setBalloonAnimation(BalloonAnimation.ELASTIC)
+}
+val balloonState = rememberBalloonState(style)
 
-    Balloon(
-        state = balloonState,
-        balloonContent = {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(imageVector = Icons.Default.Edit, contentDescription = null, tint = Color.White)
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "Now you can edit your profile!", color = Color.White, fontSize = 15.sp)
-            }
-        },
-    ) {
-        Button(onClick = { balloonState.showAlignTop() }) { Text(text = "Edit profile") }
-    }
-    ```
+Balloon(
+    state = balloonState,
+    balloonContent = {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(imageVector = Icons.Default.Edit, contentDescription = null, tint = Color.White)
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = "Now you can edit your profile!", color = Color.White, fontSize = 15.sp)
+        }
+    },
+) {
+    Button(onClick = { balloonState.showAlignTop() }) { Text(text = "Edit profile") }
+}
+```
 
 The biggest shift: **content is a Compose slot, not a builder property.** Text color, size,
 typeface, icons, and custom layouts all move into the slot.
@@ -109,50 +109,50 @@ typeface, icons, and custom layouts all move into the slot.
 
 This one is nearly a drop-in. The entry points already have the same names.
 
-=== "1.x"
+**1.x**
 
-    ```kotlin
-    import com.skydoves.balloon.compose.rememberBalloonBuilder
-    import com.skydoves.balloon.compose.rememberBalloonState
-    import com.skydoves.balloon.compose.balloon
+```kotlin
+import com.skydoves.balloon.compose.rememberBalloonBuilder
+import com.skydoves.balloon.compose.rememberBalloonState
+import com.skydoves.balloon.compose.balloon
 
-    val builder = rememberBalloonBuilder {
-        setArrowSize(10)
-        setPadding(12)
-        setCornerRadius(8f)
-        setBackgroundColorResource(R.color.purple)
-    }
-    val balloonState = rememberBalloonState(builder)
+val builder = rememberBalloonBuilder {
+    setArrowSize(10)
+    setPadding(12)
+    setCornerRadius(8f)
+    setBackgroundColorResource(R.color.purple)
+}
+val balloonState = rememberBalloonState(builder)
 
+Button(
+    modifier = Modifier.balloon(balloonState) { Text("Tooltip") },
+    onClick = { balloonState.showAlignTop() },
+) { Text("Anchor") }
+```
+
+**2.0.0**
+
+```kotlin
+import com.skydoves.balloon.BalloonHost
+import com.skydoves.balloon.rememberBalloonBuilder
+import com.skydoves.balloon.rememberBalloonState
+import com.skydoves.balloon.balloon
+
+val style = rememberBalloonBuilder {
+    setArrowSize(10.dp)
+    setPadding(12.dp)
+    setCornerRadius(8.dp)
+    setBackgroundColor(Color(0xFF785EF0))
+}
+val balloonState = rememberBalloonState(style)
+
+BalloonHost {
     Button(
         modifier = Modifier.balloon(balloonState) { Text("Tooltip") },
         onClick = { balloonState.showAlignTop() },
     ) { Text("Anchor") }
-    ```
-
-=== "2.0.0"
-
-    ```kotlin
-    import com.skydoves.balloon.BalloonHost
-    import com.skydoves.balloon.rememberBalloonBuilder
-    import com.skydoves.balloon.rememberBalloonState
-    import com.skydoves.balloon.balloon
-
-    val style = rememberBalloonBuilder {
-        setArrowSize(10.dp)
-        setPadding(12.dp)
-        setCornerRadius(8.dp)
-        setBackgroundColor(Color(0xFF785EF0))
-    }
-    val balloonState = rememberBalloonState(style)
-
-    BalloonHost {
-        Button(
-            modifier = Modifier.balloon(balloonState) { Text("Tooltip") },
-            onClick = { balloonState.showAlignTop() },
-        ) { Text("Anchor") }
-    }
-    ```
+}
+```
 
 Three things to change:
 
@@ -345,7 +345,6 @@ color yourself, or give the balloon a background that suits your theme:
 ```kotlin
 balloonContent = { Text(text = "Tooltip", color = Color.White) }
 ```
-
 
 ## Staying on 1.x
 
