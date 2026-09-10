@@ -8,7 +8,7 @@ nexusPlugin = "0.37.0"
 composeMultiplatform = "1.10.3"
 androidxActivity = "1.13.0"
 spotless = "6.21.0"
-androidxMacroBenchmark = "1.5.0-rc02"
+androidxMacroBenchmark = "1.5.0"
 androidxTest = "1.7.0"
 uiAutomator = "2.4.0"
 
