@@ -31,7 +31,6 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.unit.IntOffset
@@ -45,8 +44,8 @@ import kotlin.math.roundToInt
  */
 @Stable
 internal class BalloonEntry(val state: BalloonState) {
-  /** Anchor bounds in window coordinates, updated by the modifier's `onGloballyPositioned`. */
-  var anchorBounds: IntRect? by mutableStateOf(null)
+  /** The anchor's geometry, updated by the modifier's `onGloballyPositioned`. */
+  var anchor: BalloonAnchor? by mutableStateOf(null)
 
   /**
    * The balloon body; set once to a stable lambda that always reads the latest content, and
@@ -173,7 +172,7 @@ public fun BalloonHost(
           entry.content?.let { balloonContent ->
             BalloonPopupLayer(
               state = entry.state,
-              anchorBounds = entry.anchorBounds,
+              anchor = entry.anchor,
               balloonContent = balloonContent,
             )
           }
@@ -227,9 +226,9 @@ public fun Modifier.balloon(
     onDispose { registry.unregister(entry) }
   }
   return this.onGloballyPositioned { coordinates ->
-    val bounds = coordinates.boundsInWindow().toIntRect()
-    if (entry.anchorBounds != bounds) {
-      entry.anchorBounds = bounds
+    val newAnchor = coordinates.toBalloonAnchor()
+    if (entry.anchor != newAnchor) {
+      entry.anchor = newAnchor
     }
   }
 }
