@@ -108,12 +108,14 @@ private val Orange = Color(0xFFFF5722)
  * @param onMessage invoked with a human-readable message when a demo action is triggered
  *   (the KMP stand-in for the original demo's `Toast`s).
  * @param onOpenLabs invoked when the Labs entry point is clicked; the host is expected to
+ * @param onOpenGlass invoked when the glass tooltip demo entry is pressed.
  *   navigate to [com.skydoves.balloon.sample.labs.BalloonLabsScreen].
  */
 @Composable
 public fun BalloonDemoScreen(
   onMessage: (String) -> Unit = {},
   onOpenLabs: () -> Unit = {},
+  onOpenGlass: () -> Unit = {},
 ) {
   // `Modifier.balloon` registers anchors with the nearest host, which is what actually
   // emits the popups. One host wraps the whole screen.
@@ -158,7 +160,7 @@ public fun BalloonDemoScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Labs Entry Point
-        LabsEntry(onOpenLabs = onOpenLabs)
+        LabsEntry(onOpenLabs = onOpenLabs, onOpenGlass = onOpenGlass)
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -456,7 +458,7 @@ private fun EditProfileSection() {
 }
 
 @Composable
-private fun LabsEntry(onOpenLabs: () -> Unit) {
+private fun LabsEntry(onOpenLabs: () -> Unit, onOpenGlass: () -> Unit) {
   Text(
     text = "Labs",
     color = White70,
@@ -493,6 +495,25 @@ private fun LabsEntry(onOpenLabs: () -> Unit) {
     Spacer(modifier = Modifier.width(8.dp))
     Text(
       text = "Open Balloon Labs",
+      color = Color.White,
+      fontSize = 14.sp,
+      fontWeight = FontWeight.Bold,
+    )
+  }
+
+  Spacer(modifier = Modifier.height(10.dp))
+
+  Button(
+    onClick = onOpenGlass,
+    colors = ButtonDefaults.buttonColors(backgroundColor = Teal),
+    shape = RoundedCornerShape(8.dp),
+    elevation = ButtonDefaults.elevation(0.dp),
+    modifier = Modifier
+      .fillMaxWidth()
+      .height(48.dp),
+  ) {
+    Text(
+      text = "Glass tooltips (Cloudy)",
       color = Color.White,
       fontSize = 14.sp,
       fontWeight = FontWeight.Bold,

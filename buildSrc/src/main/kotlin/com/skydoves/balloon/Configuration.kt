@@ -18,6 +18,15 @@ package com.skydoves.balloon
 
 object Configuration {
   const val compileSdk = 36
+
+  /**
+   * Compile SDK for the demo modules only.
+   *
+   * `cloudy`, which the glass tooltip demo uses, declares `minCompileSdk=37`. The published
+   * library stays on 36 on purpose: its own `minCompileSdk` is part of what it asks of every
+   * consumer, and a demo dependency is no reason to raise that.
+   */
+  const val compileSdkDemo = 37
   const val targetSdk = 36
   const val minSdk = 23
   const val minSdkBenchmark = 23

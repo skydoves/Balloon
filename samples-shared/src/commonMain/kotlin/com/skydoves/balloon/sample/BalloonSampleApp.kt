@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.skydoves.balloon.sample.glass.GlassTooltipScreen
 import com.skydoves.balloon.sample.labs.BalloonLabsScreen
 
 /**
@@ -32,13 +33,14 @@ import com.skydoves.balloon.sample.labs.BalloonLabsScreen
 private enum class SampleScreen {
   Demo,
   Labs,
+  Glass,
 }
 
 /**
  * Single entry point shared by every demo app (Android, iOS, Desktop, Wasm).
  *
- * It owns the sample's navigation state and swaps between [BalloonDemoScreen] and
- * [BalloonLabsScreen]. Platform entry points should call this instead of rendering a
+ * It owns the sample's navigation state and swaps between [BalloonDemoScreen],
+ * [BalloonLabsScreen], and [GlassTooltipScreen]. Platform entry points should call this instead of rendering a
  * screen directly, so every target reaches the same set of screens.
  *
  * The state is a plain [remember], not `rememberSaveable`: the sample intentionally
@@ -55,9 +57,14 @@ public fun BalloonSampleApp(onMessage: (String) -> Unit = {}) {
     SampleScreen.Demo -> BalloonDemoScreen(
       onMessage = onMessage,
       onOpenLabs = { screen = SampleScreen.Labs },
+      onOpenGlass = { screen = SampleScreen.Glass },
     )
 
     SampleScreen.Labs -> BalloonLabsScreen(
+      onBack = { screen = SampleScreen.Demo },
+    )
+
+    SampleScreen.Glass -> GlassTooltipScreen(
       onBack = { screen = SampleScreen.Demo },
     )
   }
