@@ -68,7 +68,10 @@ It returns `false` and schedules nothing when the balloon is not showing.
 A balloon also dismisses itself when:
 
 - its anchor leaves the composition, for example a `LazyColumn` item scrolling out of the pool
-- its anchor scrolls entirely out of the window
+- its anchor goes entirely out of view: off the window, or clipped away by a scrolling
+  container it sits inside, such as a `Column` with `Modifier.verticalScroll`. An anchor that
+  has not appeared yet does not count — a balloon shown while its anchor is still animating in
+  waits for it.
 - `setAutoDismissDuration` elapses
 - the user taps outside it, presses back or Escape, or taps the body, depending on the style
 

@@ -21,6 +21,7 @@ import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
@@ -30,7 +31,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.findRootCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
@@ -99,14 +104,14 @@ public fun Balloon(
   balloonContent: @Composable () -> Unit,
   content: @Composable () -> Unit,
 ) {
-  val anchorBoundsState: MutableState<IntRect?> = remember(key) { mutableStateOf(null) }
+  val anchorState: MutableState<BalloonAnchor?> = remember(key) { mutableStateOf(null) }
 
   Box(
     modifier = modifier.onGloballyPositioned { coordinates ->
-      val newBounds = coordinates.boundsInWindow().toIntRect()
-      // Avoid recomposition cascades: only push when bounds actually change.
-      if (anchorBoundsState.value != newBounds) {
-        anchorBoundsState.value = newBounds
+      val newAnchor = coordinates.toBalloonAnchor()
+      // Avoid recomposition cascades: only push when the anchor actually changes.
+      if (anchorState.value != newAnchor) {
+        anchorState.value = newAnchor
       }
     },
   ) {
@@ -116,7 +121,7 @@ public fun Balloon(
     // claim a spacing slot and shift the anchor.
     BalloonPopupLayer(
       state = state,
-      anchorBounds = anchorBoundsState.value,
+      anchor = anchorState.value,
       balloonContent = balloonContent,
     )
   }
@@ -124,7 +129,7 @@ public fun Balloon(
 
 /**
  * Emits the balloon [Popup] (with enter/exit animation and auto-dismiss) for [state],
- * positioned against [anchorBounds]. Shared by the [Balloon] anchor wrapper and by
+ * positioned against [anchor]. Shared by the [Balloon] anchor wrapper and by
  * [BalloonHost] (the `Modifier.balloon` path) so both render identically.
  *
  * Must be hosted inside a container that is NOT a spacing-based `Column`/`Row`
@@ -134,7 +139,7 @@ public fun Balloon(
 @Composable
 internal fun BalloonPopupLayer(
   state: BalloonState,
-  anchorBounds: IntRect?,
+  anchor: BalloonAnchor?,
   balloonContent: @Composable () -> Unit,
 ) {
   val style = state.style
@@ -168,7 +173,7 @@ internal fun BalloonPopupLayer(
         "if you want the scrim to dim the whole window."
     }
     val request = remember(state) { BalloonOverlayRequest(state) }
-    request.anchorBounds = anchorBounds
+    request.anchorBounds = anchor?.rect
     DisposableEffect(registry, request) {
       registry.registerOverlay(request)
       onDispose { registry.unregisterOverlay(request) }
@@ -187,30 +192,36 @@ internal fun BalloonPopupLayer(
 
   // The framework's `windowSize` is NOT in the same coordinate space as the anchor
   // rectangles: on Android it is derived from the popup window's own metrics and excludes
-  // the system bars, while `boundsInWindow()` measures from the top of an edge-to-edge
+  // the system bars, while the anchor rects are measured from the top of an edge-to-edge
   // window. Mixing them makes a balloon flip above its anchor although there is room below,
   // and makes the bottom strip of the window unreachable by the final clamp. The container
   // size is the app window's own size, i.e. exactly the space the anchor rectangles live
   // in, so we use that and ignore the framework's value.
   val windowSize = LocalWindowInfo.current.containerSize
 
-  // An anchor can also be scrolled clean out of the window while the balloon is up. Left
-  // alone the balloon would sit clamped against a window edge pointing at nothing, so it is
-  // dismissed the moment its anchor is fully outside — the same outcome as the anchor
-  // leaving the composition, just triggered by geometry.
-  LaunchedEffect(anchorBounds, windowSize, state.isVisible) {
-    val bounds = anchorBounds
-    // `WindowInfo.containerSize` starts at `IntSize.Zero` and is filled in by the platform,
-    // so on a target that sizes its scene after the first composition every on-screen anchor
-    // would momentarily read as "past the right edge" and the balloon would dismiss itself
-    // the frame it was shown. An unmeasured window tells us nothing; wait for a real one.
-    if (windowSize.width <= 0 || windowSize.height <= 0) return@LaunchedEffect
-    if (state.isVisible && bounds != null && !bounds.isEmpty &&
-      (
-        bounds.right <= 0 || bounds.bottom <= 0 ||
-          bounds.left >= windowSize.width || bounds.top >= windowSize.height
-        )
-    ) {
+  // Latched once this show's anchor has been seen on screen; read only by the effect below,
+  // which is why writing it costs no recomposition. Re-created per `showGeneration` so each
+  // show makes up its own mind.
+  val anchorSeenOnScreen = remember(state, state.showGeneration) { mutableStateOf(false) }
+
+  // An anchor can also go out of view while the balloon is up WITHOUT leaving the
+  // composition: `Modifier.verticalScroll` clips its children rather than disposing them
+  // (unlike a `LazyColumn` item), and a layout is free to push one off the window. Left alone
+  // the balloon would sit there pointing at nothing, so it is dismissed the moment its anchor
+  // goes away — the same outcome as the anchor leaving the composition, just triggered by
+  // geometry. `isOnScreen` is the whole test, covering the clipped and the off-window cases
+  // alike and already guarded against the degenerate ones; see [toBalloonAnchor].
+  //
+  // "Goes away", though, and not merely "is not there": an anchor is allowed to arrive late.
+  // `AnimatedVisibility(enter = expandVertically())` clips its content to nothing on the frame
+  // it starts, so a balloon shown in that same frame would be dismissed before its anchor was
+  // ever visible — and, having been dismissed, would never come back. The balloon therefore
+  // waits for an anchor it has not seen yet, and only dismisses one it is watching disappear.
+  LaunchedEffect(anchor, state.isVisible) {
+    if (anchor == null) return@LaunchedEffect
+    if (anchor.isOnScreen) {
+      anchorSeenOnScreen.value = true
+    } else if (state.isVisible && anchorSeenOnScreen.value) {
       state.dismiss()
     }
   }
@@ -223,7 +234,7 @@ internal fun BalloonPopupLayer(
   visibleState.targetState = state.isVisible
   val popupActive = visibleState.currentState || visibleState.targetState || !visibleState.isIdle
 
-  if (popupActive && anchorBounds != null) {
+  if (popupActive && anchor != null) {
     val offsetPx = with(density) {
       IntOffset(
         state.offset.x.roundToPx(),
@@ -244,7 +255,7 @@ internal fun BalloonPopupLayer(
       placement,
       state.align,
       state.centerAlign,
-      anchorBounds,
+      anchor.rect,
       offsetPx,
       style,
       windowSize,
@@ -253,7 +264,7 @@ internal fun BalloonPopupLayer(
       BalloonPopupPositionProvider(
         state = state,
         placement = placement,
-        anchorBounds = anchorBounds,
+        anchorBounds = anchor.rect,
         align = state.align,
         centerAlign = state.centerAlign,
         userOffsetPx = offsetPx,
@@ -361,16 +372,89 @@ internal fun resolveArrowOrientation(
 }
 
 /**
- * Helper to convert a `Rect` (window-pixel coordinates) into an [IntRect] using
+ * Helper to convert a [Rect] (window-pixel coordinates) into an [IntRect] using
  * [Float.roundToInt] on each edge. Mirrors the rounding the framework uses
  * internally for popup placement.
  */
-internal fun androidx.compose.ui.geometry.Rect.toIntRect(): IntRect = IntRect(
+internal fun Rect.toIntRect(): IntRect = IntRect(
   left = left.roundToInt(),
   top = top.roundToInt(),
   right = right.roundToInt(),
   bottom = bottom.roundToInt(),
 )
+
+/**
+ * What one layout pass told us about a balloon's anchor: where the anchor is, and whether any
+ * of it is still on screen.
+ *
+ * One value rather than two parallel parameters, so the rect and the verdict — both read from
+ * the same [LayoutCoordinates] in the same callback — cannot drift apart.
+ */
+@Immutable
+internal data class BalloonAnchor(
+  /** The anchor's bounds in window coordinates, NOT clipped. See [toBalloonAnchor]. */
+  val rect: IntRect,
+  /**
+   * Whether any part of the anchor survives the clipping of its ancestors and of the window.
+   * False once a scrolling container — or the window edge — has taken it out of view.
+   */
+  val isOnScreen: Boolean,
+)
+
+/**
+ * Captures the anchor geometry a balloon is placed against, out of the anchor's layout
+ * coordinates.
+ *
+ * ## Why not `boundsInWindow()`
+ *
+ * Because it is clipped, and a balloon needs to know where its anchor *is*, not how much of it
+ * survived. `boundsInWindow()` intersects the rect with every clipping ancestor, coerces the
+ * result into the root's bounds, and returns `Rect.Zero` when that leaves nothing — so an
+ * anchor scrolled out of a `Modifier.verticalScroll` column (which clips its children rather
+ * than disposing them, unlike a `LazyColumn` item) reports bounds of `0, 0, 0, 0`. The balloon
+ * was then placed against the window's origin: the arrow jumping to the top-left corner
+ * reported in #1022. The same collapse loses the position of a zero-sized anchor, which has no
+ * area to survive clipping in the first place.
+ *
+ * Mapping the anchor's own four corners through [LayoutCoordinates.localToWindow] keeps its
+ * true position in every one of those cases. Going straight from local to window space also
+ * avoids the intermediate axis-aligned box in root space that the framework helper builds, so
+ * a rotated ancestor yields a tighter rect rather than a looser one.
+ *
+ * The clipped rect is still exactly the right question to ask about VISIBILITY, which is what
+ * [BalloonAnchor.isOnScreen] reads it for.
+ */
+internal fun LayoutCoordinates.toBalloonAnchor(): BalloonAnchor {
+  val width = size.width.toFloat()
+  val height = size.height.toFloat()
+  // All four corners, not just two: an ancestor may rotate or scale the anchor, in which case
+  // the extremes of the window-space box are not the images of the local top-left and
+  // bottom-right. `minOf`/`maxOf` are nested in pairs to stay off the vararg overloads, which
+  // would allocate an array on every layout pass of a scrolling anchor.
+  val topLeft = localToWindow(Offset.Zero)
+  val topRight = localToWindow(Offset(width, 0f))
+  val bottomLeft = localToWindow(Offset(0f, height))
+  val bottomRight = localToWindow(Offset(width, height))
+  val rect = Rect(
+    left = minOf(minOf(topLeft.x, topRight.x), minOf(bottomLeft.x, bottomRight.x)),
+    top = minOf(minOf(topLeft.y, topRight.y), minOf(bottomLeft.y, bottomRight.y)),
+    right = maxOf(maxOf(topLeft.x, topRight.x), maxOf(bottomLeft.x, bottomRight.x)),
+    bottom = maxOf(maxOf(topLeft.y, topRight.y), maxOf(bottomLeft.y, bottomRight.y)),
+  ).toIntRect()
+
+  // Being clipped is exactly what makes `boundsInWindow()` the right answer to the VISIBILITY
+  // question: it empties out when a clipping ancestor has cut the anchor away, and when the
+  // window has. It also empties out for two reasons that say nothing about visibility, so those
+  // are ruled out first — an anchor with no area of its own clips to nothing wherever it sits,
+  // and an unmeasured root (some targets size their scene after the first composition) empties
+  // out every anchor in the tree, which would dismiss a balloon on the frame it was shown.
+  val rootSize = findRootCoordinates().size
+  val isOnScreen = size.width == 0 || size.height == 0 ||
+    rootSize.width == 0 || rootSize.height == 0 ||
+    !boundsInWindow().isEmpty
+
+  return BalloonAnchor(rect = rect, isOnScreen = isOnScreen)
+}
 
 /**
  * Computes the popup offset from the captured anchor bounds, the requested
@@ -473,8 +557,8 @@ internal class BalloonPopupPositionProvider(
     val anchorCenterX = captured.left + halfAnchorW
     val anchorCenterY = captured.top + halfAnchorH
 
-    // Same reasoning as the visibility effect: an unmeasured window would clamp every balloon
-    // to the origin. Fall back to the popup's own extent, which makes the clamp a no-op.
+    // An unmeasured window would clamp every balloon to the origin. Fall back to the popup's
+    // own extent, which makes the clamp a no-op until a real size arrives.
     val maxX = (windowSize.width - popupW).coerceAtLeast(0)
       .let { if (windowSize.width <= 0) Int.MAX_VALUE else it }
     val maxY = (windowSize.height - popupH).coerceAtLeast(0)
