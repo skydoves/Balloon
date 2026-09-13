@@ -62,7 +62,7 @@ Add the dependency below to your **module**'s `build.gradle.kts` file.
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("com.github.skydoves:balloon:2.0.0")
+            implementation("com.github.skydoves:balloon:2.0.1")
         }
     }
 }
@@ -72,7 +72,7 @@ kotlin {
 
 ```kotlin
 dependencies {
-    implementation("com.github.skydoves:balloon:2.0.0")
+    implementation("com.github.skydoves:balloon:2.0.1")
 }
 ```
 

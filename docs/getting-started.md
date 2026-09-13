@@ -1,6 +1,6 @@
 # Getting Started
 
-This guide covers installing Balloon 2.0.0 and attaching your first tooltip.
+This guide covers installing Balloon and attaching your first tooltip.
 
 ## Installation
 
@@ -12,7 +12,7 @@ This guide covers installing Balloon 2.0.0 and attaching your first tooltip.
     kotlin {
         sourceSets {
             commonMain.dependencies {
-                implementation("com.github.skydoves:balloon:2.0.0")
+                implementation("com.github.skydoves:balloon:2.0.1")
             }
         }
     }
@@ -22,7 +22,7 @@ This guide covers installing Balloon 2.0.0 and attaching your first tooltip.
 
     ```kotlin
     dependencies {
-        implementation("com.github.skydoves:balloon:2.0.0")
+        implementation("com.github.skydoves:balloon:2.0.1")
     }
     ```
 
