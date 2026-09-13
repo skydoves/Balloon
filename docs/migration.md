@@ -34,7 +34,7 @@ There is no `Context`, no `View`, no `Drawable`, no `Typeface`, and no XML anywh
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("com.github.skydoves:balloon:2.0.0")
+            implementation("com.github.skydoves:balloon:2.0.1")
         }
     }
 }
@@ -44,7 +44,7 @@ kotlin {
 
 ```kotlin
 dependencies {
-    implementation("com.github.skydoves:balloon:2.0.0")
+    implementation("com.github.skydoves:balloon:2.0.1")
 }
 ```
 

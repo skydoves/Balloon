@@ -46,7 +46,7 @@ Balloon hits **+800,000 downloads every month** around the globe.
     kotlin {
         sourceSets {
             commonMain.dependencies {
-                implementation("com.github.skydoves:balloon:2.0.0")
+                implementation("com.github.skydoves:balloon:2.0.1")
             }
         }
     }
@@ -56,7 +56,7 @@ Balloon hits **+800,000 downloads every month** around the globe.
 
     ```kotlin
     dependencies {
-        implementation("com.github.skydoves:balloon:2.0.0")
+        implementation("com.github.skydoves:balloon:2.0.1")
     }
     ```
 
