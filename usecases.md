@@ -9,6 +9,10 @@ If your project uses Balloon, let me know by creating a new issue or PR! 🤗
 <img width="30.5%" src="https://github.com/skydoves/Balloon/assets/24237865/9bdb738d-38f0-4f29-b419-185e74f21721" />
 </p>
 
+## [TikTok](https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically)
+
+<img src="art/tiktok.png" width="20%">
+
 ## [PayPal](https://play.google.com/store/apps/details?id=com.paypal.android.p2pmobile)
 
 <img src="https://user-images.githubusercontent.com/24237865/165956608-a9d610b4-fa62-4533-b013-e9a774808565.png" width="40%">
