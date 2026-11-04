@@ -11,7 +11,7 @@ cloudy = "1.0.0-alpha01"
 spotless = "6.21.0"
 androidxMacroBenchmark = "1.5.0"
 androidxTest = "1.7.0"
-uiAutomator = "2.4.0"
+uiAutomator = "2.4.1"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
